@@ -418,26 +418,149 @@
 <!-- BAB 1 -->
       <section class="chapter active" id="ch0">
         <div class="badge">Bab 1 — Fondasi</div>
-        <h1>Sistem Persamaan Linier dan Matriks</h1>
-        <p>Sistem persamaan linier (SPL) adalah kumpulan $m$ persamaan dengan $n$ variabel: $A\mathbf{x} = \mathbf{b}$.</p>
-         
-		 <p align="justify">
-Sistem Persamaan Linier (SPL) merupakan salah satu konsep paling mendasar dalam aljabar linier karena banyak persoalan nyata dapat dimodelkan sebagai hubungan linier antara beberapa variabel. Contohnya adalah analisis rangkaian listrik, optimasi produksi, ekonomi, grafika komputer, hingga pembelajaran mesin (machine learning). Pada setiap permasalahan tersebut, tujuan utamanya adalah menentukan nilai variabel yang memenuhi seluruh persamaan secara bersamaan.
+<h1>Sistem Persamaan Linier dan Matriks</h1>
+<p align="justify">
+Sistem Persamaan Linier (SPL) merupakan salah satu konsep paling mendasar dalam aljabar linier karena banyak persoalan nyata dapat dimodelkan sebagai hubungan linier antarvariabel. Beberapa penerapan utamanya meliputi:
+</p>
+<ul>
+  <li><b>Analisis Rangkaian Listrik:</b> Menghitung arus dan tegangan pada tiap cabang rangkaian menggunakan Hukum Kirchhoff.</li>
+  <li><b>Optimasi Produksi & Ekonomi:</b> Mengatur alokasi sumber daya terbatas untuk memaksimalkan keuntungan atau menentukan titik keseimbangan pasar (<i>supply-demand</i>).</li>
+  <li><b>Grafika Komputer:</b> Melakukan transformasi geometris seperti rotasi, translasi, dan skalasi pada objek 2D/3D.</li>
+  <li><b>Pembelajaran Mesin (Machine Learning):</b> Melatih model regresi linier dan jaringan saraf tiruan yang mengandalkan operasi perkalian matriks berskala besar.</li>
+</ul>
+<p align="justify">
+Pada setiap permasalahan tersebut, tujuan utamanya adalah menentukan himpunan nilai variabel yang memenuhi seluruh persamaan dalam sistem secara bersamaan.
+</p>
+		
+<!-- 1.1 Introduction to Systems of Linear Equations -->
+<h2 class="sec">1.1 Pengantar Sistem Persamaan Linear</h2>
+<p align="justify">
+Secara umum, sebuah <b>persamaan linier</b> dalam $n$ variabel $x_1, x_2, \dots, x_n$ didefinisikan sebagai persamaan yang dapat ditulis dalam bentuk:
+$$a_1x_1 + a_2x_2 + \dots + a_nx_n = b$$
+dengan $a_1, a_2, \dots, a_n$ adalah konstanta riil yang disebut <b>koefisien</b>, $x_1, x_2, \dots, x_n$ adalah <b>variabel (peubah)</b>, dan $b$ adalah <b>konstanta</b>. Ciri utama persamaan linier adalah setiap variabel hanya berpangkat satu dan tidak saling dikalikan atau berada di dalam fungsi non-linier (seperti $\sin(x)$, $\sqrt{x}$, atau $e^x$).
+</p>
+
+<div class="card example">
+  <b>Contoh Persamaan Linier vs. Non-Linier:</b>
+  <ul>
+    <li><b>Linier:</b> $3x_1 - 2x_2 + 5x_3 = 7$ dan $x + y + z = 0$</li>
+    <li><b>Non-Linier:</b> $x^2 + y = 4$ (pangkat dua), $xy + z = 1$ (perkalian antarvariabel), $2\sin(x) + y = 3$ (fungsi trigonometri)</li>
+  </ul>
+</div>
+
+<p align="justify">
+<b>Sistem Persamaan Linier (SPL)</b> adalah himpunan berhingga yang terdiri dari satu atau lebih persamaan linier dengan variabel yang sama.
+</p>
+
+<div class="card def">
+  <b>Definisi (Konsistensi Sistem):</b><br>
+  Suatu Sistem Persamaan Linier dikatakan:
+  <ul>
+    <li><b>Konsisten (Consistent):</b> Jika memiliki <i>minimal satu</i> solusi (baik solusi tunggal maupun tak hingga banyak solusi).</li>
+    <li><b>Inkonsisten (Inconsistent):</b> Jika <i>tidak memiliki</i> solusi sama sekali.</li>
+  </ul>
+  Secara geometris, himpunan solusi dari SPL merupakan daerah perpotongan dari seluruh <i>hyperplane</i> (garis pada ruang 2D, bidang pada ruang 3D) yang dibentuk oleh masing-masing persamaan.
+</div>
+
+<div class="card theorem">
+  <b>Teorema (Kemungkinan Solusi SPL):</b><br>
+  Setiap Sistem Persamaan Linier pasti memenuhi tepat satu dari tiga kemungkinan berikut:
+  <ol type="i">
+    <li><b>Tidak memiliki solusi</b> (sistem inkonsisten).</li>
+    <li><b>Memiliki tepat satu solusi tunggal</b> (sistem konsisten).</li>
+    <li><b>Memiliki tak hingga banyak solusi</b> (sistem konsisten).</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Ilustrasi 3 Kemungkinan Solusi (Sistem 2D):</b>
+  <ul>
+    <li><b>1. Satu Solusi Tunggal:</b>
+      $$\begin{cases} x + y = 3 \\ x - y = 1 \end{cases}$$
+      Dengan menjumlahkan kedua persamaan diperoleh $2x = 4 \implies x = 2$, sehingga $y = 1$. Solusi tunggalnya adalah $(x, y) = (2, 1)$.<br>
+      <i>Secara geometris:</i> Dua garis berpotongan tepat di satu titik.
+    </li>
+    <br>
+    <li><b>2. Tidak Ada Solusi:</b>
+      $$\begin{cases} x + y = 3 \\ x + y = 5 \end{cases}$$
+      Tidak ada pasangan $(x, y)$ yang jumlahnya bernilai 3 sekaligus 5 secara bersamaan ($3 = 5$ adalah kontradiksi).<br>
+      <i>Secara geometris:</i> Dua garis sejajar dan tidak pernah berpotongan.
+    </li>
+    <br>
+    <li><b>3. Tak Hingga Banyak Solusi:</b>
+      $$\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$$
+      Persamaan kedua merupakan kelipatan dari persamaan pertama ($2 \times \text{persamaan 1}$). Jika kita pilih variabel bebas $x = t$ (dengan $t \in \mathbb{R}$ sebagai parameter), maka $y = 3 - t$. Himpunan solusinya adalah $\{(t, 3-t) \mid t \in \mathbb{R}\}$.<br>
+      <i>Secara geometris:</i> Kedua garis saling berhimpit pada jalur yang sama.
+    </li>
+  </ul>
+</div>
+
+<h3 class="sec">Representasi Matriks dari SPL</h3>
+<p align="justify">
+Menuliskan SPL dalam bentuk matriks memberikan representasi yang lebih ringkas, terstruktur, dan sistematis. Selain mempermudah analisis teoritis, representasi matriks menjadi dasar bagi berbagai algoritma komputasi pada perangkat lunak matematika modern (seperti Python/NumPy, MATLAB, atau R).
 </p>
 
 <p align="justify">
-Penulisan SPL dalam bentuk matriks memberikan representasi yang lebih ringkas dan sistematis. Selain mempermudah analisis secara teoritis, bentuk ini juga menjadi dasar bagi berbagai algoritma komputasi yang digunakan dalam perangkat lunak matematika modern.
-</p>
-		 
-        <div class="card def">
-          <b>Definisi:</b> Matriks $A_{m\times n}$ disebut koefisien, $\mathbf{x}$ vektor variabel, $\mathbf{b}$ vektor konstanta. Matriks augmented $[A|\mathbf{b}]$.
-        </div>
+Diberikan sistem yang terdiri dari $m$ persamaan linier dengan $n$ variabel berikut:
+$$\begin{matrix}
+a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1 \\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2 \\
+\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = b_m
+\end{matrix}$$
 
-<div class="card note">
-<b>Intuisi:</b> Setiap baris matriks menyatakan satu persamaan, sedangkan setiap kolom menyatakan koefisien dari suatu variabel. Oleh karena itu, melakukan operasi pada baris matriks sama artinya dengan memanipulasi sistem persamaan tanpa mengubah himpunan penyelesaiannya.
+Sistem di atas dapat dituliskan secara ringkas ke dalam bentuk persamaan matriks tunggal:
+$$A\mathbf{x} = \mathbf{b}$$
+</p>
+
+<div class="card def">
+  <b>Definisi (Elemen Matriks SPL):</b>
+  <ul>
+    <li><b>Matriks Koefisien ($A_{m \times n}$):</b> Matriks berukuran $m \times n$ yang memuat seluruh koefisien variabel.
+      $$A = \begin{bmatrix} a_{11} & a_{12} & \dots & a_{1n} \\ a_{21} & a_{22} & \dots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \dots & a_{mn} \end{bmatrix}$$
+    </li>
+    <li><b>Vektor Variabel ($\mathbf{x}_{n \times 1}$):</b> Vektor kolom berukuran $n \times 1$ berisi peubah/variabel yang dicari nilainya: 
+      $$\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}$$
+    </li>
+    <li><b>Vektor Konstanta ($\mathbf{b}_{m \times 1}$):</b> Vektor kolom berukuran $m \times 1$ berisi nilai konstanta ruas kanan: 
+      $$\mathbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_m \end{bmatrix}$$
+    </li>
+    <li><b>Matriks Diperbesar / Augmented Matrix ($[A \mid \mathbf{b}]$):</b> Matriks berukuran $m \times (n+1)$ yang menggabungkan matriks koefisien $A$ dan vektor konstanta $\mathbf{b}$ dengan garis pemisah:
+      $$[A \mid \mathbf{b}] = \begin{bmatrix} 
+      a_{11} & a_{12} & \dots & a_{1n} & \Big| & b_1 \\ 
+      a_{21} & a_{22} & \dots & a_{2n} & \Big| & b_2 \\ 
+      \vdots & \vdots & \ddots & \vdots & \Big| & \vdots \\ 
+      a_{m1} & a_{m2} & \dots & a_{mn} & \Big| & -b_m 
+      \end{bmatrix}$$
+    </li>
+  </ul>
 </div>
 
-        <h2 class="sec">1.1 Eliminasi Gauss-Jordan</h2>
+<div class="card example">
+  <b>Contoh Pembentukan Matriks SPL:</b><br>
+  Diberikan Sistem Persamaan Linier dengan 3 variabel ($x_1, x_2, x_3$):
+  $$\begin{cases}
+  2x_1 + 3x_2 - x_3 = 5 \\
+  4x_1 + 2x_3 = 10 \quad \implies (4x_1 + 0x_2 + 2x_3 = 10) \\
+  -x_1 + 5x_2 + 3x_3 = -2
+  \end{cases}$$
+  
+  Bentuk persamaan matriks $A\mathbf{x} = \mathbf{b}$ adalah:
+  $$\begin{bmatrix} 2 & 3 & -1 \\ 4 & 0 & 2 \\ -1 & 5 & 3 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix} 5 \\ 10 \\ -2 \end{bmatrix}$$
+  
+  Dan Matriks Augmented $[A \mid \mathbf{b}]$ yang terbentuk adalah:
+  $$[A \mid \mathbf{b}] = \begin{bmatrix} 
+  2 & 3 & -1 & \big| & 5 \\ 
+  4 & 0 & 2 & \big| & 10 \\ 
+  -1 & 5 & 3 & \big| & -2 
+  \end{bmatrix}$$
+</div>
+
+<div class="card note">
+<b>Intuisi:</b> Setiap baris pada matriks mewakili satu persamaan linier, sedangkan setiap kolom pada matriks koefisien merepresentasikan koefisien dari suatu variabel tertentu. Oleh karena itu, melakukan Operasi Baris Elementer (OBE) pada matriks sama artinya dengan memanipulasi persamaan (seperti menjumlahkan, mengalikan dengan skalar non-nol, atau menukar persamaan) tanpa mengubah himpunan penyelesaian awal dari sistem tersebut.
+</div>
+
+<h2 class="sec">1.2. Eliminasi Gauss-Jordan</h2>
         <p align="justify">
 		Tiga OBE: tukar baris, kali baris dengan skalar $\neq 0$, tambah kelipatan baris. Tujuannya bentuk eselon baris tereduksi.
 		</p>
@@ -970,7 +1093,7 @@ Berikut adalah implementasi metode Gauss-Jordan untuk studi kasus optimasi stok 
   <h3>Interpretasi Hasil</h3>
 
   <p align="justify">
-  Berdasarkan perhitungan matematis metode Gauss-Jordan, agar gudang dapat beroperasi secara optimal dengan utilisasi kapasitas 100% tanpa melanggar satu pun batasan teknis dan finansial, alokasi stok persediaan barang (*inventory allocation*) yang tepat adalah:
+  Berdasarkan perhitungan matematis metode Gauss-Jordan, agar gudang dapat beroperasi secara optimal dengan utilisasi kapasitas 100% tanpa melanggar satu pun batasan teknis dan finansial, alokasi stok persediaan barang (<i>inventory allocation</i>) yang tepat adalah:
   </p>
 
   <ul>
@@ -1213,6 +1336,492 @@ def SistemLinear_GaussJordan(M_A = input_box(default='[[2, 1, 1], [1, 3, 2], [3,
             display(html('<b>Solusi dalam bentuk parametrik dapat ditulis tergantung variabel bebas.</b>'))
 </textarea>
 </div>
+
+
+<!-- 1.3. Matriks dan Operasi Matriks -->
+<h2 class="sec">1.3. Matriks dan Operasi Matriks</h2>
+<p align="justify">
+Matriks tidak hanya berfungsi sebagai ringkasan untuk menuliskan Sistem Persamaan Linier, tetapi juga merupakan objek matematika independen yang memiliki struktur aljabar tersendiri. Dengan mendefinisikan operasi-operasi seperti penjumlahan, perkalian skalar, dan perkalian antarmatriks, kita dapat memanipulasi data terstruktur berskala besar secara efisien dalam berbagai bidang ilmu.
+</p>
+
+<h3>1.3.1 Definisi dan Notasi Matriks</h3>
+<p align="justify">
+Secara formal, sebuah matriks disajikan dalam susunan baris dan kolom yang dibatasi oleh kurung siku atau kurung biasa.
+</p>
+
+<div class="card def">
+  <b>Definisi (Matriks dan Ordo):</b><br>
+  Sebuah <b>matriks</b> $A$ berukuran/berordo $m \times n$ (dibaca: $m$ kali $n$) adalah susunan berbentuk persegi panjang dari bilangan-bilangan riil yang diatur dalam $m$ baris dan $n$ kolom:
+  $$A_{m \times n} = \begin{bmatrix}
+  a_{11} & a_{12} & \dots & a_{1n} \\
+  a_{21} & a_{22} & \dots & a_{2n} \\
+  \vdots & \vdots & \ddots & \vdots \\
+  a_{m1} & a_{m2} & \dots & a_{mn}
+  \end{bmatrix}$$
+  Notasi ringkasnya adalah $A = [a_{ij}]$, dengan $a_{ij}$ menyatakan elemen/entry matriks pada <b>baris ke-$i$</b> dan <b>kolom ke-$j$</b> ($1 \le i \le m$ dan $1 \le j \le n$).
+</div>
+
+<div class="card example">
+  <b>Contoh Identifikasi Elemen dan Ordo Matriks:</b><br>
+  Diberikan matriks $B = \begin{bmatrix} 5 & -2 & 9 \\ 0 & 4 & 1 \end{bmatrix}$.
+  <ul>
+    <li>Ukuran/Ordo matriks $B$ adalah $2 \times 3$ (terdiri dari 2 baris dan 3 kolom).</li>
+    <li>Elemen pada baris ke-1 kolom ke-3 adalah $b_{13} = 9$.</li>
+    <li>Elemen pada baris ke-2 kolom ke-2 adalah $b_{22} = 4$.</li>
+  </ul>
+</div>
+
+<p align="justify">
+Beberapa bentuk matriks memiliki karakteristik khusus yang sering digunakan dalam aljabar linier:
+</p>
+<ul>
+  <li><b>Matriks Baris & Kolom:</b> Matriks berukuran $1 \times n$ (vektor baris) atau $m \times 1$ (vektor kolom).</li>
+  <li><b>Matriks Persegi (Square Matrix):</b> Matriks dengan jumlah baris sama dengan jumlah kolom ($m = n$). Elemen $a_{11}, a_{22}, \dots, a_{nn}$ membentuk <b>diagonal utama</b>.</li>
+  <li><b>Matriks Nol ($0$):</b> Matriks yang seluruh elemennya bernilai $0$.</li>
+  <li><b>Matriks Diagonal:</b> Matriks persegi yang seluruh elemen di luar diagonal utamanya bernilai nol ($a_{ij} = 0$ untuk $i \neq j$).</li>
+  <li><b>Matriks Identitas ($I$):</b> Matriks diagonal yang semua elemen pada diagonal utamanya bernilai $1$.
+    $$I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+  </li>
+</ul>
+
+<h3>1.3.2 Operasi Aljabar Matriks</h3>
+
+<div class="card def">
+  <b>Definisi (Kesamaan Matriks):</b><br>
+  Dua matriks $A$ dan $B$ dikatakan <b>sama</b> ($A = B$) jika dan hanya jika keduanya memiliki **ordo yang sama** dan semua elemen yang seletak bernilai sama ($a_{ij} = b_{ij}$ untuk setiap $i, j$).
+</div>
+
+<div class="card def">
+  <b>Definisi (Penjumlahan, Pengurangan, dan Perkalian Skalar):</b>
+  <ul>
+    <li><b>Penjumlahan & Pengurangan:</b> Jika $A = [a_{ij}]$ dan $B = [b_{ij}]$ berordo sama ($m \times n$), maka $A \pm B$ adalah matriks $C_{m \times n}$ di mana:
+      $$c_{ij} = a_{ij} \pm b_{ij}$$
+      <i>(Matriks dengan ordo berbeda tidak dapat dijumlahkan atau dikurangkan).</i>
+    </li>
+    <li><b>Perkalian Skalar:</b> Jika $k$ adalah skalar (bilangan riil), maka perkalian skalar $kA$ diperoleh dengan mengalikan setiap elemen matriks $A$ dengan $k$:
+      $$(kA)_{ij} = k \cdot a_{ij}$$
+    </li>
+  </ul>
+</div>
+
+<div class="card example">
+  <b>Contoh Penjumlahan, Pengurangan, dan Perkalian Skalar:</b><br>
+  Diketahui $A = \begin{bmatrix} 1 & 3 \\ -2 & 4 \end{bmatrix}$ dan $B = \begin{bmatrix} 2 & 0 \\ 5 & -1 \end{bmatrix}$.
+  <br><br>
+  Hitung operasi $2A - B$:
+  $$2A = 2 \begin{bmatrix} 1 & 3 \\ -2 & 4 \end{bmatrix} = \begin{bmatrix} 2(1) & 2(3) \\ 2(-2) & 2(4) \end{bmatrix} = \begin{bmatrix} 2 & 6 \\ -4 & 8 \end{bmatrix}$$
+  $$2A - B = \begin{bmatrix} 2 & 6 \\ -4 & 8 \end{bmatrix} - \begin{bmatrix} 2 & 0 \\ 5 & -1 \end{bmatrix} = \begin{bmatrix} 2-2 & 6-0 \\ -4-5 & 8-(-1) \end{bmatrix} = \begin{bmatrix} 0 & 6 \\ -9 & 9 \end{bmatrix}$$
+</div>
+
+<h3>1.3.3 Perkalian Dua Matriks</h3>
+<p align="justify">
+Perkalian antarmatriks tidak dilakukan dengan mengalikan elemen yang seletak, melainkan menggunakan prinsip kombinasi linier dari baris dan kolom.
+</p>
+
+<div class="card def">
+  <b>Definisi (Perkalian Matriks):</b><br>
+  Perkalian matriks $A$ dan $B$ (ditulis $AB$) terdefinisi jika dan hanya jika **jumlah kolom matriks $A$ sama dengan jumlah baris matriks $B$**.
+  <br><br>
+  Jika $A_{m \times r} = [a_{ik}]$ dan $B_{r \times n} = [b_{kj}]$, maka hasil kali $C = AB$ adalah matriks $C_{m \times n}$ di mana elemen $c_{ij}$ dihitung dengan rumus:
+  $$c_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \dots + a_{ir}b_{rj} = \sum_{k=1}^r a_{ik}b_{kj}$$
+</div>
+
+<div class="card note">
+  <b>Intuisi & Peringatan Perkalian Matriks:</b>
+  <ul>
+    <li><b>Prinsip "Baris $\times$ Kolom":</b> Elemen pada baris ke-$i$ dan kolom ke-$j$ dari matriks $AB$ diperoleh dengan mengalikan elemen-elemen baris ke-$i$ matriks $A$ dengan elemen-elemen kolom ke-$j$ matriks $B$, lalu menjumlahkannya.</li>
+    <li><b>Sifat Tidak Komutatif:</b> Secara umum, perkalian matriks <b>tidak komutatif</b> ($AB \neq BA$). Bahkan jika $AB$ dapat dihitung, $BA$ belum tentu terdefinisi jika ordonya tidak sesuai.</li>
+  </ul>
+</div>
+
+<div class="card example">
+  <b>Contoh Perkalian Matriks:</b><br>
+  Diberikan $A = \begin{bmatrix} 1 & 2 & 4 \\ 0 & 3 & -1 \end{bmatrix}_{2 \times 3}$ dan $B = \begin{bmatrix} 2 & 1 \\ 5 & 0 \\ 3 & -2 \end{bmatrix}_{3 \times 2}$.
+  <br><br>
+  Karena jumlah kolom $A$ ($3$) sama dengan jumlah baris $B$ ($3$), perkalian $AB$ terdefinisi dan menghasilkan matriks berukuran $2 \times 2$:
+  $$AB = \begin{bmatrix} 
+  (1)(2) + (2)(5) + (4)(3) & (1)(1) + (2)(0) + (4)(-2) \\ 
+  (0)(2) + (3)(5) + (-1)(3) & (0)(1) + (3)(0) + (-1)(-2) 
+  \end{bmatrix}$$
+  $$AB = \begin{bmatrix} 
+  2 + 10 + 12 & 1 + 0 - 8 \\ 
+  0 + 15 - 3 & 0 + 0 + 2 
+  \end{bmatrix} = \begin{bmatrix} 24 & -7 \\ 12 & 2 \end{bmatrix}$$
+</div>
+
+<h3>1.3.4 Transpose Matriks</h3>
+
+<div class="card def">
+  <b>Definisi (Transpose Matriks):</b><br>
+  Transpose dari matriks $A$ berukuran $m \times n$, dilambangkan dengan $A^T$ (atau $A^t$), adalah matriks berukuran $n \times m$ yang diperoleh dengan mengubah baris-baris pada matriks $A$ menjadi kolom-kolomnya:
+  $$(A^T)_{ij} = a_{ji}$$
+  
+  Suatu matriks persegi $A$ dikatakan <b>simetris</b> jika $A^T = A$, dan dikatakan <b>miring-simetris (<i>skew-symmetric</i>)</b> jika $A^T = -A$.
+</div>
+
+<div class="card example">
+  <b>Contoh Transpose Matriks:</b><br>
+  Jika $A = \begin{bmatrix} 3 & 8 & 1 \\ 0 & -5 & 7 \end{bmatrix}_{2 \times 3}$, maka transpose matriks $A$ adalah:
+  $$A^T = \begin{bmatrix} 3 & 0 \\ 8 & -5 \\ 1 & 7 \end{bmatrix}_{3 \times 2}$$
+</div>
+
+<h3>1.3.5 Sifat-Sifat Aljabar Matriks</h3>
+
+<div class="card theorem">
+  <b>Teorema (Sifat-Sifat Aljabar Operasi Matriks):</b><br>
+  Diasumsikan ukuran matriks sesuai sehingga operasi terdefinisi, serta $a$ dan $b$ adalah skalar:
+  <ol>
+    <li><b>Sifat Penjumlahan:</b>
+      <ul>
+        <li>$A + B = B + A$ (Komutatif)</li>
+        <li>$A + (B + C) = (A + B) + C$ (Asosiatif)</li>
+        <li>$A + 0 = A$ (Identitas Penjumlahan)</li>
+        <li>$A + (-A) = 0$ (Invers Penjumlahan)</li>
+      </ul>
+    </li>
+    <li><b>Sifat Perkalian Matriks:</b>
+      <ul>
+        <li>$A(BC) = (AB)C$ (Asosiatif)</li>
+        <li>$A(B + C) = AB + AC$ (Distributif Kiri)</li>
+        <li>$(B + C)A = BA + CA$ (Distributif Kanan)</li>
+        <li>$AI_n = I_m A = A$ (Identitas Perkalian)</li>
+      </ul>
+    </li>
+    <li><b>Sifat Transpose:</b>
+      <ul>
+        <li>$(A^T)^T = A$</li>
+        <li>$(A + B)^T = A^T + B^T$</li>
+        <li>$(kA)^T = k A^T$</li>
+        <li>$(AB)^T = B^T A^T$ <i>(Perhatikan perubahan urutan perkalian!)</i></li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<!-- 1.4. Invers; Sifat-sifat Aljabar Matriks -->
+<h2 class="sec">1.4. Invers; Sifat-sifat Aljabar Matriks</h2>
+<p align="justify">
+Meskipun banyak sifat aljabar bilangan riil yang juga berlaku pada aljabar matriks (seperti sifat asosiatif dan distributif), terdapat beberapa perbedaan mendasar yang sangat krusial. Salah satu perbedaan terbesar adalah bahwa perkalian matriks secara umum tidak komutatif ($AB \neq BA$), serta tidak berlaku hukum pembatalan (<i>cancellation law</i>) dan aturan perkalian nol secara langsung. Pada bagian ini, kita akan mempelajari sifat-sifat aljabar matriks dan konsep <b>invers matriks</b> (balikan matriks).
+</p>
+
+<h3>1.4.1 Perbedaan Aljabar Matriks dan Aljabar Bilangan Riil</h3>
+<p align="justify">
+Dalam aljabar bilangan riil, jika $ab = 0$, maka $a = 0$ atau $b = 0$. Selain itu, jika $ab = ac$ dengan $a \neq 0$, kita dapat menyederhanakannya menjadi $b = c$. Kedua aturan ini <b>tidak berlaku umum</b> dalam aljabar matriks.
+</p>
+
+<div class="card note">
+  <b>Peringatan Sifat Aljabar Matriks:</b>
+  <ol>
+    <li><b>Perkalian Nol Tanpa Matriks Nol:</b> Perkalian dua matriks non-nol dapat menghasilkan matriks nol ($AB = 0$ meskipun $A \neq 0$ dan $B \neq 0$).</li>
+    <li><b>Kegagalan Hukum Pembatalan:</b> Jika $AB = AC$ dan $A \neq 0$, kita <b>tidak boleh</b> menyimpulkan bahwa $B = C$.</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Kegagalan Hukum Pembatalan dan Matriks Pembagi Nol:</b><br>
+  Diberikan matriks $A = \begin{bmatrix} 0 & 1 \\ 0 & 2 \end{bmatrix}$, $B = \begin{bmatrix} 1 & 1 \\ 3 & 4 \end{bmatrix}$, dan $C = \begin{bmatrix} 2 & 5 \\ 3 & 4 \end{bmatrix}$.
+  <br><br>
+  <b>1. Menghitung $AB$ dan $AC$:</b>
+  $$AB = \begin{bmatrix} 0 & 1 \\ 0 & 2 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 3 & 4 \\ 6 & 8 \end{bmatrix}$$
+  $$AC = \begin{bmatrix} 0 & 1 \\ 0 & 2 \end{bmatrix} \begin{bmatrix} 2 & 5 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 3 & 4 \\ 6 & 8 \end{bmatrix}$$
+  Meskipun $AB = AC$ dan $A \neq 0$, terlihat jelas bahwa $B \neq C$.
+  <br><br>
+  <b>2. Menghitung Perkalian yang Menghasilkan Matriks Nol:</b><br>
+  Jika $D = \begin{bmatrix} 1 & 2 \\ 0 & 0 \end{bmatrix}$ dan $E = \begin{bmatrix} 0 & 0 \\ -2 & 1 \end{bmatrix}$, maka:
+  $$DE = \begin{bmatrix} 1 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 0 & 0 \\ -2 & 1 \end{bmatrix} = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$$
+  Meskipun $D \neq 0$ dan $E \neq 0$, hasil kali $DE$ adalah matriks nol.
+</div>
+
+<h3>1.4.2 Matriks Terbalikkan (Invertible Matrix)</h3>
+<p align="justify">
+Dalam aritmetika bilangan riil, invers perkalian dari bilangan $a \neq 0$ adalah $a^{-1} = \frac{1}{a}$ sedemikian sehingga $a \cdot a^{-1} = 1$. Dalam aljabar matriks, peranan angka $1$ digantikan oleh matriks identitas $I$.
+</p>
+
+<div class="card def">
+  <b>Definisi (Invers Matriks):</b><br>
+  Suatu matriks persegi $A$ berukuran $n \times n$ dikatakan <b>dapat dibalik (invertible)</b> atau <b>nonsingular</b> jika terdapat matriks $B$ berukuran $n \times n$ sedemikian rupa sehingga:
+  $$AB = BA = I$$
+  Matriks $B$ disebut sebagai <b>invers</b> dari $A$ dan dilambangkan dengan $A^{-1}$. Jika matriks $A$ tidak dapat ditemukan matriks $B$ yang memenuhi hubungan tersebut, maka $A$ disebut <b>matriks singular</b> (tidak dapat dibalik).
+</div>
+
+<div class="card theorem">
+  <b>Teorema (Ketunggalan Invers):</b><br>
+  Jika matriks $A$ dapat dibalik, maka inversnya bersifat <b>tunggal (unik)</b>.
+</div>
+
+<h3>1.4.3 Invers Matriks Berukuran $2 \times 2$</h3>
+<p align="justify">
+Untuk matriks persegi berukuran $2 \times 2$, keberadaan invers dan rumusnya dapat ditentukan secara langsung menggunakan determinan.
+</p>
+
+<div class="card theorem">
+  <b>Teorema (Invers Matriks $2 \times 2$):</b><br>
+  Diberikan matriks $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$. Matriks $A$ dapat dibalik jika dan hanya jika $ad - bc \neq 0$, dan inversnya diberikan oleh rumus:
+  $$A^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$$
+  Kuantitas $\det(A) = ad - bc$ disebut sebagai <b>determinan</b> dari matriks $A$. Jika $\det(A) = 0$, maka $A$ singular (tidak memiliki invers).
+</div>
+
+<div class="card example">
+  <b>Contoh Menghitung Invers Matriks $2 \times 2$:</b><br>
+  Tentukan invers dari matriks $A = \begin{bmatrix} 6 & 1 \\ 5 & 2 \end{bmatrix}$.
+  <br><br>
+  <b>Penyelesaian:</b>
+  <ol>
+    <li>Hitung determinan: $\det(A) = (6)(2) - (1)(5) = 12 - 5 = 7$. Karena $\det(A) \neq 0$, maka $A^{-1}$ ada.</li>
+    <li>Gunakan rumus invers:
+      $$A^{-1} = \frac{1}{7} \begin{bmatrix} 2 & -1 \\ -5 & 6 \end{bmatrix} = \begin{bmatrix} \frac{2}{7} & -\frac{1}{7} \\ -\frac{5}{7} & \frac{6}{7} \end{bmatrix}$$
+    </li>
+    <li><b>Verifikasi ($AA^{-1} = I$):</b>
+      $$AA^{-1} = \begin{bmatrix} 6 & 1 \\ 5 & 2 \end{bmatrix} \begin{bmatrix} \frac{2}{7} & -\frac{1}{7} \\ -\frac{5}{7} & \frac{6}{7} \end{bmatrix} = \begin{bmatrix} \frac{12-5}{7} & \frac{-6+6}{7} \\ \frac{10-10}{7} & \frac{-5+12}{7} \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} = I$$
+    </li>
+  </ol>
+</div>
+
+<h3>1.4.4 Sifat-Sifat Invers Matriks</h3>
+
+<div class="card theorem">
+  <b>Teorema (Sifat-Sifat Operasi Invers):</b><br>
+  Jika $A$ dan $B$ adalah matriks-matriks yang dapat dibalik dengan ukuran yang sama, serta $k$ adalah skalar non-nol, maka:
+  <ol>
+    <li><b>Invers dari Hasil Kali (Product Rule):</b> Matriks $AB$ dapat dibalik, dan inversnya adalah:
+      $$(AB)^{-1} = B^{-1}A^{-1}$$
+      <i>(Urutan matriks dibalik saat mengekspansi invers dari perkalian).</i>
+    </li>
+    <li><b>Invers dari Invers:</b> $(A^{-1})^{-1} = A$</li>
+    <li><b>Invers dari Perkalian Skalar:</b> $(kA)^{-1} = \frac{1}{k} A^{-1}$</li>
+    <li><b>Invers dari Transpose:</b> $(A^T)^{-1} = (A^{-1})^T$</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Invers dari Perkalian Matriks $(AB)^{-1} = B^{-1}A^{-1}$:</b><br>
+  Diketahui $A^{-1} = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$ dan $B^{-1} = \begin{bmatrix} 3 & 0 \\ 1 & 2 \end{bmatrix}$. Tentukan matriks $(AB)^{-1}$.
+  <br><br>
+  <b>Penyelesaian:</b><br>
+  Berdasarkan sifat invers dari hasil kali matriks:
+  $$(AB)^{-1} = B^{-1}A^{-1} = \begin{bmatrix} 3 & 0 \\ 1 & 2 \end{bmatrix} \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} (3)(2)+(0)(1) & (3)(1)+(0)(1) \\ (1)(2)+(2)(1) & (1)(1)+(2)(1) \end{bmatrix} = \begin{bmatrix} 6 & 3 \\ 4 & 3 \end{bmatrix}$$
+</div>
+
+<h3>1.4.5 Perpangkatan dan Polinomial Matriks</h3>
+
+<div class="card def">
+  <b>Definisi (Pangkat Matriks):</b><br>
+  Jika $A$ adalah matriks persegi dan $k$ adalah bilangan bulat positif, maka:
+  <ul>
+    <li>$A^0 = I$</li>
+    <li>$A^k = \underbrace{A \cdot A \cdots A}_{k \text{ faktor}}$</li>
+    <li>Jika $A$ mempunyai invers, maka $A^{-k} = (A^{-1})^k = \underbrace{A^{-1} \cdot A^{-1} \cdots A^{-1}}_{k \text{ faktor}}$</li>
+  </ul>
+  Sifat eksponen baku tetap berlaku: $A^r A^s = A^{r+s}$ dan $(A^r)^s = A^{rs}$ untuk bilangan bulat $r$ dan $s$.
+</div>
+
+<h3>1.4.6 Menyelesaikan SPL Menggunakan Invers Matriks</h3>
+<p align="justify">
+Invers matriks memberikan metode langsung untuk menyelesaikan Sistem Persamaan Linier dengan $n$ persamaan dan $n$ variabel.
+</p>
+
+<div class="card theorem">
+  <b>Teorema (Penyelesaian SPL dengan Invers):</b><br>
+  Jika $A$ adalah matriks koefisien berukuran $n \times n$ yang <b>dapat dibalik</b>, maka untuk setiap vektor konstanta $\mathbf{b}$ berukuran $n \times 1$, sistem persamaan linier $A\mathbf{x} = \mathbf{b}$ memiliki <b>tepat satu solusi tunggal</b>, yaitu:
+  $$\mathbf{x} = A^{-1}\mathbf{b}$$
+</div>
+
+<div class="card example">
+  <b>Contoh Menyelesaikan SPL Menggunakan Invers:</b><br>
+  Selesaikan sistem persamaan linier berikut menggunakan invers matriks:
+  $$\begin{cases}
+  6x_1 + x_2 = 13 \\
+  5x_1 + 2x_2 = 16
+  \end{cases}$$
+  <br>
+  <b>Penyelesaian:</b>
+  <ol>
+    <li>Tuliskan SPL dalam bentuk matriks $A\mathbf{x} = \mathbf{b}$:
+      $$\begin{bmatrix} 6 & 1 \\ 5 & 2 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 13 \\ 16 \end{bmatrix}$$
+    </li>
+    <li>Menggunakan invers $A^{-1}$ yang telah dihitung pada Contoh 1.4.3:
+      $$A^{-1} = \begin{bmatrix} \frac{2}{7} & -\frac{1}{7} \\ -\frac{5}{7} & \frac{6}{7} \end{bmatrix}$$
+    </li>
+    <li>Hitung solusi $\mathbf{x} = A^{-1}\mathbf{b}$:
+      $$\begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} \frac{2}{7} & -\frac{1}{7} \\ -\frac{5}{7} & \frac{6}{7} \end{bmatrix} \begin{bmatrix} 13 \\ 16 \end{bmatrix} = \begin{bmatrix} \frac{2(13) - 1(16)}{7} \\ \frac{-5(13) + 6(16)}{7} \end{bmatrix} = \begin{bmatrix} \frac{26 - 16}{7} \\ \frac{-65 + 96}{7} \end{bmatrix} = \begin{bmatrix} \frac{10}{7} \\ \frac{31}{7} \end{bmatrix}$$
+    </li>
+  </ol>
+  Jadi, solusi tunggal dari SPL tersebut adalah $x_1 = \frac{10}{7}$ dan $x_2 = \frac{31}{7}$.
+</div>
+
+<!-- 1.5. Matriks Elementer dan Metode untuk Mencari A⁻¹ -->
+<h2 class="sec">1.5. Matriks Elementer dan Metode untuk Mencari A⁻¹</h2>
+<p align="justify">
+Pada subbab sebelumnya, kita telah mempelajari bahwa Operasi Baris Elementer (OBE) digunakan untuk menyederhanakan Sistem Persamaan Linier. Pada bagian ini, kita akan melihat hubungan mendasar antara OBE dan perkalian matriks melalui konsep <b>Matriks Elementer</b>. Konsep ini menjadi fondasi bagi alur algoritma komputasi untuk mencari invers matriks $A^{-1}$ secara sistematis melalui pengubahan matriks augmented $[A \mid I]$.
+</p>
+
+<h3>1.5.1 Operasi Baris Elementer dan Matriks Elementer</h3>
+<p align="justify">
+Setiap kali kita melakukan satu langkah Operasi Baris Elementer (OBE) pada sebuah matriks, operasi tersebut secara matematis identik dengan mengalikan matriks tersebut dari sebelah kiri dengan sebuah matriks khusus yang dinamakan <b>matriks elementer</b>.
+</p>
+
+<div class="card def">
+  <b>Definisi (Matriks Elementer):</b><br>
+  Sebuah matriks persegi $E$ berukuran $n \times n$ disebut <b>matriks elementer</b> jika matriks tersebut dapat diperoleh dengan menerapkan <b>satu kali Operasi Baris Elementer (OBE)</b> pada matriks identitas $I_n$.
+</div>
+
+<p align="justify">
+Terdapat tiga jenis matriks elementer yang bersesuaian dengan tiga jenis OBE:
+</p>
+<ol>
+  <li><b>Mengalikan satu baris dengan skalar non-nol $k$</b> ($k R_i \to R_i$).</li>
+  <li><b>Menukar dua baris</b> ($R_i \leftrightarrow R_j$).</li>
+  <li><b>Menambahkan kelipatan suatu baris ke baris lainnya</b> ($R_i + k R_j \to R_i$).</li>
+</ol>
+
+<div class="card theorem">
+  <b>Teorema (Sifat Perkalian Matriks Elementer):</b><br>
+  Jika matriks elementer $E$ diperoleh dengan menerapkan suatu OBE tertentu pada matriks identitas $I_m$, maka mengalikan matriks $A_{m \times n}$ dari kiri dengan $E$ (yaitu $EA$) memberikan hasil yang sama persis dengan menerapkan OBE tersebut secara langsung pada matriks $A$.
+</div>
+
+<div class="card example">
+  <b>Contoh Pembentukan dan Operasi Matriks Elementer:</b><br>
+  Misalkan diberikan matriks identitas $I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$ dan matriks $A = \begin{bmatrix} 1 & 0 & 2 \\ 3 & 4 & -1 \\ 5 & 1 & 0 \end{bmatrix}$.
+  <br><br>
+  <b>1. Menukar baris ke-1 dan ke-2 ($R_1 \leftrightarrow R_2$):</b>
+  $$E_1 = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \implies E_1 A = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 & 2 \\ 3 & 4 & -1 \\ 5 & 1 & 0 \end{bmatrix} = \begin{bmatrix} 3 & 4 & -1 \\ 1 & 0 & 2 \\ 5 & 1 & 0 \end{bmatrix}$$
+  <i>(Terlihat baris 1 dan 2 pada matriks $A$ saling bertukar tempat).</i>
+  <br><br>
+  <b>2. Menambahkan $-3 \times \text{baris 1}$ ke baris ke-2 ($R_2 - 3R_1 \to R_2$):</b>
+  $$E_2 = \begin{bmatrix} 1 & 0 & 0 \\ -3 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \implies E_2 A = \begin{bmatrix} 1 & 0 & 0 \\ -3 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 & 2 \\ 3 & 4 & -1 \\ 5 & 1 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 2 \\ 0 & 4 & -7 \\ 5 & 1 & 0 \end{bmatrix}$$
+</div>
+
+<h3>1.5.2 Invers dari Matriks Elementer</h3>
+<p align="justify">
+Karena setiap Operasi Baris Elementer dapat dibatalkan (di-<i>reverse</i>) oleh OBE sejenis, maka setiap matriks elementer selalu memiliki invers dan inversnya juga merupakan matriks elementer.
+</p>
+
+<div class="card theorem">
+  <b>Teorema (Invertibilitas Matriks Elementer):</b><br>
+  Setiap matriks elementer $E$ <b>dapat dibalik (<i>invertible</i>)</b>, dan inversnya ($E^{-1}$) adalah matriks elementer yang membatalkan OBE yang membentuk $E$:
+  <ol>
+    <li>Jika $E$ dihasilkan dari $k R_i \to R_i$, maka $E^{-1}$ dihasilkan dari $\frac{1}{k} R_i \to R_i$.</li>
+    <li>Jika $E$ dihasilkan dari $R_i \leftrightarrow R_j$, maka $E^{-1} = E$ (dihasilkan dari $R_i \leftrightarrow R_j$).</li>
+    <li>Jika $E$ dihasilkan dari $R_i + k R_j \to R_i$, maka $E^{-1}$ dihasilkan dari $R_i - k R_j \to R_i$.</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Invers Matriks Elementer:</b><br>
+  <ul>
+    <li>Jika $E = \begin{bmatrix} 1 & 0 \\ 0 & 5 \end{bmatrix}$ ($5 R_2 \to R_2$), maka $E^{-1} = \begin{bmatrix} 1 & 0 \\ 0 & \frac{1}{5} \end{bmatrix}$ ($\frac{1}{5} R_2 \to R_2$).</li>
+    <li>Jika $E = \begin{bmatrix} 1 & 0 \\ -3 & 1 \end{bmatrix}$ ($R_2 - 3R_1 \to R_2$), maka $E^{-1} = \begin{bmatrix} 1 & 0 \\ 3 & 1 \end{bmatrix}$ ($R_2 + 3R_1 \to R_2$).</li>
+  </ul>
+</div>
+
+<h3>1.5.3 Metode Mencari $A^{-1}$ Menggunakan $[A \mid I]$ (Inversi Gauss-Jordan)</h3>
+<p align="justify">
+Jika matriks $A$ dapat diubah menjadi matriks identitas $I$ melalui serangkaian OBE $E_1, E_2, \dots, E_k$, maka:
+$$(E_k \dots E_2 E_1) A = I \implies A^{-1} = E_k \dots E_2 E_1 = (E_k \dots E_2 E_1) I$$
+Hal ini menunjukkan bahwa serangkaian OBE yang mengubah matriks $A$ menjadi $I$, jika diterapkan pada matriks identitas $I$, akan secara otomatis menghasilkan $A^{-1}$.
+</p>
+
+<div class="card def">
+  <b>Algoritma Inversi Matriks (Metode Matriks Diperbesar):</b>
+  <ol>
+    <li>Bentuk matriks diperbesar (augmented matrix) $[A \mid I_n]$ berukuran $n \times 2n$.</li>
+    <li>Lakukan Operasi Baris Elementer (OBE) pada $[A \mid I_n]$ hingga bagian kiri ($A$) berubah menjadi bentuk eselon baris terreduksi ($I_n$).</li>
+    <li>Jika bagian kiri berhasil diubah menjadi $I_n$, maka bagian kanan matriks secara otomatis menjadi $A^{-1}$:
+      $$[A \mid I_n] \xrightarrow{\quad \text{OBE} \quad} [I_n \mid A^{-1}]$$
+    </li>
+    <li><b>Catatan Kegagalan:</b> Jika dalam proses reduksi terbentuk setidaknya <b>satu baris nol penuh</b> pada bagian kiri, maka matriks $A$ <b>singular (tidak memiliki invers)</b>.</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Mencari Invers Matriks Berukuran $3 \times 3$:</b><br>
+  Tentukan invers dari matriks $A = \begin{bmatrix} 1 & 0 & 1 \\ 2 & 1 & 0 \\ 0 & 1 & -1 \end{bmatrix}$.
+  <br><br>
+  <b>Penyelesaian:</b><br>
+  <b>Langkah 1: Menyusun matriks augmented $[A \mid I_3]$:</b>
+  $$[A \mid I_3] = \begin{bmatrix} 
+  1 & 0 & 1 & \big| & 1 & 0 & 0 \\ 
+  2 & 1 & 0 & \big| & 0 & 1 & 0 \\ 
+  0 & 1 & -1 & \big| & 0 & 0 & 1 
+  \end{bmatrix}$$
+
+  <b>Langkah 2: Melakukan Operasi Baris Elementer (OBE):</b>
+  <ul>
+    <li><b>$R_2 - 2R_1 \to R_2$:</b>
+      $$\begin{bmatrix} 
+      1 & 0 & 1 & \big| & 1 & 0 & 0 \\ 
+      0 & 1 & -2 & \big| & -2 & 1 & 0 \\ 
+      0 & 1 & -1 & \big| & 0 & 0 & 1 
+      \end{bmatrix}$$
+    </li>
+    <li><b>$R_3 - R_2 \to R_3$:</b>
+      $$\begin{bmatrix} 
+      1 & 0 & 1 & \big| & 1 & 0 & 0 \\ 
+      0 & 1 & -2 & \big| & -2 & 1 & 0 \\ 
+      0 & 0 & 1 & \big| & 2 & -1 & 1 
+      \end{bmatrix}$$
+    </li>
+    <li><b>$R_2 + 2R_3 \to R_2$:</b>
+      $$\begin{bmatrix} 
+      1 & 0 & 1 & \big| & 1 & 0 & 0 \\ 
+      0 & 1 & 0 & \big| & 2 & -1 & 2 \\ 
+      0 & 0 & 1 & \big| & 2 & -1 & 1 
+      \end{bmatrix}$$
+    </li>
+    <li><b>$R_1 - R_3 \to R_1$:</b>
+      $$\begin{bmatrix} 
+      1 & 0 & 0 & \big| & -1 & 1 & -1 \\ 
+      0 & 1 & 0 & \big| & 2 & -1 & 2 \\ 
+      0 & 0 & 1 & \big| & 2 & -1 & 1 
+      \end{bmatrix}$$
+    </li>
+  </ul>
+
+  Karena bagian kiri telah menjadi matriks $I_3$, maka invers matriks $A$ adalah:
+  $$A^{-1} = \begin{bmatrix} -1 & 1 & -1 \\ 2 & -1 & 2 \\ 2 & -1 & 1 \end{bmatrix}$$
+</div>
+
+<h3>1.5.4 Menyatakan Matriks Invertible sebagai Hasil Kali Matriks Elementer</h3>
+
+<div class="card theorem">
+  <b>Teorema (Ekuivalensi Matriks Invertible):</b><br>
+  Jika $A$ adalah matriks persegi berukuran $n \times n$, maka pernyataan-pernyataan berikut adalah ekuivalen (saling mengimplikasikan):
+  <ol>
+    <li>$A$ dapat dibalik (invertible).</li>
+    <li>SPL $A\mathbf{x} = \mathbf{0}$ hanya memiliki solusi trivial ($\mathbf{x} = \mathbf{0}$).</li>
+    <li>Bentuk eselon baris terreduksi dari $A$ adalah $I_n$.</li>
+    <li>$A$ dapat dinyatakan sebagai <b>hasil kali dari matriks-matriks elementer</b>.</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Menyatakan Matriks sebagai Hasil Kali Matriks Elementer:</b><br>
+  Nyatakan matriks $A = \begin{bmatrix} 1 & 3 \\ 2 & 7 \end{bmatrix}$ sebagai hasil kali matriks-matriks elementer.
+  <br><br>
+  <b>Penyelesaian:</b>
+  <ol>
+    <li>Reduksi $A$ ke $I_2$ menggunakan OBE:
+      <ul>
+        <li>$R_2 - 2R_1 \to R_2 \implies E_1 = \begin{bmatrix} 1 & 0 \\ -2 & 1 \end{bmatrix}$, hasil: $\begin{bmatrix} 1 & 3 \\ 0 & 1 \end{bmatrix}$</li>
+        <li>$R_1 - 3R_2 \to R_1 \implies E_2 = \begin{bmatrix} 1 & -3 \\ 0 & 1 \end{bmatrix}$, hasil: $I_2$</li>
+      </ul>
+    </li>
+    <li>Sehingga diperoleh persamaan:
+      $$E_2 E_1 A = I_2 \implies A = E_1^{-1} E_2^{-1}$$
+    </li>
+    <li>Cari invers dari masing-masing matriks elementer:
+      $$E_1^{-1} = \begin{bmatrix} 1 & 0 \\ 2 & 1 \end{bmatrix} \quad \text{dan} \quad E_2^{-1} = \begin{bmatrix} 1 & 3 \\ 0 & 1 \end{bmatrix}$$
+    </li>
+    <li>Dengan demikian, matriks $A$ dapat dituliskan sebagai hasil kali matriks elementer:
+      $$A = \begin{bmatrix} 1 & 0 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} 1 & 3 \\ 0 & 1 \end{bmatrix}$$
+    </li>
+  </ol>
+</div>
+
+<div class="card note">
+<b>Intuisi:</b> Konsep dasar inversi Gauss-Jordan bergantung penuh pada gagasan bahwa matriks invertible $A$ dibentuk oleh sekumpulan struktur dasar (matriks elementer). Mengubah $A \to I$ sama artinya dengan melucuti matriks elementer tersebut satu per satu dari kiri, sementara menerapkan operasi yang sama pada $I$ akan menyusun ulang inversnya dari kanan ke kiri.
+</div>
+
 
 <div class="card example">
   <h3>Contoh: Menentukan Kebutuhan Bahan Baku dengan Invers Matriks (Melalui OBE)</h3>
@@ -1741,6 +2350,325 @@ display(html(r'''
   <b>Kesimpulan:</b> Dengan membandingkan rank matriks koefisien dan rank matriks augmented, kita dapat menentukan jenis solusi SPL tanpa harus menyelesaikannya secara penuh. Metode Eliminasi Gauss-Jordan secara otomatis mengungkap ketiga kemungkinan ini melalui bentuk eselon baris tereduksi (RREF).
   </p>
 </div>
+
+
+<!-- 1.6. Penerapan Sistem Linear -->
+<h2 class="sec">1.6. Penerapan Sistem Linear</h2>
+<p align="justify">
+Sistem Persamaan Linier (SPL) bukan hanya sekadar teori aljabar abstrak, melainkan alat pemodelan yang sangat ampuh untuk menyelesaikan berbagai permasalahan di dunia nyata. Banyak fenomena fisika, kimia, teknik, hingga ilmu data yang didasarkan pada <b>hukum kekekalan</b> (seperti kekekalan massa, energi, atau aliran) yang dapat dirumuskan secara alami ke dalam bentuk sistem persamaan linier $A\mathbf{x} = \mathbf{b}$. Pada subbab ini, kita akan membahas empat aplikasi utama SPL.
+</p>
+
+<h3>1.6.1 Analisis Jaringan (Arus Lalu Lintas)</h3>
+<p align="justify">
+Dalam analisis jaringan (seperti jaringan pipa air, arus lalu lintas jalan raya, atau jaringan informasi), asumsi dasarnya adalah <b>Prinsip Kekekalan Aliran</b>: pada setiap persimpangan (simpul/<i>node</i>), total aliran yang masuk harus sama dengan total aliran yang keluar.
+</p>
+
+<div class="card def">
+  <b>Prinsip Aliran Jaringan:</b><br>
+  Untuk setiap persimpangan dalam jaringan:
+  $$\sum \text{Aliran Masuk} = \sum \text{Aliran Keluar}$$
+</div>
+
+<div class="card example">
+  <b>Contoh Analisis Arus Lalu Lintas Kota:</b><br>
+  Sebuah jaringan jalan satu arah menghubungkan empat persimpangan ($A, B, C, D$). Laju aliran kendaraan per jam diukur pada beberapa ruas jalan utama seperti yang ditunjukkan pada skema berikut:
+  
+  <!-- Diagram Jaringan SVG -->
+  <div style="text-align: center; margin: 20px 0;">
+    <svg viewBox="0 0 520 320" style="max-width: 100%; height: auto; font-family: system-ui, -apple-system, sans-serif;">
+      <defs>
+        <!-- Marker Panah Umum -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#2d3748" />
+        </marker>
+        <!-- Marker Panah Arus Masuk/Keluar Luar -->
+        <marker id="arrow-ext" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#dd6b20" />
+        </marker>
+      </defs>
+
+      <!-- Garis Aliran Luar (Arus Masuk/Keluar Kota) -->
+      <!-- Masuk ke A (500) -->
+      <line x1="50" y1="90" x2="122" y2="90" stroke="#dd6b20" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arrow-ext)" />
+      <text x="85" y="80" text-anchor="middle" font-size="13" font-weight="bold" fill="#dd6b20">500</text>
+
+      <!-- Masuk ke B (300) -->
+      <line x1="360" y1="20" x2="360" y2="62" stroke="#dd6b20" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arrow-ext)" />
+      <text x="375" y="42" text-anchor="start" font-size="13" font-weight="bold" fill="#dd6b20">300</text>
+
+      <!-- Keluar dari D (400) -->
+      <line x1="160" y1="250" x2="160" y2="295" stroke="#dd6b20" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arrow-ext)" />
+      <text x="175" y="280" text-anchor="start" font-size="13" font-weight="bold" fill="#dd6b20">400</text>
+
+      <!-- Keluar dari C (400) -->
+      <line x1="388" y1="230" x2="460" y2="230" stroke="#dd6b20" stroke-width="2.5" stroke-dasharray="5,4" marker-end="url(#arrow-ext)" />
+      <text x="425" y="220" text-anchor="middle" font-size="13" font-weight="bold" fill="#dd6b20">400</text>
+
+      <!-- Garis Aliran Dalam (Variabel x1, x2, x3, x4) -->
+      <!-- x1: A -> B -->
+      <line x1="188" y1="90" x2="322" y2="90" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)" />
+      <rect x="240" y="72" width="30" height="22" rx="4" fill="#edf2f7" stroke="#cbd5e0" />
+      <text x="255" y="87" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">x₁</text>
+
+      <!-- x2: A -> D -->
+      <line x1="160" y1="118" x2="160" y2="202" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)" />
+      <rect x="132" y="149" width="30" height="22" rx="4" fill="#edf2f7" stroke="#cbd5e0" />
+      <text x="147" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">x₂</text>
+
+      <!-- x3: B -> C -->
+      <line x1="360" y1="118" x2="360" y2="202" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)" />
+      <rect x="372" y="149" width="30" height="22" rx="4" fill="#edf2f7" stroke="#cbd5e0" />
+      <text x="387" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">x₃</text>
+
+      <!-- x4: D -> C -->
+      <line x1="188" y1="230" x2="322" y2="230" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)" />
+      <rect x="240" y="212" width="30" height="22" rx="4" fill="#edf2f7" stroke="#cbd5e0" />
+      <text x="255" y="227" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">x₄</text>
+
+      <!-- Simpul / Persimpangan (Nodes) -->
+      <!-- Simpul A -->
+      <circle cx="160" cy="90" r="24" fill="#3182ce" stroke="#2b6cb0" stroke-width="2" />
+      <text x="160" y="95" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">A</text>
+
+      <!-- Simpul B -->
+      <circle cx="360" cy="90" r="24" fill="#3182ce" stroke="#2b6cb0" stroke-width="2" />
+      <text x="360" y="95" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">B</text>
+
+      <!-- Simpul D -->
+      <circle cx="160" cy="230" r="24" fill="#3182ce" stroke="#2b6cb0" stroke-width="2" />
+      <text x="160" y="235" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">D</text>
+
+      <!-- Simpul C -->
+      <circle cx="360" cy="230" r="24" fill="#3182ce" stroke="#2b6cb0" stroke-width="2" />
+      <text x="360" y="235" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">C</text>
+    </svg>
+  </div>
+
+  <ul>
+    <li><b>Persimpangan A:</b> Kendaraan masuk dari luar = $500$; Kendaraan keluar menuju B = $x_1$, menuju D = $x_2$.</li>
+    <li><b>Persimpangan B:</b> Kendaraan masuk dari luar = $300$, dari A = $x_1$; Kendaraan keluar menuju C = $x_3$.</li>
+    <li><b>Persimpangan C:</b> Kendaraan masuk dari B = $x_3$, dari D = $x_4$; Kendaraan keluar ke luar jaringan = $400$.</li>
+    <li><b>Persimpangan D:</b> Kendaraan masuk dari A = $x_2$; Kendaraan keluar menuju C = $x_4$, ke luar jaringan = $400$.</li>
+  </ul>
+
+  <b>Penyelesaian:</b><br>
+  <b>Langkah 1: Menyusun persamaan aliran di setiap persimpangan:</b>
+  $$\begin{cases}
+  \text{Persimpangan A:} & 500 = x_1 + x_2 &\implies x_1 + x_2 = 500 \\
+  \text{Persimpangan B:} & x_1 + 300 = x_3 &\implies x_1 - x_3 = -300 \\
+  \text{Persimpangan C:} & x_3 + x_4 = 400 &\implies x_3 + x_4 = 400 \\
+  \text{Persimpangan D:} & x_2 = x_4 + 400 &\implies x_2 - x_4 = 400
+  \end{cases}$$
+
+  <b>Langkah 2: Selesaikan SPL menggunakan eliminasi Gauss-Jordan:</b><br>
+  Matriks diperbesar dari sistem di atas adalah:
+  $$\begin{bmatrix} 
+  1 & 1 & 0 & 0 & \big| & 500 \\ 
+  1 & 0 & -1 & 0 & \big| & -300 \\ 
+  0 & 0 & 1 & 1 & \big| & 400 \\ 
+  0 & 1 & 0 & -1 & \big| & 400 
+  \end{bmatrix} 
+  \xrightarrow{\quad \text{OBE} \quad}
+  \begin{bmatrix} 
+  1 & 0 & 0 & 1 & \big| & 100 \\ 
+  0 & 1 & 0 & -1 & \big| & 400 \\ 
+  0 & 0 & 1 & 1 & \big| & 400 \\ 
+  0 & 0 & 0 & 0 & \big| & 0 
+  \end{bmatrix}$$
+
+  <b>Langkah 3: Menentukan himpunan solusi parametrik:</b><br>
+  Variabel $x_4$ merupakan variabel bebas ($x_4 = t$). Maka solusinya adalah:
+  $$\begin{cases}
+  x_1 = 100 - t \\
+  x_2 = 400 + t \\
+  x_3 = 400 - t \\
+  x_4 = t
+  \end{cases}$$
+  <i>Catatan Praktis:</i> Karena arus lalu lintas tidak bisa bernilai negatif ($x_i \ge 0$), nilai parameter $t$ dibatasi pada rentang $0 \le t \le 100$. Hal ini memberi informasi kepada perencana kota tentang batas kapasitas jalan $x_4$ agar tidak terjadi kemacetan total di ruas jalan lainnya.
+</div>
+
+<h3>1.6.2 Rangkaian Listrik</h3>
+<p align="justify">
+Penentuan arus listrik pada rangkaian tertutup bersumber dari dua hukum fisika dasar yang dirumuskan oleh Gustav Kirchhoff:
+</p>
+
+<div class="card def">
+  <b>Hukum Kirchhoff:</b>
+  <ol>
+    <li><b>Hukum Arus Kirchhoff (KCL):</b> Jumlah arus yang masuk ke suatu titik cabang/simpul sama dengan jumlah arus yang keluar dari simpul tersebut ($\sum I_{\text{masuk}} = \sum I_{\text{keluar}}$).</li>
+    <li><b>Hukum Tegangan Kirchhoff (KVL):</b> Jumlah perubahan potensial listrik (tegangan) di sekeliling satu ikal/<i>loop</i> tertutup sama dengan nol ($\sum V = \sum I R$).</li>
+  </ol>
+</div>
+
+<div class="card example">
+  <b>Contoh Menghitung Arus Rangkaian Dua Loop:</b><br>
+  Diberikan rangkaian listrik dengan dua <i>loop</i> terhubung yang memiliki hambatan $R_1 = 2\,\Omega$, $R_2 = 4\,\Omega$ (terpakai bersama di tengah), $R_3 = 3\,\Omega$, serta dua sumber tegangan $V_1 = 12\text{ V}$ dan $V_2 = 6\text{ V}$.
+
+  <!-- Diagram Rangkaian Listrik SVG -->
+  <div style="text-align: center; margin: 20px 0;">
+    <svg viewBox="0 0 520 280" style="max-width: 100%; height: auto; font-family: system-ui, -apple-system, sans-serif;">
+      <defs>
+        <!-- Marker Panah Arah Arus Loop -->
+        <marker id="loop-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#3182ce" />
+        </marker>
+      </defs>
+
+      <!-- Kawat Penghantar Utama (Wires) -->
+      <!-- Outer Loop & Middle Branch Base -->
+      <path d="M 100 50 H 420 V 230 H 100 Z" fill="none" stroke="#2d3748" stroke-width="2.5" stroke-linejoin="round" />
+      <line x1="260" y1="50" x2="260" y2="230" stroke="#2d3748" stroke-width="2.5" />
+
+      <!-- RESISTOR R1 (Top Left: x=130 to x=230, y=50) -->
+      <rect x="135" y="40" width="90" height="20" fill="#ffffff" />
+      <path d="M 135 50 L 142 50 L 148 38 L 160 62 L 172 38 L 184 62 L 196 38 L 208 62 L 214 50 L 225 50" fill="none" stroke="#2d3748" stroke-width="2.5" stroke-linejoin="round" />
+      <text x="180" y="28" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d3748">R₁ = 2 Ω</text>
+
+      <!-- RESISTOR R3 (Top Right: x=290 to x=390, y=50) -->
+      <rect x="295" y="40" width="90" height="20" fill="#ffffff" />
+      <path d="M 295 50 L 302 50 L 308 38 L 320 62 L 332 38 L 344 62 L 356 38 L 368 62 L 374 50 L 385 50" fill="none" stroke="#2d3748" stroke-width="2.5" stroke-linejoin="round" />
+      <text x="340" y="28" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d3748">R₃ = 3 Ω</text>
+
+      <!-- RESISTOR R2 (Middle Vertical: y=95 to y=185, x=260) -->
+      <rect x="250" y="95" width="20" height="90" fill="#ffffff" />
+      <path d="M 260 95 L 260 102 L 248 108 L 272 120 L 248 132 L 272 144 L 248 156 L 272 168 L 260 174 L 260 185" fill="none" stroke="#2d3748" stroke-width="2.5" stroke-linejoin="round" />
+      <text x="298" y="145" text-anchor="start" font-size="13" font-weight="bold" fill="#2d3748">R₂ = 4 Ω</text>
+
+      <!-- SUMBER TEGANGAN V1 (Left Vertical: x=100) -->
+      <rect x="90" y="115" width="20" height="50" fill="#ffffff" />
+      <!-- Panjang (Positif) -->
+      <line x1="85" y1="130" x2="115" y2="130" stroke="#e53e3e" stroke-width="3" />
+      <!-- Pendek (Negatif) -->
+      <line x1="92" y1="150" x2="108" y2="150" stroke="#2d3748" stroke-width="3.5" />
+      <text x="75" y="125" text-anchor="end" font-size="12" font-weight="bold" fill="#e53e3e">+</text>
+      <text x="75" y="158" text-anchor="end" font-size="14" font-weight="bold" fill="#2d3748">−</text>
+      <text x="70" y="142" text-anchor="end" font-size="13" font-weight="bold" fill="#dd6b20">V₁ = 12 V</text>
+
+      <!-- SUMBER TEGANGAN V2 (Right Vertical: x=420) -->
+      <rect x="410" y="115" width="20" height="50" fill="#ffffff" />
+      <!-- Panjang (Positif) -->
+      <line x1="405" y1="130" x2="435" y2="130" stroke="#e53e3e" stroke-width="3" />
+      <!-- Pendek (Negatif) -->
+      <line x1="412" y1="150" x2="428" y2="150" stroke="#2d3748" stroke-width="3.5" />
+      <text x="445" y="125" text-anchor="start" font-size="12" font-weight="bold" fill="#e53e3e">+</text>
+      <text x="445" y="158" text-anchor="start" font-size="14" font-weight="bold" fill="#2d3748">−</text>
+      <text x="450" y="142" text-anchor="start" font-size="13" font-weight="bold" fill="#dd6b20">V₂ = 6 V</text>
+
+      <!-- SIMPUL PERCABANGAN (Nodes) -->
+      <circle cx="260" cy="50" r="4.5" fill="#2d3748" />
+      <circle cx="260" cy="230" r="4.5" fill="#2d3748" />
+
+      <!-- INDIKATOR ARUS LOOP 1 (Clockwise Arc) -->
+      <path d="M 160 120 A 25 25 0 1 1 185 145" fill="none" stroke="#3182ce" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#loop-arrow)" />
+      <text x="175" y="137" text-anchor="middle" font-size="14" font-weight="bold" fill="#3182ce">I₁</text>
+      <text x="180" y="200" text-anchor="middle" font-size="11" font-style="italic" fill="#718096">Loop 1</text>
+
+      <!-- INDIKATOR ARUS LOOP 2 (Clockwise Arc) -->
+      <path d="M 320 120 A 25 25 0 1 1 345 145" fill="none" stroke="#3182ce" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#loop-arrow)" />
+      <text x="335" y="137" text-anchor="middle" font-size="14" font-weight="bold" fill="#3182ce">I₂</text>
+      <text x="340" y="200" text-anchor="middle" font-size="11" font-style="italic" fill="#718096">Loop 2</text>
+    </svg>
+  </div>
+
+  Misalkan $I_1$ adalah arus searah jarum jam pada Loop 1 dan $I_2$ adalah arus searah jarum jam pada Loop 2:
+  <ul>
+    <li><b>Persamaan KVL Loop 1:</b>
+      $$R_1 I_1 + R_2 (I_1 - I_2) = V_1 \implies 2I_1 + 4(I_1 - I_2) = 12 \implies 6I_1 - 4I_2 = 12$$
+    </li>
+    <li><b>Persamaan KVL Loop 2:</b>
+      $$R_3 I_2 + R_2 (I_2 - I_1) = -V_2 \implies 3I_2 + 4(I_2 - I_1) = -6 \implies -4I_1 + 7I_2 = -6$$
+    </li>
+  </ul>
+
+  <b>Bentuk Matriks SPL $A\mathbf{I} = \mathbf{V}$:</b>
+  $$\begin{bmatrix} 6 & -4 \\ -4 & 7 \end{bmatrix} \begin{bmatrix} I_1 \\ I_2 \end{bmatrix} = \begin{bmatrix} 12 \\ -6 \end{bmatrix}$$
+
+  <b>Penyelesaian:</b><br>
+  Gunakan invers matriks $A^{-1}$: $\det(A) = (6)(7) - (-4)(-4) = 42 - 16 = 26$.
+  $$A^{-1} = \frac{1}{26} \begin{bmatrix} 7 & 4 \\ 4 & 6 \end{bmatrix}$$
+  $$\begin{bmatrix} I_1 \\ I_2 \end{bmatrix} = \frac{1}{26} \begin{bmatrix} 7 & 4 \\ 4 & 6 \end{bmatrix} \begin{bmatrix} 12 \\ -6 \end{bmatrix} = \frac{1}{26} \begin{bmatrix} 84 - 24 \\ 48 - 36 \end{bmatrix} = \begin{bmatrix} \frac{60}{26} \\ \frac{12}{26} \end{bmatrix} = \begin{bmatrix} \frac{30}{13} \\ \frac{6}{13} \end{bmatrix}\text{ Ampere}$$
+</div>
+
+<h3>1.6.3 Penyetaraan Persamaan Kimia</h3>
+<p align="justify">
+Berdasarkan <b>Hukum Kekekalan Massa</b> Dalton, reaksi kimia tidak dapat menciptakan atau memusnahkan atom. Jumlah atom dari setiap unsur di ruas kiri (reaktan) harus persis sama dengan jumlah atom unsur tersebut di ruas kanan (produk).
+</p>
+
+<div class="card example">
+  <b>Contoh Penyetaraan Reaksi Pembakaran Propana:</b><br>
+  Setarakan persamaan reaksi kimia berikut:
+  $$x_1 \text{C}_3\text{H}_8 + x_2 \text{O}_2 \longrightarrow x_3 \text{CO}_2 + x_4 \text{H}_2\text{O}$$
+
+  <b>Penyelesaian:</b><br>
+  <b>Langkah 1: Susun persamaan homogen untuk setiap unsur:</b>
+  <ul>
+    <li><b>Karbon (C):</b> $3x_1 = x_3 \implies 3x_1 - x_3 = 0$</li>
+    <li><b>Hidrogen (H):</b> $8x_1 = 2x_4 \implies 8x_1 - 2x_4 = 0$</li>
+    <li><b>Oksigen (O):</b> $2x_2 = 2x_3 + x_4 \implies 2x_2 - 2x_3 - x_4 = 0$</li>
+  </ul>
+
+  <b>Langkah 2: Reduksi matriks diperbesar $[A \mid \mathbf{0}]$:</b>
+  $$\begin{bmatrix} 
+  3 & 0 & -1 & 0 & \big| & 0 \\ 
+  8 & 0 & 0 & -2 & \big| & 0 \\ 
+  0 & 2 & -2 & -1 & \big| & 0 
+  \end{bmatrix} 
+  \xrightarrow{\quad \text{OBE} \quad}
+  \begin{bmatrix} 
+  1 & 0 & 0 & -1/4 & \big| & 0 \\ 
+  0 & 1 & 0 & -5/4 & \big| & 0 \\ 
+  0 & 0 & 1 & -3/4 & \big| & 0 
+  \end{bmatrix}$$
+
+  <b>Langkah 3: Tentukan solusi bulat positif terkecil:</b><br>
+  Pilih variabel bebas $x_4 = t$. Maka diperoleh:
+  $$x_1 = \frac{1}{4}t, \quad x_2 = \frac{5}{4}t, \quad x_3 = \frac{3}{4}t, \quad x_4 = t$$
+  Untuk mendapatkan koefisien koefisien molekul bulat terkecil, pilih $t = 4$:
+  $$x_1 = 1, \quad x_2 = 5, \quad x_3 = 3, \quad x_4 = 4$$
+
+  <b>Persamaan kimia yang setara:</b>
+  $$\text{C}_3\text{H}_8 + 5\text{O}_2 \longrightarrow 3\text{CO}_2 + 4\text{H}_2\text{O}$$
+</div>
+
+<h3>1.6.4 Interpolasi Polinomial</h3>
+<p align="justify">
+Dalam analisis data numerik, sering kali kita diberikan sekumpulan titik data diskrit dan ingin menemukan fungsi kontinu berupa polinomial yang melewati seluruh titik tersebut secara presisi.
+</p>
+
+<div class="card theorem">
+  <b>Teorema (Keberadaan dan Ketunggalan Interpolasi Polinomial):</b><br>
+  Diberikan $n+1$ titik data berbeda $(x_0, y_0), (x_1, y_1), \dots, (x_n, y_n)$ pada bidang kartesius dengan semua $x_i$ tunggal, maka terdapat <b>tepat satu polinomial</b> berderajat paling tinggi $n$:
+  $$p(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$$
+  yang melalui seluruh titik tersebut, yaitu memenuhi $p(x_i) = y_i$ untuk $i = 0, 1, \dots, n$.
+</div>
+
+<div class="card example">
+  <b>Contoh Mencari Polinomial Interpolasi Derajat 2:</b><br>
+  Tentukan polinomial $p(x) = a_0 + a_1 x + a_2 x^2$ yang melalui titik-titik $(1, 4)$, $(2, 7)$, dan $(3, 12)$.
+  <br><br>
+  <b>Penyelesaian:</b><br>
+  Substitusikan nilai $(x, y)$ dari setiap titik ke dalam $p(x) = y$:
+  $$\begin{cases}
+  p(1) = 4 \implies a_0 + a_1(1) + a_2(1)^2 = 4 &\implies a_0 + a_1 + a_2 = 4 \\
+  p(2) = 7 \implies a_0 + a_1(2) + a_2(2)^2 = 7 &\implies a_0 + 2a_1 + 4a_2 = 7 \\
+  p(3) = 12 \implies a_0 + a_1(3) + a_2(3)^2 = 12 &\implies a_0 + 3a_1 + 9a_2 = 12
+  \end{cases}$$
+
+  Matriks sistem persamaannya berbentuk <b>Matriks Vandermonde</b>:
+  $$\begin{bmatrix} 1 & 1 & 1 \\ 1 & 2 & 4 \\ 1 & 3 & 9 \end{bmatrix} \begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix} = \begin{bmatrix} 4 \\ 7 \\ 12 \end{bmatrix}$$
+
+  Dengan menyelesaikan SPL di atas menggunakan eliminasi Gauss, diperoleh:
+  $$a_2 = 1, \quad a_1 = 0, \quad a_0 = 3$$
+
+  <b>Polinomial Interpolasi yang Dihasilkan:</b>
+  $$p(x) = 3 + 0x + 1x^2 \implies p(x) = x^2 + 3$$
+</div>
+
+<div class="card note">
+<b>Rangkuman Subbab:</b> Keempat penerapan di atas menunjukkan fleksibilitas aljabar linier: dari pemodelan konservasi fisik (aliran lalu lintas, energi listrik, atom kimia) hingga estimasi fungsi numerik (interpolasi data), semuanya diselesaikan dengan mentransformasikannya ke dalam satu kerangka kerja standar yang sama, yaitu $A\mathbf{x} = \mathbf{b}$.
+</div>
+
+
 
  <!-- ============================================================ -->
   <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
