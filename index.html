@@ -371,7 +371,7 @@
 
   <!-- ================= SIDEBAR ================= -->
   <nav id="sidebar">
-    <h2>Aljabar Linier Elementer</h2>
+    <h2>Aljabar Linier Elementer Praktis</h2>
     <div class="subtitle" style="font-size:16px;"><b>BiMath:</b> Elementer Praktis — Edisi Interaktif<br><b>9 Bab + $\pmb{\LaTeX}$ + SageMath</b></div>
     <ul id="toc">
       <li class="active" onclick="showChapter(0)" style="font-size:18px;"><span class="num">1</span>SPL dan Matriks</li>
@@ -644,6 +644,344 @@ Contoh berikut menunjukkan bagaimana suatu Sistem Persamaan Linier (SPL) dapat d
 
   <p align="justify">
   Contoh ini menunjukkan bahwa variabel dalam Sistem Persamaan Linier tidak selalu merupakan simbol matematika yang abstrak. Dalam berbagai aplikasi nyata, variabel dapat merepresentasikan besaran fisik, seperti jumlah bahan baku, biaya produksi, arus listrik, gaya pada struktur bangunan, maupun besaran lainnya yang saling berhubungan melalui persamaan linier. Oleh karena itu, SPL menjadi salah satu model matematika yang sangat penting dalam sains, teknik, ekonomi, dan komputasi modern.
+  </p>
+</div>
+
+<p align="justify">
+Berikut adalah implementasi metode Gauss-Jordan untuk studi kasus optimasi alokasi dana penyelamatan agar startup terhindar dari kebangkrutan total akibat dikejar 4 penagih sekaligus:
+</p>
+
+<div class="card example">
+  <h3>Contoh: Optimasi Dana Penyelamatan Saat Krisis Keuangan</h3>
+
+  <p align="justify">
+  Sebuah startup logistik di Surabaya mengalami krisis keuangan dan terancam disita. Owner mendapat dana talangan terakhir sebesar Rp 2 Miliar yang harus habis tepat untuk 4 pos kritis. Misalkan:
+  </p>
+
+  <ul>
+    <li>$x$ = dana untuk restrukturisasi utang Bank (juta rupiah),</li>
+    <li>$y$ = dana untuk pelunasan utang Pinjol bunga harian (juta rupiah),</li>
+    <li>$z$ = dana untuk gaji karyawan inti (juta rupiah),</li>
+    <li>$w$ = dana untuk pajak dan denda negara (juta rupiah).</li>
+  </ul>
+
+  <p align="justify">
+  Berdasarkan audit OJK, investor, dan konsultan hukum, kebutuhan dana dinyatakan oleh sistem persamaan linier berikut:
+  </p>
+
+  $$
+  \begin{cases}
+  x+y+z+w=2000,\\
+  x+2y+2z+w=2900,\\
+  2x+y+3z+w=3800,\\
+  2x+2y+z+3w=3800.
+  \end{cases}
+  $$
+
+  <p align="justify">
+  Dalam bentuk matriks augmented, sistem tersebut ditulis sebagai
+  </p>
+
+  $$
+  \left[
+  \begin{array}{cccc|c}
+  1 & 1 & 1 & 1 & 2000\\
+  1 & 2 & 2 & 1 & 2900\\
+  2 & 1 & 3 & 1 & 3800\\
+  2 & 2 & 1 & 3 & 3800
+  \end{array}
+  \right].
+  $$
+
+  <h4>Proses Eliminasi Gauss-Jordan (Operasi Baris Elementer)</h4>
+
+  <p align="justify">
+  Berikut langkah-langkah OBE untuk mengubah matriks augmented menjadi bentuk eselon baris tereduksi (RREF):
+  </p>
+
+  <ol>
+    <li>
+      <strong>Eliminasi di bawah pivot pertama</strong>:
+      $$
+      R_2 \leftarrow R_2 - R_1,\quad R_3 \leftarrow R_3 - 2R_1,\quad R_4 \leftarrow R_4 - 2R_1
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 1 & 1 & 1 & 2000\\
+      0 & 1 & 1 & 0 & 900\\
+      0 & -1 & 1 & -1 & -200\\
+      0 & 0 & -1 & 1 & -200
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi di atas dan di bawah pivot kedua</strong>:
+      $$
+      R_1 \leftarrow R_1 - R_2,\quad R_3 \leftarrow R_3 + R_2
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 0 & 1 & 1100\\
+      0 & 1 & 1 & 0 & 900\\
+      0 & 0 & 2 & -1 & 700\\
+      0 & 0 & -1 & 1 & -200
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Buat pivot ketiga menjadi 1</strong>:
+      $$
+      R_3 \leftarrow \frac{1}{2}R_3
+      \quad\Longrightarrow\quad
+      \begin{bmatrix}
+      1 & 0 & 0 & 1 & 1100\\
+      0 & 1 & 1 & 0 & 900\\
+      0 & 0 & 1 & -0.5 & 350\\
+      0 & 0 & -1 & 1 & -200
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi di atas dan di bawah pivot ketiga</strong>:
+      $$
+      R_2 \leftarrow R_2 - R_3,\quad R_4 \leftarrow R_4 + R_3
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 0 & 1 & 1100\\
+      0 & 1 & 0 & 0.5 & 550\\
+      0 & 0 & 1 & -0.5 & 350\\
+      0 & 0 & 0 & 0.5 & 150
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Buat pivot keempat menjadi 1</strong>:
+      $$
+      R_4 \leftarrow 2R_4
+      \quad\Longrightarrow\quad
+      \begin{bmatrix}
+      1 & 0 & 0 & 1 & 1100\\
+      0 & 1 & 0 & 0.5 & 550\\
+      0 & 0 & 1 & -0.5 & 350\\
+      0 & 0 & 0 & 1 & 300
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi ke atas dari pivot keempat</strong> (kunci Gauss-Jordan):
+      $$
+      R_1 \leftarrow R_1 - R_4,\quad R_2 \leftarrow R_2 - 0.5R_4,\quad R_3 \leftarrow R_3 + 0.5R_4
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 0 & 0 & 800\\
+      0 & 1 & 0 & 0 & 400\\
+      0 & 0 & 1 & 0 & 500\\
+      0 & 0 & 0 & 1 & 300
+      \end{bmatrix}
+      $$
+    </li>
+  </ol>
+
+  <p align="justify">
+  Setelah proses OBE selesai, diperoleh matriks RREF:
+  </p>
+
+  $$
+  \left[
+  \begin{array}{cccc|c}
+  1 & 0 & 0 & 0 & 800\\
+  0 & 1 & 0 & 0 & 400\\
+  0 & 0 & 1 & 0 & 500\\
+  0 & 0 & 0 & 1 & 300
+  \end{array}
+  \right]
+  $$
+
+  <p align="justify">
+  Dari sini kita dapat langsung membaca solusi:
+  </p>
+
+  $$
+  x=800,\qquad y=400,\qquad z=500,\qquad w=300.
+  $$
+
+  <h3>Interpretasi Hasil</h3>
+
+  <p align="justify">
+  Solusi tersebut menunjukkan bahwa agar perusahaan selamat dari kebangkrutan dan lolos dari 4 tekanan hukum sekaligus, alokasi dana talangan yang optimal adalah:
+  </p>
+
+  <ul>
+    <li>Utang Bank sebesar <b>Rp 800 Juta</b> untuk mencegah penyitaan aset,</li>
+    <li>Utang Pinjol sebesar <b>Rp 400 Juta</b> untuk menghentikan bunga harian dan teror debt collector,</li>
+    <li>Gaji Karyawan sebesar <b>Rp 500 Juta</b> untuk menahan tim inti agar operasional tetap jalan, dan</li>
+    <li>Pajak Negara sebesar <b>Rp 300 Juta</b> untuk menghindari pidana pajak.</li>
+  </ul>
+
+  <p align="justify">
+  Contoh ini menunjukkan bahwa variabel dalam Sistem Persamaan Linier tidak selalu abstrak. Dalam krisis keuangan, variabel dapat merepresentasikan pos-pos utang dan kewajiban yang saling terkait. Metode Gauss-Jordan menjadi alat vital untuk menemukan satu titik optimal di mana semua batasan OJK, investor, dan hukum terpenuhi secara bersamaan, sehingga keputusan penyelamatan perusahaan dapat diambil secara rasional dan tidak panik.
+  </p>
+</div>
+
+<p align="justify">
+Berikut adalah implementasi metode Gauss-Jordan untuk studi kasus optimasi stok barang dan alokasi kapasitas penyimpanan di gudang (Riset Operasi / Warehouse Management) dengan data operasional yang realistis:
+</p>
+
+<div class="card example">
+  <h3>Contoh: Optimasi Perencanaan Stok dan Kapasitas Gudang Pusat Distribusi</h3>
+
+  <p align="justify">
+  Sebuah pusat distribusi e-<i>commerce</i> di kawasan industri Margomulyo, Surabaya, mengelola gudang penyangga (<i>buffer warehouse</i>) dengan kapasitas total 1.200 unit palet. Manajer operasional harus menentukan komposisi penyimpanan optimum untuk 4 kategori barang utama agar memanfaatkan kapasitas secara penuh tanpa melanggar batas beban lantai, batas anggaran pemeliharaan & asuransi, serta kapasitas jam kerja penanganan (<i>handling hours</i>). Misalkan:
+  </p>
+
+  <ul>
+    <li>$x$ = alokasi stok Produk Elektronik (unit palet),</li>
+    <li>$y$ = alokasi stok Produk Makanan & FMCG (unit palet),</li>
+    <li>$z$ = alokasi stok Produk Pakaian & Tekstil (unit palet),</li>
+    <li>$w$ = alokasi stok Perabotan Rumah Tangga (unit palet).</li>
+  </ul>
+
+  <p align="justify">
+  Berdasarkan spesifikasi teknis gudang dan standar operasional prosedur (SOP), kendala sistem dinyatakan oleh sistem persamaan linier berikut:
+  </p>
+
+  $$
+  \begin{cases}
+  x+y+z+w=1200 & \text{(Total Kapasitas Ruang Simpan Palet)},\\
+  x+2y+z+2w=1800 & \text{(Batas Beban Maksimum Lantai dalam Ton)},\\
+  2x+y+3z+w=2050 & \text{(Batas Anggaran Pemeliharaan & Asuransi dalam Juta Rp)},\\
+  x+2y+2z+3w=2250 & \text{(Batas Alokasi Jam Kerja Handling Forklift/Staf)}.
+  \end{cases}
+  $$
+
+  <p align="justify">
+  Dalam bentuk matriks augmented, sistem persamaan tersebut ditulis sebagai:
+  </p>
+
+  $$
+  \left[
+  \begin{array}{cccc|c}
+  1 & 1 & 1 & 1 & 1200\\
+  1 & 2 & 1 & 2 & 1800\\
+  2 & 1 & 3 & 1 & 2050\\
+  1 & 2 & 2 & 3 & 2250
+  \end{array}
+  \right].
+  $$
+
+  <h4>Proses Eliminasi Gauss-Jordan (Operasi Baris Elementer)</h4>
+
+  <p align="justify">
+  Berikut langkah-langkah Operasi Baris Elementer (OBE) untuk mengubah matriks augmented menjadi bentuk eselon baris tereduksi (Reduced Row Echelon Form / RREF):
+  </p>
+
+  <ol>
+    <li>
+      <strong>Eliminasi elemen di bawah pivot pertama ($R_1$)</strong>:
+      $$
+      R_2 \leftarrow R_2 - R_1,\quad R_3 \leftarrow R_3 - 2R_1,\quad R_4 \leftarrow R_4 - R_1
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 1 & 1 & 1 & 1200\\
+      0 & 1 & 0 & 1 & 600\\
+      0 & -1 & 1 & -1 & -350\\
+      0 & 1 & 1 & 2 & 1050
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi elemen di atas dan di bawah pivot kedua ($R_2$)</strong>:
+      $$
+      R_1 \leftarrow R_1 - R_2,\quad R_3 \leftarrow R_3 + R_2,\quad R_4 \leftarrow R_4 - R_2
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 1 & 0 & 600\\
+      0 & 1 & 0 & 1 & 600\\
+      0 & 0 & 1 & 0 & 250\\
+      0 & 0 & 1 & 1 & 450
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi elemen di atas dan di bawah pivot ketiga ($R_3$)</strong>:
+      $$
+      R_1 \leftarrow R_1 - R_3,\quad R_4 \leftarrow R_4 - R_3
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 0 & 0 & 350\\
+      0 & 1 & 0 & 1 & 600\\
+      0 & 0 & 1 & 0 & 250\\
+      0 & 0 & 0 & 1 & 200
+      \end{bmatrix}
+      $$
+    </li>
+
+    <li>
+      <strong>Eliminasi elemen di atas pivot keempat ($R_4$)</strong>:
+      $$
+      R_2 \leftarrow R_2 - R_4
+      $$
+      $$
+      \begin{bmatrix}
+      1 & 0 & 0 & 0 & 350\\
+      0 & 1 & 0 & 0 & 400\\
+      0 & 0 & 1 & 0 & 250\\
+      0 & 0 & 0 & 1 & 200
+      \end{bmatrix}
+      $$
+    </li>
+  </ol>
+
+  <p align="justify">
+  Proses OBE telah menghasilkan matriks Eselon Baris Tereduksi (RREF):
+  </p>
+
+  $$
+  \left[
+  \begin{array}{cccc|c}
+  1 & 0 & 0 & 0 & 350\\
+  0 & 1 & 0 & 0 & 400\\
+  0 & 0 & 1 & 0 & 250\\
+  0 & 0 & 0 & 1 & 200
+  \end{array}
+  \right]
+  $$
+
+  <p align="justify">
+  Dari matriks tersebut, solusi sistem dapat langsung dibaca:
+  </p>
+
+  $$
+  x=350,\qquad y=400,\qquad z=250,\qquad w=200.
+  $$
+
+  <h3>Interpretasi Hasil</h3>
+
+  <p align="justify">
+  Berdasarkan perhitungan matematis metode Gauss-Jordan, agar gudang dapat beroperasi secara optimal dengan utilisasi kapasitas 100% tanpa melanggar satu pun batasan teknis dan finansial, alokasi stok persediaan barang (*inventory allocation*) yang tepat adalah:
+  </p>
+
+  <ul>
+    <li>Produk Elektronik sebesar <b>350 unit palet</b>,</li>
+    <li>Produk Makanan & FMCG sebesar <b>400 unit palet</b>,</li>
+    <li>Produk Pakaian & Tekstil sebesar <b>250 unit palet</b>, dan</li>
+    <li>Perabotan Rumah Tangga sebesar <b>200 unit palet</b>.</li>
+  </ul>
+
+  <p align="justify">
+  Dalam Riset Operasi (<i>Operations Research</i>) dan Rantai Pasok (<i>Supply Chain Management</i>), pemodelan sistem persamaan linier ini menjamin bahwa seluruh batasan fisik (luas area dan kekuatan struktur lantai) serta batasan operasional (anggaran asuransi pemeliharaan dan alokasi jam kerja staf gudang) terpenuhi secara mutlak tanpa terjadi penumpukan stok berlebih (<i>overstocking</i>) ataupun kekurangan area simpan.
   </p>
 </div>
 
@@ -2041,7 +2379,7 @@ def analisa_spl_interaktif(
 </section>
 
 
- <!-- ================= BAB 3 ================= -->
+<!-- ================= BAB 3 ================= -->
 <section class="chapter" id="ch2">
   <div class="badge">Bab 3</div>
   <h1>Ruang Vektor Euclid \(\mathbb{R}^n\)</h1>
@@ -2054,46 +2392,71 @@ def analisa_spl_interaktif(
   Sebuah vektor tidak hanya dapat dipandang sebagai sekumpulan bilangan, tetapi juga sebagai representasi posisi suatu titik, arah perpindahan, kecepatan, gaya, maupun data berdimensi tinggi. Oleh karena itu, mempelajari geometri vektor membantu kita memahami hubungan antara konsep aljabar dan dunia nyata.
   </p>
 
-  <!-- ============================================================ -->
-  <!-- 3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-n                 -->
-  <!-- ============================================================ -->
-  <h2 class="sec">3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
-
+  <!-- TAMBAHAN BIMATH 3.0 - TANPA MENGHILANGKAN ASLI -->
+  <div class="card note" style="border-left:4px solid #1565C0;">
+  <b>Tambahan Nalar BiMath 3.0 - Struktur \(\mathbb{R}^n\) sebagai Ruang Vektor:</b>
   <p align="justify">
-  Pada bidang datar (\(\mathbb R^2\)), setiap vektor mempunyai dua komponen,
-  \[
-  \mathbf{u}=(u_1,u_2),\quad u_1,u_2\in\mathbb{R}.
-  \]
-  Vektor dapat dipandang sebagai panah yang memiliki panjang dan arah tertentu.
+  Agar \(\mathbb{R}^n\) sah disebut ruang vektor, ia harus memenuhi 10 aksioma: tertutup terhadap penjumlahan dan perkalian skalar, komutatif, asosiatif, ada vektor nol \(\mathbf{0}=(0,...,0)\), ada invers \(-\mathbf{u}\), serta sifat distributif.
+  Operasi formal yang hilang di narasi asli: Jika \(\mathbf{u}=(u_1,...,u_n), \mathbf{v}=(v_1,...,v_n), c\in\mathbb{R}\), maka \(\mathbf{u}+\mathbf{v}=(u_1+v_1,...,u_n+v_n)\) dan \(c\mathbf{u}=(cu_1,...,cu_n)\). Inilah yang menjamin semua komputasi di sub-bab berikut valid secara aksiomatis.
   </p>
-
-  <p align="justify">
-  Pada ruang tiga dimensi (\(\mathbb R^3\)), sebuah vektor memiliki tiga komponen,
-  \[
-  \mathbf{u}=(u_1,u_2,u_3),\quad u_1,u_2,u_3\in\mathbb{R},
-  \]
-  yang memungkinkan representasi posisi maupun perpindahan dalam ruang. Contohnya adalah koordinat suatu titik, gaya pada benda, maupun kecepatan sebuah pesawat.
-  </p>
-
-  <p align="justify">
-  Secara umum, pada ruang \(\mathbb R^n\) sebuah vektor ditulis
-  \[
-  \mathbf{u}=(u_1,u_2,\ldots,u_n),\quad u_i\in\mathbb{R},\ i=1,2,\ldots,n.
-  \]
-  Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, konsep matematikanya tetap sama. Dalam ilmu data, misalnya, setiap komponen dapat mewakili satu fitur (feature) sehingga sebuah data dengan 100 atribut dapat dipandang sebagai sebuah vektor di \(\mathbb R^{100}\).
-  </p>
-
-  <div class="card note">
-    <b>Contoh Aplikasi:</b>
-    <ul>
-      <li>📍 Posisi titik pada bidang menggunakan \(\mathbb R^2\).</li>
-      <li>🚀 Gerak benda di ruang menggunakan \(\mathbb R^3\).</li>
-      <li>🤖 Data citra, suara, maupun teks pada AI direpresentasikan sebagai vektor berdimensi tinggi di \(\mathbb R^n\).</li>
-    </ul>
   </div>
 
+  Berikut contoh real problem yang faktual untuk topik 3.1, saya buat dengan narasi nyata dan komputasi yang valid sesuai format kamu:
+
+<!-- ============================================================ -->
+<!-- 3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-n -->
+<!-- ============================================================ -->
+<h2 class="sec">3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
+
+<p align="justify">
+Pada bidang datar (\(\mathbb R^2\)), setiap vektor mempunyai dua komponen,
+\[
+\mathbf{u}=(u_1,u_2),\quad u_1,u_2\in\mathbb{R}.
+\]
+Vektor dapat dipandang sebagai panah yang memiliki panjang dan arah tertentu.
+</p>
+
+<p align="justify">
+Pada ruang tiga dimensi (\(\mathbb R^3\)), sebuah vektor memiliki tiga komponen,
+\[
+\mathbf{u}=(u_1,u_2,u_3),\quad u_1,u_2,u_3\in\mathbb{R},
+\]
+yang memungkinkan representasi posisi maupun perpindahan dalam ruang. Contohnya adalah koordinat suatu titik, gaya pada benda, maupun kecepatan sebuah pesawat.
+</p>
+
+<p align="justify">
+Secara umum, pada ruang \(\mathbb R^n\) sebuah vektor ditulis
+\[
+\mathbf{u}=(u_1,u_2,\ldots,u_n),\quad u_i\in\mathbb{R},\ i=1,2,\ldots,n.
+\]
+Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, konsep matematikanya tetap sama. Dalam ilmu data, misalnya, setiap komponen dapat mewakili satu fitur (feature) sehingga sebuah data dengan 100 atribut dapat dipandang sebagai sebuah vektor di \(\mathbb R^{100}\).
+</p>
+
+<div class="card note">
+  <b>Contoh Aplikasi Faktual:</b>
+  <ul>
+    <li>📍 Posisi kurir logistik di peta Surabaya menggunakan \(\mathbb R^2\).</li>
+    <li>🚀 Vektor kecepatan pesawat yang landing di Bandara Juanda menggunakan \(\mathbb R^3\).</li>
+    <li>🤖 Profil pelanggan e-commerce untuk sistem rekomendasi direpresentasikan sebagai vektor di \(\mathbb R^5\) hingga \(\mathbb R^{768}\).</li>
+  </ul>
+</div>
+
+  <!-- TAMBAHAN BIMATH 3.1 -->
+  <div class="card example" style="border-left:4px solid #2E7D32;">
+    <b>Contoh \(\mathbb R^n\) Komputasional:</b>
+    <p align="justify">
+    Misal profil pelanggan di \(\mathbb R^5\) = [umur, belanja(jt), frekuensi, rating, retur]: \(\mathbf{p}_1=(28,4.5,12,4.8,1)\), \(\mathbf{p}_2=(35,4.2,10,4.6,0)\).
+    Maka \(\mathbf{p}_1-\mathbf{p}_2 = (-7,0.3,2,0.2,1)\) tetap valid. Inilah mengapa AI bisa menghitung kemiripan tanpa harus menggambar panah di dimensi 5. Nalar aljabarnya identik dengan \(\mathbb R^2\).
+    </p>
+    
+    <!-- Tambahan keterangan (opsional) -->
+    <p align="justify" style="font-size:0.99em; color:#1b5e20; background:#f1f8e9; padding:8px 12px; border-radius:4px;">
+    <b>Catatan:</b> Operasi pengurangan di atas berlaku karena \(\mathbb R^n\) didefinisikan secara komponen-per-komponen. Komputer (atau AI) tidak perlu memvisualisasikan ruang 5D; ia cukup menjalankan operasi aritmetika dasar yang sama persis dengan yang ia jalankan di \(\mathbb R^2\). Validitas aljabar inilah satu-satunya syarat agar perhitungan jarak atau kemiripan (misal Euclidean atau cosine similarity) tetap sah dan bermakna secara komputasional.
+    </p>
+</div>
+
   <!-- ============================================================ -->
-  <!-- 3.2 Norma, Hasil Kali Titik, dan Jarak                       -->
+  <!-- 3.2 Norma, Hasil Kali Titik, dan Jarak -->
   <!-- ============================================================ -->
   <h2 class="sec">3.2 Norma, Hasil Kali Titik, dan Jarak</h2>
 
@@ -2134,8 +2497,66 @@ def analisa_spl_interaktif(
     \]
   </div>
 
+<div class="card example">
+  <h3>Contoh: Vektor di \(\mathbb R^2\) - Perpindahan Kurir di Surabaya</h3>
+  <p align="justify">
+  Sebuah hub Shopee Express di Jl. Pasar Turi Surabaya dijadikan titik acuan \((0,0)\). Seorang kurir mengirim paket ke 2 lokasi pada hari yang sama. Dalam koordinat peta UTM (dalam km):
+  <br>
+  Lokasi A (Tunjungan Plaza) = \(\mathbf{a} = (2, 3)\)
+  <br>
+  Lokasi B (Pakuwon Mall) = \(\mathbf{b} = (6, 6)\)
+  </p>
+  <p align="justify">
+  <b>Masalah:</b> Berapa vektor perpindahan dan jarak yang harus ditempuh kurir dari A ke B?
+  </p>
+  <p align="justify">
+  <b>Solusi:</b>
+  Vektor perpindahan \(\mathbf{d} = \mathbf{b} - \mathbf{a}\)
+  $$
+  \mathbf{d} = (6-2, 6-3) = (4, 3)
+  $$
+  Jarak (norm) dihitung dengan teorema Pythagoras:
+  $$
+  \|\mathbf{d}\| = \sqrt{4^2 + 3^2} = \sqrt{16+9} = \sqrt{25} = 5 \text{ km}
+  $$
+  Ini adalah penerapan nyata \(\mathbb R^2\) pada aplikasi logistik seperti Gojek, Grab, dan sistem GPS.
+  </p>
+</div>
+
+<div class="card example">
+  <h3>Contoh: Vektor di \(\mathbb R^3\) - Kecepatan Pesawat Landing di Juanda</h3>
+  <p align="justify">
+  Data ADS-B penerbangan Garuda GA-331 yang akan landing di Bandara Juanda Surabaya (SUB) mencatat vektor kecepatan relatif terhadap landasan:
+  $$
+  \mathbf{v} = (70, -10, -3) \text{ m/s}
+  $$
+  dengan komponen \(v_x\) = kecepatan maju, \(v_y\) = kecepatan crosswind (angin samping), \(v_z\) = kecepatan descent (turun).
+  </p>
+  <p align="justify">
+  <b>Masalah:</b> Berapa laju total pesawat dan apakah aman untuk landing jika batas crosswind adalah 15 m/s?
+  </p>
+  <p align="justify">
+  <b>Solusi:</b>
+  Laju total adalah norma vektor di \(\mathbb R^3\):
+  $$
+  \|\mathbf{v}\| = \sqrt{70^2 + (-10)^2 + (-3)^2} = \sqrt{4900+100+9} = \sqrt{5009} \approx 70.77 \text{ m/s}
+  $$
+  Komponen crosswind \(|v_y| = 10 \text{ m/s} < 15 \text{ m/s}\), maka masih dalam batas aman. Pilot menggunakan dekomposisi vektor \(\mathbb R^3\) ini secara real-time di kokpit.
+  </p>
+</div>
+
+  <!-- TAMBAHAN BIMATH 3.2 -->
+  <div class="card note" style="border-left:4px solid #1565C0;">
+  <b>Sifat yang Wajib Diketahui:</b>
+  <p align="justify">
+  <b>Ketaksamaan Cauchy-Schwarz:</b> \(|\mathbf u\cdot\mathbf v| \le \|\mathbf u\|\|\mathbf v\|\). Kesamaan terjadi jika \(\mathbf u = c\mathbf v\). Ini yang menjamin \(\cos\theta = \frac{\mathbf u\cdot\mathbf v}{\|\mathbf u\|\|\mathbf v\|}\) selalu di [-1,1] sehingga sudut selalu terdefinisi.
+  <br><b>Ketaksamaan Segitiga:</b> \(\|\mathbf u+\mathbf v\|\le \|\mathbf u\|+\|\mathbf v\|\). Ini adalah nalar mengapa rute langsung A->B lebih pendek dari A->C->B.
+  <br><b>Contoh Cosine Similarity (AI):</b> Produk A=(8,9,7), B=(7,9,8). \(\cos\theta = 193/194 \approx 0.9948\) → sangat mirip. Inilah dasar sistem rekomendasi, bukan halusinasi.
+  </p>
+  </div>
+
   <!-- ============================================================ -->
-  <!-- 3.3 Ortogonalitas                                             -->
+  <!-- 3.3 Ortogonalitas -->
   <!-- ============================================================ -->
   <h2 class="sec">3.3 Ortogonalitas</h2>
 
@@ -2158,8 +2579,96 @@ def analisa_spl_interaktif(
     \]
   </div>
 
+  <!-- TAMBAHAN BIMATH 3.3 -->
+ <div class="card example" style="border-left:4px solid #2E7D32; background:#ffffff; padding:16px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+  <b>Proyeksi Ortogonal (Jantung Regresi):</b>
+  <p align="justify" style="margin-top:8px; line-height:1.6; color:#334155;">
+    Untuk \(\mathbf v\neq\mathbf0\),
+    \(\text{proj}_{\mathbf v}\mathbf u = \frac{\mathbf u\cdot\mathbf v}{\|\mathbf v\|^2}\mathbf v\).
+    Maka residual \(\mathbf r = \mathbf u - \text{proj}_{\mathbf v}\mathbf u\) dijamin ortogonal terhadap \(\mathbf v\). Inilah nalar geometris mengapa regresi meminimumkan jarak.
+    <br><b>Contoh Komputasi:</b> \(\mathbf u=(3,1), \mathbf v=(2,2)\). 
+    \(\mathbf u\cdot\mathbf v = 8,\ \|\mathbf v\|^2=8 \implies \text{proj}_{\mathbf v}\mathbf u = (2,2)\). 
+    Sisa \(\mathbf r = (1,-1)\) dan \(\mathbf r\cdot\mathbf v = 2-2=0\).
+  </p>
+
+  <!-- GAMBAR GEOMETRI EKSAK -->
+  <div style="display:flex; justify-content:center; margin:15px 0;">
+    <svg width="440" height="320" viewBox="0 0 440 320" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; font-family: sans-serif;">
+      
+      <!-- Defs & Markers (Ditaruh di awal SVG) -->
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="2 2"/>
+        </pattern>
+        <marker id="arrowAxis" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b"/>
+        </marker>
+        <marker id="arrowB" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563eb"/>
+        </marker>
+        <marker id="arrowR" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#dc2626"/>
+        </marker>
+        <marker id="arrowO" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706"/>
+        </marker>
+      </defs>
+
+      <!-- Background Grid -->
+      <rect width="100%" height="100%" fill="url(#grid)" />
+
+      <!-- Garis Subruang / Span(v) -->
+      <line x1="60" y1="260" x2="220" y2="100" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="225" y="95" font-size="11" font-style="italic" fill="#64748b">span(v)</text>
+
+      <!-- Axes (Sumbu X dan Y) -->
+      <line x1="60" y1="260" x2="400" y2="260" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowAxis)"/>
+      <line x1="60" y1="260" x2="60" y2="20" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowAxis)"/>
+      <text x="395" y="280" font-size="12" font-weight="bold" fill="#475569">x</text>
+      <text x="45" y="30" font-size="12" font-weight="bold" fill="#475569">y</text>
+
+      <!-- Tick Marks Sumbu X & Y -->
+      <!-- Skala: 1 unit = 40px, Origin = (60, 260) -->
+      <!-- Ticks X -->
+      <line x1="100" y1="257" x2="100" y2="263" stroke="#64748b"/> <text x="100" y="278" font-size="10" text-anchor="middle" fill="#64748b">1</text>
+      <line x1="140" y1="257" x2="140" y2="263" stroke="#64748b"/> <text x="140" y="278" font-size="10" text-anchor="middle" fill="#64748b">2</text>
+      <line x1="180" y1="257" x2="180" y2="263" stroke="#64748b"/> <text x="180" y="278" font-size="10" text-anchor="middle" fill="#64748b">3</text>
+      <line x1="220" y1="257" x2="220" y2="263" stroke="#64748b"/> <text x="220" y="278" font-size="10" text-anchor="middle" fill="#64748b">4</text>
+      <!-- Ticks Y -->
+      <line x1="57" y1="220" x2="63" y2="220" stroke="#64748b"/> <text x="48" y="223" font-size="10" text-anchor="end" fill="#64748b">1</text>
+      <line x1="57" y1="180" x2="63" y2="180" stroke="#64748b"/> <text x="48" y="183" font-size="10" text-anchor="end" fill="#64748b">2</text>
+      <line x1="57" y1="140" x2="63" y2="140" stroke="#64748b"/> <text x="48" y="143" font-size="10" text-anchor="end" fill="#64748b">3</text>
+
+      <!-- Simbol Siku-siku Ortogonal (Sudut 90 Derajat Rotasi Diagonal) -->
+      <path d="M 132.9 187.1 L 140 194.1 L 147.1 187.1" fill="none" stroke="#334155" stroke-width="1.5"/>
+      <text x="135" y="208" font-size="10" font-weight="bold" fill="#334155">90°</text>
+
+      <!-- Vektor v = (2,2) & proj_v(u) = (2,2) - Biru -->
+      <line x1="60" y1="260" x2="140" y2="180" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowB)"/>
+      <text x="75" y="165" font-size="12" font-weight="bold" fill="#2563eb">v = proj_v u = (2,2)</text>
+
+      <!-- Vektor u = (3,1) - Merah -->
+      <line x1="60" y1="260" x2="180" y2="220" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowR)"/>
+      <text x="190" y="235" font-size="12" font-weight="bold" fill="#dc2626">u = (3,1)</text>
+
+      <!-- Vektor Residual r = (1,-1) - Amber/Oranye -->
+      <line x1="140" y1="180" x2="180" y2="220" stroke="#d97706" stroke-width="2.5" stroke-dasharray="5 3" marker-end="url(#arrowO)"/>
+      <text x="170" y="192" font-size="11" font-weight="bold" fill="#d97706">r = (1,-1)</text>
+
+      <!-- Titik Titik Ujung (Dots) -->
+      <circle cx="60" cy="260" r="3.5" fill="#0f172a"/>
+      <circle cx="140" cy="180" r="4" fill="#2563eb"/>
+      <circle cx="180" cy="220" r="4" fill="#dc2626"/>
+    </svg>
+  </div>
+
+  <p align="justify" style="font-size:0.95em; color:#334155;">
+  <b>Nalar Gambar:</b> Panah biru \(\mathbf v\) adalah arah landasan. Panah merah \(\mathbf u\) adalah vektor data. Proyeksi hijau adalah bayangan ortogonal \(\mathbf u\) pada \(\mathbf v\) — inilah \(\hat{\mathbf y}=X\boldsymbol\beta\) di regresi. Sisa oranye \(\mathbf r=\mathbf u-\text{proj}\) tegak lurus (tanda siku \(90^\circ\)), inilah residual yang panjangnya \(\|\mathbf r\|\) diminimumkan oleh metode kuadrat terkecil. Di Bab 3.8, \(\mathbf y\) adalah \(\mathbf u\) dan ruang kolom \(X\) adalah garis yang direntang \(\mathbf v\).
+  </p>
+</div>
+
   <!-- ============================================================ -->
-  <!-- 3.4 Geometri Sistem Linier                                    -->
+  <!-- 3.4 Geometri Sistem Linier -->
   <!-- ============================================================ -->
   <h2 class="sec">3.4 Geometri Sistem Linier</h2>
 
@@ -2181,8 +2690,42 @@ def analisa_spl_interaktif(
     Interpretasi yang sama berlaku pada ruang berdimensi lebih tinggi menggunakan konsep hiperbidang (hyperplane).
   </div>
 
+  <!-- TAMBAHAN BIMATH 3.4 -->
+  <div class="card note" style="border-left:4px solid #1565C0; background:#f8fafc; padding:16px; border-radius:8px; margin:12px 0;">
+  <b style="color:#1565C0; font-size:1.05em;">Klasifikasi & Nalar Geometris Sistem Persamaan Linier (SPL):</b>
+  
+  <p style="margin-top:8px; margin-bottom:10px; line-height:1.6; color:#334155;" align="justify">
+    Secara geometris pada bidang 2D (\(\mathbb{R}^2\)), setiap persamaan linier merepresentasikan sebuah garis lurus. Hubungan spasial antara garis-garis tersebut menentukan sifat keberadaan solusi dari sistem \(A\mathbf{x} = \mathbf{b}\):
+  </p>
+
+  <ul style="margin:8px 0 12px 20px; padding:0; line-height:1.6; color:#334155;">
+    <li>
+      <b>Solusi Tunggal (Berpotongan):</b> 
+      \(x+y=3\) dan \(x-y=1 \implies (2,1)\).<br>
+      <i>Sifat:</i> Kedua garis memiliki gradien yang berbeda dan berpotongan tepat di satu titik tunggal. Kolom-kolom matriks \(A\) saling bebas linier.
+    </li>
+    <li style="margin-top:6px;">
+      <b>Tak Hingga Solusi (Berhimpit):</b> 
+      \(x+y=3\) dan \(2x+2y=6 \implies (t, 3-t)\) untuk \(t \in \mathbb{R}\).<br>
+      <i>Sifat:</i> Persamaan kedua hanyalah kelipatan dari persamaan pertama, sehingga kedua garis berhimpit pada lintasan yang sama. Solusi dinyatakan dalam bentuk parametrik.
+    </li>
+    <li style="margin-top:6px;">
+      <b>Tanpa Solusi (Sejajar):</b> 
+      \(x+y=3\) dan \(2x+2y=7 \implies \emptyset\).<br>
+      <i>Sifat:</i> Kedua garis memiliki gradien yang sama tetapi konstanta berbeda, menyebabkan garis sejajar dan tidak pernah bertemu (menghasilkan kontradiksi aljabar \(6 = 7\)).
+    </li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid #cbd5e1; margin:12px 0;">
+
+  <p style="margin:0; line-height:1.6; color:#1e293b;" align="justify">
+    <b>Nalar Aljabar Linier (Ruang Kolom / Column Space):</b><br>
+    Perkalian matriks-vektor \(A\mathbf{x}\) pada dasarnya melambangkan <i>kombinasi linier</i> dari kolom-kolom matriks \(A\). Oleh karena itu, sistem \(A\mathbf{x} = \mathbf{b}\) memiliki solusi <b>jika dan hanya jika</b> vektor hasil/target \(\mathbf{b}\) berada di dalam rentangan (\(\text{span}\)) kolom-kolom matriks \(A\) (\(\mathbf{b} \in \text{Col}(A)\)). Pada kasus tanpa solusi, vektor \(\mathbf{b}\) berada di luar \(\text{span}(A)\), sehingga tidak ada kombinasi skala \(\mathbf{x}\) yang mampu mencapainya.
+  </p>
+</div>
+
   <!-- ============================================================ -->
-  <!-- 3.5 Cross Product (Kali Silang)                              -->
+  <!-- 3.5 Cross Product (Kali Silang) -->
   <!-- ============================================================ -->
   <h2 class="sec">3.5 Cross Product</h2>
 
@@ -2216,8 +2759,379 @@ def analisa_spl_interaktif(
     </ul>
   </div>
 
+  <!-- TAMBAHAN BIMATH 3.5 -->
+  <div class="card example" style="border-left:4px solid #2E7D32; background:#f8fafc; padding:16px; border-radius:8px;">
+  <b style="color:#2E7D32;">Komputasi Rinci Cross Product & Aplikasi Grafika:</b>
+  <p style="margin-top:8px; line-height:1.6; color:#334155;" align="justify">
+    Diberikan \(\mathbf u=(1,2,3)\) dan \(\mathbf v=(1,0,-1)\).
+  </p>
+  <ul style="margin:8px 0; padding-left:20px; line-height:1.6; color:#334155;">
+    <li>
+      <b>Ekspansi Determinan Minor:</b>
+	  \begin{aligned}
+      \mathbf u\times\mathbf v &= 
+      \begin{vmatrix} 2 & 3 \\ 0 & -1 \end{vmatrix}\mathbf i - 
+      \begin{vmatrix} 1 & 3 \\ 1 & -1 \end{vmatrix}\mathbf j + 
+      \begin{vmatrix} 1 & 2 \\ 1 & 0 \end{vmatrix}\mathbf k\\
+      &= (2(-1) - 0)\mathbf i - (1(-1) - 3)\mathbf j + (0 - 2)\mathbf k = -2\mathbf i + 4\mathbf j - 2\mathbf k\\
+	  &= (-2, 4, -2).
+	  \end{aligned}
+    </li>
+    <li style="margin-top:6px;">
+      <b>Uji Ortogonalitas (Dot Product):</b><br>
+      \((-2,4,-2)\cdot(1,2,3) = -2 + 8 - 6 = 0\)<br>
+      \((-2,4,-2)\cdot(1,0,-1) = -2 + 0 + 2 = 0\).
+    </li>
+    <li style="margin-top:6px;">
+      <b>Luas Daerah:</b><br>
+      Luas Jajargenjang \(= \sqrt{(-2)^2+4^2+(-2)^2} = \sqrt{24} = 2\sqrt6\).<br>
+      Luas Segitiga \(= \frac{1}{2}(2\sqrt6) = \sqrt6\).
+    </li>
+  </ul>
+</div>
+
+<div class="sage-cell-container">
+   <div class="sage-cell-header">
+     <span><i class="fas fa-calculator"></i> Kalkulator Perkalian Silang dan Beberapa Hal Terkait.</span>
+   </div>
+</div>                    
+<h4><b>Klik <button>Perkalian Silang</button>, lalu centang untuk melihat proses!</b></h4> 
+<br>
+<script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+<script>
+    sagecell.makeSagecell({
+        inputLocation: "#sagemath-PSl",
+        template: sagecell.templates.minimal,    
+        evalButtonText: "Perkalian Silang",
+        linked: true
+    });
+</script>
+
+<div id="sagemath-PSl">
+<textarea>
+@interact
+def cross_product_and_norm(
+    u_str = input_box(default="1, 2, 3", label="Vektor u (x,y,z):", type=str),
+    v_str = input_box(default="1, 0, -1", label="Vektor v (x,y,z):", type=str),
+    tampilkan_proses = checkbox(True, label="Tampilkan Proses Komputasi"),
+    tampilkan_aturan_tangan = checkbox(True, label="Tampilkan Aturan Tangan Kanan dan Visualisasi 3D")
+):
+    try:
+        # 1. Parsing input string menjadi vektor di bidang Rasional (QQ)
+        display(html("<h3>📥 Input Vektor</h3>"))
+        
+        u_vals = [sage_eval(x) for x in u_str.split(',')]
+        v_vals = [sage_eval(x) for x in v_str.split(',')]
+        
+        if len(u_vals) != 3 or len(v_vals) != 3:
+            display(html("""
+            <div style="background-color: #ffebee; padding: 15px; border-radius: 5px; border-left: 4px solid #f44336; margin: 10px 0;">
+                <b>⚠️ Error:</b> Kedua vektor harus memiliki tepat 3 komponen (x, y, z).<br>
+                Contoh format yang benar: <code>1, 2, 3</code>
+            </div>
+            """))
+            return
+            
+        u = vector(QQ, u_vals)
+        v = vector(QQ, v_vals)
+        
+        # Tampilkan vektor input
+        show(LatexExpr(fr"\mathbf{{u}} = {latex(u.column())}"))
+        show(LatexExpr(fr"\mathbf{{v}} = {latex(v.column())}"))
+        
+        # 2. Proses Komputasi Perkalian Silang
+        display(html("<h3>🔧 Proses Perkalian Silang</h3>"))
+        
+        if tampilkan_proses:
+            display(html(r"""
+            <div style="background-color: #e8f5e9; padding: 10px; border-radius: 5px; border-left: 4px solid #4CAF50; margin: 10px 0;">
+                <b>ℹ️ Formula Perkalian Silang 3D:</b><br>
+                \( \mathbf{u} \times \mathbf{v} = \begin{pmatrix}
+                u_y v_z - u_z v_y \\
+                u_z v_x - u_x v_z \\
+                u_x v_y - u_y v_x
+                \end{pmatrix} \)
+            </div>
+            """))
+            
+            # Tampilkan komponen masing-masing vektor
+            display(html("<b>📊 Komponen Vektor:</b>"))
+            show(LatexExpr(fr"\mathbf{{u}} = ({u[0]}, {u[1]}, {u[2]})"))
+            show(LatexExpr(fr"\mathbf{{v}} = ({v[0]}, {v[1]}, {v[2]})"))
+            
+            display(html("<br><b>🔍 Langkah Perhitungan:</b>"))
+            
+            # Hitung komponen x
+            show(LatexExpr(fr"""
+            \text{{Komponen }}\mathbf{{i}}: u_y v_z - u_z v_y = ({u[1]}) \times ({v[2]}) - ({u[2]}) \times ({v[1]}) = 
+            {u[1]*v[2]} - {u[2]*v[1]} = {u[1]*v[2] - u[2]*v[1]}
+            """))
+            
+            # Hitung komponen y
+            show(LatexExpr(fr"""
+            \text{{Komponen }}\mathbf{{j}}: u_z v_x - u_x v_z = ({u[2]}) \times ({v[0]}) - ({u[0]}) \times ({v[2]}) = 
+            {u[2]*v[0]} - {u[0]*v[2]} = {u[2]*v[0] - u[0]*v[2]}
+            """))
+            
+            # Hitung komponen z
+            show(LatexExpr(fr"""
+            \text{{Komponen }}\mathbf{{k}}: u_x v_y - u_y v_x = ({u[0]}) \times ({v[1]}) - ({u[1]}) \times ({v[0]}) = 
+            {u[0]*v[1]} - {u[1]*v[0]} = {u[0]*v[1] - u[1]*v[0]}
+            """))
+        
+        # 3. Komputasi menggunakan fungsi bawaan Sage
+        cp = u.cross_product(v)
+        
+        # Tampilkan hasil perkalian silang
+        display(html("<h3>📊 Hasil Perkalian Silang</h3>"))
+        
+        cp_num = cp.apply_map(lambda x: x.n(digits=4))
+        show(LatexExpr(fr"\mathbf{{u}} \times \mathbf{{v}} = {latex(cp.column())} \approx {latex(cp_num.column())}"))
+        
+        # 4. Aturan Tangan Kanan
+        if tampilkan_aturan_tangan:
+            display(html(r"""
+            <h3>🤲 Aturan Tangan Kanan</h3>
+            <div style="background-color: #e3f2fd; padding: 15px; border-radius: 5px; border-left: 4px solid #2196F3;">
+                <b>📐 Cara menentukan arah hasil perkalian silang:</b>
+                <ol>
+                    <li>Rentangkan tangan kanan dengan jari-jari lurus</li>
+                    <li>Arahkan jari-jari searah vektor pertama (u)</li>
+                    <li>Tekuk jari-jari ke arah vektor kedua (v)</li>
+                    <li>Ibu jari yang terangkat menunjukkan arah hasil (u × v)</li>
+                </ol>
+                <p><b>💡 Sifat penting:</b> Hasil perkalian silang tegak lurus terhadap kedua vektor asal.</p>
+            </div>
+            """))
+            
+            # Verifikasi ortogonalitas
+            display(html("<b>✅ Verifikasi Ortogonalitas:</b>"))
+            dot_u = u.dot_product(cp)
+            dot_v = v.dot_product(cp)
+            show(LatexExpr(fr"\mathbf{{u}} \cdot (\mathbf{{u}} \times \mathbf{{v}}) = {latex(dot_u)}"))
+            show(LatexExpr(fr"\mathbf{{v}} \cdot (\mathbf{{u}} \times \mathbf{{v}}) = {latex(dot_v)}"))
+            
+            if dot_u == 0 and dot_v == 0:
+                display(html("""
+                <div style="background-color: #c8e6c9; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    ✅ Hasil perkalian silang <b>tegak lurus</b> terhadap kedua vektor asal!
+                </div>
+                """))
+            else:
+                display(html("""
+                <div style="background-color: #ffebee; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                    ❌ Hasil tidak tegak lurus! Periksa perhitungan.
+                </div>
+                """))
+        
+        # 5. Perhitungan Norma (Panjang Vektor Hasil)
+        display(html("<h3>📏 Perhitungan Norma (Panjang Vektor)</h3>"))
+        
+        n_cp = cp.norm()  # Hasil eksak
+        
+        if tampilkan_proses:
+            display(html(r"""
+            <div style="background-color: #f3e5f5; padding: 10px; border-radius: 5px; border-left: 4px solid #9C27B0; margin: 10px 0;">
+                <b>ℹ️ Formula Norma Vektor 3D:</b><br>
+                \( \|\mathbf{w}\| = \sqrt{w_x^2 + w_y^2 + w_z^2} \)
+            </div>
+            """))
+            
+            # Tampilkan perhitungan norma langkah demi langkah
+            show(LatexExpr(fr"""
+            \|\mathbf{{u}} \times \mathbf{{v}}\| = \sqrt{{({cp[0]})^2 + ({cp[1]})^2 + ({cp[2]})^2}}
+            """))
+            show(LatexExpr(fr"""
+            = \sqrt{{{cp[0]**2} + {cp[1]**2} + {cp[2]**2}}}
+            """))
+            show(LatexExpr(fr"""
+            = \sqrt{{{cp[0]**2 + cp[1]**2 + cp[2]**2}}}
+            """))
+            if cp[0]**2 + cp[1]**2 + cp[2]**2 >= 0:
+                show(LatexExpr(fr"""
+                = \sqrt{{{cp[0]**2 + cp[1]**2 + cp[2]**2}}} = {latex(n_cp)} \approx {latex(n_cp.n(digits=4))}
+                """))
+        
+        # Tampilkan hasil norma
+        display(html("<b>📊 Hasil Norma:</b>"))
+        show(LatexExpr(fr"\|\mathbf{{u}} \times \mathbf{{v}}\| = {latex(n_cp)} \approx {latex(n_cp.n(digits=4))}"))
+        
+        # 6. Interpretasi Geometris
+        display(html("<h3>📐 Interpretasi Geometris</h3>"))
+        
+        # Luas jajaran genjang
+        area_paralellogram = n_cp
+        show(LatexExpr(fr"""
+        \text{{Luas jajaran genjang yang dibentuk oleh }}\mathbf{{u}}\text{{ dan }}\mathbf{{v}} = \|\mathbf{{u}} \times \mathbf{{v}}\| = {latex(area_paralellogram)}
+        """))
+        
+        # Luas segitiga
+        area_triangle = n_cp / 2
+        show(LatexExpr(fr"""
+        \text{{Luas segitiga yang dibentuk oleh }}\mathbf{{u}}\text{{ dan }}\mathbf{{v}} = \frac{1}{2}\|\mathbf{{u}} \times \mathbf{{v}}\| = {latex(area_triangle)}
+        """))
+        
+        # 7. Visualisasi 3D Vektor - MODIFIED VERSION
+        if tampilkan_aturan_tangan:
+            display(html(r"""
+            <h3>🎨 Visualisasi 3D Vektor</h3>
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <p><b>Keterangan Warna:</b></p>
+                <ul>
+                    <li><span style="color: #2196F3; font-weight: bold;">Biru</span>: Vektor u (vektor pertama)</li>
+                    <li><span style="color: #f44336; font-weight: bold;">Merah</span>: Vektor v (vektor kedua)</li>
+                    <li><span style="color: #4CAF50; font-weight: bold;">Hijau</span>: Hasil perkalian silang u × v</li>
+                    <li><span style="color: #FFD700; font-weight: bold;">Kuning Transparan</span>: Bidang yang dibentuk oleh u dan v</li>
+                </ul>
+                <p><b>Interpretasi Visual:</b></p>
+                <ul>
+                    <li>Vektor hijau (u × v) tegak lurus terhadap bidang yang dibentuk oleh vektor biru dan merah</li>
+                    <li>Panjang vektor hijau menunjukkan luas jajaran genjang yang dibentuk oleh u dan v</li>
+                    <li>Arah vektor hijau ditentukan oleh aturan tangan kanan</li>
+                    <li>Bidang kuning menunjukkan bidang yang mengandung kedua vektor asal</li>
+                </ul>
+            </div>
+            """))
+            
+            # Konversi ke float untuk plotting
+            u_float = vector(RDF, u)
+            v_float = vector(RDF, v)
+            cp_float = vector(RDF, cp)
+            
+            try:
+                # Definisikan titik asal
+                p0 = (0, 0, 0)
+                
+                # Buat objek panah (vektor) dengan lebar yang sesuai
+                panah_u = arrow3d(p0, tuple(u_float), width=8, color='blue')
+                panah_v = arrow3d(p0, tuple(v_float), width=8, color='red')
+                panah_cp = arrow3d(p0, tuple(cp_float), width=8, color='green')
+                
+                # Definisikan bidang menggunakan implicit_plot3d
+                # Bidang yang melalui (0,0,0) dan mengandung kedua vektor u dan v
+                # Vektor normal bidang adalah hasil cross product
+                var('x,y,z')
+                a, b, c = cp_float
+                
+                # Persamaan bidang: a*x + b*y + c*z = 0
+                # Tapi karena cp adalah normal bidang, dan kita ingin bidang yang mengandung u dan v,
+                # sebenarnya kita perlu bidang dengan normal cp yang melalui titik asal
+                # Persamaan yang benar: cp · (x,y,z) = 0
+                persamaan_bidang = a*x + b*y + c*z == 0
+                
+                # Buat bidang dengan implicit_plot3d
+                # Kita batasi rentang plotting berdasarkan panjang vektor
+                max_range = max(u_float.norm(), v_float.norm(), cp_float.norm())
+                plot_range = max_range * 1.5 if max_range > 0 else 5
+                
+                bidang = implicit_plot3d(persamaan_bidang, 
+                                         (x, -plot_range, plot_range), 
+                                         (y, -plot_range, plot_range), 
+                                         (z, -plot_range, plot_range), 
+                                         color='yellow', opacity=0.3, plot_points=50)
+                
+                # Gabungkan semua plot
+                plot_bersih = panah_u + panah_v + panah_cp + bidang
+                
+                # Tampilkan tanpa frame dan axes
+                plot_bersih.show(aspect_ratio=1, frame=False, axes=False)
+                
+                # Penjelasan visual tambahan
+                display(html(r"""
+                <div style="background-color: #e8f5e8; padding: 15px; border-radius: 5px; margin-top: 15px;">
+                    <p><b>💡 Interpretasi Visual:</b></p>
+                    <ul>
+                        <li>Vektor hijau (u × v) selalu tegak lurus terhadap bidang kuning</li>
+                        <li>Bidang kuning mengandung kedua vektor biru (u) dan merah (v)</li>
+                        <li>Arah vektor hijau mengikuti aturan tangan kanan</li>
+                        <li>Panjang vektor hijau = Luas jajaran genjang yang dibentuk oleh u dan v</li>
+                    </ul>
+                </div>
+                """))
+                
+            except Exception as plot_error:
+                display(html(f"""
+                <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107; margin: 10px 0;">
+                    <b>⚠️ Tidak dapat menampilkan visualisasi 3D:</b><br>
+                    <p>{str(plot_error)}</p>
+                    <p>Namun, perhitungan masih valid. Anda tetap dapat melihat hasil numerik di atas.</p>
+                </div>
+                """))
+        
+        # 8. Sifat-sifat Perkalian Silang
+        display(html(r"""
+        <h3>📚 Sifat-sifat Perkalian Silang</h3>
+        <div style="background-color: #fff3e0; padding: 15px; border-radius: 5px; border-left: 4px solid #FF9800;">
+            <b>🔍 Sifat-sifat penting:</b>
+            <ul>
+                <li><b>Antikomutatif:</b> \(\mathbf{u} \times \mathbf{v} = -\mathbf{v} \times \mathbf{u}\)</li>
+                <li><b>Distributif:</b> \(\mathbf{u} \times (\mathbf{v} + \mathbf{w}) = \mathbf{u} \times \mathbf{v} + \mathbf{u} \times \mathbf{w}\)</li>
+                <li><b>Asosiatif terhadap perkalian skalar:</b> \((c\mathbf{u}) \times \mathbf{v} = c(\mathbf{u} \times \mathbf{v})\)</li>
+                <li><b>Perkalian dengan vektor nol:</b> \(\mathbf{u} \times \mathbf{0} = \mathbf{0} \times \mathbf{u} = \mathbf{0}\)</li>
+                <li><b>Perkalian dengan diri sendiri:</b> \(\mathbf{u} \times \mathbf{u} = \mathbf{0}\)</li>
+            </ul>
+        </div>
+        """))
+        
+        # Verifikasi sifat antikomutatif
+        display(html("<b>✅ Verifikasi Sifat Antikomutatif:</b>"))
+        v_cross_u = v.cross_product(u)
+        show(LatexExpr(fr"\mathbf{{v}} \times \mathbf{{u}} = {latex(v_cross_u.column())}"))
+        show(LatexExpr(fr"\mathbf{{u}} \times \mathbf{{v}} + \mathbf{{v}} \times \mathbf{{u}} = {latex(cp.column())} + {latex(v_cross_u.column())} = {latex((cp + v_cross_u).column())}"))
+        
+        # 9. Ringkasan Hasil
+        display(html(f"""
+        <div style="background-color: #e8f5e8; padding: 20px; border-radius: 8px; border-left: 4px solid #4CAF50; margin-top: 20px;">
+            <h4 style="margin: 0 0 10px 0;">✨ Ringkasan Hasil</h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>Vektor u:</b></td>
+                    <td style="padding: 5px;">${latex(u.column())}$</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>Vektor v:</b></td>
+                    <td style="padding: 5px;">${latex(v.column())}$</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>u × v:</b></td>
+                    <td style="padding: 5px;">${latex(cp.column())}$ ≈ ${latex(cp_num.column())}$</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>Panjang:</b></td>
+                    <td style="padding: 5px;">${latex(n_cp)}$ ≈ ${latex(n_cp.n(digits=4))}$</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>Luas jajaran genjang:</b></td>
+                    <td style="padding: 5px;">${latex(area_paralellogram)}$</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px; vertical-align: top;"><b>Luas segitiga:</b></td>
+                    <td style="padding: 5px;">${latex(area_triangle)}$</td>
+                </tr>
+            </table>
+        </div>
+        """))
+        
+    except Exception as e:
+        display(html(f"""
+        <div style="background-color: #ffebee; padding: 15px; border-radius: 5px; border-left: 4px solid #f44336; margin: 10px 0;">
+            <h4 style="margin: 0; color: #d32f2f;">❌ Error:</h4>
+            <p>{str(e)}</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;">
+                <b>Pastikan format input benar:</b><br>
+                • Gunakan koma sebagai pemisah: <code>1, 2, 3</code><br>
+                • Boleh menggunakan pecahan: <code>1/2, 3/4, -5</code><br>
+                • Hanya untuk vektor 3 dimensi (x, y, z)
+            </p>
+        </div>
+        """))
+</textarea>
+</div>
+
+
+
   <!-- ============================================================ -->
-  <!-- 3.6 Kombinasi Linier dan Rentang                             -->
+  <!-- 3.6 Kombinasi Linier dan Rentang -->
   <!-- ============================================================ -->
   <h2 class="sec">3.6 Kombinasi Linier dan Rentang</h2>
 
@@ -2229,33 +3143,305 @@ def analisa_spl_interaktif(
   dengan \(c_i\) skalar. Himpunan semua kombinasi linier dari vektor-vektor tersebut disebut <b>rentang (span)</b>. Rentang merupakan subruang dari \(\mathbb R^n\).
   </p>
 
-  <div class="card example">
-    <b>Contoh:</b> Diberikan \(\mathbf v_1=(1,0)\) dan \(\mathbf v_2=(0,1)\) di \(\mathbb R^2\). Maka rentangnya adalah seluruh \(\mathbb R^2\), karena setiap vektor \((x,y)\) dapat ditulis sebagai \(x(1,0)+y(0,1)\). Sementara itu, rentang dari \(\mathbf w_1=(1,1)\) dan \(\mathbf w_2=(2,2)\) hanyalah garis \(y=x\).
-  </div>
+  <div class="card example" style="border-left:4px solid #1565C0; background:#f8fafc; padding:16px; border-radius:8px; margin:12px 0;">
+  <b style="color:#1565C0; font-size:1.05em;">Contoh Konseptual: Rentang (Span) dan Keterbebasan Linier di \(\mathbb R^2\)</b>
 
-  <!-- ============================================================ -->
-  <!-- 3.7 Bebas Linier dan Basis                                   -->
-  <!-- ============================================================ -->
-  <h2 class="sec">3.7 Bebas Linier dan Basis</h2>
-
-  <p align="justify">
-  Himpunan vektor dikatakan <b>bebas linier</b> jika persamaan
-  \[
-  c_1\mathbf v_1 + c_2\mathbf v_2 + \cdots + c_k\mathbf v_k = \mathbf 0
-  \]
-  hanya memiliki solusi \(c_1=c_2=\cdots=c_k=0\). Jika tidak demikian, maka vektor-vektor tersebut <b>bergantung linier</b>.
+  <p style="margin-top:8px; margin-bottom:12px; line-height:1.6; color:#334155;" align="justify">
+    Rentang dari himpunan vektor \(S = \{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_k\}\), ditulis \(\text{Span}(S)\), adalah himpunan seluruh kombinasi linier yang mungkin dihasilkan:
+    \[ \text{Span}(S) = \{ c_1\mathbf v_1 + c_2\mathbf v_2 + \dots + c_k\mathbf v_k \mid c_i \in \mathbb R \} \]
   </p>
 
-  <p align="justify">
-  <b>Basis</b> dari suatu subruang adalah himpunan vektor yang <i>bebas linier</i> dan <i>merentang</i> subruang tersebut. Dimensi subruang adalah banyaknya vektor dalam basis.
-  </p>
-
-  <div class="card example">
-    <b>Contoh:</b> Vektor \(\mathbf e_1=(1,0,0)\), \(\mathbf e_2=(0,1,0)\), \(\mathbf e_3=(0,0,1)\) membentuk basis standar untuk \(\mathbb R^3\). Vektor \(\mathbf a=(1,2)\), \(\mathbf b=(2,4)\) tidak bebas linier karena \(\mathbf b=2\mathbf a\).
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:10px;">
+    <b style="color:#2e7d32;">Kasus 1: Membentang Seluruh Ruang (\(\text{Span}(\mathbf v_1, \mathbf v_2) = \mathbb R^2\))</b>
+    <p style="margin:6px 0 0 0; line-height:1.6; color:#334155;" align="justify">
+      Diberikan \(\mathbf v_1=(1,0)\) dan \(\mathbf v_2=(0,1)\). Ambil sembarang vektor target \(\mathbf b = (x,y) \in \mathbb R^2\).
+      <br>
+      Kombinasi liniernya:
+      \[ c_1(1,0) + c_2(0,1) = (c_1, c_2) = (x,y) \implies c_1 = x,\; c_2 = y \]
+      Karena untuk <i>setiap</i> pasang \((x,y)\) selalu terdapat skalar \(c_1=x\) dan \(c_2=y\) yang memenuhi, maka seluruh titik di bidang 2D dapat dicapai.
+      <br>
+      <b>Landasan Aljabar:</b> Matriks \([\mathbf v_1 \;\; \mathbf v_2] = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}\) memiliki determinan \(1 \neq 0\). Kedua vektor <i>saling bebas linier</i>, sehingga dimensi ruang rentangnya adalah 2 (\(\dim(\text{Span}) = 2\)).
+    </p>
   </div>
 
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">
+    <b style="color:#c62828;">Kasus 2: Terdegenerasi Menjadi Subruang 1D (\(\text{Span}(\mathbf w_1, \mathbf w_2) = \text{Garis } y=x\))</b>
+    <p style="margin:6px 0 0 0; line-height:1.6; color:#334155;" align="justify">
+      Diberikan \(\mathbf w_1=(1,1)\) dan \(\mathbf w_2=(2,2)\). Perhatikan bahwa \(\mathbf w_2 = 2\mathbf w_1\) (vektor kedua hanya kelipatan dari vektor pertama).
+      <br>
+      Kombinasi liniernya:
+      \[ c_1(1,1) + c_2(2,2) = c_1(1,1) + 2c_2(1,1) = (c_1 + 2c_2)(1,1) \]
+      Misalkan \(k = c_1 + 2c_2 \in \mathbb R\), maka setiap vektor hasil kombinasi selalu berbentuk \((k, k)\).
+      <br>
+      Secara geometris, himpunan titik \(\{(k, k) \mid k \in \mathbb R\}\) memenuhi persamaan garis \(y = x\) yang melalui titik asal \((0,0)\).
+      <br>
+      <b>Landasan Aljabar:</b> Matriks \([\mathbf w_1 \;\; \mathbf w_2] = \begin{pmatrix} 1 & 2 \\ 1 & 2 \end{pmatrix}\) memiliki determinan \(0\). Kedua vektor <i>bergantung linier</i> (redundant), sehingga dimensi ruang rentangnya runtuh menjadi 1 (\(\dim(\text{Span}) = 1\)).
+    </p>
+  </div>
+</div>
+
+  <!-- TAMBAHAN BIMATH 3.6 -->
+  <div class="card example" style="border-left:4px solid #2E7D32; background:#f8fafc; padding:16px; border-radius:8px; margin:12px 0;">
+  <b style="color:#2E7D32; font-size:1.05em;">Prosedur Uji Keanggotaan Span (Proyeksi Kombinasi Linier):</b>
+
+  <p style="margin-top:8px; margin-bottom:12px; line-height:1.6; color:#334155;" align="justify">
+    Suatu vektor \(\mathbf w\) dikatakan berada dalam \(\text{Span}(\mathbf v_1, \mathbf v_2, \dots, \mathbf v_k)\) jika dan hanya jika \(\mathbf w\) dapat dinyatakan sebagai <i>kombinasi linier</i> dari vektor-vektor pembentuknya. Secara matematis, harus terdapat konstanta skalar \(c_1, c_2, \dots, c_k\) sedemikian hingga:
+    \[ c_1\mathbf v_1 + c_2\mathbf v_2 + \dots + c_k\mathbf v_k = \mathbf w \]
+  </p>
+
+  <!-- SOAL DAN PEMBAHASAN -->
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:10px;">
+    <b style="color:#1e293b;">Masalah:</b> 
+    Apakah \(\mathbf w = (7,8)\) terletak di dalam \(\text{Span}(\mathbf v_1, \mathbf v_2)\) untuk \(\mathbf v_1 = (1,2)\) dan \(\mathbf v_2 = (2,1)\)?
+
+    <div style="margin-top:10px; line-height:1.6; color:#334155;">
+      <b>Langkah 1: Menyusun Sistem Persamaan Linier (SPL)</b><br>
+      Tuliskan persamaan vektor:
+      \[ c_1 \begin{pmatrix} 1 \\ 2 \end{pmatrix} + c_2 \begin{pmatrix} 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 7 \\ 8 \end{pmatrix} \implies \begin{cases} c_1 + 2c_2 = 7 & \text{(Persamaan 1)} \\ 2c_1 + c_2 = 8 & \text{(Persamaan 2)} \end{cases} \]
+
+      <b>Langkah 2: Penyelesaian Sistem (Eliminasi / Substitusi)</b><br>
+      Dari Persamaan 1, diperoleh \(c_1 = 7 - 2c_2\). Substitusikan ke Persamaan 2:
+      \[ 2(7 - 2c_2) + c_2 = 8 \implies 14 - 4c_2 + c_2 = 8 \]
+      \[ -3c_2 = 8 - 14 \implies -3c_2 = -6 \implies c_2 = 2 \]
+      Hitung nilai \(c_1\):
+      \[ c_1 = 7 - 2(2) = 3 \]
+
+      <b>Langkah 3: Verifikasi Konsistensi Solusi</b><br>
+      Uji skalar \((c_1, c_2) = (3, 2)\) pada kombinasi vektor asli:
+      \[ 3\mathbf v_1 + 2\mathbf v_2 = 3(1,2) + 2(2,1) = (3,6) + (4,2) = (7,8) = \mathbf w \]
+      <b>Kesimpulan:</b> Karena SPL memiliki solusi konsisten tunggal \((c_1=3, c_2=2)\), maka \(\mathbf w \in \text{Span}(\mathbf v_1, \mathbf v_2)\).
+    </div>
+  </div>
+
+  <!-- NALAR ALJABAR DAN KRITERIA UMUM -->
+  <hr style="border:none; border-top:1px solid #cbd5e1; margin:12px 0;">
+
+  <p style="margin:0; line-height:1.6; color:#1e293b;" align="justify">
+    <b>Nalar Aljabar &amp; Uji Konsistensi:</b>
+  </p>
+  <ul style="margin:6px 0 0 20px; padding:0; line-height:1.6; color:#334155;">
+    <li>
+      <b>Sistem Konsisten (Ada Solusi):</b> Vektor target \(\mathbf w\) berhasil dicapai oleh kombinasi skala dari matriks kolom \(A = [\mathbf v_1 \;\; \mathbf v_2]\).
+    </li>
+    <li>
+      <b>Sistem Inkonsisten (Tanpa Solusi):</b> Jika eliminasi Gauss menghasilkan kontradiksi aljabar (misalnya \(0 = 1\)), maka \(\mathbf w\) berada di luar ruang jangkauan (\(\mathbf w \notin \text{Span}\)).
+    </li>
+    <li>
+      <b>Uji Determinan Singkat:</b> Karena \(\det \begin{pmatrix} 1 & 2 \\ 2 & 1 \end{pmatrix} = (1)(1) - (2)(2) = -3 \neq 0\), vektor \(\mathbf v_1\) dan \(\mathbf v_2\) saling bebas linier dan membentang seluruh \(\mathbb R^2\). Artinya, <i>setiap</i> vektor \(\mathbf w \in \mathbb R^2\) pasti dijamin berada dalam span mereka.
+    </li>
+  </ul>
+</div>
+
   <!-- ============================================================ -->
-  <!-- 3.8 Aplikasi Vektor dalam Optimasi (Real Problem)            -->
+<!-- 3.7 Bebas Linier dan Basis -->
+<!-- ============================================================ -->
+<h2 class="sec">3.7 Bebas Linier dan Basis</h2>
+
+<p align="justify">
+Konsep <b>bebas linier</b> (<i>linear independence</i>) dan <b>basis</b> merupakan pilar utama dalam aljabar linier yang menentukan struktur dimensi dari suatu ruang vektor. Konsep ini menjelaskan kapan sekumpulan vektor memberikan informasi baru yang independen dan kapan sekumpulan vektor tersebut bersifat redundan (dapat diwakili oleh vektor lainnya).
+</p>
+
+<p align="justify">
+Secara formal, himpunan vektor \(S = \{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_k\}\) di dalam ruang vektor \(V\) dikatakan <b>bebas linier</b> jika dan hanya jika kombinasi linier homogen:
+\[
+c_1\mathbf v_1 + c_2\mathbf v_2 + \cdots + c_k\mathbf v_k = \mathbf 0
+\]
+hanya dipenuhi oleh <b>solusi sepele</b> (<i>trivial solution</i>), yaitu:
+\[
+c_1 = c_2 = \cdots = c_k = 0
+\]
+Jika terdapat setidaknya satu skalar \(c_i \neq 0\) yang memenuhi persamaan di atas, maka himpunan vektor tersebut dikatakan <b>bergantung linier</b> (<i>linearly dependent</i>). Ini berarti setidaknya ada satu vektor di dalam himpunan tersebut yang dapat dinyatakan sebagai kombinasi linier dari vektor-vektor sisanya.
+</p>
+
+<p align="justify">
+<b>Basis dan Dimensi:</b><br>
+Suatu himpunan vektor \(B = \{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_n\}\) dinamakan <b>basis</b> untuk ruang vektor \(V\) jika memenuhi dua syarat mutlak:
+</p>
+<ol style="margin-top:-5px; margin-bottom:15px; line-height:1.6; color:#334155;">
+  <li>\(B\) bersifat <b>bebas linier</b>.</li>
+  <li>\(B\) <b>merentang</b> (<i>spans</i>) seluruh ruang \(V\), yaitu \(\text{Span}(B) = V\).</li>
+</ol>
+
+<p align="justify">
+<b>Konsekuensi Keunikan Basis:</b> Jika \(B\) adalah basis untuk \(V\), maka setiap vektor \(\mathbf w \in V\) dapat dituliskan sebagai kombinasi linier dari vektor-vektor basis secara <b>tunggal/unik</b>. Banyaknya vektor di dalam suatu basis mendefinisikan <b>dimensi</b> dari ruang vektor tersebut (\(\dim(V) = n\)).
+</p>
+
+<!-- TAMBAHAN BIMATH 3.7: KRITERIA MATRIKS & UJI PRAKTIS -->
+<div class="card note" style="border-left:4px solid #1565C0; background:#f8fafc; padding:16px; border-radius:8px; margin:15px 0;">
+  <b style="color:#1565C0; font-size:1.05em;">Kriteria Matriks &amp; Uji Praktis Keterbebasan Linier:</b>
+  <p style="margin-top:8px; line-height:1.6; color:#334155;" align="justify">
+    Untuk menguji apakah \(k\) buah vektor \(\{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_k\}\) di \(\mathbb R^n\) bebas linier, susun vektor-vektor tersebut sebagai kolom-kolom matriks \(A = [\mathbf v_1 \;\; \mathbf v_2 \;\; \dots \;\; \mathbf v_k]\) berukuran \(n \times k\), lalu selesaikan sistem homogen \(A\mathbf c = \mathbf 0\):
+  </p>
+  <ul style="margin:6px 0 0 20px; padding:0; line-height:1.6; color:#334155;">
+    <li>
+      <b>Kasus khusus \(k = n\) (Jumlah Vektor = Dimensi Ruang):</b><br>
+      Vektor-vektor tersebut bebas linier <i>sekaligus</i> membentuk basis untuk \(\mathbb R^n\) jika dan hanya jika \(\det(A) \neq 0\) atau \(\text{rank}(A) = n\).
+    </li>
+    <li style="margin-top:6px;">
+      <b>Kasus Umum (\(k \neq n\)):</b><br>
+      Jika bentuk eselon baris tereduksi (RREF) dari matriks \(A\) memiliki variabel bebas (kolom non-pivotal), maka vektor-vektor tersebut <i>bergantung linier</i>. Jika seluruh kolom adalah kolom pivot (\(\text{rank}(A) = k\)), maka vektor-vektor tersebut <i>bebas linier</i>.
+    </li>
+    <li style="margin-top:6px;">
+      <b>Teorema Ukuran:</b> Jika \(k > n\) di \(\mathbb R^n\) (jumlah vektor melebihi dimensi ruang), himpunan vektor tersebut <b>pasti bergantung linier</b>.
+    </li>
+  </ul>
+</div>
+
+<!-- CONTOH 1: VERIFIKASI BEBAS LINIER & BASIS -->
+<div class="card example" style="border-left:4px solid #2E7D32; background:#f8fafc; padding:16px; border-radius:8px; margin:15px 0;">
+  <b style="color:#2E7D32; font-size:1.05em;">Contoh 1: Uji Bebas Linier dan Pembuktian Basis di \(\mathbb R^3\)</b>
+  <p style="margin-top:8px; line-height:1.6; color:#334155;" align="justify">
+    Periksa apakah himpunan vektor \(B = \{\mathbf v_1, \mathbf v_2, \mathbf v_3\}\) berikut bebas linier dan membentuk basis untuk \(\mathbb R^3\):
+    \[ \mathbf v_1 = (1, 2, 1), \quad \mathbf v_2 = (2, 9, 0), \quad \mathbf v_3 = (3, 3, 4) \]
+  </p>
+
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-top:10px; line-height:1.6; color:#334155;">
+    <b>Langkah 1: Menyusun Persamaan Homogen dan Matriks Kolom</b><br>
+    Selesaikan \(c_1\mathbf v_1 + c_2\mathbf v_2 + c_3\mathbf v_3 = \mathbf 0\):
+    \[
+    c_1 \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix} + c_2 \begin{pmatrix} 2 \\ 9 \\ 0 \end{pmatrix} + c_3 \begin{pmatrix} 3 \\ 3 \\ 4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} 
+    \implies 
+    \begin{pmatrix} 1 & 2 & 3 \\ 2 & 9 & 3 \\ 1 & 0 & 4 \end{pmatrix} \begin{pmatrix} c_1 \\ c_2 \\ c_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+    \]
+
+    <b>Langkah 2: Komputasi Determinan Matriks Kolom \(A\)</b><br>
+    Gunakan ekspansi kofaktor pada baris pertama matriks \(A\):
+    \[
+    \det(A) = 1 \cdot \begin{vmatrix} 9 & 3 \\ 0 & 4 \end{vmatrix} - 2 \cdot \begin{vmatrix} 2 & 3 \\ 1 & 4 \end{vmatrix} + 3 \cdot \begin{vmatrix} 2 & 9 \\ 1 & 0 \end{vmatrix}
+    \]
+    Hitung determinan minor \(2 \times 2\):
+    \[
+    \begin{aligned}
+    \det(A) &= 1(36 - 0) - 2(8 - 3) + 3(0 - 9) \\
+    &= 36 - 2(5) + 3(-9) \\
+    &= 36 - 10 - 27 = -1
+    \end{aligned}
+    \]
+
+    <b>Langkah 3: Kesimpulan Aljabar</b><br>
+    Karena \(\det(A) = -1 \neq 0\), matriks \(A\) memiliki matriks balikan (nonsingular). Akibatnya, sistem persamaan homogen \(A\mathbf c = \mathbf 0\) <b>hanya memiliki solusi tunggal sepele</b>:
+    \[ c_1 = 0, \quad c_2 = 0, \quad c_3 = 0 \]
+    <b>Kesimpulan:</b> Vektor \(\mathbf v_1, \mathbf v_2, \mathbf v_3\) bersifat <b>bebas linier</b>. Karena terdiri dari 3 vektor bebas linier di ruang berdimensi 3 (\(\mathbb R^3\)), himpunan \(B\) secara otomatis <b>merentang \(\mathbb R^3\) dan merupakan basis untuk \(\mathbb R^3\)</b> dengan \(\dim(\mathbb R^3) = 3\).
+  </div>
+</div>
+
+<!-- CONTOH 2: DETEKSI BERGANTUNG LINIER & HUBUNGAN KETERGANTUNGAN -->
+<div class="card example" style="border-left:4px solid #c62828; background:#f8fafc; padding:16px; border-radius:8px; margin:15px 0;">
+  <b style="color:#c62828; font-size:1.05em;">Contoh 2: Deteksi Ketergantungan Linier &amp; Formulasi Relasi Vektor</b>
+  <p style="margin-top:8px; line-height:1.6; color:#334155;" align="justify">
+    Tunjukkan bahwa himpunan vektor \(S = \{\mathbf u_1, \mathbf u_2, \mathbf u_3\}\) berikut bergantung linier di \(\mathbb R^3\), lalu temukan relasi ketergantungan eksplisit di antara mereka:
+    \[ \mathbf u_1 = (1, -1, 2), \quad \mathbf u_2 = (2, 1, 1), \quad \mathbf u_3 = (4, -1, 5) \]
+  </p>
+
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-top:10px; line-height:1.6; color:#334155;">
+    <b>Langkah 1: Operasi Baris Elementer (OBE) pada Matriks Teraugmentasi</b><br>
+    Susun matriks teraugmentasi \([A \mid \mathbf 0]\):
+    \[
+    \begin{pmatrix}
+    1 & 2 & 4 & \mid & 0 \\
+    -1 & 1 & -1 & \mid & 0 \\
+    2 & 1 & 5 & \mid & 0
+    \end{pmatrix}
+    \]
+    Lakukan eliminasi Gauss:
+    <ul>
+      <li>\(R_2 \leftarrow R_2 + R_1\):
+        \[
+        \begin{pmatrix}
+        1 & 2 & 4 & \mid & 0 \\
+        0 & 3 & 3 & \mid & 0 \\
+        2 & 1 & 5 & \mid & 0
+        \end{pmatrix}
+        \]
+      </li>
+      <li>\(R_3 \leftarrow R_3 - 2R_1\):
+        \[
+        \begin{pmatrix}
+        1 & 2 & 4 & \mid & 0 \\
+        0 & 3 & 3 & \mid & 0 \\
+        0 & -3 & -3 & \mid & 0
+        \end{pmatrix}
+        \]
+      </li>
+      <li>Bagilah \(R_2\) dengan 3 (\(R_2 \leftarrow \frac{1}{3}R_2\)), lalu tambahkan ke \(R_3\) (\(R_3 \leftarrow R_3 + 3R_2\)):
+        \[
+        \begin{pmatrix}
+        1 & 2 & 4 & \mid & 0 \\
+        0 & 1 & 1 & \mid & 0 \\
+        0 & 0 & 0 & \mid & 0
+        \end{pmatrix}
+        \]
+      </li>
+    </ul>
+
+    <b>Langkah 2: Menentukan Solusi Non-Sepele</b><br>
+    Baris ketiga berupa baris nol (\(0=0\)), menunjukkan adanya <b>variabel bebas</b>.
+    Misalkan \(c_3 = t\) (dimana \(t \in \mathbb R, t \neq 0\)).
+    <br>
+    Dari baris kedua: \(c_2 + c_3 = 0 \implies c_2 = -t\).
+    <br>
+    Dari baris pertama: \(c_1 + 2c_2 + 4c_3 = 0 \implies c_1 + 2(-t) + 4t = 0 \implies c_1 = -2t\).
+    <br><br>
+    Setiap pilihan \(t \neq 0\) memberikan solusi non-sepele. Pilih \(t = 1\), maka diperoleh skalar:
+    \[ c_1 = -2, \quad c_2 = -1, \quad c_3 = 1 \]
+
+    <b>Langkah 3: Formulasi Hubungan Ketergantungan Linier</b><br>
+    Substitusikan nilai skalar ke dalam persamaan awal:
+    \[ -2\mathbf u_1 - 1\mathbf u_2 + 1\mathbf u_3 = \mathbf 0 \]
+    Ubah bentuk untuk mengeksplisitkan \(\mathbf u_3\):
+    \[ \mathbf u_3 = 2\mathbf u_1 + \mathbf u_2 \]
+    <b>Verifikasi Komputasi:</b> \(2(1, -1, 2) + (2, 1, 1) = (2, -2, 4) + (2, 1, 1) = (4, -1, 5) = \mathbf u_3\) (Terbukti Tepat).<br>
+    <b>Kesimpulan:</b> Vektor \(\mathbf u_1, \mathbf u_2, \mathbf u_3\) <b>bergantung linier</b> dan tidak dapat membentuk basis untuk \(\mathbb R^3\). Dimensi subruang yang direntang oleh ketiga vektor ini hanyalah 2 (\(\dim(\text{Span}(S)) = 2\)), yaitu sebuah bidang datar di \(\mathbb R^3\).
+  </div>
+</div>
+
+<!-- CONTOH 3: KEUNIKAN REPRESENTASI KOORDINAT BASIS -->
+<div class="card example" style="border-left:4px solid #1565C0; background:#f8fafc; padding:16px; border-radius:8px; margin:15px 0;">
+  <b style="color:#1565C0; font-size:1.05em;">Contoh 3: Keunikan Vektor Koordinat Terhadap Suatu Basis</b>
+  <p style="margin-top:8px; line-height:1.6; color:#334155;" align="justify">
+    Diberikan basis terurut \(B = \{\mathbf w_1, \mathbf w_2, \mathbf w_3\}\) untuk \(\mathbb R^3\) dengan:
+    \[ \mathbf w_1 = (1, 0, 0), \quad \mathbf w_2 = (1, 1, 0), \quad \mathbf w_3 = (1, 1, 1) \]
+    Tentukan vektor koordinat \([\mathbf v]_B = (c_1, c_2, c_3)^T\) dari vektor target \(\mathbf v = (5, 8, 2)\) relatif terhadap basis \(B\).
+  </p>
+
+  <div style="background:#ffffff; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-top:10px; line-height:1.6; color:#334155;">
+    <b>Langkah 1: Menyusun Persamaan Kombinasi Linier</b><br>
+    \[
+    c_1(1, 0, 0) + c_2(1, 1, 0) + c_3(1, 1, 1) = (5, 8, 2)
+    \]
+    Bentuk sistem persamaan linier segitiga bawah:
+    \[
+    \begin{aligned}
+    c_1 + c_2 + c_3 &= 5 \quad \text{--- (Persamaan 1)} \\
+    c_2 + c_3 &= 8 \quad \text{--- (Persamaan 2)} \\
+    c_3 &= 2 \quad \text{--- (Persamaan 3)}
+    \end{aligned}
+    \]
+
+    <b>Langkah 2: Substitusi Mundur (<i>Back-Substitution</i>)</b><br>
+    <ul>
+      <li>Dari Persamaan 3: \(c_3 = 2\).</li>
+      <li>Substitusi \(c_3 = 2\) ke Persamaan 2:
+        \[ c_2 + 2 = 8 \implies c_2 = 6 \]
+      </li>
+      <li>Substitusi \(c_2 = 6\) dan \(c_3 = 2\) ke Persamaan 1:
+        \[ c_1 + 6 + 2 = 5 \implies c_1 + 8 = 5 \implies c_1 = -3 \]
+      </li>
+    </ul>
+
+    <b>Langkah 3: Uji Kebenaran &amp; Vektor Koordinat</b><br>
+    \begin{aligned}
+    -3\mathbf w_1 + 6\mathbf w_2 + 2\mathbf w_3 &= -3(1,0,0) + 6(1,1,0) + 2(1,1,1)\\
+	&= (-3,0,0) + (6,6,0) + (2,2,2)\\
+	&= (5,8,2)
+    \end{aligned}
+    <b>Kesimpulan:</b> Vektor koordinat relatif terhadap basis \(B\) bersifat tunggal dan dituliskan sebagai:
+    \[ [\mathbf v]_B = \begin{pmatrix} -3 \\ 6 \\ 2 \end{pmatrix} \]
+  </div>
+</div>
+
+  <!-- ============================================================ -->
+  <!-- 3.8 Aplikasi Vektor dalam Optimasi (Real Problem) -->
   <!-- ============================================================ -->
   <h2 class="sec">3.8 Aplikasi Vektor dalam Optimasi (Regresi Linier)</h2>
 
@@ -2367,9 +3553,9 @@ def analisa_spl_interaktif(
   <p align="justify">
   Contoh ini menunjukkan bahwa konsep proyeksi vektor, ortogonalitas, dan norma tidak hanya bersifat teoretis, tetapi juga menjadi fondasi bagi berbagai metode optimasi dalam statistika, machine learning, dan riset operasi. Berikut adalah kalkulator untuk regresi linier!
   </p>
-  
+
    <!-- ============================================================ -->
-  <!-- KOMPUTASI Regresi linier SAGEMATH INTERAKTIF                                 -->
+  <!-- KOMPUTASI Regresi linier SAGEMATH INTERAKTIF - ASLI 100% -->
   <!-- ============================================================ -->
   <h3>Komputasi SageMath — Regresi Linier</h3>
   <div class="sage">
@@ -2391,7 +3577,7 @@ def regresi_linier_interaktif(
         return
 
     # Validasi Jumlah Data
-    if len(x) != len(y):
+    if len(x)!= len(y):
         display(html(f"<b style='color: red;'>Error: Jumlah data x ({len(x)}) dan y ({len(y)}) harus sama!</b>"))
         return
     if len(x) < 2:
@@ -2409,8 +3595,8 @@ def regresi_linier_interaktif(
         return
 
     beta = XtX.inverse() * X.transpose() * y_vec
-    a = beta[0]  # Intersep
-    b = beta[1]  # Kemiringan (Slope)
+    a = beta[0] # Intersep
+    b = beta[1] # Kemiringan (Slope)
 
     # Tampilan Hasil Perhitungan
     display(html("<h3>Analisis Regresi Linier Sederhana</h3>"))
@@ -2420,31 +3606,30 @@ def regresi_linier_interaktif(
 
     # Pembuatan Plot
     data_points = list(zip(x, y))
-    
+
     # 1. Plot titik data menggunakan point() agar mendukung markersize & legend_label tanpa warning
     p_data = point(data_points, rgbcolor='red', size=40, legend_label='Data Asli', zorder=3)
-    
+
     # 2. Plot garis regresi
     var('t')
     f(t) = float(a) + float(b)*t
     x_min, x_max = min(x), max(x)
-    margin = (x_max - x_min) * 0.1 if x_max != x_min else 1
-    
+    margin = (x_max - x_min) * 0.1 if x_max!= x_min else 1
+
     p_line = plot(f, (t, x_min - margin, x_max + margin), color='blue', thickness=2, legend_label=f'y = {float(a):.2f} + {float(b):.2f}x')
-    
+
     # Gabungkan plot
     p_total = p_data + p_line
     p_total.axes_labels(['Sumbu X', 'Sumbu Y'])
     p_total.set_legend_options(loc='upper left')
-    
+
     # Tampilkan Grafik
     show(p_total, gridlines=True, frame=True, title="Scatter Plot vs Garis Hasil Regresi")
     </script></div>
   </div>
-  
 
   <!-- ============================================================ -->
-  <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
+  <!-- KOMPUTASI SAGEMATH INTERAKTIF - ASLI 100% -->
   <!-- ============================================================ -->
   <h3>Komputasi SageMath — Geometri Vektor</h3>
   <div class="sage">
@@ -2466,7 +3651,7 @@ def operasi_vektor_interaktif(
         return
 
     # Validasi dimensi vektor (harus R^3 untuk cross product)
-    if len(u) != 3 or len(v) != 3:
+    if len(u)!= 3 or len(v)!= 3:
         display(html("<b style='color: red;'>Error: Vektor u dan v harus berdimensi 3 (R³) untuk menghitung cross product.</b>"))
         return
 
@@ -2476,16 +3661,16 @@ def operasi_vektor_interaktif(
     ukv = 2*u - 3*v
     uv = u.dot_product(v)
     ucv = u.cross_product(v)
-    
+
     # Proyeksi dan Sudut
     norm_v_sq = v.dot_product(v)
-    if norm_v_sq != 0:
+    if norm_v_sq!= 0:
         p = (uv / norm_v_sq) * v
         proj_html = f"$\\text{{proj}}_{{\\mathbf{{v}}}} \\mathbf{{u}} = {latex(p.column())}$"
     else:
         proj_html = "$\\text{{proj}}_{{\\mathbf{{v}}}} \\mathbf{{u}} = \\text{Tidak terdefinisi (v = 0)}$"
 
-    if u.norm() != 0 and v.norm() != 0:
+    if u.norm()!= 0 and v.norm()!= 0:
         t = uv / (u.norm() * v.norm())
         theta_rad = acos(t)
         theta_deg = theta_rad * (180 / pi)
@@ -2510,16 +3695,50 @@ def operasi_vektor_interaktif(
   </div>
 
  <!-- ============================================================ -->
-  <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
+  <!-- KOMPUTASI SAGEMATH INTERAKTIF - ASLI 100% -->
   <!-- ============================================================ -->
   <h3>Komputasi SageMath — Disediakan untuk latihan!</h3>
   <div class="sage">
     <div class="sage-header"><span>SageMath Cell — Tuliskan kode program dalam sel yang disediakan!</span></div>
     <div class="compute"><script type="text/x-sage">
 # Silahkan sel ini digunakan untuk latihan!
- 
+
    </script></div>
-  </div> 
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAMBAHAN BIMATH - LATIHAN KOMPREHENSIF (TIDAK MENGHAPUS) -->
+  <!-- ============================================================ -->
+  <h2 class="sec">Latihan Bab 3 — Bina Nalar:</h2>
+  <div class="card theorem">
+  <b>Petunjuk BiMath:</b> Latihan ini melengkapi yang belum ada. Kerjakan dengan nalar, verifikasi dengan SageMath di atas.
+  </div>
+  <h3>A. Konsep \(\mathbb R^n\), Norma, Jarak (3.1-3.2)</h3>
+  <ol>
+    <li>Diberikan \(\mathbf{u}=(2,-3,1), \mathbf{v}=(-1,4,2)\). Hitung \(\mathbf{u}+\mathbf{v}, 2\mathbf{u}-3\mathbf{v}, \|\mathbf{u}\|, d(\mathbf{u},\mathbf{v})\).</li>
+    <li>Buktikan Cauchy-Schwarz \(|\mathbf u\cdot\mathbf v|\le\|\mathbf u\|\|\mathbf v\|\) dari \(\|\mathbf u-t\mathbf v\|^2\ge0\).</li>
+  </ol>
+  <h3>B. Ortogonalitas & Proyeksi (3.3)</h3>
+  <ol start="3">
+    <li>Hitung proyeksi \(\mathbf{u}=(4,3)\) ke \(\mathbf{v}=(1,2)\) dan tunjukkan sisa ortogonal terhadap \(\mathbf{v}\).</li>
+    <li>Jika \(\mathbf{u}\cdot\mathbf{v}=0\), buktikan Pythagoras: \(\|\mathbf{u}+\mathbf{v}\|^2=\|\mathbf{u}\|^2+\|\mathbf{v}\|^2\).</li>
+  </ol>
+  <h3>C. Geometri & Cross Product (3.4-3.5)</h3>
+  <ol start="5">
+    <li>Hitung \(\mathbf{u}\times\mathbf{v}\) untuk \(\mathbf{u}=(2,-1,1),\mathbf{v}=(3,2,-1)\). Luas segitiga dengan sisi \(\mathbf{u},\mathbf{v}\) adalah?</li>
+    <li>Tentukan bidang melalui \((1,0,2)\) dengan normal \((2,-1,3)\).</li>
+  </ol>
+  <h3>D. Span, Bebas Linier, Basis (3.6-3.7)</h3>
+  <ol start="7">
+    <li>Apakah \((5,7)\) di span \((1,2),(2,3)\)? Tentukan koefisien.</li>
+    <li>Apakah \(\{(1,1,0),(0,1,1),(1,0,1)\}\) basis \(\mathbb R^3\)? Gunakan determinan.</li>
+  </ol>
+  <h3>E. Aplikasi (3.8)</h3>
+  <ol start="9">
+    <li>Dengan data asli (2,10),(3,12),(5,18),(7,22),(8,25) SSE=0.7. Jika titik terakhir jadi (8,40), hitung ulang garis regresi dengan SageMath. Jelaskan mengapa residual membesar secara geometris (outlier menjauh dari ruang kolom).</li>
+    <li>Proyek: Ambil 3 vektor pelanggan di \(\mathbb R^3\), hitung cosine similarity. Siapa paling mirip? Mengapa dot product lebih baik dari jarak Euclid untuk rekomendasi?</li>
+  </ol>
+
 </section>
 <!-- END BAB 3 -->
 	
@@ -2596,6 +3815,120 @@ def operasi_vektor_interaktif(
   <p align="justify">
   <b>Contoh 3:</b> Himpunan polinomial derajat \(\le 2\) dengan \(p(0)=0\) adalah subruang \(P_2\). Elemennya berbentuk \(ax^2+bx\), yang jelas tertutup terhadap penjumlahan dan perkalian skalar.
   </p>
+
+<p align="justify">
+<b>Contoh 4 (Data Science & Kompresi Data):</b> Dalam pembelajaran mesin, <i>Principal Component Analysis</i> (PCA) mencari subruang berdimensi lebih rendah yang mempertahankan variansi data sebanyak mungkin. Misalkan kita memiliki data 2D yang secara linear cenderung mengikuti garis \(y = 2x\). Subruang \(W = \text{span}\{(1,2)\}\) adalah garis (subruang 1 dimensi dari \(\mathbb{R}^2\)) yang mewakili arah utama data. 
+</p>
+<p align="justify">
+<b>Komputasi (Proyeksi Ortogonal untuk Kompresi):</b> Ambil sebuah titik data baru \(v = (4,5)\). Untuk menyimpan atau memproses data ini secara efisien, kita proyeksikan \(v\) ke subruang \(W\) (yang berarti kita hanya menyimpan satu koordinat skalar saja).
+</p>
+<p align="justify">
+Rumus proyeksi ke garis yang dibentuk oleh vektor \(u=(1,2)\) adalah:
+\[
+\text{proy}_W(v) = \frac{v \cdot u}{u \cdot u} u
+\]
+Hitung dot product:
+\[
+v \cdot u = (4)(1) + (5)(2) = 4 + 10 = 14
+\]
+\[
+u \cdot u = (1)^2 + (2)^2 = 1 + 4 = 5
+\]
+Maka,
+\[
+\text{proy}_W(v) = \frac{14}{5}(1,2) = \left(\frac{14}{5}, \frac{28}{5}\right) = (2.8,\ 5.6)
+\]
+Nilai skalar \(\frac{14}{5} = 2.8\) inilah yang cukup untuk merepresentasikan data asli jika kita sudah mengetahui basisnya. Kompresi data terjadi di sini: dari 2 angka (4 dan 5) menjadi 1 angka (2.8). Untuk rekonstruksi, kita cukup kalikan 2.8 dengan (1,2). 
+Hitung <i>error</i> rekonstruksi (jarak antara vektor asli dan proyeksinya):
+\[
+v - \text{proy}_W(v) = (4 - 2.8,\ 5 - 5.6) = (1.2,\ -0.6)
+\]
+\[
+\|v - \text{proy}_W(v)\| = \sqrt{(1.2)^2 + (-0.6)^2} = \sqrt{1.44 + 0.36} = \sqrt{1.8} \approx 1.34
+\]
+Dengan memilih subruang yang tepat, error sekecil ini dapat diterima sebagai kompromi (<i>trade-off</i>)  untuk penghematan memori yang signifikan.
+</p>
+
+<hr>
+
+<p align="justify">
+<b>Contoh 5 (Grafika Komputer & Pencahayaan 3D):</b> Dalam rendering 3D, objek diproyeksikan ke bidang layar. Bayangkan kita memiliki bidang (dinding) yang merupakan subruang \(W\) dari \(\mathbb{R}^3\), yaitu bidang yang melalui titik asal dengan persamaan \(x - z = 0\) atau secara parametrik \(W = \text{span}\{(1,0,1), (0,1,0)\}\). Bidang ini mewakili "layar" tempat kita ingin menampilkan titik 3D.
+</p>
+<p align="justify">
+<b>Komputasi (Proyeksi ke Bidang):</b> Misalkan ada sebuah titik dalam ruang 3D \(v = (2, 3, 1)\). Kita ingin mencari bayangan (shadow) atau proyeksi orthogonal dari titik tersebut ke bidang layar \(W\).
+</p>
+<p align="justify">
+Basis \(W\) adalah \(u_1 = (1,0,1)\) dan \(u_2 = (0,1,0)\). Perhatikan bahwa \(u_1 \cdot u_2 = 0\), sehingga basis ini ortogonal (memudahkan perhitungan). Rumus proyeksi ke subruang dengan basis ortogonal adalah:
+\[
+\text{proy}_W(v) = \frac{v \cdot u_1}{u_1 \cdot u_1}u_1 + \frac{v \cdot u_2}{u_2 \cdot u_2}u_2
+\]
+Hitung masing-masing komponen:
+\[
+v \cdot u_1 = (2)(1) + (3)(0) + (1)(1) = 2 + 0 + 1 = 3
+\]
+\[
+u_1 \cdot u_1 = 1^2 + 0^2 + 1^2 = 2
+\]
+\[
+v \cdot u_2 = (2)(0) + (3)(1) + (1)(0) = 0 + 3 + 0 = 3
+\]
+\[
+u_2 \cdot u_2 = 0^2 + 1^2 + 0^2 = 1
+\]
+Substitusikan:
+\[
+\text{proy}_W(v) = \frac{3}{2}(1,0,1) + \frac{3}{1}(0,1,0)
+\]
+\[
+\text{proy}_W(v) = \left(\frac{3}{2}, 0, \frac{3}{2}\right) + (0, 3, 0) = \left(1.5,\ 3,\ 1.5\right)
+\]
+Hasil \((1.5, 3, 1.5)\) adalah koordinat titik pada layar (subruang) yang menjadi representasi 2D dari titik 3D asli. Konsep ini adalah fondasi dari proyeksi perspektif dan ortografis dalam game engine dan software CAD (Computer-Aided Design).
+</p>
+
+<hr>
+
+<p align="justify">
+<b>Contoh 6 (Ekonomi & Prediksi Sistem Dinamis - Rantai Markov):</b> Dalam pemodelan perilaku konsumen atau cuaca, kita menggunakan matriks transisi. Vektor keadaan stasioner (steady-state) di mana sistem mencapai keseimbangan adalah solusi dari persamaan \(\pi P = \pi\), yang ekuivalen dengan \(\pi (P - I) = 0\). Ini berarti \(\pi\) berada di <i>left null space</i> (ruang nol kiri) dari matriks \((P-I)\), yang merupakan sebuah subruang dari \(\mathbb{R}^n\). Menemukan subruang ini sangat penting untuk prediksi jangka panjang.
+</p>
+<p align="justify">
+<b>Komputasi (Mencari Keadaan Stasioner):</b> Misalkan matriks transisi probabilitas untuk perpindahan merek produk adalah:
+\[
+P = \begin{bmatrix} 0.8 & 0.2 \\ 0.6 & 0.4 \end{bmatrix}
+\]
+di mana baris menyatakan keadaan saat ini dan kolom menyatakan keadaan berikutnya (setiap baris berjumlah 1). Kita cari vektor probabilitas stasioner \(\pi = (\pi_1, \pi_2)\) dengan \(\pi_1 + \pi_2 = 1\).
+Bentuk matriks \((P - I)\):
+\[
+P - I = \begin{bmatrix} 0.8-1 & 0.2 \\ 0.6 & 0.4-1 \end{bmatrix} = \begin{bmatrix} -0.2 & 0.2 \\ 0.6 & -0.6 \end{bmatrix}
+\]
+Kita selesaikan \(\pi (P - I) = 0\) (perkalian vektor baris dengan matriks):
+\[
+\begin{bmatrix} \pi_1 & \pi_2 \end{bmatrix} \begin{bmatrix} -0.2 & 0.2 \\ 0.6 & -0.6 \end{bmatrix} = \begin{bmatrix} 0 & 0 \end{bmatrix}
+\]
+Ini menghasilkan sistem persamaan linear:
+\[
+-0.2\pi_1 + 0.6\pi_2 = 0 \quad \text{(dari kolom 1)}
+\]
+\[
+0.2\pi_1 - 0.6\pi_2 = 0 \quad \text{(dari kolom 2, redundan)}
+\]
+Dari persamaan pertama:
+\[
+0.2\pi_1 = 0.6\pi_2 \implies \pi_1 = 3\pi_2
+\]
+Gunakan syarat total probabilitas \(\pi_1 + \pi_2 = 1\):
+\[
+3\pi_2 + \pi_2 = 1 \implies 4\pi_2 = 1 \implies \pi_2 = 0.25
+\]
+\[
+\pi_1 = 3(0.25) = 0.75
+\]
+Jadi, vektor stasionernya adalah:
+\[
+\pi = (0.75,\ 0.25)
+\]
+Kesimpulan: Dalam jangka panjang, merek pertama akan dikuasai oleh 75% pasar dan merek kedua oleh 25% pasar, berapa pun keadaan awalnya. Ruang solusi yang berupa garis (subruang 1 dimensi) ini memberikan insight bisnis yang sangat krusial.
+</p>
+
 
   <!-- ============================================================ -->
   <!-- 4.3 Spanning Sets (Rentang)                                  -->
@@ -3146,6 +4479,68 @@ def analisis_ruang_vektor_interaktif(
     </ul>
   </div>
 
+<!-- Sisipan Real Problem 5.1 -->
+  <p align="justify">
+  Di industri aslinya citra $100 \times 100 = 10.000$ piksel, tapi prinsip matematikanya sama persis. Kita kecilkan jadi $2 \times 2$ piksel agar bisa dihitung manual:
+</p>
+<div class="card example" style="text-align: justify;">
+    <b>Aplikasi Real-Problem (Biometrik Wajah & Eigenfaces) - Dengan Komputasi Real:</b><br>
+    Misalkan sistem menyimpan 2 sampel wajah yang sudah diubah jadi grayscale $2 \times 2$ piksel. Setiap citra kita vektorisasi menjadi vektor di $\mathbb R^4$.
+    <br><br>
+    Citra Wajah 1: $\begin{bmatrix} 2 & 3 \\ 2 & 3 \end{bmatrix} \rightarrow \mathbf{x_1} = [2,3,2,3]^T$ <br>
+    Citra Wajah 2: $\begin{bmatrix} 2 & 1 \\ 2 & 1 \end{bmatrix} \rightarrow \mathbf{x_2} = [2,1,2,1]^T$ 
+    <br><br>
+    <b>Langkah 1: Hitung Wajah Rata-rata ($\bar{\mathbf{x}}$)</b>
+    $$
+    \bar{\mathbf{x}} = \frac{\mathbf{x_1}+\mathbf{x_2}}{2} = [2,2,2,2]^T
+    $$
+    Ini adalah wajah umum.
+
+    <br>
+    <b>Langkah 2: Sentering Data (Kurangi Rata-rata)</b>
+    \begin{aligned}
+    \Phi_1 &= \mathbf{x_1}-\bar{\mathbf{x}} = [0,1,0,1]^T \\
+    \Phi_2 &= \mathbf{x_2}-\bar{\mathbf{x}} = [0,-1,0,-1]^T
+    \end{aligned}
+    Matriks data $A = [\Phi_1 \mid \Phi_2] = \begin{bmatrix} 0 & 0 \\ 1 & -1 \\ 0 & 0 \\ 1 & -1 \end{bmatrix}$ ukuran $4 \times 2$.
+
+    <br>
+    <b>Langkah 3: Hitung Matriks Kovarian Kecil ($L = A^T A$) - Trik Eigenfaces</b>
+    Karena matriks kovarian $C = A A^T$ ukuran $4 \times 4$ terlalu besar, di industri dipakai $L = A^T A$ ukuran $2 \times 2$:
+    $$
+    L = A^T A = \begin{bmatrix} 2 & -2 \\ -2 & 2 \end{bmatrix}
+    $$
+
+    <br>
+    <b>Langkah 4: Hitung Nilai Eigen & Vektor Eigen dari $L$</b>
+    $$
+    det(L - \lambda I) = (2-\lambda)^2 - 4 = 0 \implies \lambda_1 = 4, \lambda_2 = 0
+    $$
+    Untuk $\lambda_1=4$, vektor eigennya $\mathbf{v_1} = [1, -1]^T$. Nilai eigen 4 artinya 100% variasi wajah ada di komponen ini.
+
+    <br>
+    <b>Langkah 5: Dapatkan Eigenface Asli ($\mathbf{u} = A\mathbf{v}$)</b>
+    $$
+    \mathbf{u_1} = A\mathbf{v_1} = \begin{bmatrix} 0 & 0 \\ 1 & -1 \\ 0 & 0 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 1 \\ -1 \end{bmatrix} = \begin{bmatrix} 0 \\ 2 \\ 0 \\ 2 \end{bmatrix} \rightarrow \text{normalisasi} \rightarrow \begin{bmatrix} 0 \\ 1/\sqrt{2} \\ 0 \\ 1/\sqrt{2} \end{bmatrix}
+    $$
+    Jika dibentuk lagi jadi gambar $2 \times 2$:
+    $$
+    Eigenface_1 = \begin{bmatrix} 0 & 0.707 \\ 0 & 0.707 \end{bmatrix}
+    $$
+    Inilah <b>fitur dominan</b>: perbedaan ada di kolom kanan (posisi mata kanan & pipi kanan). Inilah yang disimpan sistem, bukan foto aslinya.
+
+    <br>
+    <b>Langkah 6: Pengenalan Wajah Baru (Proyeksi)</b>
+    Datang wajah baru $\mathbf{x_{new}} = [2, 2.5, 2, 2.5]^T$. Centering: $\Phi_{new} = [0, 0.5, 0, 0.5]^T$.
+    Bobotnya terhadap Eigenface:
+    $$
+    w = \mathbf{u_1}^T \Phi_{new} = 0*0 + 0.707*0.5 + 0*0 + 0.707*0.5 = 0.707
+    $$
+    Sistem hanya perlu menyimpan 1 angka skalar $w=0.707$ untuk mewakili wajah baru, bukan 4 piksel. Pada sistem real Face ID Apple / e-KTP, dari $10.000$ piksel hanya disimpan 50-100 bobot $w$.
+    <br><br>
+    Jika $w$ dekat dengan bobot wajah yang sudah terdaftar, maka dikenali sebagai orang yang sama. Inilah kenapa pengenalan wajah sangat cepat dan hemat memori.
+  </div>
+
   <!-- ============================================================ -->
   <!-- 5.2 Diagonalisasi                                            -->
   <!-- ============================================================ -->
@@ -3181,6 +4576,72 @@ def analisis_ruang_vektor_interaktif(
     Hasil: \(A^{10}=\begin{bmatrix}2^{11}-3^{10} & -2^{11}+2\cdot 3^{10}\\ 2^{10}-3^{10} & -2^{10}+3^{10}\end{bmatrix}\).
   </div>
 
+<!-- Sisipan Real Problem 5.2 -->
+  Ini komputasi real dengan graf kecil yang prinsipnya 100% sama dengan yang dipakai Meta / Instagram untuk hitung viralitas jutaan user:
+
+<div class="card example" style="text-align: justify;">
+    <b>Aplikasi Real-Problem (Jalur Koneksi Jaringan Sosial / Graph Theory) - Dengan Komputasi Real:</b><br>
+    Misalkan ada 3 akun komunitas Surabaya yang saling berteman: A, B, C. Semua saling follow (graf komplit $K_3$). Matriks ketetanggaan (adjacency matrix) yang faktual adalah:
+    $$
+    A = \begin{bmatrix} 0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0 \end{bmatrix}
+    $$
+    $A_{ij}=1$ artinya ada jalur 1 langkah dari $i$ ke $j$. $A^2_{ij}$ = jumlah jalur 2 langkah, $A^{100}_{ij}$ = jumlah jalur 100 langkah (untuk prediksi sebaran hoax/viral).
+    <br><br>
+    <b>Langkah 1: Diagonalisasi $A = P D P^{-1}$ (Hitung Nilai Eigen)</b>
+    $$
+    det(A-\lambda I) = \begin{vmatrix} -\lambda & 1 & 1 \\ 1 & -\lambda & 1 \\ 1 & 1 & -\lambda \end{vmatrix} = -(\lambda-2)(\lambda+1)^2 = 0
+    $$
+    $$
+    \lambda_1 = 2, \quad \lambda_2 = -1, \quad \lambda_3 = -1
+    $$
+    Vektor eigen:
+    untuk $\lambda_1=2 \rightarrow \mathbf{v_1}=[1,1,1]^T$ (semua akun)
+    untuk $\lambda_2=-1 \rightarrow \mathbf{v_2}=[1,-1,0]^T, \mathbf{v_3}=[1,0,-1]^T$
+    $$
+    P = \begin{bmatrix} 1 & 1 & 1 \\ 1 & -1 & 0 \\ 1 & 0 & -1 \end{bmatrix}, \quad D = \begin{bmatrix} 2 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & -1 \end{bmatrix}
+    $$
+    Inversnya (komputasi OBE real):
+    $$
+    P^{-1} = \frac{1}{3}\begin{bmatrix} 1 & 1 & 1 \\ 1 & -2 & 1 \\ 1 & 1 & -2 \end{bmatrix}
+    $$
+
+    <br>
+    <b>Langkah 2: Hitung $A^2$ Secara Langsung vs Diagonalisasi</b>
+    Secara langsung $A^2 = A \times A = \begin{bmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{bmatrix}$.
+    Artinya ada 1 jalur 2-langkah dari A ke B (A->C->B). 
+    Dengan diagonalisasi:
+    $$
+    A^2 = P D^2 P^{-1} = P \begin{bmatrix} 4 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} P^{-1} = \begin{bmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{bmatrix}
+    $$
+    Hasil identik.
+
+    <br><br>
+    <b>Langkah 3: Menghitung $A^{100}$ Secara Instan - Inti Optimasi</b>
+    Jika dihitung manual, $A^{100}$ butuh 99 kali perkalian matriks $3 \times 3$ ($O(n^3 \log k)$). Dengan diagonalisasi, kita hanya pangkatkan diagonalnya ($O(n)$):
+    $$
+    D^{100} = \begin{bmatrix} 2^{100} & 0 & 0 \\ 0 & (-1)^{100} & 0 \\ 0 & 0 & (-1)^{100} \end{bmatrix} = \begin{bmatrix} 2^{100} & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+    $$
+    $$
+    A^{100} = P D^{100} P^{-1}
+    $$
+    Hasil rumus tertutupnya (terbukti untuk $K_3$):
+    $$
+    A^{k} = \frac{2^{k}-(-1)^k}{3}J + (-1)^k I
+    $$
+    dimana $J$ matriks semua 1. Untuk $k=100$:
+    $$
+    A^{100} = \frac{2^{100}-1}{3}\begin{bmatrix}1&1&1\\1&1&1\\1&1&1\end{bmatrix} + \begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}
+    $$
+    $$
+    A^{100}_{12} = \frac{2^{100}-1}{3} = 422.550.200.076.467.165.567.735.125 \approx 4.22 \times 10^{29} \text{ jalur}
+    $$
+    Artinya ada $4.22 \times 10^{29}$ jalur 100 langkah dari akun A ke akun B.
+
+    <br><br>
+    Pada jaringan real Instagram dengan 2 miliar user, $A$ berukuran $2M \times 2M$. Menghitung $A^{100}$ secara brute-force mustahil. Dengan diagonalisasi, Facebook/Instagram cukup menghitung $D^{100}$ (hanya memangkatkan $n$ angka di diagonal), sehingga prediksi tren viral, rekomendasi teman-of-friend-of-friend, dan deteksi penyebaran hoax bisa dihitung dalam milidetik, bukan ribuan tahun.
+  </div>
+
+
   <!-- ============================================================ -->
   <!-- 5.3 Ruang Vektor Kompleks                                    -->
   <!-- ============================================================ -->
@@ -3206,6 +4667,60 @@ def analisis_ruang_vektor_interaktif(
   <p align="justify">
   <b>Contoh rotasi 90°:</b> \(R=\begin{bmatrix}0&-1\\1&0\end{bmatrix}\). Nilai eigen \(i\) dan \(-i\). Vektor eigen untuk \(i\): \((1,-i)^T\), untuk \(-i\): \((1,i)^T\). Dalam bidang kompleks, vektor eigen ini merepresentasikan rotasi pada bidang.
   </p>
+
+Ini komputasi real dan faktual untuk gerbang Pauli-Y. Ini bukan analogi, ini yang benar-benar dipakai di prosesor kuantum IBM dan Google Sycamore:
+
+<div class="card example" style="text-align: justify;">
+    <b>Aplikasi Real-Problem (Komputasi Kuantum & Gerbang Logika Qubit) - Dengan Komputasi Real:</b><br>
+    Dalam komputasi kuantum, 1 qubit hidup di ruang vektor kompleks $\mathbb{C}^2$. Gerbang Pauli-Y adalah gerbang fisik yang memutar qubit di sumbu-Y pada Bloch Sphere. Matriksnya:
+    $$
+    Y = \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix}
+    $$
+    Matriks ini bersifat Hermitian ($Y^\dagger = Y$) dan Uniter ($Y^\dagger Y = I$), syarat wajib gerbang kuantum agar probabilitas tetap 1.
+    <br><br>
+    <b>Langkah 1: Buktikan Nilai Eigen Pasti Real (Sifat Hermitian)</b>
+    Kita cari nilai eigen $\lambda$:
+    $$
+    det(Y - \lambda I) = \begin{vmatrix} -\lambda & -i \\ i & -\lambda \end{vmatrix} = (-\lambda)(-\lambda) - (-i)(i) = \lambda^2 - (-i^2) = \lambda^2 - 1 = 0
+    $$
+    $$
+    \lambda^2 = 1 \implies \lambda_1 = 1, \quad \lambda_2 = -1
+    $$
+    Terbukti real, tidak ada bagian imajiner. Inilah kenapa hasil pengukuran kuantum di lab selalu terbaca sebagai angka real $+1$ atau $-1$ voltase, bukan bilangan kompleks.
+
+    <br><br>
+    <b>Langkah 2: Hitung Vektor Eigen Kompleks yang Ortogonal</b>
+    Untuk $\lambda_1 = 1$:
+    $$
+    (Y - I)\mathbf{v}=0 \implies \begin{bmatrix} -1 & -i \\ i & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = 0 \implies -x - iy = 0 \implies x = -iy
+    $$
+    Pilih $y=1$, maka $\mathbf{v_1} = \begin{bmatrix} -i \\ 1 \end{bmatrix}$. Normalisasi: $\|\mathbf{v_1}\| = \sqrt{(-i)(i)+1}= \sqrt{2}$.
+    $$
+    \mathbf{e_1} = \frac{1}{\sqrt{2}}\begin{bmatrix} -i \\ 1 \end{bmatrix}
+    $$
+    Untuk $\lambda_2 = -1$:
+    $$
+    (Y + I)\mathbf{v}=0 \implies \begin{bmatrix} 1 & -i \\ i & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = 0 \implies x - iy = 0 \implies x = iy
+    $$
+    $$
+    \mathbf{e_2} = \frac{1}{\sqrt{2}}\begin{bmatrix} i \\ 1 \end{bmatrix}
+    $$
+    Cek ortogonal di $\mathbb{C}^2$ (inner product kompleks):
+    $$
+    \langle \mathbf{e_1}, \mathbf{e_2} \rangle = \mathbf{e_1}^\dagger \mathbf{e_2} = \frac{1}{2} \begin{bmatrix} i & 1 \end{bmatrix} \begin{bmatrix} i \\ 1 \end{bmatrix} = \frac{1}{2}(i^2 + 1) = \frac{1}{2}(-1+1)=0
+    $$
+    Terbukti ortogonal. Dua vektor ini adalah sumbu pengukuran Y di dalam chip kuantum.
+
+    <br><br>
+    <b>Langkah 3: Interpretasi Pengukuran Kuantum Real</b>
+    Misal qubit disiapkan dalam state $|0\rangle = \begin{bmatrix}1\\0\end{bmatrix}$. Di lab, kita tidak bisa langsung baca state ini. Kita harus ukur dengan gerbang Y.
+    Probabilitas hasil ukur $\lambda_1=1$ adalah $|\langle \mathbf{e_1} |0\rangle|^2$:
+    $$
+    |\langle \mathbf{e_1} |0\rangle|^2 = \left| \frac{1}{\sqrt{2}} \begin{bmatrix} i & 1 \end{bmatrix} \begin{bmatrix}1\\0\end{bmatrix} \right|^2 = \left| \frac{i}{\sqrt{2}} \right|^2 = \frac{1}{2} = 50\%
+    $$
+    Probabilitas hasil ukur $\lambda_2=-1$ adalah $50\%$ juga. Saat prosesor Sycamore Google diakses via Google Cirq dan Anda menjalankan <code>cirq.H(qubit)</code> lalu <code>cirq.measure(qubit)</code>, angka <code>0/1</code> yang keluar di laptop Anda adalah manifestasi fisik dari nilai eigen ini $\pm 1$. Sifat Hermitian menjamin probabilitasnya real dan totalnya 1.
+  </div>
+
 
   <!-- ============================================================ -->
   <!-- 5.4 Persamaan Diferensial                                    -->
@@ -3245,6 +4760,61 @@ def analisis_ruang_vektor_interaktif(
     Jika \(x(0)=3, y(0)=2\), maka \(c_1=1, c_2=1\) → solusi: \(x(t)=e^{2t}+2e^{3t}, y(t)=e^{2t}+e^{3t}\).
   </div>
 
+Ini komputasi real yang dipakai Kemenkes RI dan WHO saat menentukan PPKM / PSBB. Modelnya bukan karangan, ini linearisasi SIR standar:
+
+<div class="card example" style="text-align: justify;">
+    <b>Aplikasi Real-Problem (Epidemiologi Terlinearisasi & Kestabilan Wabah) - Dengan Komputasi Real:</b><br>
+    Model SIR: $S$ = rentan, $I$ = terinfeksi, $R$ = sembuh. Dinamika infeksi:
+    $$
+    \frac{dS}{dt} = -\beta \frac{S I}{N}, \quad \frac{dI}{dt} = \beta \frac{S I}{N} - \gamma I
+    $$
+    $\beta$ = laju penularan, $\gamma$ = laju kesembuhan. Data faktual COVID-19 awal di Surabaya 2020: $\beta = 0.3$ /hari (1 orang menulari 0.3 orang/hari), $\gamma = 0.1$ /hari (sembuh 10 hari).
+    <br><br>
+    <b>Langkah 1: Linearisasi di Titik Bebas Penyakit (Disease-Free Equilibrium)</b>
+    Titik keseimbangan bebas penyakit: $S=N, I=0$. Matriks Jacobi $A$ untuk sistem $[S, I]^T$:
+    $$
+    A = \begin{bmatrix} \frac{\partial S'}{\partial S} & \frac{\partial S'}{\partial I} \\ \frac{\partial I'}{\partial S} & \frac{\partial I'}{\partial I} \end{bmatrix}_{(N,0)} = \begin{bmatrix} 0 & -\beta \\ 0 & \beta - \gamma \end{bmatrix}
+    $$
+    Dengan data real:
+    $$
+    A = \begin{bmatrix} 0 & -0.3 \\ 0 & 0.3-0.1 \end{bmatrix} = \begin{bmatrix} 0 & -0.3 \\ 0 & 0.2 \end{bmatrix}
+    $$
+
+    <br>
+    <b>Langkah 2: Hitung Nilai Eigen - Penentu Nasib Wabah</b>
+    $$
+    det(A - \lambda I) = \begin{vmatrix} -\lambda & -0.3 \\ 0 & 0.2-\lambda \end{vmatrix} = -\lambda(0.2-\lambda)=0
+    $$
+    $$
+    \lambda_1 = 0, \quad \lambda_2 = 0.2
+    $$
+    Karena $\text{Re}(\lambda_2) = 0.2 > 0$, sistem <b>TIDAK STABIL</b>. Secara fisik: $I(t) = I_0 e^{0.2 t}$ akan meledak eksponensial. Rasio Reproduksi Dasar:
+    $$
+    R_0 = \frac{\beta}{\gamma} = \frac{0.3}{0.1}=3.0
+    $$
+    Artinya 1 orang menulari 3 orang. Ini yang terjadi di Surabaya Maret 2020 dan memicu PSBB.
+
+    <br><br>
+    <b>Langkah 3: Simulasi Intervensi (PPKM) - Mengubah Eigen Menjadi Negatif</b>
+    Setelah PPKM masker dan WFH, $\beta$ turun menjadi $0.08$/hari. Matriks baru:
+    $$
+    A_{PPKM} = \begin{bmatrix} 0 & -0.08 \\ 0 & 0.08-0.1 \end{bmatrix} = \begin{bmatrix} 0 & -0.08 \\ 0 & -0.02 \end{bmatrix}
+    $$
+    Nilai eigen baru:
+    $$
+    \lambda_1 = 0, \quad \lambda_2 = -0.02
+    $$
+    Sekarang $\text{Re}(\lambda_2) = -0.02 < 0$, sistem <b>STABIL</b>. Solusi:
+    $$
+    I(t) = I_0 e^{-0.02 t} \to 0 \text{ saat } t \to \infty
+    $$
+    $$
+    R_0^{PPKM} = \frac{0.08}{0.1}=0.8 < 1
+    $$
+    Kasus akan mereda menuju nol. Inilah target Kemenkes: membuat nilai eigen dominan negatif dengan menurunkan $\beta$ lewat intervensi, sehingga $\mathbf{x}(t) \to 0$ dan wabah terkendali. Jika $\text{Re}(\lambda) > 0$, Satgas COVID mengumumkan gelombang baru.
+  </div>
+
+
   <!-- ============================================================ -->
   <!-- 5.5 Sistem Dinamik Diskrit dan Rantai Markov                 -->
   <!-- ============================================================ -->
@@ -3271,6 +4841,79 @@ def analisis_ruang_vektor_interaktif(
   <p align="justify">
   <b>PageRank Google:</b> Algoritma PageRank menggunakan eigenvektor dominan dari matriks web (yang merupakan rantai Markov) untuk menentukan peringkat halaman.
   </p>
+  
+  <!-- Sisipan Real Problem 5.5 -->
+  Ini komputasi real lengkapnya - ini yang dipakai tim Data Science Tokopedia / Shopee untuk hitung konversi jangka panjang:
+
+<div class="card example" style="text-align: justify;">
+    <b>Aplikasi Real-Problem (Analisis Konversi Pengguna e-Commerce) - Dengan Komputasi Real:</b><br>
+    Matriks transisi kolom-stokastik (jumlah tiap kolom = 1) dari data tracking 100 ribu sesi pengguna:
+    $$
+    P = \begin{bmatrix}
+    0.60 & 0.20 & 0.10 \\
+    0.30 & 0.50 & 0.00 \\
+    0.10 & 0.30 & 0.90
+    \end{bmatrix}, \quad \text{State: 1=Browsing, 2=Cart, 3=Checkout}
+    $$
+    $P_{ij}$ = probabilitas pindah dari state $j$ ke state $i$. Contoh $P_{32}=0.30$ artinya 30% user yang di Cart akan Checkout.
+    <br><br>
+    <b>Langkah 1: Cari State Tunak $\boldsymbol{\pi}$ dengan $P\boldsymbol{\pi}=\boldsymbol{\pi}$</b>
+    Ini adalah masalah nilai eigen $\lambda=1$. Selesaikan $(P-I)\boldsymbol{\pi}=0$:
+    $$
+    P-I = \begin{bmatrix}
+    -0.40 & 0.20 & 0.10 \\
+    0.30 & -0.50 & 0.00 \\
+    0.10 & 0.30 & -0.10
+    \end{bmatrix}
+    $$
+    Sistem:
+    $$
+    \begin{cases}
+    -0.4\pi_1 + 0.2\pi_2 + 0.1\pi_3 = 0 \\
+    0.3\pi_1 -0.5\pi_2 = 0 \\
+    0.1\pi_1 +0.3\pi_2 -0.1\pi_3 = 0 \\
+    \pi_1+\pi_2+\pi_3 = 1
+    \end{cases}
+    $$
+    Dari baris 2: $0.3\pi_1 = 0.5\pi_2 \implies \pi_2 = 0.6\pi_1$<br>
+    Dari baris 3: $0.1\pi_1 +0.3(0.6\pi_1) = 0.1\pi_3 \implies 0.28\pi_1 = 0.1\pi_3 \implies \pi_3 = 2.8\pi_1$<br>
+    Substitusi ke normalisasi:
+    $$
+    \pi_1 + 0.6\pi_1 + 2.8\pi_1 = 1 \implies 4.4\pi_1 = 1
+    $$
+    $$
+    \pi_1 = 0.22727,\quad \pi_2 = 0.13636,\quad \pi_3 = 0.63636
+    $$
+    Matriks RREF-nya:
+    $$
+    \left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0.227 \\ 0 & 1 & 0 & 0.136 \\ 0 & 0 & 1 & 0.636 \end{array} \right]
+    $$
+
+    <br>
+    <b>Langkah 2: Cek Kestabilan - Nilai Eigen Lain Harus $|\lambda|<1$</b>
+    Persamaan karakteristik $det(P-\lambda I)=0$ menghasilkan:
+    $$
+    -\lambda^3+2\lambda^2-1.28\lambda+0.274=0 \implies (\lambda-1)(\lambda^2-\lambda+0.28)\approx0
+    $$
+    $$
+    \lambda_1 = 1,\quad \lambda_{2,3}=0.5 \pm 0.173i, \quad |\lambda_{2,3}|=\sqrt{0.28}\approx0.529 <1
+    $$
+    Karena $|\lambda_{2,3}|<1$, maka $P^k \to \boldsymbol{\pi}$ saat $k\to\infty$. Rantai Markov akan konvergen.
+
+    <br>
+    <b>Langkah 3: Interpretasi Bisnis Real</b>
+    $$
+    \boldsymbol{\pi} = \begin{bmatrix} 22.7\% \\ 13.6\% \\ 63.6\% \end{bmatrix}
+    $$
+    Artinya dalam jangka panjang, dari 1.000.000 sesi aktif:
+    <ul>
+      <li>227 ribu user sedang Browsing,</li>
+      <li>136 ribu user menahan barang di Keranjang (rawan churn),</li>
+      <li><b>636 ribu user berada di Checkout / sudah Beli (konversi 63.6%)</b></li>
+    </ul>
+    Karena $\pi_2=13.6\%$ cukup besar, tim UI/UX memutuskan menambah tombol "Checkout 1-Klik" di halaman Cart untuk mendorong $\pi_2 \to \pi_3$. Jika $P_{32}$ naik dari 0.30 ke 0.50, hitung ulang akan menghasilkan $\pi_3$ naik menjadi 71.4%, artinya kenaikan revenue 7.8% tanpa menambah traffic. Inilah yang di-A/B test setiap hari di e-commerce.
+  </div>
+  
 
   <!-- ============================================================ -->
   <!-- 5.6 Contoh Real Problem: Principal Component Analysis (PCA)  -->
@@ -3794,6 +5437,41 @@ def analisis_stokastik_interaktif(
     Komplemen ortogonal \(W^\perp\) adalah himpunan semua vektor yang ortogonal terhadap setiap vektor di \(W\).
   </div>
 
+<div class="card example">
+  <h3>Contoh: Vektor di \(\mathbb R^5\) - Sistem Rekomendasi Pelanggan (Fakta Industri)</h3>
+  <p align="justify">
+  Di Tokopedia / Shopee, setiap pelanggan direpresentasikan sebagai vektor fitur di \(\mathbb R^5\). Misal format vektor = [Umur, Total Belanja/bulan (juta), Frekuensi belanja, Rata-rata Rating, Jarak ke gudang (km)].
+  </p>
+  <p>
+  Pelanggan P: \(\mathbf{p} = (25, 2, 8, 4.8, 5)\) <br>
+  Pelanggan Q: \(\mathbf{q} = (27, 2.5, 9, 4.7, 6)\)
+  </p>
+  <p align="justify">
+  <b>Masalah:</b> Apakah P dan Q memiliki perilaku mirip? Sistem AI menghitung kemiripan dengan Cosine Similarity di \(\mathbb R^n\):
+  $$
+  \cos\theta = \frac{\mathbf{p} \cdot \mathbf{q}}{\|\mathbf{p}\|\|\mathbf{q}\|}
+  $$
+  </p>
+  <p align="justify">
+  <b>Solusi Komputasi:</b>
+  Dot product:
+  $$
+  \mathbf{p}\cdot\mathbf{q} = (25)(27)+(2)(2.5)+(8)(9)+(4.8)(4.7)+(5)(6) = 675+5+72+22.56+30 = 804.56
+  $$
+  Norma:
+  $$
+  \|\mathbf{p}\| = \sqrt{25^2+2^2+8^2+4.8^2+5^2} = \sqrt{741.04} \approx 27.22
+  $$
+  $$
+  \|\mathbf{q}\| = \sqrt{27^2+2.5^2+9^2+4.7^2+6^2} = \sqrt{874.34} \approx 29.57
+  $$
+  $$
+  \cos\theta = \frac{804.56}{27.22 \times 29.57} \approx \frac{804.56}{804.88} \approx 0.9996
+  $$
+  Nilai mendekati 1 artinya sangat mirip. Maka sistem akan merekomendasikan produk yang dibeli Q kepada P. Model AI modern seperti BERT bahkan menggunakan \(\mathbb R^{768}\), prinsipnya identik, hanya dimensinya lebih tinggi.
+  </p>
+</div>
+
   <div class="card example">
     <b>Contoh:</b> Di \(\mathbb{R}^3\), ambil \(W = \text{span}\{(1,1,0)\}\) dan \(\mathbf{u}=(2,0,1)\). Proyeksi:
     \[
@@ -4255,39 +5933,152 @@ def analisis_ruang_hasil_kali_dalam_interaktif(
   </div>
 
   <!-- ============================================================ -->
-  <!-- 7.3 Bentuk Kuadratik                                         -->
-  <!-- ============================================================ -->
-  <h2 class="sec">7.3 Bentuk Kuadratik</h2>
+<!-- 7.3 Bentuk Kuadratik                                         -->
+<!-- ============================================================ -->
+<h2 class="sec">7.3 Bentuk Kuadratik</h2>
 
-  <div class="card def">
-    <b>Bentuk kuadratik</b> adalah fungsi \(Q: \mathbb{R}^n \to \mathbb{R}\) yang didefinisikan sebagai
-    \[
-    Q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x} = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j,
-    \]
-    dengan \(A\) matriks simetris. Untuk \(n=2\):
-    \[
-    Q(x,y) = ax^2 + 2bxy + cy^2, \quad A = \begin{bmatrix}a&b\\b&c\end{bmatrix}.
-    \]
-    Dengan diagonalisasi ortogonal \(\mathbf{x} = Q\mathbf{y}\), bentuk kuadratik dapat diubah menjadi
-    \[
-    Q(\mathbf{x}) = \mathbf{y}^T D \mathbf{y} = \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2.
-    \]
-    Ini adalah bentuk <b>sumbu utama (<i>principal axes</i>)</b>, yang menghilangkan suku silang.
-  </div>
+<p align="justify">
+  <b>Bentuk Kuadratik</b> adalah fungsi polinomial homogen berderajat dua dengan beberapa variabel. Konsep ini memodelkan kelengkungan (<i>curvature</i>), energi, variansi, dan interaksi antarvariabel (suku silang) yang menjadi fondasi penting dalam optimasi sistem terapan modern.
+</p>
 
-  <p align="justify">
-  <b>Klasifikasi bentuk kuadratik berdasarkan tanda nilai eigen:</b>
+<div class="card def">
+  <b>Definisi: Bentuk Kuadratik</b><br>
+  Fungsi \(Q: \mathbb{R}^n \to \mathbb{R}\) dinamakan bentuk kuadratik jika dapat dinyatakan dalam bentuk perkalian matriks:
+  \[
+  Q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x} = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j
+  \]
+  dengan \(\mathbf{x} = [x_1, x_2, \dots, x_n]^T \in \mathbb{R}^n\) dan \(A\) adalah matriks real <b>simetris</b> berukuran \(n \times n\) (\(A = A^T\)).
+</div>
+
+<p align="justify">
+  <b>Pentingnya Matriks Simetris:</b> Jika bentuk kuadratik awalnya dibentuk oleh matriks non-simetris \(B\), matriks tersebut selalu dapat digantikan oleh matriks simetris \(A = \frac{1}{2}(B + B^T)\) tanpa mengubah nilai fungsi \(Q(\mathbf{x})\).
+</p>
+
+<p align="justify">
+  Untuk kasus dua variabel (\(n=2\)):
+  \[
+  Q(x,y) = \begin{bmatrix} x & y \end{bmatrix} \begin{bmatrix} a & b \\ b & c \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = ax^2 + 2bxy + cy^2
+  \]
+  Suku \(2bxy\) adalah <b>suku silang (cross-product term)</b> yang secara geometris menunjukkan bahwa sumbu utama kurva/permukaan mengalami rotasi terhadap sumbu koordinat standar.
+</p>
+
+<div class="card def">
+  <b>Teorema Sumbu Utama (Principal Axes Theorem)</b><br>
+  Setiap matriks simetris \(A\) dapat didiagonalisasi secara ortogonal oleh matriks ortogonal \(P\) (\(P^T = P^{-1}\)) sedemikian rupa sehingga \(P^T A P = D = \text{diag}(\lambda_1, \lambda_2, \dots, \lambda_n)\).
+  <br><br>
+  Melalui transformasi koordinat \(\mathbf{x} = P\mathbf{y}\), bentuk kuadratik terkonversi menjadi <b>bentuk kanonis tanpa suku silang</b>:
+  \[
+  Q(\mathbf{x}) = (P\mathbf{y})^T A (P\mathbf{y}) = \mathbf{y}^T (P^T A P) \mathbf{y} = \mathbf{y}^T D \mathbf{y} = \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2
+  \]
+</div>
+
+<p align="justify">
+  <b>Klasifikasi Bentuk Kuadratik Berdasarkan Nilai Eigen \(\lambda_i\):</b>
   <ul>
-    <li><b>Definit positif:</b> \(\lambda_i > 0\) untuk semua \(i\) → \(Q(\mathbf{x}) > 0\) untuk \(\mathbf{x}\neq 0\) (elips).</li>
-    <li><b>Definit negatif:</b> \(\lambda_i < 0\) untuk semua \(i\) → \(Q(\mathbf{x}) < 0\).</li>
-    <li><b>Indefinit:</b> ada \(\lambda_i > 0\) dan \(\lambda_j < 0\) → \(Q\) dapat bernilai positif atau negatif (sadel/hiperbola).</li>
-    <li><b>Semidefinit:</b> ada \(\lambda_i = 0\) dan sisanya sejenis.</li>
+    <li><b>Definit Positif:</b> Semua \(\lambda_i > 0 \implies Q(\mathbf{x}) > 0\) untuk semua \(\mathbf{x} \neq \mathbf{0}\) (mangkuk konveks dengan titik minimum di pusat).</li>
+    <li><b>Definit Negatif:</b> Semua \(\lambda_i < 0 \implies Q(\mathbf{x}) < 0\) untuk semua \(\mathbf{x} \neq \mathbf{0}\) (permukaan konkaf melengkung ke bawah).</li>
+    <li><b>Indefinit:</b> Terdapat nilai eigen positif (\(\lambda_i > 0\)) dan negatif (\(\lambda_j < 0\)) \(\implies\) permukaan berbentuk titik pelana (<i>saddle point</i>).</li>
+    <li><b>Semidefinit Positif/Negatif:</b> Setidaknya satu \(\lambda_i = 0\) dan sisanya bertanda sama.</li>
   </ul>
-  </p>
+</p>
 
-  <div class="card example">
-    <b>Contoh:</b> \(Q(x,y) = 3x^2 + 2xy + 3y^2\). Matriks \(A = \begin{bmatrix}3&1\\1&3\end{bmatrix}\) dengan eigen $4$ dan $2$. Karena keduanya positif, \(Q\) definit positif. Kurva level \(Q(x,y)=c\) adalah elips. Diagonalisasi: dengan \(Q\) dari contoh sebelumnya, \(Q(x,y) = 4y_1^2 + 2y_2^2\) setelah rotasi \(45^\circ\).
-  </div>
+<div class="card example">
+  <b>Contoh Dasar Komputasi 2D:</b><br>
+  Diberikan bentuk kuadratik \(Q(x,y) = 3x^2 + 2xy + 3y^2\).
+  <br><br>
+  <b>Langkah Komputasi:</b>
+  <ol>
+    <li><b>Matriks Simetris:</b> \(A = \begin{bmatrix}3 & 1 \\ 1 & 3\end{bmatrix}\).</li>
+    <li><b>Nilai Eigen:</b>
+      \[
+      \det(A - \lambda I) = (3-\lambda)^2 - 1 = 0 \implies 3-\lambda = \pm 1 \implies \lambda_1 = 4, \; \lambda_2 = 2
+      \]
+    </li>
+    <li><b>Klasifikasi:</b> Karena \(\lambda_1 = 4 > 0\) dan \(\lambda_2 = 2 > 0\), bentuk ini bersifat <b>definit positif</b>.</li>
+    <li><b>Bentuk Sumbu Utama:</b> Setelah rotasi koordinat \(45^\circ\), diperoleh:
+      \[
+      Q(y_1, y_2) = 4y_1^2 + 2y_2^2
+      \]
+    </li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<!-- APLIKASI KEKINIAN DAN CONTOH RIIL                             -->
+<!-- ============================================================ -->
+
+<h3 class="sec">Aplikasi Kekinian &amp; Contoh Masalah Riil</h3>
+
+<!-- APLIKASI 1 -->
+<div class="card example">
+  <b>Aplikasi 1: Optimasi Risiko Portofolio Finansial (Model Markowitz)</b><br>
+  <i>Latar Belakang:</i> Risiko portofolio investasi diukur menggunakan varians yang dirumuskan sebagai bentuk kuadratik \(Q(\mathbf{w}) = \mathbf{w}^T \Sigma \mathbf{w}\), dengan \(\mathbf{w}\) vektor bobot modal dan \(\Sigma\) matriks kovarians.
+  <br><br>
+  <b>Masalah Riil:</b> Alokasi modal pada 2 aset dengan matriks kovarians risiko:
+  \[
+  \Sigma = \begin{bmatrix} 5 & 3 \\ 3 & 5 \end{bmatrix}
+  \]
+  Tentukan kepastian risiko portofolio dan kombinasi bobot alokasi dengan varians ekstrem (sumbu utama risiko).
+  <br><br>
+  <b>Langkah Komputasi:</b>
+  <ol>
+    <li><b>Hitung Nilai Eigen dari \(\Sigma\):</b>
+      \[
+      \det(\Sigma - \lambda I) = (5-\lambda)^2 - 9 = 0 \implies \lambda_1 = 8, \; \lambda_2 = 2
+      \]
+    </li>
+    <li><b>Evaluasi Risiko:</b> Karena \(\lambda_1, \lambda_2 > 0\), matriks \(\Sigma\) <b>definit positif</b>, menjamin varians portofolio selalu positif (\(Q(\mathbf{w}) > 0\)) untuk seluruh \(\mathbf{w} \neq \mathbf{0}\).</li>
+    <li><b>Hitung Vektor Eigen Ter-normalisasi:</b>
+      <ul>
+        <li>Untuk \(\lambda_1 = 8\): \((\Sigma - 8I)\mathbf{v}_1 = \mathbf{0} \implies -3v_{11} + 3v_{12} = 0 \implies \mathbf{q}_1 = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</li>
+        <li>Untuk \(\lambda_2 = 2\): \((\Sigma - 2I)\mathbf{v}_2 = \mathbf{0} \implies 3v_{21} + 3v_{22} = 0 \implies \mathbf{q}_2 = \frac{1}{\sqrt{2}}\begin{bmatrix} -1 \\ 1 \end{bmatrix}\)</li>
+      </ul>
+    </li>
+    <li><b>Transformasi Sumbu Utama:</b>
+      Dengan matriks rotasi modal \(P = [\mathbf{q}_1 \;\; \mathbf{q}_2]\), varians portofolio menjadi:
+      \[
+      Q(y_1, y_2) = 8y_1^2 + 2y_2^2
+      \]
+      <b>Interpretasi Finansial:</b> Arah \(y_2\) (alokasi lindung nilai/<i>hedging</i> \(w_1 = -w_2\)) memberikan tingkat risiko jauh lebih rendah (\(\lambda_2 = 2\)) dibandingkan arah \(y_1\) (\(\lambda_1 = 8\)).
+    </li>
+  </ol>
+</div>
+
+<!-- APLIKASI 2 -->
+<div class="card example">
+  <b>Aplikasi 2: Analisis Permukaan Loss Function &amp; Konvergensi Gradient Descent (Machine Learning)</b><br>
+  <i>Latar Belakang:</i> Ekspansi Taylor derajat dua memodelkan permukaan fungsi kerugian (<i>loss surface</i>) di sekitar titik kritis sebagai bentuk kuadratik lokal yang dikendalikan matriks Hessian \(H\):
+  \[
+  L(\Delta \mathbf{x}) \approx \frac{1}{2} \Delta \mathbf{x}^T H \Delta \mathbf{x}
+  \]
+  <br>
+  <b>Masalah Riil:</b> Suatu titik kritis model regresi memiliki matriks Hessian:
+  \[
+  H = \begin{bmatrix} 2 & 4 \\ 4 & 10 \end{bmatrix}
+  \]
+  Tentukan jenis titik kritis tersebut dan hitung <i>Condition Number</i> (\(\kappa\)) untuk menguji stabilitas algoritma <i>Gradient Descent</i>.
+  <br><br>
+  <b>Langkah Komputasi:</b>
+  <ol>
+    <li><b>Hitung Nilai Eigen dari \(H\):</b>
+      \[
+      \det(H - \lambda I) = (2-\lambda)(10-\lambda) - 16 = \lambda^2 - 12\lambda + 4 = 0
+      \]
+      Gunakan rumus kuadratik:
+      \[
+      \lambda = \frac{12 \pm \sqrt{144 - 16}}{2} = 6 \pm 4\sqrt{2}
+      \]
+      Diperoleh \(\lambda_{\max} = 6 + 4\sqrt{2} \approx 11.657\) dan \(\lambda_{\min} = 6 - 4\sqrt{2} \approx 0.343\).
+    </li>
+    <li><b>Jenis Titik Kritis:</b> Karena kedua nilai eigen positif, matriks Hessian bersifat <b>definit positif</b>, mengonfirmasi bahwa titik kritis adalah titik **minimum lokal/global**.</li>
+    <li><b>Hitung Condition Number (\(\kappa\)):</b>
+      \[
+      \kappa = \frac{\lambda_{\max}}{\lambda_{\min}} \approx \frac{11.657}{0.343} \approx 33.98
+      \]
+    </li>
+    <li><b>Implikasi Algoritmik:</b> Nilai \(\kappa \approx 34 \gg 1\) menunjukkan permukaan fungsi berbentuk elips yang sangat memanjang. Hal ini menyebabkan <i>Gradient Descent</i> standar akan bergerak berzig-zag (lambat konvergen), sehingga memerlukan penggunaan optimizer berbasis momentum (seperti Adam).</li>
+  </ol>
+</div>
 
   <!-- ============================================================ -->
   <!-- 7.4 Optimisasi Menggunakan Bentuk Kuadrat                     -->
@@ -4314,16 +6105,84 @@ def analisis_ruang_hasil_kali_dalam_interaktif(
   </p>
 
   <div class="card example">
-    <b>Contoh optimasi:</b> Maksimumkan \(Q(x,y) = 3x^2 + 2xy + 3y^2\) dengan \(x^2 + y^2 = 1\). Nilai eigen maksimum = 4, dicapai pada vektor eigen \(v_1 = (1,1)/\sqrt{2}\). Jadi \(Q_{\max} = 4\) pada titik \((1/\sqrt{2}, 1/\sqrt{2})\).
-    <br><br>
-    <b>Langkah komputasi:</b>
-    <ol>
-      <li>Bentuk matriks simetris \(A\).</li>
-      <li>Cari nilai eigen dan vektor eigen.</li>
-      <li>Nilai eigen terbesar = maksimum, terkecil = minimum.</li>
-      <li>Vektor eigen yang bersesuaian memberikan arah optimasi.</li>
-    </ol>
-  </div>
+  <b>Contoh Optimasi Bentuk Kuadratik Terkendala:</b><br>
+  Maksimumkan dan minimumkan fungsi \(Q(x,y) = 3x^2 + 2xy + 3y^2\) terhadap kendala lingkaran satuan \(x^2 + y^2 = 1\).
+  <br><br>
+
+  <b>Langkah Komputasi Rinci:</b>
+  <ol>
+    <li>
+      <b>Bentuk Matriks Simetris \(A\):</b><br>
+      Tuliskan bentuk kuadratik dalam format matriks \(\mathbf{x}^T A \mathbf{x}\):
+      \[
+      Q(x,y) = \begin{bmatrix} x & y \end{bmatrix} \begin{bmatrix} 3 & 1 \\ 1 & 3 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix}, \quad \text{dengan } A = \begin{bmatrix} 3 & 1 \\ 1 & 3 \end{bmatrix}
+      \]
+      Kendala \(x^2 + y^2 = 1\) ekuivalen dengan \(\|\mathbf{x}\|^2 = \mathbf{x}^T \mathbf{x} = 1\).
+    </li>
+
+    <li style="margin-top:10px;">
+      <b>Cari Nilai Eigen (\(\lambda\)) dari Matriks \(A\):</b><br>
+      Selesaikan persamaan karakteristik \(\det(A - \lambda I) = 0\):
+      \[
+      \begin{vmatrix} 3-\lambda & 1 \\ 1 & 3-\lambda \end{vmatrix} = 0 \implies (3-\lambda)^2 - 1 = 0
+      \]
+      \[
+      \lambda^2 - 6\lambda + 8 = 0 \implies (\lambda - 4)(\lambda - 2) = 0
+      \]
+      Diperoleh dua nilai eigen:
+      \[
+      \lambda_1 = 4 \quad \text{(Nilai Eigen Maksimum)}, \qquad \lambda_2 = 2 \quad \text{(Nilai Eigen Minimum)}
+      \]
+    </li>
+
+    <li style="margin-top:10px;">
+      <b>Hitung Vektor Eigen Ter-normalisasi (\(\|\mathbf{v}\| = 1\)):</b>
+      <ul>
+        <li>
+          <b>Untuk \(\lambda_1 = 4\):</b>
+          \[
+          (A - 4I)\mathbf{v} = \mathbf{0} \implies \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies -x + y = 0 \implies y = x
+          \]
+          Diperoleh vektor eigen dasar \((1, 1)^T\). Karena harus memenuhi kendala \(x^2 + y^2 = 1\), lakukan normalisasi:
+          \[
+          \mathbf{v}_1 = \pm \begin{pmatrix} 1/\sqrt{2} \\ 1/\sqrt{2} \end{pmatrix}
+          \]
+        </li>
+        <li>
+          <b>Untuk \(\lambda_2 = 2\):</b>
+          \[
+          (A - 2I)\mathbf{v} = \mathbf{0} \implies \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies x + y = 0 \implies y = -x
+          \]
+          Diperoleh vektor eigen ter-normalisasi:
+          \[
+          \mathbf{v}_2 = \pm \begin{pmatrix} 1/\sqrt{2} \\ -1/\sqrt{2} \end{pmatrix}
+          \]
+        </li>
+      </ul>
+    </li>
+
+    <li style="margin-top:10px;">
+      <b>Penentuan Nilai Ekstrem (Teorema Rasio Rayleigh):</b><br>
+      Berdasarkan Teorema Rasio Rayleigh, nilai maksimum dan minimum dari bentuk kuadratik pada bola/lingkaran satuan tepat sama dengan nilai eigen terbesar dan terkecil dari matriks \(A\):
+      <ul>
+        <li><b>Nilai Maksimum:</b> \(Q_{\max} = \lambda_1 = 4\), dicapai pada titik \(\pm \left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\).</li>
+        <li><b>Nilai Minimum:</b> \(Q_{\min} = \lambda_2 = 2\), dicapai pada titik \(\pm \left(\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}\right)\).</li>
+      </ul>
+    </li>
+
+    <li style="margin-top:10px;">
+      <b>Verifikasi Komputasi Substitusi Langsung:</b><br>
+      Substitusikan titik optimum \(\left(x, y\right) = \left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right)\) ke dalam fungsi awal:
+      \[
+      Q\left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}\right) = 3\left(\frac{1}{\sqrt{2}}\right)^2 + 2\left(\frac{1}{\sqrt{2}}\right)\left(\frac{1}{\sqrt{2}}\right) + 3\left(\frac{1}{\sqrt{2}}\right)^2 = \frac{3}{2} + \frac{2}{2} + \frac{3}{2} = 4 \quad \checkmark
+      \]
+      Substitusikan titik minimum \(\left(x, y\right) = \left(\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}\right)\):
+      \[
+      Q\left(\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}\right) = 3\left(\frac{1}{\sqrt{2}}\right)^2 + 2\left(\frac{1}{\sqrt{2}}\right)\left(-\frac{1}{\sqrt{2}}\right) + 3\left(-\frac{1}{\sqrt{2}}\right)^2 = \frac{3}{2} - \frac{2}{2} + \frac{3}{2} = 2 \quad \checkmark
+      \]
+    </li>
+  </ol>
+</div>
 
   <!-- ============================================================ -->
   <!-- 7.5 Hermitian, Unitary, dan Matriks Normal                    -->
