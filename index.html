@@ -2712,28 +2712,170 @@ Dalam analisis data numerik, sering kali kita diberikan sekumpulan titik data di
   </p>
 
   <h2>2.1 Menghitung Determinan</h2>
-  <p align="justify">
-  <b>a) Ordo 2:</b>
-  \[
-  \det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
-  \]
-  <b>b) Ordo 3 — Aturan Sarrus</b> (Metode spesifik untuk $3\times 3$, tidak berlaku untuk $n \ge 4$):
-  \[
-  \det\begin{pmatrix}
-  a&b&c\\ d&e&f\\ g&h&i
-  \end{pmatrix}
-  = aei + bfg + cdh - ceg - bdi - afh.
-  \]
-  Secara visual, Aturan Sarrus dilakukan dengan menyalin dua kolom pertama ke sebelah kanan matriks, kemudian menjumlahkan hasil kali elemen-elemen diagonal utama (turun) dan menguranginya dengan hasil kali elemen-elemen diagonal sekunder (naik).
-  </p>
-  
-  <p align="justify">
-  <b>c) Ordo $n > 3$ dan Efisiensi Komputasi:</b> Meskipun ekspansi kofaktor berlaku untuk semua ordo, kompleksitas komputasinya adalah $\mathcal{O}(n!)$. Untuk matriks $10 \times 10$, ekspansi kofaktor membutuhkan lebih dari 3.6 juta operasi perkalian. Oleh karena itu, dalam komputasi praktis dan algoritma pemrosesan komputer, kita memanfaatkan <b>Eliminasi Gauss</b> untuk mereduksi $A$ menjadi matriks segitiga atas $U$ melalui Operasi Baris Elementer (OBE). Karena determinan matriks segitiga adalah hasil kali elemen-elemen diagonal utamanya, maka:
-  \[
-  \det(A) = (-1)^r \cdot \prod_{k=1}^{n} u_{kk},
-  \]
-  dengan $r$ menyatakan banyaknya pertukaran baris yang dilakukan selama proses eliminasi. Metode berbasis reduksi baris ini memiliki kompleksitas $\mathcal{O}(n^3)$, menjadikannya standar utama dalam perangkat lunak komputasi matematika seperti SageMath, NumPy, dan MATLAB.
-  </p>
+<p align="justify">
+<b>a) Ordo 2:</b><br>
+Untuk matriks berukuran $2 \times 2$, determinan dihitung secara langsung menggunakan selisih dari hasil kali elemen-elemen pada diagonal utama dan diagonal sekunder:
+\[
+\det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
+\]
+<b>Contoh Komputasi:</b><br>
+Diberikan matriks $A = \begin{pmatrix} 4 & 3 \\ 1 & 5 \end{pmatrix}$. Tentukan $\det(A)$.<br>
+<i>Penyelesaian:</i>
+\[
+\det(A) = (4 \cdot 5) - (3 \cdot 1) = 20 - 3 = 17.
+\]
+</p>
+
+<p align="justify">
+<b>b) Ordo 3 — Aturan Sarrus</b> (Metode spesifik untuk $3\times 3$, tidak berlaku untuk $n \ge 4$):<br>
+Aturan Sarrus menyediakan skema grafis yang efisien khusus untuk matriks orde tiga. Perhitungan dilakukan dengan menjumlahkan hasil kali elemen-elemen pada arah diagonal utama dan menguranginya dengan hasil kali elemen-elemen pada arah diagonal sekunder:
+\[
+\det\begin{pmatrix}
+a&b&c\\ d&e&f\\ g&h&i
+\end{pmatrix}
+= aei + bfg + cdh - ceg - bdi - afh.
+\]
+Secara visual, Aturan Sarrus dilakukan dengan menyalin dua kolom pertama ke sebelah kanan matriks, kemudian menjumlahkan hasil kali elemen-elemen diagonal utama (turun) dan menguranginya dengan hasil kali elemen-elemen diagonal sekunder (naik).
+<br><br>
+<b>Contoh Komputasi:</b><br>
+Diberikan matriks $B = \begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$. Tentukan $\det(B)$.<br>
+<i>Penyelesaian:</i><br>
+Menyalin dua kolom pertama ke sebelah kanan:
+\[
+\begin{matrix}
+1 & 2 & 3 & \mid & 1 & 2 \\
+0 & 1 & 4 & \mid & 0 & 1 \\
+5 & 6 & 0 & \mid & 5 & 6 
+\end{matrix}
+\]
+Menghitung hasil kali diagonal utama (turun) dan diagonal sekunder (naik):
+\[
+\begin{aligned}
+\text{Diagonal Utama (+)} &= (1 \cdot 1 \cdot 0) + (2 \cdot 4 \cdot 5) + (3 \cdot 0 \cdot 6) = 0 + 40 + 0 = 40. \\
+\text{Diagonal Sekunder (-)} &= (3 \cdot 1 \cdot 5) + (1 \cdot 4 \cdot 6) + (2 \cdot 0 \cdot 0) = 15 + 24 + 0 = 39.
+\end{aligned}
+\]
+Maka, $\det(B) = 40 - 39 = 1$.
+</p>
+
+<p align="justify">
+<b>c) Ordo $n > 3$ dan Efisiensi Komputasi:</b><br>
+Meskipun ekspansi kofaktor berlaku secara umum untuk semua ordo matriks, kompleksitas komputasionalnya bersifat faktorial, yaitu $\mathcal{O}(n!)$. Sebagai gambaran, untuk matriks berukuran $10 \times 10$, metode ekspansi kofaktor membutuhkan lebih dari 3,6 juta operasi perkalian—sebuah angka yang melonjak secara eksplosif seiring bertambahnya dimensi matriks.
+<br><br>
+Oleh karena itu, dalam komputasi praktis dan perangkat lunak pemrosesan numerik, matriks $A$ terlebih dahulu direduksi menjadi matriks segitiga atas $U$ memanfaatkan <b>Eliminasi Gauss</b> melalui Operasi Baris Elementer (OBE). Karena determinan dari matriks segitiga sama dengan hasil kali elemen-elemen pada diagonal utamanya, nilai determinan matriks asal dinotasikan sebagai:
+\[
+\det(A) = (-1)^r \cdot \prod_{k=1}^{n} u_{kk},
+\]
+dengan $r$ menyatakan banyaknya pertukaran baris yang dilakukan selama proses eliminasi. Metode berbasis reduksi baris ini memiliki kompleksitas polinomial $\mathcal{O}(n^3)$, menjadikannya standar utama dalam perangkat lunak komputasi matematika seperti SageMath, Python (NumPy), dan MATLAB.
+<br><br>
+<b>Contoh Komputasi (Reduksi Baris / Eliminasi Gauss):</b><br>
+Diberikan matriks $C = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 3 & 3 \\ 8 & 7 & 9 \end{pmatrix}$. Tentukan $\det(C)$ menggunakan reduksi matriks segitiga atas.<br>
+<i>Penyelesaian:</i><br>
+Lakukan Operasi Baris Elementer (OBE) untuk membentuk matriks segitiga atas $U$:
+<ol>
+  <li>Eliminasi kolom pertama di bawah diagonal:
+    <ul>
+      <li>$R_2 \leftarrow R_2 - 2R_1 \implies \begin{pmatrix} 4 & 3 & 3 \end{pmatrix} - \begin{pmatrix} 4 & 2 & 2 \end{pmatrix} = \begin{pmatrix} 0 & 1 & 1 \end{pmatrix}$</li>
+      <li>$R_3 \leftarrow R_3 - 4R_1 \implies \begin{pmatrix} 8 & 7 & 9 \end{pmatrix} - \begin{pmatrix} 8 & 4 & 4 \end{pmatrix} = \begin{pmatrix} 0 & 3 & 5 \end{pmatrix}$</li>
+    </ul>
+    Matriks menjadi: $\begin{pmatrix} 2 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 3 & 5 \end{pmatrix}$
+  </li>
+  <li>Eliminasi kolom kedua di bawah diagonal:
+    <ul>
+      <li>$R_3 \leftarrow R_3 - 3R_2 \implies \begin{pmatrix} 0 & 3 & 5 \end{pmatrix} - \begin{pmatrix} 0 & 3 & 3 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 2 \end{pmatrix}$</li>
+    </ul>
+    Diperoleh matriks segitiga atas $U = \begin{pmatrix} 2 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 2 \end{pmatrix}$.
+  </li>
+</ol>
+Karena tidak ada pertukaran baris yang dilakukan ($r = 0$), nilai determinan matriks $C$ adalah hasil kali elemen-elemen diagonal utama dari $U$:
+\[
+\det(C) = (-1)^0 \cdot (u_{11} \cdot u_{22} \cdot u_{33}) = 1 \cdot (2 \cdot 1 \cdot 2) = 4.
+\]
+</p>
+
+
+<!-- ============================================================ -->
+  <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
+  <!-- ============================================================ -->
+  <h3>Komputasi SageMath — Kalkulator Komputasi Determinan</h3>
+  <div class="sage">
+    <div class="sage-header"><span>SageMath Cell — Silahkan lakukan komputasi determinan matris persegi!</span></div>
+    <div class="compute"><script type="text/x-sage">
+from sage.all import *
+from copy import copy  # TAMBAHKAN INI
+
+@interact
+def hitung_determinan_interaktif(
+    matriks_input=input_box(
+        default="[[2, 1, 1], [4, 3, 3], [8, 7, 9]]", 
+        label="Input Matriks $A$:"
+    )
+):
+    try:
+        if isinstance(matriks_input, str):
+            data = sage_eval(matriks_input)
+        else:
+            data = matriks_input
+            
+        A = matrix(QQ, data)
+        n = A.nrows()
+        
+        if A.nrows() != A.ncols():
+            display(html("<b style='color:red;'>Error: Matriks harus berupa matriks persegi ($n \\times n$).</b>"))
+            return
+
+        display(html(f"<h3>Matriks Input $A$ (Ordo ${n} \\times {n}$):</h3>"))
+        display(html(f"$A = {latex(A)}$"))
+        
+        det_A = A.det()
+        
+        display(html("<hr>"))
+        display(html(f"<h3>1. Hasil Akhir Determinan</h3>"))
+        display(html(f"$\\det(A) = {latex(det_A)}$"))
+        
+        display(html("<hr>"))
+        display(html("<h3>2. Langkah Komputasi berbasis Eliminasi Gauss ($U$)</h3>"))
+        
+        # FIX DI SINI: jangan pakai A.copy()
+        U = copy(A)
+        r = 0
+        
+        for i in range(n):
+            if U[i, i] == 0:
+                pivoted = False
+                for k in range(i + 1, n):
+                    if U[k, i] != 0:
+                        U.swap_rows(i, k)
+                        r += 1
+                        pivoted = True
+                        break
+                if not pivoted:
+                    continue
+            
+            for j in range(i + 1, n):
+                if U[j, i] != 0:
+                    factor = U[j, i] / U[i, i]
+                    U.add_multiple_of_row(j, i, -factor)
+        
+        display(html("Matriks Segitiga Atas $U$ yang diperoleh dari Operasi Baris Elementer:"))
+        display(html(f"$U = {latex(U)}$"))
+        
+        diag_elements = [U[k, k] for k in range(n)]
+        
+        display(html(f"Banyaknya pertukaran baris ($r$): <b>{r}</b>"))
+        display(html("Formula: $\\det(A) = (-1)^r \\cdot \\prod_{k=1}^{n} u_{kk}$"))
+        
+        diag_str = " \\cdot ".join([f"({latex(x)})" if x < 0 else f"{latex(x)}" for x in diag_elements])
+        display(html(f"$\\det(A) = (-1)^{{{r}}} \\cdot \\left( {diag_str} \\right) = {latex(det_A)}$"))
+
+    except Exception as err:
+        display(html(f"<b style='color:red;'>Error Evaluasi Input:</b> {err}"))
+        display(html("<br>Pastikan penulisan sesuai format list Python, contoh:"))
+        display(html("<ul><li>Ordo 2: <code>[[4, 3], [1, 5]]</code></li><li>Ordo 3:\
+        <code>[[2, 1, 1], [4, 3, 3], [8, 7, 9]]</code></li></ul>"))
+   </script></div>
+  </div> 
+
 
   <h2>2.2 Sifat-Sifat Penting Determinan</h2>
   <p>Sifat-sifat aljabar berikut merupakan fondasi analisis teoritis dan alat peramping komputasi:</p>
