@@ -65,7 +65,7 @@
     display: flex;
     min-height: 100vh;
   }
-
+     
   /* --- SIDEBAR --- */
   #sidebar {
     width: 300px;
@@ -372,7 +372,7 @@
   <!-- ================= SIDEBAR ================= -->
   <nav id="sidebar">
     <h2>Aljabar Linier Elementer Praktis</h2>
-    <div class="subtitle" style="font-size:16px;"><b>BiMath:</b> Elementer Praktis — Edisi Interaktif<br><b>9 Bab + $\pmb{\LaTeX}$ + SageMath</b></div>
+    <div class="subtitle" style="font-size:16px;"><b>BiMath:</b> Aljabar Linier Elementer Praktis Edisi Interaktif<br><b>9 Bab + $\pmb{\LaTeX}$ + SageMath</b></div>
     <ul id="toc">
       <li class="active" onclick="showChapter(0)" style="font-size:18px;"><span class="num">1</span>SPL dan Matriks</li>
       <li onclick="showChapter(1)" style="font-size:18px;"><span class="num">2</span>Determinan</li>
@@ -419,6 +419,111 @@
       <section class="chapter active" id="ch0">
         <div class="badge">Bab 1 — Fondasi</div>
 <h1>Sistem Persamaan Linier dan Matriks</h1>
+
+<div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1140" width="100%" height="100%" style="background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif;">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+        </marker>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+        </filter>
+      </defs>
+      <g>
+        <!-- Judul Utama -->
+        <rect x="160" y="25" width="640" height="70" rx="10" fill="#1e293b" filter="url(#shadow)" />
+        <text x="480" y="52" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">SISTEM PERSAMAAN LINIER (SPL) &amp; MATRIKS</text>
+        <text x="480" y="78" text-anchor="middle" fill="#cbd5e1" font-size="15">(Fondasi Aljabar Linier)</text>
+        
+        <!-- Garis Penghubung dari Judul ke 3 Kolom -->
+        <path d="M 480 95 L 480 120 M 170 120 L 790 120 M 170 120 L 170 145 M 480 120 L 480 145 M 790 120 L 790 145" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+        
+        <!-- Kolom 1.1 -->
+        <rect x="40" y="145" width="270" height="380" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 40 153 A 8 8 0 0 1 48 145 L 302 145 A 8 8 0 0 1 310 153 L 310 185 L 40 185 Z" fill="#2563eb" />
+        <text x="175" y="170" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">1.1 Pengantar SPL</text>
+        <text x="52" y="210" fill="#0f172a" font-size="14" font-weight="bold">• Definisi:</text>
+        <text x="52" y="237" fill="#334155" font-size="14">  a₁x₁ + ... + aₙxₙ = b</text>
+        <text x="52" y="264" fill="#334155" font-size="14">  (variabel pangkat 1)</text>
+        <text x="52" y="291" fill="#0f172a" font-size="14" font-weight="bold">• Linier vs Non-Linier</text>
+        <text x="52" y="318" fill="#0f172a" font-size="14" font-weight="bold">• Konsistensi:</text>
+        <text x="52" y="345" fill="#334155" font-size="14">  - Konsisten (solusi ada)</text>
+        <text x="52" y="372" fill="#334155" font-size="14">  - Inkonsisten (tidak ada)</text>
+        <text x="52" y="399" fill="#0f172a" font-size="14" font-weight="bold">• 3 Kemungkinan Solusi:</text>
+        <text x="52" y="426" fill="#334155" font-size="14">  - Tunggal, Tak hingga, Tidak ada</text>
+        <text x="52" y="453" fill="#0f172a" font-size="14" font-weight="bold">• Matriks: A, x, b</text>
+        <text x="52" y="480" fill="#334155" font-size="14">  Matriks Diperbesar [A|b]</text>
+
+        <!-- Kolom 1.2 -->
+        <rect x="345" y="145" width="270" height="380" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 345 153 A 8 8 0 0 1 353 145 L 607 145 A 8 8 0 0 1 615 153 L 615 185 L 345 185 Z" fill="#0d9488" />
+        <text x="480" y="170" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">1.2 Eliminasi Gauss-Jordan</text>
+        <text x="357" y="210" fill="#0f172a" font-size="14" font-weight="bold">• Operasi Baris Elementer (OBE):</text>
+        <text x="357" y="237" fill="#334155" font-size="14">  - Tukar baris</text>
+        <text x="357" y="264" fill="#334155" font-size="14">  - Kali skalar</text>
+        <text x="357" y="291" fill="#334155" font-size="14">  - Tambah kelipatan</text>
+        <text x="357" y="318" fill="#0f172a" font-size="14" font-weight="bold">• Tujuan: Form RREF</text>
+        <text x="357" y="345" fill="#0f172a" font-size="14" font-weight="bold">• Rank &amp; Solusi:</text>
+        <text x="357" y="372" fill="#334155" font-size="14">  - rank(A) = rank(A|b) = n → tunggal</text>
+        <text x="357" y="399" fill="#334155" font-size="14">  - rank(A) = rank(A|b) &lt; n → tak hingga</text>
+        <text x="357" y="426" fill="#334155" font-size="14">  - rank(A) ≠ rank(A|b) → tidak ada</text>
+        <text x="357" y="453" fill="#0f172a" font-size="14" font-weight="bold">• Aplikasi:</text>
+        <text x="357" y="480" fill="#334155" font-size="14">  produksi, keuangan, gudang</text>
+
+        <!-- Kolom 1.3 -->
+        <rect x="650" y="145" width="270" height="380" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 650 153 A 8 8 0 0 1 658 145 L 912 145 A 8 8 0 0 1 920 153 L 920 185 L 650 185 Z" fill="#7c3aed" />
+        <text x="785" y="170" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">1.3 Matriks &amp; Operasi Matriks</text>
+        <text x="662" y="210" fill="#0f172a" font-size="14" font-weight="bold">• Definisi &amp; Ordo (m × n)</text>
+        <text x="662" y="237" fill="#0f172a" font-size="14" font-weight="bold">• Jenis Matriks:</text>
+        <text x="662" y="264" fill="#334155" font-size="14">  - Baris / Kolom / Persegi</text>
+        <text x="662" y="291" fill="#334155" font-size="14">  - Nol, Diagonal, Identitas</text>
+        <text x="662" y="318" fill="#0f172a" font-size="14" font-weight="bold">• Operasi Matriks:</text>
+        <text x="662" y="345" fill="#334155" font-size="14">  - +, - (ordo sama)</text>
+        <text x="662" y="372" fill="#334155" font-size="14">  - Perkalian Skalar</text>
+        <text x="662" y="399" fill="#334155" font-size="14">  - Perkalian (kolom A = baris B)</text>
+        <text x="662" y="426" fill="#334155" font-size="14">  - Transpose</text>
+        <text x="662" y="453" fill="#0f172a" font-size="14" font-weight="bold">• Sifat:</text>
+        <text x="662" y="480" fill="#334155" font-size="14">  Tidak komutatif, no pembatalan</text>
+
+        <!-- Garis Penghubung ke Card Bawah -->
+        <path d="M 175 525 L 175 550 M 480 525 L 480 550 M 785 525 L 785 550 M 175 550 L 785 550 M 480 550 L 480 570" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+        <!-- Card 1.4 -->
+        <rect x="130" y="570" width="700" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 130 578 A 8 8 0 0 1 138 570 L 822 570 A 8 8 0 0 1 830 578 L 830 605 L 130 605 Z" fill="#ea580c" />
+        <text x="146" y="593" fill="#ffffff" font-size="16" font-weight="bold">1.4 Invers Matriks</text>
+        <text x="146" y="625" fill="#0f172a" font-size="14" font-weight="bold">• Definisi: AB = BA = I  →  B = A⁻¹</text>
+        <text x="146" y="650" fill="#334155" font-size="14">• Rumus Invers 2×2: A⁻¹ = 1/(ad - bc) [ d  -b ; -c  a ]</text>
+        <text x="146" y="675" fill="#334155" font-size="14">• Sifat Utama: (AB)⁻¹ = B⁻¹A⁻¹  |  (Aᵀ)⁻¹ = (A⁻¹)ᵀ</text>
+        <text x="146" y="700" fill="#0f172a" font-size="14" font-weight="bold">• Solusi SPL dengan Invers: x = A⁻¹ b</text>
+
+        <path d="M 480 710 L 480 745" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+        <!-- Card 1.5 -->
+        <rect x="130" y="745" width="700" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 130 753 A 8 8 0 0 1 138 745 L 822 745 A 8 8 0 0 1 830 753 L 830 780 L 130 780 Z" fill="#d97706" />
+        <text x="146" y="768" fill="#ffffff" font-size="16" font-weight="bold">1.5 Matriks Elementer &amp; Metode [ A | I ]</text>
+        <text x="146" y="800" fill="#334155" font-size="14">• Matriks Elementer: Hasil dari 1 OBE pada matriks Identitas (I)</text>
+        <text x="146" y="825" fill="#334155" font-size="14">• Invers matriks elementer juga merupakan matriks elementer</text>
+        <text x="146" y="850" fill="#0f172a" font-size="14" font-weight="bold">• Metode Mencari Invers: [ A | I ]  ──OBE──&gt;  [ I | A⁻¹ ]</text>
+        <text x="146" y="875" fill="#334155" font-size="14">• Jika ada baris nol di sisi kiri  →  A Singular (tidak punya invers)</text>
+
+        <path d="M 480 885 L 480 920" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+        <!-- Card 1.6 -->
+        <rect x="130" y="920" width="700" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+        <path d="M 130 928 A 8 8 0 0 1 138 920 L 822 920 A 8 8 0 0 1 830 928 L 830 955 L 130 955 Z" fill="#059669" />
+        <text x="146" y="943" fill="#ffffff" font-size="16" font-weight="bold">1.6 Penerapan SPL</text>
+        <text x="146" y="975" fill="#334155" font-size="14">• Analisis Jaringan &amp; Flow (Aliran Masuk = Aliran Keluar)</text>
+        <text x="146" y="1000" fill="#334155" font-size="14">• Rangkaian Listrik (Hukum Arus KCL &amp; Hukum Tegangan KVL)</text>
+        <text x="146" y="1025" fill="#334155" font-size="14">• Penyetaraan Reaksi Kimia (Hukum Kekekalan Atom)</text>
+        <text x="146" y="1050" fill="#334155" font-size="14">• Interpolasi Polinomial (Matriks Vandermonde)</text>
+      </g>
+    </svg>
+</div>
+
 <p align="justify">
 Sistem Persamaan Linier (SPL) merupakan salah satu konsep paling mendasar dalam aljabar linier karena banyak persoalan nyata dapat dimodelkan sebagai hubungan linier antarvariabel. Beberapa penerapan utamanya meliputi:
 </p>
@@ -2691,6 +2796,125 @@ Dalam analisis data numerik, sering kali kita diberikan sekumpulan titik data di
   <div class="badge">Bab 2 - Determinan</div>
   <h1>Determinan</h1>
 
+<div class="container" style="width: 100%; max-width: 960px; margin: 0 auto; overflow: auto;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1220" width="100%" height="100%" style="background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif;">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+      <!-- Shadow tambahan untuk judul agar lebih menonjol -->
+      <filter id="strongShadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.25" />
+      </filter>
+    </defs>
+
+    <g>
+      <!-- Judul Utama dengan latar gelap solid dan shadow kuat -->
+      <rect x="140" y="25" width="680" height="85" rx="12" fill="#0f172a" filter="url(#strongShadow)" />
+      <!-- Garis aksen bawah -->
+      <rect x="140" y="110" width="680" height="3" fill="#3b82f6" />
+      
+      <text x="480" y="58" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="900" letter-spacing="1">BAB 2 – DETERMINAN</text>
+      <text x="480" y="88" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="600" opacity="1">(Faktor Skala Transformasi, Invertibilitas &amp; Aplikasi)</text>
+
+      <!-- Garis Penghubung ke 3 Kolom -->
+      <path d="M 480 113 L 480 133 M 175 133 L 785 133 M 175 133 L 175 153 M 480 133 L 480 153 M 785 133 L 785 153" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Kolom 1: Definisi & Perhitungan -->
+      <rect x="40" y="153" width="270" height="450" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 40 161 A 8 8 0 0 1 48 153 L 302 153 A 8 8 0 0 1 310 161 L 310 193 L 40 193 Z" fill="#2563eb" />
+      <text x="175" y="178" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">2.1 Menghitung Determinan</text>
+      <text x="55" y="218" fill="#0f172a" font-size="14" font-weight="bold">• Ordo 2 × 2</text>
+      <text x="55" y="240" fill="#334155" font-size="14">det(A) = ad – bc</text>
+      <text x="55" y="268" fill="#0f172a" font-size="14" font-weight="bold">• Ordo 3 × 3 (Aturan Sarrus)</text>
+      <text x="55" y="290" fill="#334155" font-size="14">aei + bfg + cdh</text>
+      <text x="55" y="312" fill="#334155" font-size="14">– ceg – bdi – afh</text>
+      <text x="55" y="340" fill="#0f172a" font-size="14" font-weight="bold">• Ordo n &gt; 3</text>
+      <text x="55" y="362" fill="#334155" font-size="14">Eliminasi Gauss → Matriks</text>
+      <text x="55" y="384" fill="#334155" font-size="14">segitiga atas U</text>
+      <text x="55" y="408" fill="#0f172a" font-size="14" font-weight="bold">det(A) = (-1)ʳ × ∏ uₖₖ</text>
+      <text x="55" y="430" fill="#334155" font-size="14">(r = banyak penukaran baris)</text>
+      <text x="55" y="458" fill="#0f172a" font-size="14" font-weight="bold">• Kompleksitas:</text>
+      <text x="55" y="480" fill="#334155" font-size="14">Ekspansi kofaktor: O(n!)</text>
+      <text x="55" y="502" fill="#334155" font-size="14">Reduksi baris: O(n³)</text>
+
+      <!-- Kolom 2: Sifat-sifat Determinan -->
+      <rect x="345" y="153" width="270" height="450" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 345 161 A 8 8 0 0 1 353 153 L 607 153 A 8 8 0 0 1 615 161 L 615 193 L 345 193 Z" fill="#0d9488" />
+      <text x="480" y="178" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">2.2 Sifat-Sifat Penting</text>
+      <text x="360" y="218" fill="#0f172a" font-size="14" font-weight="bold">• Multiplikatif</text>
+      <text x="360" y="240" fill="#334155" font-size="14">det(AB) = det(A) · det(B)</text>
+      <text x="360" y="268" fill="#0f172a" font-size="14" font-weight="bold">• Transpos</text>
+      <text x="360" y="290" fill="#334155" font-size="14">det(Aᵀ) = det(A)</text>
+      <text x="360" y="318" fill="#0f172a" font-size="14" font-weight="bold">• Invers</text>
+      <text x="360" y="340" fill="#334155" font-size="14">det(A⁻¹) = 1 / det(A)</text>
+      <text x="360" y="368" fill="#0f172a" font-size="14" font-weight="bold">• Efek OBE</text>
+      <text x="360" y="390" fill="#334155" font-size="14">- Tukar baris → tanda berbalik</text>
+      <text x="360" y="412" fill="#334155" font-size="14">- Kali skalar k → determinan × k</text>
+      <text x="360" y="434" fill="#334155" font-size="14">- Tambah kelipatan → tidak berubah</text>
+      <text x="360" y="462" fill="#0f172a" font-size="14" font-weight="bold">• Skalar Matriks Utuh</text>
+      <text x="360" y="484" fill="#334155" font-size="14">det(kA) = kⁿ · det(A)</text>
+      <text x="360" y="512" fill="#0f172a" font-size="14" font-weight="bold">• Determinan Nol ↔</text>
+      <text x="360" y="534" fill="#334155" font-size="14">baris/kolom bergantung linier</text>
+
+      <!-- Kolom 3: Interpretasi & Aplikasi -->
+      <rect x="650" y="153" width="270" height="450" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 650 161 A 8 8 0 0 1 658 153 L 912 153 A 8 8 0 0 1 920 161 L 920 193 L 650 193 Z" fill="#7c3aed" />
+      <text x="785" y="178" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">2.3 Makna &amp; Aplikasi</text>
+      <text x="665" y="218" fill="#0f172a" font-size="14" font-weight="bold">• Geometris</text>
+      <text x="665" y="240" fill="#334155" font-size="14">|det(A)| = faktor skala</text>
+      <text x="665" y="262" fill="#334155" font-size="14">volume (ℝ²: luas, ℝ³: volume)</text>
+      <text x="665" y="290" fill="#0f172a" font-size="14" font-weight="bold">• Invertibilitas</text>
+      <text x="665" y="312" fill="#334155" font-size="14">A invertibel ⇔ det(A) ≠ 0</text>
+      <text x="665" y="340" fill="#0f172a" font-size="14" font-weight="bold">• Aturan Cramer</text>
+      <text x="665" y="362" fill="#334155" font-size="14">xⱼ = det(Aⱼ) / det(A)</text>
+      <text x="665" y="384" fill="#334155" font-size="14">(Aⱼ: ganti kolom ke-j dengan b)</text>
+      <text x="665" y="412" fill="#0f172a" font-size="14" font-weight="bold">• Aplikasi Lain</text>
+      <text x="665" y="434" fill="#334155" font-size="14">- Uji kebebasan linier</text>
+      <text x="665" y="456" fill="#334155" font-size="14">- Nilai eigen (pers. karakteristik)</text>
+      <text x="665" y="478" fill="#334155" font-size="14">- Jacobian (kalkulus multivariabel)</text>
+      <text x="665" y="500" fill="#334155" font-size="14">- Optimasi &amp; riset operasi</text>
+
+      <!-- Garis Penghubung ke Card Bawah -->
+      <path d="M 175 603 L 175 628 M 480 603 L 480 628 M 785 603 L 785 628 M 175 628 L 785 628 M 480 628 L 480 658" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Card 1: Contoh Optimasi Produksi (SPL & Invers) -->
+      <rect x="130" y="658" width="700" height="170" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 130 666 A 8 8 0 0 1 138 658 L 822 658 A 8 8 0 0 1 830 666 L 830 693 L 130 693 Z" fill="#ea580c" />
+      <text x="146" y="681" fill="#ffffff" font-size="16" font-weight="bold">Contoh: Optimasi Produksi (SPL 2×2 &amp; Invers)</text>
+      <text x="146" y="718" fill="#0f172a" font-size="14" font-weight="bold">CV Furni Jaya: Meja (x) dan Kursi (y)</text>
+      <text x="146" y="741" fill="#334155" font-size="14">Kendala: 4x + 2y = 120 (mesin), 2x + 3y = 100 (tenaga kerja)</text>
+      <text x="146" y="764" fill="#0f172a" font-size="14" font-weight="bold">Matriks A = [[4,2],[2,3]], det(A)=8 ≠ 0 → solusi tunggal</text>
+      <text x="146" y="787" fill="#334155" font-size="14">A⁻¹ = 1/8 [[3,-2],[-2,4]] → (x,y) = (20,20) → keuntungan maksimum Rp 16.000.000</text>
+      <text x="146" y="810" fill="#334155" font-size="14">Verifikasi: seluruh kapasitas mesin &amp; tenaga kerja terpakai habis.</text>
+
+      <path d="M 480 828 L 480 863" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Card 2: Contoh Pemeliharaan Pabrik (SPL 3×3 & Invers) -->
+      <rect x="130" y="863" width="700" height="175" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 130 871 A 8 8 0 0 1 138 863 L 822 863 A 8 8 0 0 1 830 871 L 830 898 L 130 898 Z" fill="#d97706" />
+      <text x="146" y="886" fill="#ffffff" font-size="16" font-weight="bold">Contoh: Alokasi Pemeliharaan (SPL 3×3 &amp; Invers)</text>
+      <text x="146" y="923" fill="#0f172a" font-size="14" font-weight="bold">Paket A, B, C (x,y,z) dengan sumber daya X, Y, Jam Teknisi</text>
+      <text x="146" y="946" fill="#334155" font-size="14">Sistem: x+2y+3z=100, 2x+y+2z=80, x+3y+z=90</text>
+      <text x="146" y="969" fill="#0f172a" font-size="14" font-weight="bold">det(A)=10 → A⁻¹ ditemukan → solusi (x,y,z) = (15,20,15)</text>
+      <text x="146" y="992" fill="#334155" font-size="14">Total penerimaan = Rp 162.500.000, semua sumber daya terpakai habis.</text>
+      <text x="146" y="1015" fill="#334155" font-size="14">Verifikasi: X: 15+40+45=100; Y: 30+20+30=80; Jam: 15+60+15=90.</text>
+
+      <path d="M 480 1038 L 480 1073" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Card 3: Ringkasan / Intisari -->
+      <rect x="130" y="1073" width="700" height="110" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)" />
+      <path d="M 130 1081 A 8 8 0 0 1 138 1073 L 822 1073 A 8 8 0 0 1 830 1081 L 830 1108 L 130 1108 Z" fill="#059669" />
+      <text x="146" y="1096" fill="#ffffff" font-size="16" font-weight="bold">Intisari Determinan</text>
+      <text x="146" y="1133" fill="#334155" font-size="14">• Determinan ≠ 0 → matriks invertibel, SPL memiliki solusi tunggal, transformasi mempertahankan volume.</text>
+      <text x="146" y="1160" fill="#334155" font-size="14">• Determinan = 0 → singular, ruang kolom berdimensi lebih rendah, solusi tak hingga atau tidak ada.</text>
+    </g>
+  </svg>
+</div>
+
   <p align="justify">
   Determinan adalah salah satu konsep sentral dan paling fundamental dalam aljabar linier. Jika matriks persegi $A_{n \times n}$ dipandang sebagai operator transformasi linier $T: \mathbb{R}^n \to \mathbb{R}^n$, maka <b>determinan mengukur faktor skala perubahan volume (atau hipervolume) ruang akibat transformasi tersebut</b>, sekaligus mengindikasikan apakah orientasi ruang tetap dipertahankan ($\det(A) > 0$) atau dibalik ($\det(A) < 0$). Secara geometri di $\mathbb{R}^2$, $|\det(A)|$ merepresentasikan luas jajaran genjang yang dibentuk oleh vektor-vektor kolom $A$; di $\mathbb{R}^3$ merepresentasikan volume paralelepipedum. Karena transformasi volume hanya terdefinisi secara alami dari ruang berpangkat $n$ ke ruang berpangkat $n$ yang sama, maka determinan hanya terdefinisi untuk matriks persegi.
   </p>
@@ -3453,6 +3677,145 @@ def analisa_spl_interaktif(
 <section class="chapter" id="ch2">
   <div class="badge">Bab 3</div>
   <h1>Ruang Vektor Euclid \(\mathbb{R}^n\)</h1>
+  
+ <div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1120" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA                                                  -->
+    <!-- ============================================================ -->
+    <text x="550" y="48" text-anchor="middle" fill="#0f172a" font-size="30" font-weight="900" letter-spacing="0.5">BAB 3 – RUANG VEKTOR EUCLID ℝⁿ</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="19" font-weight="600">(Vektor, Norma, Hasil Kali, Ortogonalitas, Basis, Regresi)</text>
+    <line x1="100" y1="98" x2="1000" y2="98" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 3.1–3.2 Vektor, Norma, Dot Product, Jarak           -->
+    <!-- ============================================================ -->
+    <rect x="20" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 20 130 A 10 10 0 0 1 30 120 L 350 120 A 10 10 0 0 1 360 130 L 360 165 L 20 165 Z" fill="#2563eb" />
+    <text x="190" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">3.1–3.2 Vektor, Norma, Dot, Jarak</text>
+
+    <text x="38" y="195" fill="#0f172a" font-size="15" font-weight="bold">Vektor di ℝⁿ</text>
+    <text x="38" y="221" fill="#1e293b" font-size="14">u = (u₁, u₂, …, uₙ), uᵢ ∈ ℝ</text>
+    <text x="38" y="247" fill="#1e293b" font-size="14">Penjumlahan &amp; skalar: per komponen</text>
+
+    <text x="38" y="287" fill="#0f172a" font-size="15" font-weight="bold">Norma Euclid</text>
+    <text x="38" y="313" fill="#1e293b" font-size="14">‖u‖ = √(u₁² + … + uₙ²) ≥ 0</text>
+    <text x="38" y="337" fill="#1e293b" font-size="14">‖u‖ = 0 ⇔ u = 0</text>
+
+    <text x="38" y="377" fill="#0f172a" font-size="15" font-weight="bold">Hasil Kali Titik (Dot Product)</text>
+    <text x="38" y="403" fill="#1e293b" font-size="14">u·v = u₁v₁ + … + uₙvₙ</text>
+    <text x="38" y="427" fill="#1e293b" font-size="14">= ‖u‖ ‖v‖ cos θ</text>
+
+    <text x="38" y="467" fill="#0f172a" font-size="15" font-weight="bold">Jarak (Metrik Euclid)</text>
+    <text x="38" y="493" fill="#1e293b" font-size="14">d(u, v) = ‖u − v‖</text>
+    <text x="38" y="517" fill="#1e293b" font-size="14">= √[(u₁−v₁)² + … + (uₙ−vₙ)²]</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 3.3 Ortogonalitas, Proyeksi, Gram–Schmidt           -->
+    <!-- ============================================================ -->
+    <rect x="380" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 380 130 A 10 10 0 0 1 390 120 L 710 120 A 10 10 0 0 1 720 130 L 720 165 L 380 165 Z" fill="#0d9488" />
+    <text x="550" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">3.3 Ortogonalitas &amp; Proyeksi</text>
+
+    <text x="398" y="195" fill="#0f172a" font-size="15" font-weight="bold">Ortogonalitas</text>
+    <text x="398" y="221" fill="#1e293b" font-size="14">u ⊥ v  ⇔  u·v = 0</text>
+    <text x="398" y="247" fill="#1e293b" font-size="14">cos θ = 0 → θ = 90°</text>
+
+    <text x="398" y="287" fill="#0f172a" font-size="15" font-weight="bold">Proyeksi Ortogonal</text>
+    <text x="398" y="313" fill="#1e293b" font-size="14">projᵥ u = (u·v / ‖v‖²) · v</text>
+    <text x="398" y="337" fill="#1e293b" font-size="14">Residual r = u − projᵥ u</text>
+    <text x="398" y="361" fill="#1e293b" font-size="14">r ⊥ v  (Tegak lurus)</text>
+
+    <text x="398" y="401" fill="#0f172a" font-size="15" font-weight="bold">Basis Ortonormal</text>
+    <text x="398" y="427" fill="#1e293b" font-size="14">• Vektor saling ⊥ &amp; panjang 1</text>
+    <text x="398" y="451" fill="#1e293b" font-size="14">• QᵀQ = I  →  matriks ortogonal</text>
+
+    <text x="398" y="491" fill="#0f172a" font-size="15" font-weight="bold">Gram–Schmidt</text>
+    <text x="398" y="517" fill="#1e293b" font-size="14">Basis bebas → basis ortogonal/</text>
+    <text x="398" y="541" fill="#1e293b" font-size="14">ortonormal</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 3.4–3.5 Geometri SPL & Cross Product                -->
+    <!-- ============================================================ -->
+    <rect x="740" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 740 130 A 10 10 0 0 1 750 120 L 1070 120 A 10 10 0 0 1 1080 130 L 1080 165 L 740 165 Z" fill="#7c3aed" />
+    <text x="910" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">3.4–3.5 Geometri SPL &amp; Cross</text>
+
+    <text x="758" y="195" fill="#0f172a" font-size="15" font-weight="bold">Geometri SPL</text>
+    <text x="758" y="221" fill="#1e293b" font-size="14">• ℝ²: 2 garis → potong, sejajar...</text>
+    <text x="758" y="247" fill="#1e293b" font-size="14">• ℝ³: 3 bidang → titik, garis...</text>
+    <text x="758" y="273" fill="#1e293b" font-size="14">• Ax=b konsisten ⇔ b ∈ Col(A)</text>
+
+    <text x="758" y="313" fill="#0f172a" font-size="15" font-weight="bold">Cross Product (khusus ℝ³)</text>
+    <text x="758" y="339" fill="#1e293b" font-size="13.5">u × v = (u₂v₃−u₃v₂, u₃v₁−u₁v₃, u₁v₂−u₂v₁)</text>
+    <text x="758" y="365" fill="#1e293b" font-size="14">• u × v ⊥ u  dan  u × v ⊥ v</text>
+    <text x="758" y="391" fill="#1e293b" font-size="14">• ‖u × v‖ = ‖u‖ ‖v‖ sin θ</text>
+    <text x="758" y="415" fill="#1e293b" font-size="14">  = luas jajaran genjang</text>
+
+    <text x="758" y="455" fill="#0f172a" font-size="15" font-weight="bold">Identitas Lagrange</text>
+    <text x="758" y="481" fill="#1e293b" font-size="14">‖u×v‖² = ‖u‖²‖v‖² − (u·v)²</text>
+
+    <!-- Garis Pemisah Horizontal -->
+    <line x1="20" y1="680" x2="1080" y2="680" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: 3.6–3.7 Kombinasi Linier, Span, Bebas, Basis        -->
+    <!-- ============================================================ -->
+    <rect x="20" y="700" width="700" height="280" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 20 710 A 10 10 0 0 1 30 700 L 710 700 A 10 10 0 0 1 720 700 L 720 745 L 20 745 Z" fill="#ea580c" />
+    <text x="370" y="729" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">3.6–3.7 Kombinasi Linier, Span, Bebas Linier, Basis</text>
+
+    <text x="38" y="775" fill="#0f172a" font-size="15" font-weight="bold">Kombinasi Linier</text>
+    <text x="38" y="802" fill="#1e293b" font-size="14">w = c₁v₁ + c₂v₂ + … + cₖvₖ</text>
+
+    <text x="38" y="837" fill="#0f172a" font-size="15" font-weight="bold">Span (Rentang)</text>
+    <text x="38" y="864" fill="#1e293b" font-size="14">Span(S) = { semua kombinasi linier dari S }</text>
+
+    <text x="38" y="899" fill="#0f172a" font-size="15" font-weight="bold">Bebas Linier</text>
+    <text x="38" y="926" fill="#1e293b" font-size="14">• c₁v₁ + … + cₖvₖ = 0  ⇒  c₁ = … = cₖ = 0</text>
+    <text x="38" y="950" fill="#1e293b" font-size="14">• Jika det(A) ≠ 0 → bebas linier (n vektor di ℝⁿ)</text>
+
+    <!-- Sub-Kotak Basis -->
+    <rect x="475" y="760" width="230" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="590" y="788" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="bold">Basis</text>
+    <text x="590" y="816" text-anchor="middle" fill="#1e293b" font-size="14">(1) Bebas linier</text>
+    <text x="590" y="842" text-anchor="middle" fill="#1e293b" font-size="14">(2) Merentang ruang</text>
+    <text x="590" y="878" text-anchor="middle" fill="#334155" font-size="14">Setiap vektor memiliki</text>
+    <text x="590" y="902" text-anchor="middle" fill="#334155" font-size="14">representasi unik dalam</text>
+    <text x="590" y="926" text-anchor="middle" fill="#334155" font-size="14">kombinasi basis</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: 3.8 Aplikasi Regresi Linier                          -->
+    <!-- ============================================================ -->
+    <rect x="740" y="700" width="340" height="280" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 740 710 A 10 10 0 0 1 750 700 L 1070 700 A 10 10 0 0 1 1080 700 L 1080 745 L 740 745 Z" fill="#059669" />
+    <text x="910" y="729" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">3.8 Aplikasi: Regresi Linier</text>
+
+    <text x="758" y="775" fill="#0f172a" font-size="15" font-weight="bold">Model Linear</text>
+    <text x="758" y="802" fill="#1e293b" font-size="14">y = Xβ + ε</text>
+    <text x="758" y="826" fill="#1e293b" font-size="14">• X = matriks desain, y = respons</text>
+
+    <text x="758" y="866" fill="#0f172a" font-size="15" font-weight="bold">Kuadrat Terkecil</text>
+    <text x="758" y="892" fill="#1e293b" font-size="14">β̂ = (XᵀX)⁻¹ Xᵀy  (Pers. Normal)</text>
+
+    <text x="758" y="932" fill="#0f172a" font-size="15" font-weight="bold">Interpretasi Vektor</text>
+    <text x="758" y="958" fill="#1e293b" font-size="14">• ŷ = Xβ̂ = proyeksi y ke Col(X)</text>
+    <text x="758" y="982" fill="#1e293b" font-size="13.5">• Residual r = y − ŷ ⊥ Col(X)</text>
+
+    <!-- Catatan Kaki & Footer -->
+    <text x="20" y="1008" fill="#64748b" font-size="13" font-style="italic">* Cross product hanya terdefinisi di ℝ³.</text>
+
+    <rect x="20" y="1025" width="1060" height="75" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="1054" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="bold">Ruang Euclid ℝⁿ adalah fondasi geometri vektor, operasi aljabar, dan optimasi dalam sains &amp; teknologi modern.</text>
+    <text x="550" y="1080" text-anchor="middle" fill="#334155" font-size="14">Norma, dot product, proyeksi, basis, dan regresi adalah alat utama yang menghubungkan aljabar linier dengan dunia nyata.</text>
+  </svg>
+</div>
 
   <p align="justify">
   Ruang Euclid \(\mathbb{R}^n\) merupakan himpunan seluruh vektor yang memiliki \(n\) komponen bilangan riil. Konsep ini menjadi dasar dalam aljabar linier karena hampir semua objek matematika yang digunakan dalam sains, teknik, ekonomi, grafika komputer, kecerdasan buatan (Artificial Intelligence), dan analisis data dapat direpresentasikan sebagai vektor.
@@ -3464,19 +3827,17 @@ def analisa_spl_interaktif(
 
   <!-- TAMBAHAN BIMATH 3.0 - TANPA MENGHILANGKAN ASLI -->
   <div class="card note" style="border-left:4px solid #1565C0;">
-  <b>Tambahan Nalar BiMath 3.0 - Struktur \(\mathbb{R}^n\) sebagai Ruang Vektor:</b>
+  <b>3.0. Struktur \(\mathbb{R}^n\) sebagai Ruang Vektor:</b>
   <p align="justify">
   Agar \(\mathbb{R}^n\) sah disebut ruang vektor, ia harus memenuhi 10 aksioma: tertutup terhadap penjumlahan dan perkalian skalar, komutatif, asosiatif, ada vektor nol \(\mathbf{0}=(0,...,0)\), ada invers \(-\mathbf{u}\), serta sifat distributif.
   Operasi formal yang hilang di narasi asli: Jika \(\mathbf{u}=(u_1,...,u_n), \mathbf{v}=(v_1,...,v_n), c\in\mathbb{R}\), maka \(\mathbf{u}+\mathbf{v}=(u_1+v_1,...,u_n+v_n)\) dan \(c\mathbf{u}=(cu_1,...,cu_n)\). Inilah yang menjamin semua komputasi di sub-bab berikut valid secara aksiomatis.
   </p>
   </div>
 
-  Berikut contoh real problem yang faktual untuk topik 3.1, saya buat dengan narasi nyata dan komputasi yang valid sesuai format kamu:
-
 <!-- ============================================================ -->
 <!-- 3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-n -->
 <!-- ============================================================ -->
-<h2 class="sec">3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
+<h2 class="sec">3.1. Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
 
 <p align="justify">
 Pada bidang datar (\(\mathbb R^2\)), setiap vektor mempunyai dua komponen,
@@ -3528,7 +3889,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
   <!-- ============================================================ -->
   <!-- 3.2 Norma, Hasil Kali Titik, dan Jarak -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.2 Norma, Hasil Kali Titik, dan Jarak</h2>
+  <h2 class="sec">3.2. Norma, Hasil Kali Titik, dan Jarak</h2>
 
   <p align="justify">
   <b>Norma</b> suatu vektor menyatakan panjang atau besar vektor tersebut. Untuk vektor \(\mathbf u=(u_1,\ldots,u_n)\), norma Euclid didefinisikan sebagai
@@ -3628,7 +3989,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
   <!-- ============================================================ -->
   <!-- 3.3 Ortogonalitas -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.3 Ortogonalitas</h2>
+  <h2 class="sec">3.3. Ortogonalitas</h2>
 
   <p align="justify">
   Dua vektor dikatakan <b>ortogonal</b> apabila membentuk sudut \(90^\circ\). Secara matematis, kondisi tersebut ekuivalen dengan
@@ -3653,7 +4014,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
 <!-- ============================================================ -->
 <!-- 3.3.1 Hubungan dengan Sudut -->
 <!-- ============================================================ -->
-<h3><b>3.3.1 Hubungan Ortogonalitas dengan Sudut Antara Dua Vektor</b></h3>
+<h3><b>3.3.1. Hubungan Ortogonalitas dengan Sudut Antara Dua Vektor</b></h3>
 
 <p align="justify">
 Secara geometris, sudut \(\theta\) antara dua vektor \(\mathbf u\) dan \(\mathbf v\) memenuhi
@@ -3681,7 +4042,7 @@ Jika \(\mathbf u \cdot \mathbf v = 0\), maka \(\cos\theta = 0\), sehingga \(\the
 <!-- ============================================================ -->
 <!-- 3.3.2 Basis Ortogonal dan Ortonormal -->
 <!-- ============================================================ -->
-<h3>3.3.2 Basis Ortogonal dan Ortonormal</h3>
+<h3>3.3.2. Basis Ortogonal dan Ortonormal</h3>
 
 <p align="justify">
 <b>Basis ortogonal</b> adalah himpunan vektor yang saling tegak lurus satu sama lain. Jika setiap vektor pada basis ortogonal juga memiliki panjang 1, maka basis tersebut disebut <b>basis ortonormal</b>.
@@ -3711,7 +4072,7 @@ Keuntungan basis ortonormal: koordinat suatu vektor terhadap basis tersebut dapa
 <!-- ============================================================ -->
 <!-- 3.3.3 Proyeksi Ortogonal (dengan diagram yang sudah ada) -->
 <!-- ============================================================ -->
-<h3>3.3.3 Proyeksi Ortogonal</h3>
+<h3>3.3.3. Proyeksi Ortogonal</h3>
 
 <p align="justify">
 Proyeksi ortogonal vektor \(\mathbf u\) pada vektor \(\mathbf v\) (dengan \(\mathbf v \neq \mathbf 0\)) didefinisikan sebagai
@@ -3812,7 +4173,7 @@ akan selalu ortogonal terhadap \(\mathbf v\), yaitu \(\mathbf r \cdot \mathbf v 
 <!-- ============================================================ -->
 <!-- 3.3.4 Proses Gram–Schmidt -->
 <!-- ============================================================ -->
-<h3>3.3.4 Proses Gram–Schmidt</h3>
+<h3>3.3.4. Proses Gram–Schmidt</h3>
 
 <p align="justify">
 Proses Gram–Schmidt adalah algoritma untuk mengubah himpunan vektor bebas linear menjadi basis ortogonal (atau ortonormal). Langkah-langkahnya adalah sebagai berikut:
@@ -3853,7 +4214,7 @@ Proses Gram–Schmidt adalah algoritma untuk mengubah himpunan vektor bebas line
 <!-- ============================================================ -->
 <!-- 3.3.5 Teorema Pythagoras Vektor -->
 <!-- ============================================================ -->
-<h3>3.3.5 Teorema Pythagoras dalam Bentuk Vektor</h3>
+<h3>3.3.5. Teorema Pythagoras dalam Bentuk Vektor</h3>
 
 <p align="justify">
 Jika dua vektor \(\mathbf u\) dan \(\mathbf v\) ortogonal, maka berlaku
@@ -3877,7 +4238,7 @@ Hal ini sesuai dengan teorema Pythagoras pada segitiga siku-siku.
 <!-- ============================================================ -->
 <!-- 3.3.6 Matriks Ortogonal -->
 <!-- ============================================================ -->
-<h3>3.3.6 Matriks Ortogonal</h3>
+<h3>3.3.6. Matriks Ortogonal</h3>
 
 <p align="justify">
 Sebuah matriks persegi \(Q\) disebut <b>matriks ortogonal</b> jika kolom-kolomnya membentuk basis ortonormal, atau secara ekuivalen
@@ -3909,7 +4270,7 @@ Sifat penting: \(Q^{-1} = Q^T\), sehingga transformasi \(Q\mathbf x\) mempertaha
 <!-- ============================================================ -->
 <!-- 3.3.7 Aplikasi dalam Regresi Linear -->
 <!-- ============================================================ -->
-<h3>3.3.7 Aplikasi Ortogonalitas dalam Regresi Linear</h3>
+<h3>3.3.7. Aplikasi Ortogonalitas dalam Regresi Linear</h3>
 
 <p align="justify">
 Dalam regresi linear, kita memiliki model
@@ -3955,7 +4316,7 @@ X^T \mathbf r = \mathbf 0.
  <!-- ============================================================ -->
 <!-- 3.4 Geometri Sistem Linier -->
 <!-- ============================================================ -->
-<h2 class="sec">3.4 Geometri Sistem Linier</h2>
+<h2 class="sec">3.4. Geometri Sistem Linier</h2>
 
 <p align="justify">
 Sistem persamaan linier dapat diinterpretasikan secara geometris. Pada \(\mathbb R^2\), setiap persamaan linier merepresentasikan sebuah <b>garis</b>. Solusi SPL merupakan titik potong kedua garis tersebut.
@@ -4013,7 +4374,7 @@ Pada \(\mathbb R^3\), setiap persamaan linier merepresentasikan sebuah <b>bidang
 <!-- TAMBAHAN: Sub-topik dan Contoh Komputasi -->
 <!-- ============================================================ -->
 
-<h3>3.4.1 Analisis Solusi Melalui Eliminasi Gauss</h3>
+<h3>3.4.1. Analisis Solusi Melalui Eliminasi Gauss</h3>
 
 <p align="justify">
 Untuk sistem dengan \(n\) variabel dan \(m\) persamaan, kita dapat menggunakan <b>eliminasi Gauss</b> untuk mengubah matriks augmented ke bentuk <b>eselon baris</b> (atau eselon baris tereduksi). Bentuk ini secara langsung memperlihatkan apakah sistem konsisten, dan jika ya, berapa banyak parameter bebas yang dimiliki.
@@ -4174,10 +4535,10 @@ Untuk sistem \(A\mathbf{x}=\mathbf{b}\) dengan \(A\) matriks persegi (\(n\times 
 
 <div class="card example">
   <b>Contoh Komputasi – Menggunakan Determinan:</b><br>
-  Untuk sistem 2×2 pada contoh pertama: \(A = \begin{pmatrix}2&3\\4&-1\end{pmatrix}\). Hitung \(\det(A) = 2(-1) - 3(4) = -2 - 12 = -14 \neq 0\), maka solusi tunggal (sudah diperoleh). Untuk sistem tanpa solusi: \(A = \begin{pmatrix}1&2\\3&6\end{pmatrix}\), \(\det(A)=1\cdot6-2\cdot3=0\), singular, konsistensi gagal.
+  Untuk sistem $2\times 2$ pada contoh pertama: \(A = \begin{pmatrix}2&3\\4&-1\end{pmatrix}\). Hitung \(\det(A) = 2(-1) - 3(4) = -2 - 12 = -14 \neq 0\), maka solusi tunggal (sudah diperoleh). Untuk sistem tanpa solusi: \(A = \begin{pmatrix}1&2\\3&6\end{pmatrix}\), \(\det(A)=1\cdot6-2\cdot3=0\), singular, konsistensi gagal.
 </div>
 
-<h3>3.4.4 Visualisasi Ruang Kolom dan Kombinasi Linear</h3>
+<h3>3.4.4. Visualisasi Ruang Kolom dan Kombinasi Linear</h3>
 
 <p align="justify">
 Jika kita pandang \(A\) sebagai matriks dengan kolom \(\mathbf{a}_1, \mathbf{a}_2, \dots, \mathbf{a}_n\), maka persamaan \(A\mathbf{x}=\mathbf{b}\) adalah
@@ -4199,7 +4560,7 @@ Dengan demikian, geometri sistem linier tidak hanya tentang garis dan bidang, te
   <!-- ============================================================ -->
 <!-- 3.5 Cross Product (Kali Silang) -->
 <!-- ============================================================ -->
-<h2 class="sec">3.5 Cross Product</h2>
+<h2 class="sec">3.5. Cross Product</h2>
 
 <p align="justify">
 Berbeda dengan dot product yang menghasilkan sebuah skalar, <b>cross product</b> menghasilkan sebuah vektor baru yang tegak lurus terhadap kedua vektor asal. Operasi ini hanya didefinisikan pada ruang tiga dimensi.
@@ -4235,7 +4596,7 @@ yang sama dengan luas jajargenjang yang dibentuk oleh kedua vektor tersebut.
 <!-- TAMBAHAN: Sub-topik dan Contoh Komputasi untuk Cross Product -->
 <!-- ============================================================ -->
 
-<h3>3.5.1 Sifat-sifat Aljabar Cross Product</h3>
+<h3>3.5.1. Sifat-sifat Aljabar Cross Product</h3>
 <p align="justify">
 Cross product memiliki sifat-sifat yang membedakannya dari dot product. Beberapa sifat penting:
 </p>
@@ -4269,7 +4630,7 @@ Cross product memiliki sifat-sifat yang membedakannya dari dot product. Beberapa
   Terbukti antikomutatif.
 </div>
 
-<h3>3.5.2 Interpretasi Geometris Lanjutan: Luas dan Normal</h3>
+<h3>3.5.2. Interpretasi Geometris Lanjutan: Luas dan Normal</h3>
 <p align="justify">
 Selain luas jajargenjang, cross product juga menghasilkan vektor normal bidang yang direntang oleh kedua vektor. Vektor normal ini sangat berguna dalam geometri analitik dan fisika.
 </p>
@@ -4300,7 +4661,7 @@ Selain luas jajargenjang, cross product juga menghasilkan vektor normal bidang y
   \(\| (6,3,2) \| = \sqrt{36+9+4} = \sqrt{49} = 7\). Luas segitiga = \(\frac12 \cdot 7 = 3.5\) satuan luas.
 </div>
 
-<h3>3.5.3 Identitas Lagrange dan Hubungan dengan Dot Product</h3>
+<h3>3.5.3. Identitas Lagrange dan Hubungan dengan Dot Product</h3>
 <p align="justify">
 Terdapat hubungan penting antara cross product, dot product, dan norma, yaitu identitas Lagrange:
 \[
@@ -4317,7 +4678,7 @@ Identitas ini berguna untuk menghitung luas tanpa harus menghitung cross product
   \(\mathbf u\times\mathbf v = (-3,6,-3)\) (dari contoh sebelumnya), \(\|(-3,6,-3)\|^2 = 9+36+9 = 54\). Terbukti.
 </div>
 
-<h3>3.5.4 Penerapan dalam Fisika: Torsi dan Momen</h3>
+<h3>3.5.4. Penerapan dalam Fisika: Torsi dan Momen</h3>
 <p align="justify">
 Dalam fisika, torsi \(\boldsymbol\tau\) didefinisikan sebagai \(\boldsymbol\tau = \mathbf r \times \mathbf F\), di mana \(\mathbf r\) adalah vektor posisi dari titik tumpu ke titik tangkap gaya, dan \(\mathbf F\) adalah gaya. Besar torsi adalah \(\|\mathbf r\| \|\mathbf F\| \sin\theta\), dengan \(\theta\) sudut antara \(\mathbf r\) dan \(\mathbf F\).
 </p>
@@ -4708,12 +5069,10 @@ def cross_product_and_norm(
 </textarea>
 </div>
 
-
-
   <!-- ============================================================ -->
   <!-- 3.6 Kombinasi Linier dan Rentang -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.6 Kombinasi Linier dan Rentang</h2>
+  <h2 class="sec">3.6. Kombinasi Linier dan Rentang</h2>
 
   <p align="justify">
   Sebuah <b>kombinasi linier</b> dari vektor-vektor \(\mathbf v_1,\mathbf v_2,\ldots,\mathbf v_k\) adalah vektor yang berbentuk
@@ -4815,7 +5174,7 @@ def cross_product_and_norm(
   <!-- ============================================================ -->
 <!-- 3.7 Bebas Linier dan Basis -->
 <!-- ============================================================ -->
-<h2 class="sec">3.7 Bebas Linier dan Basis</h2>
+<h2 class="sec">3.7. Bebas Linier dan Basis</h2>
 
 <p align="justify">
 Konsep <b>bebas linier</b> (<i>linear independence</i>) dan <b>basis</b> merupakan pilar utama dalam aljabar linier yang menentukan struktur dimensi dari suatu ruang vektor. Konsep ini menjelaskan kapan sekumpulan vektor memberikan informasi baru yang independen dan kapan sekumpulan vektor tersebut bersifat redundan (dapat diwakili oleh vektor lainnya).
@@ -5023,7 +5382,7 @@ Suatu himpunan vektor \(B = \{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_n\}\) d
   <!-- ============================================================ -->
   <!-- 3.8 Aplikasi Vektor dalam Optimasi (Real Problem) -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.8 Aplikasi Vektor dalam Optimasi (Regresi Linier)</h2>
+  <h2 class="sec">3.8. Aplikasi Vektor dalam Optimasi (Regresi Linier)</h2>
 
   <p align="justify">
   Salah satu aplikasi penting dari geometri vektor dan proyeksi orthogonal adalah dalam <b>regresi linier</b> dengan metode <b>kuadrat terkecil (least squares)</b>. Masalah nyata: Misalkan kita memiliki data pengamatan \((x_i, y_i)\), \(i=1,\ldots,m\), dan kita ingin menemukan garis terbaik \(y = a + bx\) yang meminimalkan jumlah kuadrat residual (jarak vertikal antara titik data dan garis).
@@ -5326,6 +5685,153 @@ def operasi_vektor_interaktif(
 <section class="chapter" id="ch3">
   <div class="badge">Bab 4</div>
   <h1>Ruang Vektor Umum</h1>
+
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1120" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA                                                  -->
+    <!-- ============================================================ -->
+    <text x="550" y="48" text-anchor="middle" fill="#0f172a" font-size="30" font-weight="900" letter-spacing="0.5">BAB 4 – RUANG VEKTOR UMUM</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="19" font-weight="600">(Abstraksi Vektor, Subruang, Basis, dan Ruang Fundamental)</text>
+    <line x1="100" y1="98" x2="1000" y2="98" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 4.1–4.3 Ruang Vektor & Subruang                      -->
+    <!-- ============================================================ -->
+    <rect x="20" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 20 130 A 10 10 0 0 1 30 120 L 350 120 A 10 10 0 0 1 360 130 L 360 165 L 20 165 Z" fill="#2563eb" />
+    <text x="190" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">4.1–4.3 Ruang Vektor &amp; Subruang</text>
+
+    <text x="38" y="195" fill="#0f172a" font-size="15" font-weight="bold">Ruang Vektor Real</text>
+    <text x="38" y="221" fill="#1e293b" font-size="14">Himpunan V + operasi +, ·</text>
+    <text x="38" y="247" fill="#1e293b" font-size="14">Memenuhi 10 aksioma:</text>
+    <text x="48" y="273" fill="#334155" font-size="14">• Tertutup, komutatif, asosiatif</text>
+    <text x="48" y="299" fill="#334155" font-size="14">• Vektor nol 0 dan invers -u</text>
+    <text x="48" y="325" fill="#334155" font-size="14">• Distributif skalar &amp; vektor</text>
+    <text x="48" y="351" fill="#334155" font-size="14">• Asosiatif skalar, 1·v = v</text>
+
+    <text x="38" y="390" fill="#0f172a" font-size="15" font-weight="bold">Contoh Ruang Vektor</text>
+    <text x="48" y="416" fill="#1e293b" font-size="14">• ℝⁿ, Mₘₓₙ, Pₙ (polinom ≤n)</text>
+    <text x="48" y="442" fill="#1e293b" font-size="14">• C[a,b] (fungsi kontinu)</text>
+
+    <text x="38" y="482" fill="#0f172a" font-size="15" font-weight="bold">Subruang (Subspace)</text>
+    <text x="48" y="508" fill="#334155" font-size="14">• W ⊂ V, 0∈W, tertutup + dan ·</text>
+    <text x="48" y="534" fill="#334155" font-size="14">• Contoh: bidang melalui 0,</text>
+    <text x="48" y="560" fill="#334155" font-size="14">  ruang solusi Ax=0 (Null Space)</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 4.4–4.7 Bebas Linier, Basis, Dimensi                 -->
+    <!-- ============================================================ -->
+    <rect x="380" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 380 130 A 10 10 0 0 1 390 120 L 710 120 A 10 10 0 0 1 720 130 L 720 165 L 380 165 Z" fill="#0d9488" />
+    <text x="550" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">4.4–4.7 Bebas, Basis, Dimensi</text>
+
+    <text x="398" y="195" fill="#0f172a" font-size="15" font-weight="bold">Bebas Linier</text>
+    <text x="398" y="221" fill="#1e293b" font-size="14">c₁v₁+…+cₖvₖ=0 → c₁=…=cₖ=0</text>
+    <text x="398" y="247" fill="#1e293b" font-size="14">Rank(v₁,…,vₖ) = k  ⇔ bebas</text>
+
+    <text x="398" y="287" fill="#0f172a" font-size="15" font-weight="bold">Basis</text>
+    <text x="398" y="313" fill="#1e293b" font-size="14">Himpunan B = {v₁,…,vₙ}:</text>
+    <text x="398" y="337" fill="#1e293b" font-size="14">(1) Bebas linier</text>
+    <text x="398" y="361" fill="#1e293b" font-size="14">(2) Span(B) = V</text>
+
+    <text x="398" y="401" fill="#0f172a" font-size="15" font-weight="bold">Koordinat terhadap Basis</text>
+    <text x="398" y="427" fill="#1e293b" font-size="14">v = c₁v₁ + … + cₙvₙ</text>
+    <text x="398" y="451" fill="#1e293b" font-size="14">[v]B = (c₁, c₂, …, cₙ)ᵀ</text>
+
+    <text x="398" y="491" fill="#0f172a" font-size="15" font-weight="bold">Dimensi</text>
+    <text x="398" y="517" fill="#1e293b" font-size="14">dim(V) = banyak vektor basis</text>
+    <text x="398" y="541" fill="#1e293b" font-size="14">dim(ℝⁿ) = n,  dim(Pₙ) = n + 1</text>
+
+    <text x="398" y="581" fill="#0f172a" font-size="15" font-weight="bold">Perubahan Basis</text>
+    <text x="398" y="607" fill="#1e293b" font-size="14">[v]B' = P_{B'←B} · [v]B (P invertibel)</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 4.8–4.9 Ruang Fundamental                            -->
+    <!-- ============================================================ -->
+    <rect x="740" y="120" width="340" height="540" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 740 130 A 10 10 0 0 1 750 120 L 1070 120 A 10 10 0 0 1 1080 130 L 1080 165 L 740 165 Z" fill="#7c3aed" />
+    <text x="910" y="149" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">4.8–4.9 Ruang Fundamental</text>
+
+    <text x="758" y="195" fill="#0f172a" font-size="15" font-weight="bold">Untuk Matriks Aₘₓₙ</text>
+    <text x="758" y="221" fill="#1e293b" font-size="14">• Row(A) = span(baris A) ⊂ ℝⁿ</text>
+    <text x="758" y="247" fill="#1e293b" font-size="14">• Col(A) = span(kolom A) ⊂ ℝᵐ</text>
+    <text x="758" y="273" fill="#1e293b" font-size="14">• Nul(A) = {x | Ax = 0} ⊂ ℝⁿ</text>
+
+    <text x="758" y="313" fill="#0f172a" font-size="15" font-weight="bold">Cari Basis</text>
+    <text x="758" y="339" fill="#1e293b" font-size="14">• Row: baris tak-nol RREF</text>
+    <text x="758" y="365" fill="#1e293b" font-size="14">• Col: kolom pivot di A asli</text>
+    <text x="758" y="391" fill="#1e293b" font-size="14">• Nul: selesaikan Ax = 0</text>
+
+    <text x="758" y="431" fill="#0f172a" font-size="15" font-weight="bold">Rank &amp; Nullity</text>
+    <text x="758" y="457" fill="#1e293b" font-size="14">rank(A) = dim Row(A) = dim Col(A)</text>
+    <text x="758" y="481" fill="#1e293b" font-size="14">nullity(A) = dim Nul(A)</text>
+
+    <text x="758" y="521" fill="#0f172a" font-size="15" font-weight="bold">Teorema Rank–Nullity</text>
+    <text x="758" y="547" fill="#1e293b" font-size="14">rank(A) + nullity(A) = n</text>
+
+    <text x="758" y="587" fill="#0f172a" font-size="15" font-weight="bold">Sifat Ortogonalitas</text>
+    <text x="758" y="611" fill="#1e293b" font-size="14">Row(A) ⊥ Nul(A)  |  Col(A) ⊥ Nul(Aᵀ)</text>
+
+    <!-- Garis Pemisah Horizontal -->
+    <line x1="20" y1="680" x2="1080" y2="680" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: 4.10 Aplikasi Regresi Kuadratik                       -->
+    <!-- ============================================================ -->
+    <rect x="20" y="700" width="700" height="280" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 20 710 A 10 10 0 0 1 30 700 L 710 700 A 10 10 0 0 1 720 710 L 720 745 L 20 745 Z" fill="#ea580c" />
+    <text x="370" y="729" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">4.10 Aplikasi: Regresi Kuadratik (Kuadrat Terkecil)</text>
+
+    <text x="38" y="775" fill="#0f172a" font-size="15" font-weight="bold">Model:  y = X·β + ε</text>
+    <text x="38" y="802" fill="#1e293b" font-size="14">• X = matriks desain (kolom basis {1, x, x², …})</text>
+    <text x="38" y="828" fill="#1e293b" font-size="14">• β = vektor koefisien (a, b, c, …)</text>
+    <text x="38" y="854" fill="#1e293b" font-size="14">• Solusi kuadrat terkecil: β̂ = (XᵀX)⁻¹ Xᵀ y</text>
+
+    <text x="38" y="894" fill="#0f172a" font-size="15" font-weight="bold">Interpretasi Vektor</text>
+    <text x="38" y="920" fill="#1e293b" font-size="14">• ŷ = X·β̂ = proyeksi orthogonal y ke Col(X)</text>
+    <text x="38" y="946" fill="#1e293b" font-size="14">• Residual r = y − ŷ ⊥ Col(X) → Xᵀ·r = 0</text>
+
+    <!-- Sub-Kotak Contoh Numerik -->
+    <rect x="490" y="760" width="215" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="597" y="788" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="bold">Contoh Data</text>
+    <text x="597" y="816" text-anchor="middle" fill="#1e293b" font-size="14">(1,2), (2,5), (3,7), (4,10)</text>
+
+    <text x="597" y="852" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="bold">Hasil Regresi Line</text>
+    <text x="597" y="880" text-anchor="middle" fill="#2563eb" font-size="15" font-weight="bold">p(x) = −½ + (13/5)x</text>
+    <text x="597" y="906" text-anchor="middle" fill="#64748b" font-size="13">(koefisien x² = 0)</text>
+    <text x="597" y="932" text-anchor="middle" fill="#334155" font-size="13">Minimalkan ||y − ŷ||²</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Intisari Konsep Kunci                               -->
+    <!-- ============================================================ -->
+    <rect x="740" y="700" width="340" height="280" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 740 710 A 10 10 0 0 1 750 700 L 1070 700 A 10 10 0 0 1 1080 710 L 1080 745 L 740 745 Z" fill="#059669" />
+    <text x="910" y="729" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">Intisari Konsep</text>
+
+    <text x="758" y="775" fill="#0f172a" font-size="15" font-weight="bold">Abstraksi Vektor</text>
+    <text x="758" y="802" fill="#1e293b" font-size="14">Vektor tidak hanya tuple angka;</text>
+    <text x="758" y="826" fill="#1e293b" font-size="14">bisa berupa matriks, polinomial,</text>
+    <text x="758" y="850" fill="#1e293b" font-size="14">maupun fungsi kontinu.</text>
+
+    <text x="758" y="894" fill="#0f172a" font-size="15" font-weight="bold">Kunci Utama</text>
+    <text x="758" y="920" fill="#1e293b" font-size="14">• Basis → koordinat unik</text>
+    <text x="758" y="946" fill="#1e293b" font-size="14">• Rank–nullity → struktur solusi</text>
+
+    <!-- Catatan Kaki & Footer -->
+    <text x="20" y="1008" fill="#64748b" font-size="13" font-style="italic">* Semua ruang yang disebutkan di atas adalah ruang vektor real (skalar ∈ ℝ).</text>
+
+    <rect x="20" y="1025" width="1060" height="75" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="1054" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="bold">Ruang vektor umum memperluas konsep dari ℝⁿ ke himpunan objek apapun yang memenuhi 10 aksioma.</text>
+    <text x="550" y="1080" text-anchor="middle" fill="#334155" font-size="14">Basis, dimensi, dan ruang fundamental (Row, Col, Nul) adalah alat utama untuk analisis struktur dan solusi sistem linear.</text>
+  </svg>
+</div>
 
   <p align="justify">
   Jika Bab 3 bekerja di \(\mathbb{R}^n\) yang konkret, bab ini mengabstraksi konsep vektor ke himpunan yang lebih luas. Banyak himpunan seperti matriks \(M_{m\times n}\), polinomial \(P_n\), fungsi kontinu \(C[a,b]\), dan deret tak hingga berperilaku seperti vektor: dapat dijumlahkan dan dikalikan dengan skalar. Abstraksi ini disebut <b>ruang vektor</b> dan menjadi fondasi bagi aljabar linier modern.
@@ -5684,12 +6190,19 @@ Kesimpulan: Dalam jangka panjang, merek pertama akan dikuasai oleh 75% pasar dan
   <h2 class="sec">4.9 Rank, Nulitas, dan Ruang Matriks Fundamental</h2>
 
   <div class="card theorem">
-    <b>Rank-Nullity Theorem:</b> Untuk \(A_{m\times n}\),
+    <b>Teorema Rank-Nullitas:</b> Untuk \(A_{m\times n}\),
     \[
     \text{rank}(A) + \text{nullity}(A) = n,
     \]
-    di mana \(\text{rank}(A)=\dim(\text{Row}(A))=\dim(\text{Col}(A))\) = banyaknya pivot, dan \(\text{nullity}(A)=\dim(\text{Nul}(A)) = n-\text{rank}(A)\).
-    <br><br>
+    di mana 
+	\[
+	\text{rank}(A)=\dim(\text{Row}(A))=\dim(\text{Col}(A)) = \text{ banyaknya pivot}, 
+	\]
+	dan
+	\[
+	\text{nullity}(A)=\dim(\text{Nul}(A)) = n-\text{rank}(A).
+	\]
+    
     <b>Empat ruang fundamental:</b>
     <ul>
       <li>\(\text{Row}(A)\) dan \(\text{Nul}(A)\) adalah subruang \(\mathbb{R}^n\) yang saling ortogonal komplemen.</li>
@@ -6000,6 +6513,146 @@ def analisis_ruang_vektor_interaktif(
 <section class="chapter" id="ch4">
   <div class="badge">Bab 5 — Inti</div>
   <h1>Nilai Eigen dan Vektor Eigen</h1>
+
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1060" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA – Kontras tinggi dengan latar putih              -->
+    <!-- ============================================================ -->
+    <text x="550" y="50" text-anchor="middle" fill="#0f172a" font-size="28" font-weight="900" letter-spacing="1">BAB 5 – NILAI EIGEN DAN VEKTOR EIGEN</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="600">(Transformasi Dinamis, Diagonalisasi, Markov, PCA, dan Optimasi)</text>
+    <line x1="150" y1="95" x2="950" y2="95" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 5.1 Definisi & Sifat Dasar                          -->
+    <!-- ============================================================ -->
+    <rect x="20" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="115" width="340" height="38" rx="10" fill="#2563eb" />
+    <rect x="20" y="143" width="340" height="10" fill="#2563eb" />
+    <text x="190" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">5.1 Nilai Eigen &amp; Vektor Eigen</text>
+
+    <text x="35" y="178" fill="#0f172a" font-size="14" font-weight="bold">Definisi</text>
+    <text x="35" y="202" fill="#1e293b" font-size="13">A·x = λ·x , x ≠ 0</text>
+    <text x="35" y="228" fill="#1e293b" font-size="13">λ = nilai eigen, x = vektor eigen</text>
+
+    <text x="35" y="260" fill="#0f172a" font-size="14" font-weight="bold">Persamaan Karakteristik</text>
+    <text x="35" y="284" fill="#1e293b" font-size="13">det(A − λI) = 0</text>
+    <text x="35" y="308" fill="#1e293b" font-size="13">p(λ) = polinomial karakteristik</text>
+
+    <text x="35" y="340" fill="#0f172a" font-size="14" font-weight="bold">Sifat Penting</text>
+    <text x="35" y="364" fill="#1e293b" font-size="13">tr(A) = Σ λᵢ</text>
+    <text x="35" y="388" fill="#1e293b" font-size="13">det(A) = ∏ λᵢ</text>
+    <text x="35" y="412" fill="#1e293b" font-size="13">Multiplisitas aljabar ≥ geometri</text>
+
+    <text x="35" y="444" fill="#0f172a" font-size="14" font-weight="bold">Contoh 2×2</text>
+    <text x="35" y="468" fill="#1e293b" font-size="13">A = [[4,-2],[1,1]]</text>
+    <text x="35" y="492" fill="#1e293b" font-size="13">λ = 2, 3  →  v = (1,1), (2,1)</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 5.2–5.4 Diagonalisasi, Kompleks, ODE               -->
+    <!-- ============================================================ -->
+    <rect x="380" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="380" y="115" width="340" height="38" rx="10" fill="#0d9488" />
+    <rect x="380" y="143" width="340" height="10" fill="#0d9488" />
+    <text x="550" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">5.2–5.4 Diagonalisasi, Kompleks, ODE</text>
+
+    <text x="395" y="178" fill="#0f172a" font-size="14" font-weight="bold">Diagonalisasi</text>
+    <text x="395" y="202" fill="#1e293b" font-size="13">A = P·D·P⁻¹</text>
+    <text x="395" y="228" fill="#1e293b" font-size="13">Kolom P = vektor eigen</text>
+    <text x="395" y="252" fill="#1e293b" font-size="13">Aᵏ = P·Dᵏ·P⁻¹ (cepat!)</text>
+
+    <text x="395" y="284" fill="#0f172a" font-size="14" font-weight="bold">Ruang Vektor Kompleks</text>
+    <text x="395" y="308" fill="#1e293b" font-size="13">Hermitian: A* = A → eigen real</text>
+    <text x="395" y="332" fill="#1e293b" font-size="13">Uniter: U*U = I → |λ| = 1</text>
+
+    <text x="395" y="364" fill="#0f172a" font-size="14" font-weight="bold">ODE &amp; Stabilitas</text>
+    <text x="395" y="388" fill="#1e293b" font-size="13">x'(t) = A·x(t)</text>
+    <text x="395" y="412" fill="#1e293b" font-size="13">x(t) = Σ cᵢ·e^{λᵢt}·vᵢ</text>
+    <text x="395" y="436" fill="#1e293b" font-size="13">Stabil jika Re(λ) &lt; 0</text>
+    <text x="395" y="460" fill="#1e293b" font-size="13">Osilasi jika λ = α ± iβ</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 5.5–5.7 Markov, PCA, Portofolio                   -->
+    <!-- ============================================================ -->
+    <rect x="740" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="115" width="340" height="38" rx="10" fill="#7c3aed" />
+    <rect x="740" y="143" width="340" height="10" fill="#7c3aed" />
+    <text x="910" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">5.5–5.7 Markov, PCA, Portofolio</text>
+
+    <text x="755" y="178" fill="#0f172a" font-size="14" font-weight="bold">Rantai Markov</text>
+    <text x="755" y="202" fill="#1e293b" font-size="13">x_{k+1} = P·x_k</text>
+    <text x="755" y="226" fill="#1e293b" font-size="13">P stokastik (kolom/baris = 1)</text>
+    <text x="755" y="250" fill="#1e293b" font-size="13">State tunak: P·π = π</text>
+
+    <text x="755" y="282" fill="#0f172a" font-size="14" font-weight="bold">PCA (Analisis Komponen Utama)</text>
+    <text x="755" y="306" fill="#1e293b" font-size="13">C = (1/m)·XᵀX (kovarians)</text>
+    <text x="755" y="330" fill="#1e293b" font-size="13">Vektor eigen = komponen utama</text>
+    <text x="755" y="354" fill="#1e293b" font-size="13">λ besar → varians besar</text>
+
+    <text x="755" y="386" fill="#0f172a" font-size="14" font-weight="bold">Optimasi Portofolio (Markowitz)</text>
+    <text x="755" y="410" fill="#1e293b" font-size="13">Minimumkan wᵀΣw</text>
+    <text x="755" y="434" fill="#1e293b" font-size="13">Kendala: wᵀμ = μₚ, wᵀ1 = 1</text>
+    <text x="755" y="458" fill="#1e293b" font-size="13">Solusi melibatkan Σ⁻¹</text>
+
+    <!-- ============================================================ -->
+    <!-- Garis pemisah                                               -->
+    <!-- ============================================================ -->
+    <line x1="20" y1="530" x2="1080" y2="530" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: Aplikasi Real-Problem (Eigenfaces, SIR, dsb.)      -->
+    <!-- ============================================================ -->
+    <rect x="20" y="545" width="700" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="545" width="700" height="38" rx="10" fill="#ea580c" />
+    <rect x="20" y="573" width="700" height="10" fill="#ea580c" />
+    <text x="370" y="570" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Aplikasi Real-Problem</text>
+
+    <text x="35" y="608" fill="#0f172a" font-size="14" font-weight="bold">Eigenfaces (Biometrik Wajah)</text>
+    <text x="35" y="632" fill="#1e293b" font-size="13">Matriks data A, kovarian C = AᵀA, eigenface = A·v</text>
+    <text x="35" y="656" fill="#1e293b" font-size="13">Proyeksi wajah baru: w = u·Φ → simpan skalar, hemat memori</text>
+
+    <text x="35" y="688" fill="#0f172a" font-size="14" font-weight="bold">Jaringan Sosial (Adjacency)</text>
+    <text x="35" y="712" fill="#1e293b" font-size="13">Aᵏ = jumlah jalur k-langkah; diagonalisasi untuk prediksi viralitas</text>
+
+    <text x="35" y="744" fill="#0f172a" font-size="14" font-weight="bold">Epidemiologi (SIR)</text>
+    <text x="35" y="768" fill="#1e293b" font-size="13">Jacobi di titik setimbang: λ = β−γ; jika &gt;0 → wabah tumbuh</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Ringkasan / Intisari                               -->
+    <!-- ============================================================ -->
+    <rect x="740" y="545" width="340" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="545" width="340" height="38" rx="10" fill="#059669" />
+    <rect x="740" y="573" width="340" height="10" fill="#059669" />
+    <text x="910" y="570" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Intisari</text>
+
+    <text x="755" y="610" fill="#0f172a" font-size="14" font-weight="bold">Eigen &amp; Eigenvektor</text>
+    <text x="755" y="635" fill="#1e293b" font-size="13">Mengungkap arah invarian</text>
+    <text x="755" y="658" fill="#1e293b" font-size="13">dari transformasi linier.</text>
+
+    <text x="755" y="690" fill="#0f172a" font-size="14" font-weight="bold">Diagonalisasi</text>
+    <text x="755" y="715" fill="#1e293b" font-size="13">Mempercepat perpangkatan</text>
+    <text x="755" y="738" fill="#1e293b" font-size="13">dan menyelesaikan ODE.</text>
+
+    <text x="755" y="770" fill="#0f172a" font-size="14" font-weight="bold">Aplikasi Modern</text>
+    <text x="755" y="795" fill="#1e293b" font-size="13">PCA, Markov, Portofolio,</text>
+    <text x="755" y="818" fill="#1e293b" font-size="13">Eigenfaces, Kestabilan.</text>
+
+    <!-- ============================================================ -->
+    <!-- Catatan kaki                                                -->
+    <!-- ============================================================ -->
+    <text x="20" y="815" fill="#64748b" font-size="12" font-style="italic">* Semua matriks dianggap real kecuali dinyatakan kompleks.</text>
+    <rect x="20" y="830" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="855" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Nilai eigen dan vektor eigen adalah kunci untuk memahami perilaku dinamis, optimasi, dan analisis data berdimensi tinggi.</text>
+    <text x="550" y="877" text-anchor="middle" fill="#334155" font-size="13">Diagonalisasi menyederhanakan perpangkatan matriks, solusi ODE, dan analisis stabilitas sistem.</text>
+
+  </svg>
+</div>
 
   <p align="justify">
   Jika \(A\mathbf{x}=\mathbf{b}\) adalah persamaan statis, maka \(A\mathbf{x}=\lambda\mathbf{x}\) adalah persamaan dinamis: vektor yang arahnya tidak berubah oleh transformasi \(A\), hanya diskalakan. Konsep ini menjadi kunci untuk memahami stabilitas sistem, getaran, pertumbuhan populasi, dan perilaku jangka panjang dari berbagai proses dinamis.
@@ -6923,8 +7576,6 @@ def analisis_stokastik_interaktif(
     display(html(html_table))   </script></div>
   </div> 
 
-
-
   <!-- Latihan -->
   <div class="card example">
     <b>Latihan:</b>
@@ -6957,6 +7608,139 @@ def analisis_stokastik_interaktif(
 <section class="chapter" id="ch5">
   <div class="badge">Bab 6</div>
   <h1>Ruang Hasil Kali Dalam</h1>
+  
+  <div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1080" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA – Kontras tinggi dengan latar putih              -->
+    <!-- ============================================================ -->
+    <text x="550" y="50" text-anchor="middle" fill="#0f172a" font-size="28" font-weight="900" letter-spacing="1">BAB 6 – RUANG HASIL KALI DALAM</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="600">(Inner Product, Gram–Schmidt, QR, Least Squares, Fourier)</text>
+    <line x1="150" y1="95" x2="950" y2="95" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 6.1–6.2 Definisi, Norma, Ortogonalitas              -->
+    <!-- ============================================================ -->
+    <rect x="20" y="115" width="340" height="380" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="115" width="340" height="38" rx="10" fill="#2563eb" />
+    <rect x="20" y="143" width="340" height="10" fill="#2563eb" />
+    <text x="190" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">6.1–6.2 Hasil Kali Dalam &amp; Ortogonalitas</text>
+
+    <text x="35" y="178" fill="#0f172a" font-size="14" font-weight="bold">Definisi Inner Product</text>
+    <text x="35" y="202" fill="#1e293b" font-size="13">⟨u,v⟩ ∈ ℝ, memenuhi:</text>
+    <text x="45" y="225" fill="#1e293b" font-size="13">• Simetri: ⟨u,v⟩ = ⟨v,u⟩</text>
+    <text x="45" y="248" fill="#1e293b" font-size="13">• Linearitas di argumen pertama</text>
+    <text x="45" y="271" fill="#1e293b" font-size="13">• Positif definit: ⟨u,u⟩ ≥ 0</text>
+
+    <text x="35" y="305" fill="#0f172a" font-size="14" font-weight="bold">Norma</text>
+    <text x="35" y="329" fill="#1e293b" font-size="13">‖u‖ = √⟨u,u⟩</text>
+
+    <text x="35" y="360" fill="#0f172a" font-size="14" font-weight="bold">Ortogonalitas</text>
+    <text x="35" y="384" fill="#1e293b" font-size="13">u ⊥ v  ⇔  ⟨u,v⟩ = 0</text>
+    <text x="35" y="408" fill="#1e293b" font-size="13">cos θ = ⟨u,v⟩ / (‖u‖‖v‖)</text>
+    <text x="35" y="432" fill="#1e293b" font-size="13">Teorema Pythagoras:</text>
+    <text x="35" y="456" fill="#1e293b" font-size="13">‖u+v‖² = ‖u‖² + ‖v‖² jika u⊥v</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 6.3 Gram–Schmidt & QR                              -->
+    <!-- ============================================================ -->
+    <rect x="380" y="115" width="340" height="380" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="380" y="115" width="340" height="38" rx="10" fill="#0d9488" />
+    <rect x="380" y="143" width="340" height="10" fill="#0d9488" />
+    <text x="550" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">6.3 Gram–Schmidt &amp; Dekomposisi QR</text>
+
+    <text x="395" y="178" fill="#0f172a" font-size="14" font-weight="bold">Proses Gram–Schmidt</text>
+    <text x="395" y="202" fill="#1e293b" font-size="13">w₁ = v₁</text>
+    <text x="395" y="226" fill="#1e293b" font-size="13">wₖ = vₖ − Σ ⟨vₖ,wⱼ⟩/⟨wⱼ,wⱼ⟩ · wⱼ</text>
+    <text x="395" y="250" fill="#1e293b" font-size="13">→ basis ortogonal {wₖ}</text>
+    <text x="395" y="274" fill="#1e293b" font-size="13">Normalisasi qₖ = wₖ/‖wₖ‖</text>
+
+    <text x="395" y="308" fill="#0f172a" font-size="14" font-weight="bold">Dekomposisi QR</text>
+    <text x="395" y="332" fill="#1e293b" font-size="13">A = Q · R</text>
+    <text x="395" y="356" fill="#1e293b" font-size="13">Q: kolom ortonormal (QᵀQ = I)</text>
+    <text x="395" y="380" fill="#1e293b" font-size="13">R: segitiga atas invertibel</text>
+    <text x="395" y="404" fill="#1e293b" font-size="13">R = QᵀA</text>
+    <text x="395" y="428" fill="#1e293b" font-size="13">Stabil secara numerik</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 6.4–6.6 Least Squares, Fourier                      -->
+    <!-- ============================================================ -->
+    <rect x="740" y="115" width="340" height="380" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="115" width="340" height="38" rx="10" fill="#7c3aed" />
+    <rect x="740" y="143" width="340" height="10" fill="#7c3aed" />
+    <text x="910" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">6.4–6.6 Least Squares &amp; Fourier</text>
+
+    <text x="755" y="178" fill="#0f172a" font-size="14" font-weight="bold">Kuadrat Terkecil (Least Squares)</text>
+    <text x="755" y="202" fill="#1e293b" font-size="13">Minimalkan ‖Ax − b‖²</text>
+    <text x="755" y="226" fill="#1e293b" font-size="13">Solusi: AᵀA · x̂ = Aᵀb</text>
+    <text x="755" y="250" fill="#1e293b" font-size="13">(Persamaan Normal)</text>
+    <text x="755" y="274" fill="#1e293b" font-size="13">Jika A = QR: R·x̂ = Qᵀb</text>
+
+    <text x="755" y="308" fill="#0f172a" font-size="14" font-weight="bold">Pendekatan Terbaik</text>
+    <text x="755" y="332" fill="#1e293b" font-size="13">proj_W u = pendekatan terbaik</text>
+    <text x="755" y="356" fill="#1e293b" font-size="13">Residual ⊥ W</text>
+
+    <text x="755" y="390" fill="#0f172a" font-size="14" font-weight="bold">Deret Fourier</text>
+    <text x="755" y="414" fill="#1e293b" font-size="13">⟨f,g⟩ = ∫ f·g dx</text>
+    <text x="755" y="438" fill="#1e293b" font-size="13">Basis: {1, cos nx, sin nx}</text>
+    <text x="755" y="462" fill="#1e293b" font-size="13">Proyeksi ke ruang trigonometri</text>
+
+    <!-- ============================================================ -->
+    <!-- Garis pemisah                                               -->
+    <!-- ============================================================ -->
+    <line x1="20" y1="510" x2="1080" y2="510" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: Aplikasi Real-Problem (Regresi, Sistem Rekomendasi) -->
+    <!-- ============================================================ -->
+    <rect x="20" y="525" width="700" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="525" width="700" height="38" rx="10" fill="#ea580c" />
+    <rect x="20" y="553" width="700" height="10" fill="#ea580c" />
+    <text x="370" y="550" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Aplikasi Real-Problem</text>
+
+    <text x="35" y="588" fill="#0f172a" font-size="14" font-weight="bold">Regresi Penjualan (Least Squares)</text>
+    <text x="35" y="612" fill="#1e293b" font-size="13">Data: (1,10), (2,18), (3,25), (4,30), (5,38), (6,42)</text>
+    <text x="35" y="636" fill="#1e293b" font-size="13">Model: y = c₀ + c₁x → c₀ = 13.8667, c₁ = 3.8</text>
+    <text x="35" y="660" fill="#1e293b" font-size="13">Prediksi: x=7 → y = 13.8667 + 3.8·7 = 40.4667 juta unit</text>
+
+    <text x="35" y="692" fill="#0f172a" font-size="14" font-weight="bold">Sistem Rekomendasi (Cosine Similarity di ℝ⁵)</text>
+    <text x="35" y="716" fill="#1e293b" font-size="13">P = (25,2,8,4.8,5), Q = (27,2.5,9,4.7,6)</text>
+    <text x="35" y="740" fill="#1e293b" font-size="13">cos θ ≈ 0.9996 → perilaku sangat mirip</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Ringkasan / Intisari                               -->
+    <!-- ============================================================ -->
+    <rect x="740" y="525" width="340" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="525" width="340" height="38" rx="10" fill="#059669" />
+    <rect x="740" y="553" width="340" height="10" fill="#059669" />
+    <text x="910" y="550" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Intisari</text>
+
+    <text x="755" y="590" fill="#0f172a" font-size="14" font-weight="bold">Generaliasi Dot Product</text>
+    <text x="755" y="615" fill="#1e293b" font-size="13">Inner product memungkinkan</text>
+    <text x="755" y="638" fill="#1e293b" font-size="13">definisi panjang, sudut, dan</text>
+    <text x="755" y="661" fill="#1e293b" font-size="13">ortogonalitas di ruang abstrak.</text>
+
+    <text x="755" y="692" fill="#0f172a" font-size="14" font-weight="bold">Alat Kunci</text>
+    <text x="755" y="717" fill="#1e293b" font-size="13">Gram–Schmidt → basis ortonormal</text>
+    <text x="755" y="740" fill="#1e293b" font-size="13">QR → least squares stabil</text>
+    <text x="755" y="763" fill="#1e293b" font-size="13">Fourier → aproksimasi fungsi</text>
+
+    <!-- ============================================================ -->
+    <!-- Catatan kaki                                                -->
+    <!-- ============================================================ -->
+    <text x="20" y="795" fill="#64748b" font-size="12" font-style="italic">* Inner product di ruang fungsi: ⟨f,g⟩ = ∫ f(x)g(x) dx.</text>
+    <rect x="20" y="810" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="835" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Hasil kali dalam memperluas konsep geometri Euclid ke ruang vektor abstrak seperti polinomial dan fungsi.</text>
+    <text x="550" y="857" text-anchor="middle" fill="#334155" font-size="13">Gram–Schmidt, QR, least squares, dan Fourier adalah aplikasi utama yang mendasari optimasi, analisis data, dan pemrosesan sinyal.</text>
+
+  </svg>
+</div>
 
   <p align="justify">
   Di \(\mathbb{R}^n\) kita memiliki <b>hasil kali titik (dot product)</b>. Namun, dalam ruang yang lebih abstrak seperti himpunan fungsi kontinu \(C[a,b]\) atau polinomial \(P_n\), kita memerlukan generalisasi yang disebut <b>hasil kali dalam (inner product)</b>. Dengan hasil kali dalam, kita dapat mendefinisikan panjang (norma), sudut, ortogonalitas, dan proyeksi yang menjadi fondasi bagi metode kuadrat terkecil (least squares), deret Fourier, dan berbagai teknik optimasi.
@@ -7424,6 +8208,146 @@ def analisis_ruang_hasil_kali_dalam_interaktif(
 <section class="chapter" id="ch6">
   <div class="badge">Bab 7</div>
   <h1>Bentuk Diagonal dan Kuadratik</h1>
+  
+  <div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1040" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+<g>
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA – Kontras tinggi dengan latar putih              -->
+    <!-- ============================================================ -->
+    <text x="550" y="50" text-anchor="middle" fill="#0f172a" font-size="28" font-weight="900" letter-spacing="1">BAB 7 – BENTUK DIAGONAL DAN KUADRATIK</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="600">(Ortogonal, Diagonalisasi, Bentuk Kuadratik, PCA, Optimasi)</text>
+    <line x1="150" y1="95" x2="950" y2="95" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 7.1–7.2 Matriks Ortogonal & Diagonalisasi Ortogonal -->
+    <!-- ============================================================ -->
+    <rect x="20" y="115" width="340" height="390" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="115" width="340" height="38" rx="10" fill="#2563eb" />
+    <rect x="20" y="143" width="340" height="10" fill="#2563eb" />
+    <text x="190" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">7.1–7.2 Matriks Ortogonal &amp; Diagonalisasi</text>
+
+    <text x="35" y="178" fill="#0f172a" font-size="14" font-weight="bold">Matriks Ortogonal</text>
+    <text x="35" y="202" fill="#1e293b" font-size="13">QᵀQ = I  ⇔  Qᵀ = Q⁻¹</text>
+    <text x="35" y="226" fill="#1e293b" font-size="13">Kolom/baris → basis ortonormal</text>
+    <text x="35" y="250" fill="#1e293b" font-size="13">‖Qx‖ = ‖x‖, det(Q) = ±1</text>
+
+    <text x="35" y="282" fill="#0f172a" font-size="14" font-weight="bold">Diagonalisasi Ortogonal</text>
+    <text x="35" y="306" fill="#1e293b" font-size="13">A = Aᵀ (simetris) ⇔</text>
+    <text x="35" y="330" fill="#1e293b" font-size="13">A = Q·D·Qᵀ dengan Q ortogonal</text>
+    <text x="35" y="354" fill="#1e293b" font-size="13">D = diag(λ₁, …, λₙ)</text>
+
+    <text x="35" y="386" fill="#0f172a" font-size="14" font-weight="bold">Teorema Spektral</text>
+    <text x="35" y="410" fill="#1e293b" font-size="13">Matriks simetris ↔ nilai eigen real</text>
+    <text x="35" y="434" fill="#1e293b" font-size="13">Vektor eigen saling ortogonal</text>
+
+    <text x="35" y="466" fill="#0f172a" font-size="14" font-weight="bold">Contoh 2×2</text>
+    <text x="35" y="490" fill="#1e293b" font-size="13">A = [[3,1],[1,3]]</text>
+    <text x="35" y="514" fill="#1e293b" font-size="13">λ = 4, 2  →  Q = 1/√2 [[1,-1],[1,1]]</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 7.3–7.4 Bentuk Kuadratik & Optimasi                -->
+    <!-- ============================================================ -->
+    <rect x="380" y="115" width="340" height="390" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="380" y="115" width="340" height="38" rx="10" fill="#0d9488" />
+    <rect x="380" y="143" width="340" height="10" fill="#0d9488" />
+    <text x="550" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">7.3–7.4 Bentuk Kuadratik &amp; Optimasi</text>
+
+    <text x="395" y="178" fill="#0f172a" font-size="14" font-weight="bold">Bentuk Kuadratik</text>
+    <text x="395" y="202" fill="#1e293b" font-size="13">Q(x) = xᵀ·A·x</text>
+    <text x="395" y="226" fill="#1e293b" font-size="13">= Σᵢⱼ aᵢⱼ xᵢ xⱼ  (A simetris)</text>
+
+    <text x="395" y="258" fill="#0f172a" font-size="14" font-weight="bold">Sumbu Utama (Principal Axes)</text>
+    <text x="395" y="282" fill="#1e293b" font-size="13">x = Q·y  →  Q(x) = Σ λᵢ yᵢ²</text>
+    <text x="395" y="306" fill="#1e293b" font-size="13">(tanpa suku silang)</text>
+
+    <text x="395" y="338" fill="#0f172a" font-size="14" font-weight="bold">Klasifikasi (berdasarkan λ)</text>
+    <text x="395" y="362" fill="#1e293b" font-size="13">λᵢ > 0  →  Definit Positif (minimum)</text>
+    <text x="395" y="386" fill="#1e293b" font-size="13">λᵢ &lt; 0  →  Definit Negatif (maksimum)</text>
+    <text x="395" y="410" fill="#1e293b" font-size="13">λᵢ campuran  →  Indefinit (pelana)</text>
+    <text x="395" y="434" fill="#1e293b" font-size="13">ada λᵢ = 0  →  Semidefinit</text>
+
+    <text x="395" y="466" fill="#0f172a" font-size="14" font-weight="bold">Optimasi pada Bola Satuan</text>
+    <text x="395" y="490" fill="#1e293b" font-size="13">max/min Q(x) dengan ‖x‖=1</text>
+    <text x="395" y="514" fill="#1e293b" font-size="13">= λ_max / λ_min pada vektor eigen</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 7.5–7.6 Hermitian, Unitary, PCA                    -->
+    <!-- ============================================================ -->
+    <rect x="740" y="115" width="340" height="390" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="115" width="340" height="38" rx="10" fill="#7c3aed" />
+    <rect x="740" y="143" width="340" height="10" fill="#7c3aed" />
+    <text x="910" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">7.5–7.6 Hermitian, Unitary, PCA</text>
+
+    <text x="755" y="178" fill="#0f172a" font-size="14" font-weight="bold">Ruang Kompleks</text>
+    <text x="755" y="202" fill="#1e293b" font-size="13">A* = konjugat transpos</text>
+    <text x="755" y="226" fill="#1e293b" font-size="13">Hermitian: A* = A → eigen real</text>
+    <text x="755" y="250" fill="#1e293b" font-size="13">Unitary: U*U = I → |λ| = 1</text>
+    <text x="755" y="274" fill="#1e293b" font-size="13">Normal: A*A = AA*</text>
+
+    <text x="755" y="306" fill="#0f172a" font-size="14" font-weight="bold">Teorema Spektral Kompleks</text>
+    <text x="755" y="330" fill="#1e293b" font-size="13">A normal ⇔ A = U·D·U*</text>
+
+    <text x="755" y="362" fill="#0f172a" font-size="14" font-weight="bold">PCA (Principal Component Analysis)</text>
+    <text x="755" y="386" fill="#1e293b" font-size="13">C = XᵀX / (n−1)  (kovarians)</text>
+    <text x="755" y="410" fill="#1e293b" font-size="13">Vektor eigen C = komponen utama</text>
+    <text x="755" y="434" fill="#1e293b" font-size="13">Nilai eigen C = varians</text>
+    <text x="755" y="458" fill="#1e293b" font-size="13">Proyeksi = reduksi dimensi optimal</text>
+
+    <!-- ============================================================ -->
+    <!-- Garis pemisah                                               -->
+    <!-- ============================================================ -->
+    <line x1="20" y1="520" x2="1080" y2="520" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: Aplikasi Real-Problem (Portofolio, ML)              -->
+    <!-- ============================================================ -->
+    <rect x="20" y="535" width="700" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="535" width="700" height="38" rx="10" fill="#ea580c" />
+    <rect x="20" y="563" width="700" height="10" fill="#ea580c" />
+    <text x="370" y="560" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Aplikasi Real-Problem</text>
+
+    <text x="35" y="598" fill="#0f172a" font-size="14" font-weight="bold">Portofolio Finansial (Markowitz)</text>
+    <text x="35" y="622" fill="#1e293b" font-size="13">Risiko = wᵀΣw  (bentuk kuadratik), Σ = [[5,3],[3,5]]</text>
+    <text x="35" y="646" fill="#1e293b" font-size="13">λ₁ = 8, λ₂ = 2  →  Definit Positif; arah risiko rendah = (1,−1)</text>
+
+    <text x="35" y="678" fill="#0f172a" font-size="14" font-weight="bold">Machine Learning (Loss Surface)</text>
+    <text x="35" y="702" fill="#1e293b" font-size="13">H = [[2,4],[4,10]], λ = 11.657 dan 0.343  →  Definit Positif</text>
+    <text x="35" y="726" fill="#1e293b" font-size="13">Condition Number κ ≈ 34 → Gradient Descent lambat, butuh momentum</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Ringkasan / Intisari                               -->
+    <!-- ============================================================ -->
+    <rect x="740" y="535" width="340" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="535" width="340" height="38" rx="10" fill="#059669" />
+    <rect x="740" y="563" width="340" height="10" fill="#059669" />
+    <text x="910" y="560" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Intisari</text>
+
+    <text x="755" y="600" fill="#0f172a" font-size="14" font-weight="bold">Diagonalisasi Ortogonal</text>
+    <text x="755" y="625" fill="#1e293b" font-size="13">Mengubah sumbu koordinat</text>
+    <text x="755" y="648" fill="#1e293b" font-size="13">sehingga bentuk kuadratik</text>
+    <text x="755" y="671" fill="#1e293b" font-size="13">menjadi tanpa suku silang.</text>
+
+    <text x="755" y="702" fill="#0f172a" font-size="14" font-weight="bold">Klasifikasi &amp; Optimasi</text>
+    <text x="755" y="727" fill="#1e293b" font-size="13">Tanda nilai eigen menentukan</text>
+    <text x="755" y="750" fill="#1e293b" font-size="13">jenis titik kritis (min/maks/pelana).</text>
+    <text x="755" y="773" fill="#1e293b" font-size="13">PCA = aplikasi diagonalisasi.</text>
+
+    <!-- ============================================================ -->
+    <!-- Catatan kaki                                                -->
+    <!-- ============================================================ -->
+    <text x="20" y="805" fill="#64748b" font-size="12" font-style="italic">* Matriks simetris real selalu dapat didiagonalisasi secara ortogonal.</text>
+    <rect x="20" y="820" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="845" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Bentuk kuadratik dan diagonalisasi ortogonal adalah alat utama untuk memahami geometri, optimasi, dan analisis data.</text>
+    <text x="550" y="867" text-anchor="middle" fill="#334155" font-size="13">PCA, stabilitas numerik, klasifikasi definit, dan matriks Hermitian adalah aplikasi modern yang mendasar.</text>
+</g>
+  </svg>
+</div>
 
   <p align="justify">
   Setelah memahami nilai eigen dan vektor eigen, sekarang kita mempelajari kelas matriks yang dapat didiagonalisasi secara ortogonal dan aplikasinya pada geometri kuadratik, optimasi, dan matriks kompleks. Bentuk kuadratik \(Q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x}\) muncul di berbagai bidang: statistik (matriks kovarians), mekanika (energi potensial), dan machine learning (fungsi biaya). 
@@ -8035,6 +8959,144 @@ def analisis_diagonalisasi_ortogonal_interaktif(
   <div class="badge">Bab 8</div>
   <h1>Transformasi Linier</h1>
 
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1060" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+<g>
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA – Kontras tinggi dengan latar putih              -->
+    <!-- ============================================================ -->
+    <text x="550" y="50" text-anchor="middle" fill="#0f172a" font-size="28" font-weight="900" letter-spacing="1">BAB 8 – TRANSFORMASI LINIER</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="600">(Kernel, Citra, Komposisi, Isomorfisma, Matriks Representasi, Similaritas, Geometri)</text>
+    <line x1="150" y1="95" x2="950" y2="95" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 8.1–8.2 Definisi, Kernel, Image, Komposisi, Invers  -->
+    <!-- ============================================================ -->
+    <rect x="20" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="115" width="340" height="38" rx="10" fill="#2563eb" />
+    <rect x="20" y="143" width="340" height="10" fill="#2563eb" />
+    <text x="190" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">8.1–8.2 Transformasi Linier &amp; Komposisi</text>
+
+    <text x="35" y="178" fill="#0f172a" font-size="14" font-weight="bold">Definisi</text>
+    <text x="35" y="202" fill="#1e293b" font-size="13">T: V → W, T(u+v)=T(u)+T(v)</text>
+    <text x="35" y="226" fill="#1e293b" font-size="13">T(c·u) = c·T(u)</text>
+
+    <text x="35" y="258" fill="#0f172a" font-size="14" font-weight="bold">Kernel (Ruang Nol)</text>
+    <text x="35" y="282" fill="#1e293b" font-size="13">Ker(T) = { v | T(v) = 0 }</text>
+    <text x="35" y="306" fill="#1e293b" font-size="13">T satu-satu ⇔ Ker(T) = {0}</text>
+
+    <text x="35" y="338" fill="#0f172a" font-size="14" font-weight="bold">Citra (Image / Range)</text>
+    <text x="35" y="362" fill="#1e293b" font-size="13">Im(T) = { T(v) | v ∈ V }</text>
+    <text x="35" y="386" fill="#1e293b" font-size="13">T onto ⇔ Im(T) = W</text>
+
+    <text x="35" y="418" fill="#0f172a" font-size="14" font-weight="bold">Rank–Nullity</text>
+    <text x="35" y="442" fill="#1e293b" font-size="13">dim Ker(T) + dim Im(T) = dim V</text>
+
+    <text x="35" y="474" fill="#0f172a" font-size="14" font-weight="bold">Komposisi &amp; Invers</text>
+    <text x="35" y="498" fill="#1e293b" font-size="13">[S∘T] = [S]·[T]</text>
+    <text x="35" y="522" fill="#1e293b" font-size="13">T invertibel ⇔ Ker(T)={0} &amp; Im(T)=W</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 8.3–8.4 Isomorfisma & Matriks Representasi         -->
+    <!-- ============================================================ -->
+    <rect x="380" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="380" y="115" width="340" height="38" rx="10" fill="#0d9488" />
+    <rect x="380" y="143" width="340" height="10" fill="#0d9488" />
+    <text x="550" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">8.3–8.4 Isomorfisma &amp; Matriks Representasi</text>
+
+    <text x="395" y="178" fill="#0f172a" font-size="14" font-weight="bold">Isomorfisma</text>
+    <text x="395" y="202" fill="#1e293b" font-size="13">T linier &amp; bijektif (invertibel)</text>
+    <text x="395" y="226" fill="#1e293b" font-size="13">V ≅ W  ⇔  dim(V) = dim(W)</text>
+    <text x="395" y="250" fill="#1e293b" font-size="13">Setiap ruang V ≅ ℝⁿ</text>
+
+    <text x="395" y="282" fill="#0f172a" font-size="14" font-weight="bold">Matriks Representasi [T]_{B'}^{B}</text>
+    <text x="395" y="306" fill="#1e293b" font-size="13">Kolom ke-j = [T(uⱼ)]_{B'}</text>
+    <text x="395" y="330" fill="#1e293b" font-size="13">[T(v)]_{B'} = [T]_{B'}^{B} · [v]_{B}</text>
+
+    <text x="395" y="362" fill="#0f172a" font-size="14" font-weight="bold">Langkah Membangun Matriks</text>
+    <text x="395" y="386" fill="#1e293b" font-size="13">1. Tentukan basis B (domain) &amp; B' (kodomain)</text>
+    <text x="395" y="410" fill="#1e293b" font-size="13">2. Hitung T(uⱼ) untuk tiap basis</text>
+    <text x="395" y="434" fill="#1e293b" font-size="13">3. Nyatakan hasil dalam basis B'</text>
+    <text x="395" y="458" fill="#1e293b" font-size="13">4. Susun koordinat sebagai kolom</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 8.5–8.6 Similaritas & Geometri Operator            -->
+    <!-- ============================================================ -->
+    <rect x="740" y="115" width="340" height="400" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="115" width="340" height="38" rx="10" fill="#7c3aed" />
+    <rect x="740" y="143" width="340" height="10" fill="#7c3aed" />
+    <text x="910" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">8.5–8.6 Similaritas &amp; Geometri</text>
+
+    <text x="755" y="178" fill="#0f172a" font-size="14" font-weight="bold">Similaritas</text>
+    <text x="755" y="202" fill="#1e293b" font-size="13">B = P⁻¹·A·P</text>
+    <text x="755" y="226" fill="#1e293b" font-size="13">Invarian: det, tr, eigen, polinom karakteristik</text>
+    <text x="755" y="250" fill="#1e293b" font-size="13">A diagonalisasi ⇔ similar dengan diagonal</text>
+
+    <text x="755" y="282" fill="#0f172a" font-size="14" font-weight="bold">Geometri Operator di ℝ² / ℝ³</text>
+    <text x="755" y="306" fill="#1e293b" font-size="13">Rotasi: R_θ = [[cos θ, -sin θ],[sin θ, cos θ]]</text>
+    <text x="755" y="330" fill="#1e293b" font-size="13">Refleksi: H = I − 2nnᵀ</text>
+    <text x="755" y="354" fill="#1e293b" font-size="13">Proyeksi: P = A(AᵀA)⁻¹Aᵀ</text>
+    <text x="755" y="378" fill="#1e293b" font-size="13">Geseran (Shear): [[1,k],[0,1]]</text>
+    <text x="755" y="402" fill="#1e293b" font-size="13">Dilatasi: diag(s_x, s_y)</text>
+    <text x="755" y="426" fill="#1e293b" font-size="13">Ortogonal ↔ isometri (jaga panjang)</text>
+    <text x="755" y="450" fill="#1e293b" font-size="13">Simetris ↔ regang sepanjang arah eigen</text>
+
+    <!-- ============================================================ -->
+    <!-- Garis pemisah                                               -->
+    <!-- ============================================================ -->
+    <line x1="20" y1="530" x2="1080" y2="530" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: 8.7 Aplikasi Transformasi Affine                    -->
+    <!-- ============================================================ -->
+    <rect x="20" y="545" width="700" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="545" width="700" height="38" rx="10" fill="#ea580c" />
+    <rect x="20" y="573" width="700" height="10" fill="#ea580c" />
+    <text x="370" y="570" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">8.7 Aplikasi: Transformasi Affine (Pencocokan Pola / Registrasi Citra)</text>
+
+    <text x="35" y="608" fill="#0f172a" font-size="14" font-weight="bold">Bentuk: T(x) = A·x + t (A = linier, t = translasi)</text>
+    <text x="35" y="632" fill="#1e293b" font-size="13">Diberikan titik sumber {xᵢ} dan target {yᵢ}, cari A, t minimumkan Σ ||yᵢ − (A·xᵢ + t)||²</text>
+    <text x="35" y="656" fill="#1e293b" font-size="13">Solusi: M·p = q (sistem linier) atau least squares untuk data berlebih</text>
+
+    <text x="35" y="688" fill="#0f172a" font-size="14" font-weight="bold">Contoh Numerik (3 titik, eksak):</text>
+    <text x="35" y="712" fill="#1e293b" font-size="13">Sumber: (0,0), (1,0), (0,1)  →  Target: (1,2), (3,4), (1,5)</text>
+    <text x="35" y="736" fill="#1e293b" font-size="13">Hasil: A = [[2,0],[2,3]], t = (1,2)  →  T(x,y) = (2x+1, 2x+3y+2)</text>
+    <text x="35" y="760" fill="#1e293b" font-size="13">Aplikasi: registrasi citra, augmented reality, pengenalan wajah, robotika</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Ringkasan / Intisari                               -->
+    <!-- ============================================================ -->
+    <rect x="740" y="545" width="340" height="250" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="545" width="340" height="38" rx="10" fill="#059669" />
+    <rect x="740" y="573" width="340" height="10" fill="#059669" />
+    <text x="910" y="570" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Intisari</text>
+
+    <text x="755" y="610" fill="#0f172a" font-size="14" font-weight="bold">Transformasi Linier</text>
+    <text x="755" y="635" fill="#1e293b" font-size="13">Mempertahankan struktur</text>
+    <text x="755" y="658" fill="#1e293b" font-size="13">ruang vektor: garis → garis,</text>
+    <text x="755" y="681" fill="#1e293b" font-size="13">kombinasi linier → kombinasi linier.</text>
+
+    <text x="755" y="712" fill="#0f172a" font-size="14" font-weight="bold">Representasi Matriks</text>
+    <text x="755" y="737" fill="#1e293b" font-size="13">Setiap transformasi linier</text>
+    <text x="755" y="760" fill="#1e293b" font-size="13">dapat direpresentasikan</text>
+    <text x="755" y="783" fill="#1e293b" font-size="13">sebagai matriks.</text>
+
+    <!-- ============================================================ -->
+    <!-- Catatan kaki                                                -->
+    <!-- ============================================================ -->
+    <text x="20" y="815" fill="#64748b" font-size="12" font-style="italic">* Semua transformasi linier di ruang berdimensi hingga dapat direpresentasikan sebagai matriks.</text>
+    <rect x="20" y="830" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="855" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Transformasi linier adalah jembatan antara aljabar abstrak dan aplikasi geometri &amp; komputasi.</text>
+    <text x="550" y="877" text-anchor="middle" fill="#334155" font-size="13">Kernel, citra, komposisi, invers, isomorfisma, similaritas, dan representasi matriks adalah alat fundamental.</text>
+</g>
+  </svg>
+</div>
+
   <p align="justify">
   Transformasi linier adalah pemetaan yang mempertahankan struktur ruang vektor: garis tetap garis, titik asal tetap di asal, dan kombinasi linier tetap kombinasi linier. Hampir semua aplikasi aljabar linier dari grafika komputer hingga pembelajaran mesin melibatkan transformasi linier. Memahami transformasi linier memungkinkan kita memodelkan perubahan koordinat, deformasi, proyeksi, dan rotasi dalam berbagai dimensi.
   </p>
@@ -8486,6 +9548,153 @@ def analisis_transformasi_linier_interaktif(
 <section class="chapter" id="ch8">
   <div class="badge">Bab 9 — Numerik & Dekomposisi Lanjut</div>
   <h1>Metoda Numerik dan Dekomposisi</h1>
+
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1080" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+      </filter>
+    </defs>
+<g>
+    <!-- ============================================================ -->
+    <!-- JUDUL UTAMA                                                   -->
+    <!-- ============================================================ -->
+    <text x="550" y="50" text-anchor="middle" fill="#0f172a" font-size="28" font-weight="900" letter-spacing="1">BAB 9 – METODE NUMERIK &amp; DEKOMPOSISI LANJUT</text>
+    <text x="550" y="80" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="600">(LU, Power Method, SVD, Kompresi Data, Perbandingan Metode)</text>
+    <line x1="150" y1="95" x2="950" y2="95" stroke="#3b82f6" stroke-width="3" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 1: 9.1 Dekomposisi LU                                   -->
+    <!-- ============================================================ -->
+    <rect x="20" y="115" width="340" height="350" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="115" width="340" height="38" rx="10" fill="#2563eb" />
+    <rect x="20" y="143" width="340" height="10" fill="#2563eb" />
+    <text x="190" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">9.1 Dekomposisi LU</text>
+
+    <text x="35" y="178" fill="#0f172a" font-size="14" font-weight="bold">Definisi</text>
+    <text x="35" y="202" fill="#1e293b" font-size="13">A = L·U</text>
+    <text x="35" y="226" fill="#1e293b" font-size="13">L = segitiga bawah (diagonal = 1)</text>
+    <text x="35" y="250" fill="#1e293b" font-size="13">U = segitiga atas</text>
+    <text x="35" y="274" fill="#1e293b" font-size="13">P·A = L·U (pivoting)</text>
+
+    <text x="35" y="306" fill="#0f172a" font-size="14" font-weight="bold">Manfaat</text>
+    <text x="35" y="330" fill="#1e293b" font-size="13">Selesaikan A·x = b:</text>
+    <text x="35" y="354" fill="#1e293b" font-size="13">1. L·y = b (substitusi maju)</text>
+    <text x="35" y="378" fill="#1e293b" font-size="13">2. U·x = y (substitusi mundur)</text>
+    <text x="35" y="402" fill="#1e293b" font-size="13">O(n³) sekali, O(n²) per b</text>
+
+    <text x="35" y="434" fill="#0f172a" font-size="14" font-weight="bold">Efisien untuk banyak b</text>
+    <text x="35" y="458" fill="#1e293b" font-size="13">Contoh: A = [[2,1,1],[4,3,3],[8,7,9]]</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 2: 9.2 Power Method                                    -->
+    <!-- ============================================================ -->
+    <rect x="380" y="115" width="340" height="350" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="380" y="115" width="340" height="38" rx="10" fill="#0d9488" />
+    <rect x="380" y="143" width="340" height="10" fill="#0d9488" />
+    <text x="550" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">9.2 Power Method</text>
+
+    <text x="395" y="178" fill="#0f172a" font-size="14" font-weight="bold">Tujuan</text>
+    <text x="395" y="202" fill="#1e293b" font-size="13">Cari eigen dominan (|λ| maks) tanpa polinomial karakteristik</text>
+
+    <text x="395" y="234" fill="#0f172a" font-size="14" font-weight="bold">Iterasi</text>
+    <text x="395" y="258" fill="#1e293b" font-size="13">x₀ = acak (≠0)</text>
+    <text x="395" y="282" fill="#1e293b" font-size="13">x_{k+1} = A·x_k / ||A·x_k||</text>
+    <text x="395" y="306" fill="#1e293b" font-size="13">λ_{k} = (x_kᵀ·A·x_k) / (x_kᵀ·x_k)</text>
+    <text x="395" y="330" fill="#1e293b" font-size="13">Konvergensi linier, rasio = |λ₂|/|λ₁|</text>
+
+    <text x="395" y="362" fill="#0f172a" font-size="14" font-weight="bold">Varian</text>
+    <text x="395" y="386" fill="#1e293b" font-size="13">Inverse: gunakan A⁻¹ → eigen terkecil</text>
+    <text x="395" y="410" fill="#1e293b" font-size="13">Shifted: (A−μI)⁻¹ → eigen terdekat dengan μ</text>
+
+    <text x="395" y="442" fill="#0f172a" font-size="14" font-weight="bold">Aplikasi</text>
+    <text x="395" y="466" fill="#1e293b" font-size="13">PageRank Google (matriks 10¹⁰×10¹⁰)</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 3: 9.3 Perbandingan Metode SPL                         -->
+    <!-- ============================================================ -->
+    <rect x="740" y="115" width="340" height="350" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="115" width="340" height="38" rx="10" fill="#7c3aed" />
+    <rect x="740" y="143" width="340" height="10" fill="#7c3aed" />
+    <text x="910" y="140" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">9.3 Perbandingan Metode SPL</text>
+
+    <text x="755" y="178" fill="#0f172a" font-size="14" font-weight="bold">Metode &amp; Kompleksitas</text>
+    <text x="755" y="202" fill="#1e293b" font-size="13">Gauss-Jordan / RREF: O(n³)</text>
+    <text x="755" y="226" fill="#1e293b" font-size="13">LU: O(n³) sekali, O(n²) per b</text>
+    <text x="755" y="250" fill="#1e293b" font-size="13">Cholesky: ½O(n³) (SPD)</text>
+    <text x="755" y="274" fill="#1e293b" font-size="13">QR: O(n³) (least squares, stabil)</text>
+    <text x="755" y="298" fill="#1e293b" font-size="13">Iteratif (CG, Jacobi): O(n²)/iterasi</text>
+
+    <text x="755" y="330" fill="#0f172a" font-size="14" font-weight="bold">Kriteria Pemilihan</text>
+    <text x="755" y="354" fill="#1e293b" font-size="13">Dense &amp; kecil → LU / Cholesky</text>
+    <text x="755" y="378" fill="#1e293b" font-size="13">Overdetermined → QR</text>
+    <text x="755" y="402" fill="#1e293b" font-size="13">SPD &amp; sparse → Conjugate Gradient</text>
+    <text x="755" y="426" fill="#1e293b" font-size="13">Banyak b → LU sekali</text>
+
+    <!-- ============================================================ -->
+    <!-- Garis pemisah                                               -->
+    <!-- ============================================================ -->
+    <line x1="20" y1="480" x2="1080" y2="480" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4" />
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 4: 9.4–9.6 SVD & Kompresi Data                         -->
+    <!-- ============================================================ -->
+    <rect x="20" y="495" width="700" height="300" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="20" y="495" width="700" height="38" rx="10" fill="#ea580c" />
+    <rect x="20" y="523" width="700" height="10" fill="#ea580c" />
+    <text x="370" y="520" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">9.4–9.6 SVD &amp; Kompresi Data</text>
+
+    <text x="35" y="558" fill="#0f172a" font-size="14" font-weight="bold">Definisi SVD</text>
+    <text x="35" y="582" fill="#1e293b" font-size="13">Aₘₓₙ = Uₘₓₘ · Σₘₓₙ · Vₙₓₙᵀ</text>
+    <text x="35" y="606" fill="#1e293b" font-size="13">U, V = ortogonal; Σ = diagonal (σ₁ ≥ σ₂ ≥ … ≥ σᵣ > 0)</text>
+    <text x="35" y="630" fill="#1e293b" font-size="13">σᵢ = nilai singular = √(λᵢ(AᵀA))</text>
+
+    <text x="35" y="662" fill="#0f172a" font-size="14" font-weight="bold">Sifat &amp; Aplikasi</text>
+    <text x="35" y="686" fill="#1e293b" font-size="13">||A||₂ = σ₁ (norma spektral)</text>
+    <text x="35" y="710" fill="#1e293b" font-size="13">||A||F = √(Σ σᵢ²) (Frobenius)</text>
+    <text x="35" y="734" fill="#1e293b" font-size="13">Pseudoinvers: A⁺ = V·Σ⁺·Uᵀ</text>
+    <text x="35" y="758" fill="#1e293b" font-size="13">Bilangan kondisi: cond(A) = σ_max / σ_min</text>
+
+    <!-- Contoh Kompresi -->
+    <rect x="500" y="550" width="205" height="120" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+    <text x="602" y="575" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="bold">Kompresi Rank-k</text>
+    <text x="602" y="599" text-anchor="middle" fill="#1e293b" font-size="13">Aₖ = Uₖ·Σₖ·Vₖᵀ</text>
+    <text x="602" y="623" text-anchor="middle" fill="#1e293b" font-size="13">Error² = Σ σᵢ² (i&gt;k)</text>
+    <text x="602" y="647" text-anchor="middle" fill="#1e293b" font-size="13">Simpan k(m+n+1) angka</text>
+    <text x="602" y="671" text-anchor="middle" fill="#1e293b" font-size="13">Aplikasi: gambar, PCA, Netflix</text>
+
+    <!-- ============================================================ -->
+    <!-- KOTAK 5: Intisari                                            -->
+    <!-- ============================================================ -->
+    <rect x="740" y="495" width="340" height="300" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="740" y="495" width="340" height="38" rx="10" fill="#059669" />
+    <rect x="740" y="523" width="340" height="10" fill="#059669" />
+    <text x="910" y="520" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Intisari</text>
+
+    <text x="755" y="560" fill="#0f172a" font-size="14" font-weight="bold">Dekomposisi Matriks</text>
+    <text x="755" y="585" fill="#1e293b" font-size="13">Mengubah matriks menjadi</text>
+    <text x="755" y="608" fill="#1e293b" font-size="13">bentuk yang lebih sederhana</text>
+    <text x="755" y="631" fill="#1e293b" font-size="13">untuk komputasi cepat.</text>
+
+    <text x="755" y="662" fill="#0f172a" font-size="14" font-weight="bold">Tiga Pilar</text>
+    <text x="755" y="687" fill="#1e293b" font-size="13">LU: untuk banyak sistem</text>
+    <text x="755" y="710" fill="#1e293b" font-size="13">Power: untuk eigen dominan</text>
+    <text x="755" y="733" fill="#1e293b" font-size="13">SVD: untuk kompresi &amp; analisis</text>
+
+    <text x="755" y="764" fill="#0f172a" font-size="14" font-weight="bold">SVD adalah inti dari</text>
+    <text x="755" y="788" fill="#1e293b" font-size="13">machine learning modern</text>
+
+    <!-- ============================================================ -->
+    <!-- Catatan kaki                                                -->
+    <!-- ============================================================ -->
+    <text x="20" y="815" fill="#64748b" font-size="12" font-style="italic">* SVD berlaku untuk semua matriks (termasuk non-persegi dan singular).</text>
+    <rect x="20" y="830" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+    <text x="550" y="855" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Metode numerik dan dekomposisi matriks memungkinkan komputasi efisien untuk skala besar (n &gt; 1000).</text>
+    <text x="550" y="877" text-anchor="middle" fill="#334155" font-size="13">LU, Power Method, dan SVD adalah alat fundamental dalam aljabar linier komputasi modern, AI, dan pengolahan data.</text>
+</g>
+  </svg>
+</div>
 
   <p align="justify">
   Untuk matriks besar \(n>1000\), eliminasi Gauss \(O(n^3)\) menjadi terlalu mahal dan tidak stabil secara numerik. Bab ini membahas berbagai dekomposisi matriks yang memungkinkan solusi cepat untuk banyak vektor \(\mathbf{b}\), metode iteratif untuk mencari nilai eigen dominan, perbandingan metode penyelesaian SPL, serta <b>Singular Value Decomposition (SVD)</b> yang menjadi jantung kompresi data, machine learning, dan analisis matriks modern.
@@ -9656,8 +10865,8 @@ display(html(f"Error Frobenius untuk rank-1: {err_k:.5f}"))
   </div>
 
 
- <h3><i class="fas fa-book"></i> Referensi dan Sumber Belajar</h3>
- <p><strong>Buku Teks Rekomendasi:</strong></p>
+ <h2><i class="fas fa-book"></i> Referensi dan Sumber Belajar</h2>
+ <h3><strong>Buku Teks Rekomendasi:</strong></h3>
 <br>
 <div style="margin-left:-40px; width: calc(100% + 80px);">
   <iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/Subiono2021/Dokumen-PDF/main/BukuALE2027.pdf#zoom=125" 
