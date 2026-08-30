@@ -65,7 +65,7 @@
     display: flex;
     min-height: 100vh;
   }
-     
+
   /* --- SIDEBAR --- */
   #sidebar {
     width: 300px;
@@ -372,7 +372,7 @@
   <!-- ================= SIDEBAR ================= -->
   <nav id="sidebar">
     <h2>Aljabar Linier Elementer Praktis</h2>
-    <div class="subtitle" style="font-size:16px;"><b>BiMath:</b> Aljabar Linier Elementer Praktis Edisi Interaktif<br><b>9 Bab + $\pmb{\LaTeX}$ + SageMath</b></div>
+    <div class="subtitle" style="font-size:16px;"><b>BiMath:</b> Elementer Praktis — Edisi Interaktif<br><b>9 Bab + $\pmb{\LaTeX}$ + SageMath</b></div>
     <ul id="toc">
       <li class="active" onclick="showChapter(0)" style="font-size:18px;"><span class="num">1</span>SPL dan Matriks</li>
       <li onclick="showChapter(1)" style="font-size:18px;"><span class="num">2</span>Determinan</li>
@@ -1603,8 +1603,8 @@ Perkalian antarmatriks tidak dilakukan dengan mengalikan elemen yang seletak, me
   </ol>
 </div>
 
-<!-- 1.4. Invers; Sifat-sifat Aljabar Matriks -->
-<h2 class="sec">1.4. Invers; Sifat-sifat Aljabar Matriks</h2>
+<!-- 1.4. Invers dan Sifat-sifat Aljabar Matriks -->
+<h2 class="sec">1.4. Invers dan Sifat-sifat Aljabar Matriks</h2>
 <p align="justify">
 Meskipun banyak sifat aljabar bilangan riil yang juga berlaku pada aljabar matriks (seperti sifat asosiatif dan distributif), terdapat beberapa perbedaan mendasar yang sangat krusial. Salah satu perbedaan terbesar adalah bahwa perkalian matriks secara umum tidak komutatif ($AB \neq BA$), serta tidak berlaku hukum pembatalan (<i>cancellation law</i>) dan aturan perkalian nol secara langsung. Pada bagian ini, kita akan mempelajari sifat-sifat aljabar matriks dan konsep <b>invers matriks</b> (balikan matriks).
 </p>
@@ -3677,8 +3677,8 @@ def analisa_spl_interaktif(
 <section class="chapter" id="ch2">
   <div class="badge">Bab 3</div>
   <h1>Ruang Vektor Euclid \(\mathbb{R}^n\)</h1>
-  
- <div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1120" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
     <defs>
       <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
@@ -3827,17 +3827,19 @@ def analisa_spl_interaktif(
 
   <!-- TAMBAHAN BIMATH 3.0 - TANPA MENGHILANGKAN ASLI -->
   <div class="card note" style="border-left:4px solid #1565C0;">
-  <b>3.0. Struktur \(\mathbb{R}^n\) sebagai Ruang Vektor:</b>
+  <b>Tambahan Nalar BiMath 3.0 - Struktur \(\mathbb{R}^n\) sebagai Ruang Vektor:</b>
   <p align="justify">
   Agar \(\mathbb{R}^n\) sah disebut ruang vektor, ia harus memenuhi 10 aksioma: tertutup terhadap penjumlahan dan perkalian skalar, komutatif, asosiatif, ada vektor nol \(\mathbf{0}=(0,...,0)\), ada invers \(-\mathbf{u}\), serta sifat distributif.
   Operasi formal yang hilang di narasi asli: Jika \(\mathbf{u}=(u_1,...,u_n), \mathbf{v}=(v_1,...,v_n), c\in\mathbb{R}\), maka \(\mathbf{u}+\mathbf{v}=(u_1+v_1,...,u_n+v_n)\) dan \(c\mathbf{u}=(cu_1,...,cu_n)\). Inilah yang menjamin semua komputasi di sub-bab berikut valid secara aksiomatis.
   </p>
   </div>
 
+  Berikut contoh real problem yang faktual untuk topik 3.1, saya buat dengan narasi nyata dan komputasi yang valid sesuai format kamu:
+
 <!-- ============================================================ -->
 <!-- 3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-n -->
 <!-- ============================================================ -->
-<h2 class="sec">3.1. Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
+<h2 class="sec">3.1 Vektor pada Ruang-2, Ruang-3, dan Ruang-\(n\)</h2>
 
 <p align="justify">
 Pada bidang datar (\(\mathbb R^2\)), setiap vektor mempunyai dua komponen,
@@ -3889,7 +3891,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
   <!-- ============================================================ -->
   <!-- 3.2 Norma, Hasil Kali Titik, dan Jarak -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.2. Norma, Hasil Kali Titik, dan Jarak</h2>
+  <h2 class="sec">3.2 Norma, Hasil Kali Titik, dan Jarak</h2>
 
   <p align="justify">
   <b>Norma</b> suatu vektor menyatakan panjang atau besar vektor tersebut. Untuk vektor \(\mathbf u=(u_1,\ldots,u_n)\), norma Euclid didefinisikan sebagai
@@ -3989,7 +3991,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
   <!-- ============================================================ -->
   <!-- 3.3 Ortogonalitas -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.3. Ortogonalitas</h2>
+  <h2 class="sec">3.3 Ortogonalitas</h2>
 
   <p align="justify">
   Dua vektor dikatakan <b>ortogonal</b> apabila membentuk sudut \(90^\circ\). Secara matematis, kondisi tersebut ekuivalen dengan
@@ -4014,7 +4016,7 @@ Meskipun ruang berdimensi tinggi tidak dapat divisualisasikan secara langsung, k
 <!-- ============================================================ -->
 <!-- 3.3.1 Hubungan dengan Sudut -->
 <!-- ============================================================ -->
-<h3><b>3.3.1. Hubungan Ortogonalitas dengan Sudut Antara Dua Vektor</b></h3>
+<h3><b>3.3.1 Hubungan Ortogonalitas dengan Sudut Antara Dua Vektor</b></h3>
 
 <p align="justify">
 Secara geometris, sudut \(\theta\) antara dua vektor \(\mathbf u\) dan \(\mathbf v\) memenuhi
@@ -4042,7 +4044,7 @@ Jika \(\mathbf u \cdot \mathbf v = 0\), maka \(\cos\theta = 0\), sehingga \(\the
 <!-- ============================================================ -->
 <!-- 3.3.2 Basis Ortogonal dan Ortonormal -->
 <!-- ============================================================ -->
-<h3>3.3.2. Basis Ortogonal dan Ortonormal</h3>
+<h3>3.3.2 Basis Ortogonal dan Ortonormal</h3>
 
 <p align="justify">
 <b>Basis ortogonal</b> adalah himpunan vektor yang saling tegak lurus satu sama lain. Jika setiap vektor pada basis ortogonal juga memiliki panjang 1, maka basis tersebut disebut <b>basis ortonormal</b>.
@@ -4072,7 +4074,7 @@ Keuntungan basis ortonormal: koordinat suatu vektor terhadap basis tersebut dapa
 <!-- ============================================================ -->
 <!-- 3.3.3 Proyeksi Ortogonal (dengan diagram yang sudah ada) -->
 <!-- ============================================================ -->
-<h3>3.3.3. Proyeksi Ortogonal</h3>
+<h3>3.3.3 Proyeksi Ortogonal</h3>
 
 <p align="justify">
 Proyeksi ortogonal vektor \(\mathbf u\) pada vektor \(\mathbf v\) (dengan \(\mathbf v \neq \mathbf 0\)) didefinisikan sebagai
@@ -4173,7 +4175,7 @@ akan selalu ortogonal terhadap \(\mathbf v\), yaitu \(\mathbf r \cdot \mathbf v 
 <!-- ============================================================ -->
 <!-- 3.3.4 Proses Gram–Schmidt -->
 <!-- ============================================================ -->
-<h3>3.3.4. Proses Gram–Schmidt</h3>
+<h3>3.3.4 Proses Gram–Schmidt</h3>
 
 <p align="justify">
 Proses Gram–Schmidt adalah algoritma untuk mengubah himpunan vektor bebas linear menjadi basis ortogonal (atau ortonormal). Langkah-langkahnya adalah sebagai berikut:
@@ -4214,7 +4216,7 @@ Proses Gram–Schmidt adalah algoritma untuk mengubah himpunan vektor bebas line
 <!-- ============================================================ -->
 <!-- 3.3.5 Teorema Pythagoras Vektor -->
 <!-- ============================================================ -->
-<h3>3.3.5. Teorema Pythagoras dalam Bentuk Vektor</h3>
+<h3>3.3.5 Teorema Pythagoras dalam Bentuk Vektor</h3>
 
 <p align="justify">
 Jika dua vektor \(\mathbf u\) dan \(\mathbf v\) ortogonal, maka berlaku
@@ -4238,7 +4240,7 @@ Hal ini sesuai dengan teorema Pythagoras pada segitiga siku-siku.
 <!-- ============================================================ -->
 <!-- 3.3.6 Matriks Ortogonal -->
 <!-- ============================================================ -->
-<h3>3.3.6. Matriks Ortogonal</h3>
+<h3>3.3.6 Matriks Ortogonal</h3>
 
 <p align="justify">
 Sebuah matriks persegi \(Q\) disebut <b>matriks ortogonal</b> jika kolom-kolomnya membentuk basis ortonormal, atau secara ekuivalen
@@ -4270,7 +4272,7 @@ Sifat penting: \(Q^{-1} = Q^T\), sehingga transformasi \(Q\mathbf x\) mempertaha
 <!-- ============================================================ -->
 <!-- 3.3.7 Aplikasi dalam Regresi Linear -->
 <!-- ============================================================ -->
-<h3>3.3.7. Aplikasi Ortogonalitas dalam Regresi Linear</h3>
+<h3>3.3.7 Aplikasi Ortogonalitas dalam Regresi Linear</h3>
 
 <p align="justify">
 Dalam regresi linear, kita memiliki model
@@ -4316,7 +4318,7 @@ X^T \mathbf r = \mathbf 0.
  <!-- ============================================================ -->
 <!-- 3.4 Geometri Sistem Linier -->
 <!-- ============================================================ -->
-<h2 class="sec">3.4. Geometri Sistem Linier</h2>
+<h2 class="sec">3.4 Geometri Sistem Linier</h2>
 
 <p align="justify">
 Sistem persamaan linier dapat diinterpretasikan secara geometris. Pada \(\mathbb R^2\), setiap persamaan linier merepresentasikan sebuah <b>garis</b>. Solusi SPL merupakan titik potong kedua garis tersebut.
@@ -4374,7 +4376,7 @@ Pada \(\mathbb R^3\), setiap persamaan linier merepresentasikan sebuah <b>bidang
 <!-- TAMBAHAN: Sub-topik dan Contoh Komputasi -->
 <!-- ============================================================ -->
 
-<h3>3.4.1. Analisis Solusi Melalui Eliminasi Gauss</h3>
+<h3>3.4.1 Analisis Solusi Melalui Eliminasi Gauss</h3>
 
 <p align="justify">
 Untuk sistem dengan \(n\) variabel dan \(m\) persamaan, kita dapat menggunakan <b>eliminasi Gauss</b> untuk mengubah matriks augmented ke bentuk <b>eselon baris</b> (atau eselon baris tereduksi). Bentuk ini secara langsung memperlihatkan apakah sistem konsisten, dan jika ya, berapa banyak parameter bebas yang dimiliki.
@@ -4535,10 +4537,10 @@ Untuk sistem \(A\mathbf{x}=\mathbf{b}\) dengan \(A\) matriks persegi (\(n\times 
 
 <div class="card example">
   <b>Contoh Komputasi – Menggunakan Determinan:</b><br>
-  Untuk sistem $2\times 2$ pada contoh pertama: \(A = \begin{pmatrix}2&3\\4&-1\end{pmatrix}\). Hitung \(\det(A) = 2(-1) - 3(4) = -2 - 12 = -14 \neq 0\), maka solusi tunggal (sudah diperoleh). Untuk sistem tanpa solusi: \(A = \begin{pmatrix}1&2\\3&6\end{pmatrix}\), \(\det(A)=1\cdot6-2\cdot3=0\), singular, konsistensi gagal.
+  Untuk sistem 2×2 pada contoh pertama: \(A = \begin{pmatrix}2&3\\4&-1\end{pmatrix}\). Hitung \(\det(A) = 2(-1) - 3(4) = -2 - 12 = -14 \neq 0\), maka solusi tunggal (sudah diperoleh). Untuk sistem tanpa solusi: \(A = \begin{pmatrix}1&2\\3&6\end{pmatrix}\), \(\det(A)=1\cdot6-2\cdot3=0\), singular, konsistensi gagal.
 </div>
 
-<h3>3.4.4. Visualisasi Ruang Kolom dan Kombinasi Linear</h3>
+<h3>3.4.4 Visualisasi Ruang Kolom dan Kombinasi Linear</h3>
 
 <p align="justify">
 Jika kita pandang \(A\) sebagai matriks dengan kolom \(\mathbf{a}_1, \mathbf{a}_2, \dots, \mathbf{a}_n\), maka persamaan \(A\mathbf{x}=\mathbf{b}\) adalah
@@ -4560,7 +4562,7 @@ Dengan demikian, geometri sistem linier tidak hanya tentang garis dan bidang, te
   <!-- ============================================================ -->
 <!-- 3.5 Cross Product (Kali Silang) -->
 <!-- ============================================================ -->
-<h2 class="sec">3.5. Cross Product</h2>
+<h2 class="sec">3.5 Cross Product</h2>
 
 <p align="justify">
 Berbeda dengan dot product yang menghasilkan sebuah skalar, <b>cross product</b> menghasilkan sebuah vektor baru yang tegak lurus terhadap kedua vektor asal. Operasi ini hanya didefinisikan pada ruang tiga dimensi.
@@ -4596,7 +4598,7 @@ yang sama dengan luas jajargenjang yang dibentuk oleh kedua vektor tersebut.
 <!-- TAMBAHAN: Sub-topik dan Contoh Komputasi untuk Cross Product -->
 <!-- ============================================================ -->
 
-<h3>3.5.1. Sifat-sifat Aljabar Cross Product</h3>
+<h3>3.5.1 Sifat-sifat Aljabar Cross Product</h3>
 <p align="justify">
 Cross product memiliki sifat-sifat yang membedakannya dari dot product. Beberapa sifat penting:
 </p>
@@ -4630,7 +4632,7 @@ Cross product memiliki sifat-sifat yang membedakannya dari dot product. Beberapa
   Terbukti antikomutatif.
 </div>
 
-<h3>3.5.2. Interpretasi Geometris Lanjutan: Luas dan Normal</h3>
+<h3>3.5.2 Interpretasi Geometris Lanjutan: Luas dan Normal</h3>
 <p align="justify">
 Selain luas jajargenjang, cross product juga menghasilkan vektor normal bidang yang direntang oleh kedua vektor. Vektor normal ini sangat berguna dalam geometri analitik dan fisika.
 </p>
@@ -4661,7 +4663,7 @@ Selain luas jajargenjang, cross product juga menghasilkan vektor normal bidang y
   \(\| (6,3,2) \| = \sqrt{36+9+4} = \sqrt{49} = 7\). Luas segitiga = \(\frac12 \cdot 7 = 3.5\) satuan luas.
 </div>
 
-<h3>3.5.3. Identitas Lagrange dan Hubungan dengan Dot Product</h3>
+<h3>3.5.3 Identitas Lagrange dan Hubungan dengan Dot Product</h3>
 <p align="justify">
 Terdapat hubungan penting antara cross product, dot product, dan norma, yaitu identitas Lagrange:
 \[
@@ -4678,7 +4680,7 @@ Identitas ini berguna untuk menghitung luas tanpa harus menghitung cross product
   \(\mathbf u\times\mathbf v = (-3,6,-3)\) (dari contoh sebelumnya), \(\|(-3,6,-3)\|^2 = 9+36+9 = 54\). Terbukti.
 </div>
 
-<h3>3.5.4. Penerapan dalam Fisika: Torsi dan Momen</h3>
+<h3>3.5.4 Penerapan dalam Fisika: Torsi dan Momen</h3>
 <p align="justify">
 Dalam fisika, torsi \(\boldsymbol\tau\) didefinisikan sebagai \(\boldsymbol\tau = \mathbf r \times \mathbf F\), di mana \(\mathbf r\) adalah vektor posisi dari titik tumpu ke titik tangkap gaya, dan \(\mathbf F\) adalah gaya. Besar torsi adalah \(\|\mathbf r\| \|\mathbf F\| \sin\theta\), dengan \(\theta\) sudut antara \(\mathbf r\) dan \(\mathbf F\).
 </p>
@@ -5069,10 +5071,12 @@ def cross_product_and_norm(
 </textarea>
 </div>
 
+
+
   <!-- ============================================================ -->
   <!-- 3.6 Kombinasi Linier dan Rentang -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.6. Kombinasi Linier dan Rentang</h2>
+  <h2 class="sec">3.6 Kombinasi Linier dan Rentang</h2>
 
   <p align="justify">
   Sebuah <b>kombinasi linier</b> dari vektor-vektor \(\mathbf v_1,\mathbf v_2,\ldots,\mathbf v_k\) adalah vektor yang berbentuk
@@ -5174,7 +5178,7 @@ def cross_product_and_norm(
   <!-- ============================================================ -->
 <!-- 3.7 Bebas Linier dan Basis -->
 <!-- ============================================================ -->
-<h2 class="sec">3.7. Bebas Linier dan Basis</h2>
+<h2 class="sec">3.7 Bebas Linier dan Basis</h2>
 
 <p align="justify">
 Konsep <b>bebas linier</b> (<i>linear independence</i>) dan <b>basis</b> merupakan pilar utama dalam aljabar linier yang menentukan struktur dimensi dari suatu ruang vektor. Konsep ini menjelaskan kapan sekumpulan vektor memberikan informasi baru yang independen dan kapan sekumpulan vektor tersebut bersifat redundan (dapat diwakili oleh vektor lainnya).
@@ -5382,7 +5386,7 @@ Suatu himpunan vektor \(B = \{\mathbf v_1, \mathbf v_2, \dots, \mathbf v_n\}\) d
   <!-- ============================================================ -->
   <!-- 3.8 Aplikasi Vektor dalam Optimasi (Real Problem) -->
   <!-- ============================================================ -->
-  <h2 class="sec">3.8. Aplikasi Vektor dalam Optimasi (Regresi Linier)</h2>
+  <h2 class="sec">3.8 Aplikasi Vektor dalam Optimasi (Regresi Linier)</h2>
 
   <p align="justify">
   Salah satu aplikasi penting dari geometri vektor dan proyeksi orthogonal adalah dalam <b>regresi linier</b> dengan metode <b>kuadrat terkecil (least squares)</b>. Masalah nyata: Misalkan kita memiliki data pengamatan \((x_i, y_i)\), \(i=1,\ldots,m\), dan kita ingin menemukan garis terbaik \(y = a + bx\) yang meminimalkan jumlah kuadrat residual (jarak vertikal antara titik data dan garis).
@@ -6038,8 +6042,15 @@ Kesimpulan: Dalam jangka panjang, merek pertama akan dikuasai oleh 75% pasar dan
   </p>
 
   <div class="card example">
-    <b>Contoh:</b> Apakah \(\mathbf{b}=(3,5,2)\) berada dalam rentang \(\{(1,2,1),(2,4,2),(1,0,1)\}\)? Bentuk matriks \(A=\begin{bmatrix}1&2&1\\2&4&0\\1&2&1\end{bmatrix}\), selesaikan \(A\mathbf{c}=\mathbf{b}\). Setelah eliminasi ternyata tidak konsisten (baris kedua menjadi 0=...), sehingga \(\mathbf{b}\) tidak dalam rentang.
-  </div>
+  <b>Contoh:</b> Apakah \(\mathbf{b}=(3,5,2)\) berada dalam rentang \(S=\{(1,2,1),(2,4,2),(1,0,1)\}\)?
+  <br><br>
+  Kita cari \(c_1, c_2, c_3\) sehingga \(c_1(1,2,1)+c_2(2,4,2)+c_3(1,0,1) = (3,5,2)\).
+  Bentuk matriks augmented:
+  \[ \left[\begin{array}{ccc|c}1&2&1&3\\2&4&0&5\\1&2&1&2\end{array}\right] \xrightarrow[R_3-R_1]{R_2-2R_1} \left[\begin{array}{ccc|c}1&2&1&3\\0&0&-2&-1\\0&0&0&-1\end{array}\right] \]
+  Baris ketiga menjadi \(0 = -1\), sebuah kontradiksi. Sistem tidak konsisten, sehingga tidak ada kombinasi linear yang menghasilkan \(\mathbf{b}\).
+  <br><br>
+  <b>Jadi, \(\mathbf{b}\) tidak dalam rentang S.</b>
+</div>
 
   <!-- ============================================================ -->
   <!-- 4.4 Linear Independence                                      -->
@@ -6058,98 +6069,229 @@ Kesimpulan: Dalam jangka panjang, merek pertama akan dikuasai oleh 75% pasar dan
   <b>Uji praktis:</b> Bentuk matriks \(M\) dengan baris/kolom vektor-vektor tersebut. Jika \(\text{rank}(M)=k\) (banyak vektor), maka bebas linier; jika \(\text{rank} < k\), bergantung linier.
   </p>
 
-  <p align="justify">
-  <b>Contoh 1:</b> \(\{1,x,x^2\}\) di \(P_2\) bebas linier, karena \(c_1\cdot1+c_2x+c_3x^2=0\) hanya mungkin jika semua koefisien nol.
-  </p>
 
-  <p align="justify">
-  <b>Contoh 2:</b> \(\{1,x,2+3x\}\) bergantung, karena \(2+3x = 2\cdot1 + 3\cdot x\), sehingga kombinasi \( -2\cdot1 -3x + (2+3x)=0\).
-  </p>
+<p align="justify">
+  <b>Contoh 1: \(\{1, x, x^2\}\) di \(P_2\) bebas linear.</b><br>
+  Ruang \(P_2\) adalah ruang semua polinom berderajat $\le 2$.
+  Misalkan ada kombinasi linear yang nol:
+  \[c_1 \cdot 1 + c_2 x + c_3 x^2 = 0 \quad \text{untuk semua } x\]
+  Polinom nol adalah polinom yang nilainya 0 untuk setiap \(x\). Satu-satunya cara sebuah polinom \(c_3x^2 + c_2x + c_1\) identik nol adalah jika semua koefisiennya nol.
+  Jadi haruslah \(c_1 = 0, c_2 = 0, c_3 = 0\). Karena hanya solusi trivial yang ada, maka \(\{1, x, x^2\}\) bebas linear. Himpunan ini bahkan menjadi basis baku untuk \(P_2\).
+</p>
 
-  <p align="justify">
-  <b>Contoh fungsi:</b> \(\{\sin x, \cos x\}\) bebas linier di \(C[-\pi,\pi]\), karena jika \(a\sin x+b\cos x=0\) untuk semua \(x\), dengan mengambil \(x=0\) dan \(x=\pi/2\) diperoleh \(a=b=0\). Untuk fungsi yang lebih rumit, dapat digunakan <b>Wronskian</b>.
-  </p>
+<p align="justify">
+  <b>Contoh 2: \(\{1, x, 2+3x\}\) di \(P_2\) bergantung linear.</b><br>
+  Kita bisa melihat vektor ketiga merupakan kombinasi dari dua yang pertama:
+  \[2+3x = 2\cdot(1) + 3\cdot(x)\]
+  Pindahkan semua ke satu ruas:
+  \[-2\cdot1 -3\cdot x + 1\cdot(2+3x) = 0\]
+  Kita menemukan kombinasi linear \(c_1=-2, c_2=-3, c_3=1\) yang tidak semuanya nol tetapi hasilnya polinom nol. Ini adalah definisi dari bergantung linear.
+  Secara geometri, ketiga vektor ini hidup di bidang yang sama di dalam \(P_2\), vektor ketiga tidak menambah dimensi baru. Rentangnya hanya \( \text{span}\{1,x\} \) saja.
+</p>
+
+<p align="justify">
+  <b>Contoh 3: \(\{\sin x, \cos x\}\) di \(C[-\pi,\pi]\) bebas linear.</b><br>
+  \(C[-\pi,\pi]\) adalah ruang fungsi kontinu. Misalkan:
+  \[a\sin x + b\cos x = 0 \quad \text{untuk semua } x \in [-\pi,\pi]\]
+  Persamaan ini harus berlaku untuk SETIAP nilai \(x\). Kita bisa uji di titik-titik spesifik:
+  <ul>
+    <li>Untuk \(x=0\): \(a\sin 0 + b\cos 0 = b\cdot1 = 0 \implies b=0\)</li>
+    <li>Untuk \(x=\pi/2\): \(a\sin(\pi/2) + b\cos(\pi/2) = a\cdot1 = 0 \implies a=0\)</li>
+  </ul>
+  Jadi \(a=b=0\). Hanya solusi trivial, maka \(\{\sin x, \cos x\}\) bebas linear.
+
+  <br><br>
+  <b>Metode umum: Wronskian.</b> Untuk fungsi yang lebih rumit, menebak nilai \(x\) tidak selalu mudah. Kita gunakan Wronskian:
+  \[W(f,g) = \begin{vmatrix} f & g \\ f' & g' \end{vmatrix} = f g' - f' g\]
+  Jika \(W(x) \neq 0\) untuk minimal satu \(x\) di interval, maka \(f,g\) pasti bebas linear.
+  <br>
+  Untuk kasus ini:
+  \[W(\sin x, \cos x) = \begin{vmatrix} \sin x & \cos x \\ \cos x & -\sin x \end{vmatrix} = -\sin^2 x - \cos^2 x = -1 \neq 0\]
+  Karena Wronskiannya selalu \(-1\) (tidak pernah nol), terbukti \(\sin x\) dan \(\cos x\) bebas linear.
+  <br>
+  <i>Catatan: Kebalikannya tidak selalu berlaku. \(W=0\) di mana-mana tidak otomatis berarti bergantung linear, kecuali untuk solusi persamaan diferensial linear.</i>
+</p>
 
   <!-- ============================================================ -->
   <!-- 4.5 Coordinates and Basis                                    -->
   <!-- ============================================================ -->
   <h2 class="sec">4.5 Koordinat dan Basis</h2>
 
-  <div class="card theorem">
-    <b>Basis:</b> Himpunan \(B=\{v_1,\dots,v_n\}\) adalah <b>basis</b> dari \(V\) jika:
-    <ol>
-      <li>\(B\) bebas linier, dan</li>
-      <li>\(\text{span}(B)=V\).</li>
-    </ol>
-    Jika \(B\) basis, setiap vektor \(\mathbf{v}\in V\) dapat ditulis secara <b>unik</b> sebagai
-    \[
-    \mathbf{v} = c_1v_1 + c_2v_2 + \cdots + c_nv_n.
-    \]
-    Koefisien-koefisien \(c_i\) disebut <b>koordinat</b> \(\mathbf{v}\) terhadap \(B\), dan dinotasikan
-    \[
-    [\mathbf{v}]_B = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \end{bmatrix}.
-    \]
-  </div>
+<div class="card theorem">
+  <b>Basis:</b> Himpunan terurut \(B=\{v_1,\dots,v_n\}\) adalah <b>basis</b> dari ruang vektor \(V\) jika:
+  <ol>
+    <li>\(B\) bebas linier, dan</li>
+    <li>\(\text{span}(B)=V\) (merentang seluruh \(V\)).</li>
+  </ol>
+  Akibatnya, setiap vektor \(\mathbf{v}\in V\) dapat ditulis secara <b>unik / tunggal</b> sebagai
+  \[
+  \mathbf{v} = c_1v_1 + c_2v_2 + \cdots + c_nv_n.
+  \]
+  Koefisien-koefisien \(c_i\) yang unik inilah yang disebut <b>koordinat</b> \(\mathbf{v}\) terhadap \(B\):
+  \[
+  [\mathbf{v}]_B = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \end{bmatrix}.
+  \]
+  Penting: Urutan di \(B\) berpengaruh. Jika urutan ditukar, koordinat ikut tertukar.
+</div>
 
-  <p align="justify">
-  <b>Contoh 1:</b> Basis standar \(\mathbb{R}^2\) adalah \(B=\{(1,0),(0,1)\}\). Untuk \(\mathbf{v}=(3,2)\), \([\mathbf{v}]_B=(3,2)^T\).
-  </p>
+<p align="justify">
+  <b>Contoh 1: Basis Standar di \(\mathbb{R}^2\)</b><br>
+  \(B=\{e_1, e_2\} = \{(1,0),(0,1)\}\).<br>
+  <b>Cek basis:</b> (i) Bebas linear karena \(c_1(1,0)+c_2(0,1)=(0,0) \implies (c_1,c_2)=(0,0)\). (ii) Merentang \(\mathbb{R}^2\) karena setiap \((a,b) = a(1,0)+b(0,1)\).<br>
+  <b>Koordinat:</b> Untuk \(\mathbf{v}=(3,2)\), kita cari \(c_1, c_2\) sehingga
+  \[c_1(1,0)+c_2(0,1) = (3,2) \implies (c_1, c_2) = (3,2)\]
+  Jadi \([\mathbf{v}]_B = \begin{bmatrix}3\\2\end{bmatrix}\). Pada basis standar, koordinat sama dengan komponen vektor itu sendiri. Inilah alasan basis ini disebut standar.
+</p>
 
-  <p align="justify">
-  <b>Contoh 2:</b> \(B=\{1,x,x^2\}\) basis \(P_2\). Untuk \(p(x)=3+2x-x^2\), \( [p]_B = (3,2,-1)^T\).
-  </p>
+<p align="justify">
+  <b>Contoh 2: Basis Standar di \(P_2\)</b><br>
+  \(B=\{1, x, x^2\}\) adalah basis untuk ruang polinom derajat $\le 2$, yaitu \(P_2\).<br>
+  <b>Cek basis:</b> (i) Bebas linear sudah dibuktikan sebelumnya, \(c_1 + c_2x + c_3x^2 = 0\) hanya jika \(c_i=0\). (ii) Merentang \(P_2\) karena setiap polinom \(p(x)=a_0+a_1x+a_2x^2\) jelas kombinasi dari \(B\).<br>
+  <b>Koordinat:</b> Untuk \(p(x)=3+2x-x^2\), kita langsung baca koefisiennya terhadap \(B\):
+  \[p(x) = 3\cdot1 + 2\cdot x + (-1)\cdot x^2\]
+  Maka 
+  \[ [p]_B = \begin{bmatrix} 3 \\ 2 \\ -1 \end{bmatrix} \]
+  Ini seperti contoh 1, karena \(B\) adalah basis standar untuk \(P_2\). Koordinatnya adalah daftar koefisien polinom.
+</p>
 
-  <p align="justify">
-  <b>Contoh 3:</b> \(B=\{(1,1),(1,-1)\}\) basis \(\mathbb{R}^2\). Vektor \((3,1)\) = \(2(1,1)+1(1,-1)\), sehingga \([(3,1)]_B=(2,1)^T\).
-  </p>
+<p align="justify">
+  <b>Contoh 3: Basis Tidak Standar di \(\mathbb{R}^2\) (Yang Paling Penting)</b><br>
+  \(B'=\{u_1, u_2\} = \{(1,1), (1,-1)\}\).<br>
+  <b>Cek basis:</b> 
+  (i) Bebas linear? Cek \(c_1(1,1)+c_2(1,-1)=(0,0) \implies \begin{cases}c_1+c_2=0\\c_1-c_2=0\end{cases} \implies c_1=c_2=0\). Jadi bebas.
+  (ii) Karena \(\mathbb{R}^2\) berdimensi 2, setiap 2 vektor yang bebas linear pasti otomatis merentang \(\mathbb{R}^2\). Jadi \(B'\) adalah basis.<br>
+  <b>Koordinat:</b> Untuk \(\mathbf{v}=(3,1)\), kita harus menyelesaikan
+  \[c_1(1,1) + c_2(1,-1) = (3,1)\]
+  \[\begin{cases} c_1 + c_2 = 3 \\ c_1 - c_2 = 1 \end{cases}\]
+  Jumlahkan kedua persamaan: \(2c_1 = 4 \implies c_1 = 2\). Kurangkan: \(2c_2 = 2 \implies c_2 = 1\).<br>
+  Jadi 
+  \[(3,1) = 2(1,1) + 1(1,-1)\]
+  dan koordinatnya terhadap basis baru ini adalah
+  \[ [(3,1)]_{B'} = \begin{bmatrix} 2 \\ 1 \end{bmatrix} \]
+  <b>Interpretasi:</b> Vektor yang sama \((3,1)\) memiliki nama yang berbeda tergantung kacamata (basis) yang dipakai. Di kacamata standar namanya \((3,1)\), di kacamata \(B'\) namanya \((2,1)\). Inilah ide utama dari perubahan basis.
+</p>
 
   <!-- ============================================================ -->
   <!-- 4.6 Dimension                                                -->
   <!-- ============================================================ -->
   <h2 class="sec">4.6 Dimensi</h2>
 
-  <p align="justify">
-  Teorema penting: Setiap basis dari suatu ruang vektor \(V\) memiliki jumlah vektor yang sama. Jumlah ini disebut <b>dimensi</b> \(V\), dinotasikan \(\dim(V)\).
-  </p>
+<p align="justify">
+Teorema penting: Jika \(V\) adalah ruang vektor berdimensi berhingga, maka <b>setiap basis</b> dari \(V\) memiliki jumlah vektor yang sama. Jumlah ini disebut <b>dimensi</b> \(V\), dinotasikan \(\dim(V)\).
+</p>
 
-  <ul>
-    <li>\(\dim(\mathbb{R}^n)=n\)</li>
-    <li>\(\dim(P_n)=n+1\)</li>
-    <li>\(\dim(M_{m\times n})=mn\)</li>
-    <li>\(\dim(C[a,b])\) tak hingga</li>
-  </ul>
+<ul>
+  <li>\(\dim(\mathbb{R}^n)=n\) dengan basis standar \(e_1,...,e_n\)</li>
+  <li>\(\dim(P_n)=n+1\) dengan basis \(\{1, x, ..., x^n\}\)</li>
+  <li>\(\dim(M_{m\times n})=m\cdot n\)</li>
+  <li>\(\dim(C[a,b])\) tak hingga, karena tidak ada himpunan berhingga yang merentang semua fungsi kontinu</li>
+</ul>
 
-  <p align="justify">
-  Jika \(W\) subruang dari \(V\), maka \(\dim(W)\le \dim(V)\). Jika \(\dim(W)=\dim(V)\) dan \(W\subseteq V\), maka \(W=V\).
-  </p>
+<p align="justify">
+Jika \(W\) subruang dari \(V\), maka \(\dim(W)\le \dim(V)\). Konsekuensi penting: Jika \(\dim(W)=\dim(V)\) dan \(W\subseteq V\), maka pasti \(W=V\). Ini cara cepat membuktikan dua ruang sama.
+</p>
 
-  <div class="card example">
-    <b>Contoh:</b> \(W=\{p\in P_3 \mid p(1)=0\}\). Basis \(W\) adalah \(\{x-1, x^2-1, x^3-1\}\) (dimensi 3). Periksa: elemen \(p(x)=a(x-1)+b(x^2-1)+c(x^3-1)\) jelas memenuhi \(p(1)=0\), dan bebas linier.
-  </div>
+<div class="card example">
+  <b>Contoh 1 (yang sudah ada):</b> \(W=\{p\in P_3 \mid p(1)=0\}\) yaitu polinom derajat $\le 3$ yang punya akar di \(x=1\).<br><br>
+  <b>Pembahasan:</b> Ambil \(p(x)=a_0+a_1x+a_2x^2+a_3x^3 \in P_3\). Syarat \(p(1)=0\) berarti \(a_0+a_1+a_2+a_3=0 \implies a_0 = -a_1-a_2-a_3\). Substitusi:
+  \[p(x)=(-a_1-a_2-a_3)+a_1x+a_2x^2+a_3x^3 = a_1(x-1)+a_2(x^2-1)+a_3(x^3-1)\]
+  Jadi setiap \(p\in W\) adalah kombinasi dari \(B=\{x-1, x^2-1, x^3-1\}\). B bebas linear? Misalkan \(c_1(x-1)+c_2(x^2-1)+c_3(x^3-1)=0\). Ini polinom nol, koefisien \(x^3\) adalah \(c_3=0\), koefisien \(x^2\) adalah \(c_2=0\), dan sisanya \(c_1=0\). Jadi bebas linear. Karena \(B\) bebas dan merentang \(W\), maka \(B\) basis. Jumlah vektor 3, jadi \(\dim(W)=3\). Perhatikan \(\dim(P_3)=4\), jadi \(\dim(W)=3 < 4\) sesuai teorema, \(W\) adalah bidang-hiper di dalam \(P_3\).
+</div>
 
+<div class="card example">
+  <b>Contoh 2 (Baru): Bidang di \(\mathbb{R}^3\)</b> \(W = \{(x,y,z)\in\mathbb{R}^3 \mid x+y+z=0\}\). Berapa dimensinya?<br><br>
+  <b>Pembahasan:</b> \(W\) jelas subruang karena jika jumlah koordinat nol, penjumlahan dan perkalian skalar tetap nol.<br>
+  Dari syarat \(z = -x-y\), setiap vektor di \(W\) berbentuk:
+  \[(x,y,-x-y) = x(1,0,-1) + y(0,1,-1)\]
+  Jadi \(W = \text{span}\{(1,0,-1), (0,1,-1)\}\). Misal \(u_1=(1,0,-1), u_2=(0,1,-1)\).<br>
+  Cek bebas linear: \(c_1u_1+c_2u_2=(0,0,0) \implies (c_1, c_2, -c_1-c_2)=(0,0,0) \implies c_1=0, c_2=0\). Bebas.<br>
+  Maka \(B=\{u_1, u_2\}\) adalah basis untuk \(W\) dan \(\dim(W)=2\).<br>
+  <b>Makna geometri:</b> \(W\) adalah sebuah bidang yang melalui titik origin di \(\mathbb{R}^3\). Wajar dimensinya 2, seperti sebuah bidang. Ini contoh nyata \(\dim(W)=2 < \dim(\mathbb{R}^3)=3\).
+</div>
+
+<div class="card example">
+  <b>Contoh 3 (Baru): Matriks Simetris \(2\times2\)</b> \(W = \{A\in M_{2\times2} \mid A^T = A\}\).<br><br>
+  <b>Pembahasan:</b> Matriks simetris \(2\times2\) berbentuk umum:
+  \[A = \begin{bmatrix} a & b \\ b & c \end{bmatrix}, \quad a,b,c \in \mathbb{R}\]
+  Kita bisa pecah:
+  \[A = a\begin{bmatrix}1&0\\0&0\end{bmatrix} + b\begin{bmatrix}0&1\\1&0\end{bmatrix} + c\begin{bmatrix}0&0\\0&1\end{bmatrix}\]
+  Jadi \(W = \text{span}\{E_1, E_2, E_3\}\) dengan ketiga matriks di atas.<br>
+  Cek bebas linear: \(aE_1+bE_2+cE_3 = \begin{bmatrix}0&0\\0&0\end{bmatrix} \implies \begin{bmatrix}a&b\\b&c\end{bmatrix}=0 \implies a=b=c=0\). Jadi bebas.<br>
+  Maka \(B=\left\{\begin{bmatrix}1&0\\0&0\end{bmatrix}, \begin{bmatrix}0&1\\1&0\end{bmatrix}, \begin{bmatrix}0&0\\0&1\end{bmatrix}\right\}\) adalah basis, dan \(\dim(W)=3\).<br>
+  Padahal \(\dim(M_{2\times2})=4\). Jadi ruang matriks simetris adalah subruang berdimensi 3 di dalam ruang semua matriks \(2\times2\). Jika kita tambah syarat \(\text{trace}(A)=0\) yaitu \(a+c=0\), dimensinya akan turun lagi menjadi 2.
+</div>
   <!-- ============================================================ -->
   <!-- 4.7 Change of Basis                                          -->
   <!-- ============================================================ -->
-  <h2 class="sec">4.7 Perubahan Basis</h2>
+ <h2 class="sec">4.7 Perubahan Basis</h2>
 
-  <p align="justify">
-  Misalkan \(B=\{u_1,\dots,u_n\}\) dan \(B'=\{v_1,\dots,v_n\}\) adalah dua basis untuk \(V\). <b>Matriks transisi</b> dari \(B\) ke \(B'\), dinotasikan \(P_{B'\leftarrow B}\), adalah matriks yang kolom-kolomnya adalah koordinat vektor-vektor \(u_i\) terhadap \(B'\):
-  \[
-  P_{B'\leftarrow B} = \begin{bmatrix} [u_1]_{B'} & [u_2]_{B'} & \cdots & [u_n]_{B'} \end{bmatrix}.
-  \]
-  Matriks ini memenuhi
-  \[
-  [\mathbf{v}]_{B'} = P_{B'\leftarrow B} [\mathbf{v}]_B.
-  \]
-  Matriks transisi selalu invertibel, dan \(P_{B\leftarrow B'} = (P_{B'\leftarrow B})^{-1}\).
-  </p>
+<p align="justify">
+Misalkan \(B=\{u_1,\dots,u_n\}\) dan \(B'=\{v_1,\dots,v_n\}\) adalah dua basis untuk \(V\). <b>Matriks transisi</b> dari \(B\) ke \(B'\), dinotasikan \(P_{B'\leftarrow B}\), adalah matriks yang kolom-kolomnya adalah koordinat vektor-vektor \(B\) terhadap \(B'\):
+\[
+P_{B'\leftarrow B} = \begin{bmatrix} [u_1]_{B'} & [u_2]_{B'} & \cdots & [u_n]_{B'} \end{bmatrix}.
+\]
+Rumus kuncinya:
+\[
+[\mathbf{v}]_{B'} = P_{B'\leftarrow B} [\mathbf{v}]_B
+\]
+Matriks transisi selalu invertibel, dan \(P_{B\leftarrow B'} = (P_{B'\leftarrow B})^{-1}\).
+</p>
 
-  <p align="justify">
-  <b>Contoh:</b> Di \(\mathbb{R}^2\), \(B=\{(1,0),(0,1)\}\) (basis standar) dan \(B'=\{(1,1),(1,-1)\}\). Kita cari \(P_{B'\leftarrow B}\). Koordinat \(u_1=(1,0)\) terhadap \(B'\): selesaikan \(a(1,1)+b(1,-1)=(1,0)\) → \(a+b=1, a-b=0\) → \(a=b=1/2\), jadi \([u_1]_{B'}=(1/2,1/2)^T\). Untuk \(u_2=(0,1)\): \(a+b=0, a-b=1\) → \(a=1/2, b=-1/2\), jadi \([u_2]_{B'}=(1/2,-1/2)^T\). Maka
-  \[
-  P_{B'\leftarrow B} = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}.
-  \]
-  </p>
+<div class="card example">
+<b>Contoh 1 (Dasar - dari Standar ke Tidak Standar):</b> Di \(\mathbb{R}^2\), \(B=\{e_1,e_2\}=\{(1,0),(0,1)\}\) dan \(B'=\{(1,1),(1,-1)\}\).<br><br>
+Kita cari \([u_1]_{B'}\) dan \([u_2]_{B'}\):<br>
+(i) \(u_1=(1,0) = a(1,1)+b(1,-1) \implies \begin{cases}a+b=1\\a-b=0\end{cases} \implies a=b=1/2\). Jadi \([u_1]_{B'}=(1/2, 1/2)^T\).<br>
+(ii) \(u_2=(0,1) = a(1,1)+b(1,-1) \implies \begin{cases}a+b=0\\a-b=1\end{cases} \implies a=1/2, b=-1/2\). Jadi \([u_2]_{B'}=(1/2, -1/2)^T\).<br>
+Maka:
+\[
+P_{B'\leftarrow B} = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}
+\]
+</div>
+
+<div class="card example">
+<b>Contoh 2 (Baru - Validasi dan Arah Sebaliknya):</b> Gunakan basis yang sama seperti Contoh 1. Tentukan \(P_{B\leftarrow B'}\) dan gunakan untuk mencari koordinat \(\mathbf{v}=(3,1)\).<br><br>
+<b>Pembahasan:</b><br>
+1. <b>Cari matriks balik:</b> Karena \(P_{B\leftarrow B'} = (P_{B'\leftarrow B})^{-1}\),
+\[
+P_{B'\leftarrow B} = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix} \implies \det = -1/4 -1/4 = -1/2
+\]
+\[
+P_{B\leftarrow B'} = \frac{1}{-1/2}\begin{bmatrix} -1/2 & -1/2 \\ -1/2 & 1/2 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}
+\]
+Perhatikan kolom-kolomnya memang adalah vektor-vektor \(B'\) itu sendiri! Wajar, karena \(B\) adalah basis standar, jadi \([v]_{B}=v\).<br><br>
+2. <b>Validasi rumus:</b> Ambil \(\mathbf{v}=(3,1)\). Di basis standar \([\mathbf{v}]_B = (3,1)^T\). Maka seharusnya:
+\[
+[\mathbf{v}]_{B'} = P_{B'\leftarrow B}[\mathbf{v}]_B = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}\begin{bmatrix}3\\1\end{bmatrix} = \begin{bmatrix}2\\1\end{bmatrix}
+\]
+Ini cocok dengan perhitungan langsung di materi 4.5 sebelumnya, di mana \((3,1)=2(1,1)+1(1,-1)\).<br>
+Sebaliknya, jika diketahui \([\mathbf{v}]_{B'}=(2,1)^T\), maka
+\[
+[\mathbf{v}]_B = P_{B\leftarrow B'}[\mathbf{v}]_{B'} = \begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}2\\1\end{bmatrix} = \begin{bmatrix}3\\1\end{bmatrix}
+\]
+kembali ke vektor asal. Terbukti matriks transisi bekerja dua arah.
+</div>
+
+<div class="card example">
+<b>Contoh 3 (Baru - Di Ruang Polinom \(P_2\), bukan \(\mathbb{R}^n\)):</b> Misalkan \(B=\{1, x, x^2\}\) (basis standar \(P_2\)) dan \(B'=\{1, 1+x, 1+x+x^2\}\). Cari \(P_{B'\leftarrow B}\) dan koordinat \(p(x)=2+3x+4x^2\) terhadap \(B'\).<br><br>
+<b>Pembahasan:</b><br>
+1. <b>Cari \([u_i]_{B'}\):</b> Ini agak tricky karena kita harus menyatakan basis lama dengan basis baru.
+<ul>
+<li>\(u_1=1 = 1\cdot(1) + 0\cdot(1+x) + 0\cdot(1+x+x^2) \implies [u_1]_{B'}=(1,0,0)^T\)</li>
+<li>\(u_2=x = -1\cdot(1) + 1\cdot(1+x) + 0\cdot(1+x+x^2)\) karena \(-1 + (1+x)=x\). Jadi \([u_2]_{B'} = (-1,1,0)^T\)</li>
+<li>\(u_3=x^2 = 0\cdot(1) -1\cdot(1+x) + 1\cdot(1+x+x^2)\) karena \(-(1+x)+(1+x+x^2)=x^2\). Jadi \([u_3]_{B'}=(0,-1,1)^T\)</li>
+</ul>
+Maka:
+\[
+P_{B'\leftarrow B} = \begin{bmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{bmatrix}
+\]
+Ini matriks segitiga atas, sangat mudah diinvers.<br><br>
+2. <b>Cari koordinat \(p(x)\):</b> \([p]_B = (2,3,4)^T\). Maka
+\[
+[p]_{B'} = P_{B'\leftarrow B}[p]_B = \begin{bmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix}2\\3\\4\end{bmatrix} = \begin{bmatrix}2-3\\3-4\\4\end{bmatrix} = \begin{bmatrix}-1\\-1\\4\end{bmatrix}
+\]
+Cek: \(-1(1) -1(1+x) +4(1+x+x^2) = -1-1-x+4+4x+4x^2 = 2+3x+4x^2 = p(x)\). Benar.<br><br>
+<b>Bonus:</b> Matriks sebaliknya \(P_{B\leftarrow B'} = (P_{B'\leftarrow B})^{-1} = \begin{bmatrix}1&1&1\\0&1&1\\0&0&1\end{bmatrix}\). Kolom-kolomnya adalah koordinat vektor-vektor \(B'\) terhadap \(B\), yaitu \((1,0,0)^T, (1,1,0)^T, (1,1,1)^T\), yang memang jelas dari definisi \(B'\).
+</div>
 
   <!-- ============================================================ -->
   <!-- 4.8 Row Space, Column Space, Null Space                      -->
@@ -6190,19 +6332,12 @@ Kesimpulan: Dalam jangka panjang, merek pertama akan dikuasai oleh 75% pasar dan
   <h2 class="sec">4.9 Rank, Nulitas, dan Ruang Matriks Fundamental</h2>
 
   <div class="card theorem">
-    <b>Teorema Rank-Nullitas:</b> Untuk \(A_{m\times n}\),
+    <b>Rank-Nullity Theorem:</b> Untuk \(A_{m\times n}\),
     \[
     \text{rank}(A) + \text{nullity}(A) = n,
     \]
-    di mana 
-	\[
-	\text{rank}(A)=\dim(\text{Row}(A))=\dim(\text{Col}(A)) = \text{ banyaknya pivot}, 
-	\]
-	dan
-	\[
-	\text{nullity}(A)=\dim(\text{Nul}(A)) = n-\text{rank}(A).
-	\]
-    
+    di mana \(\text{rank}(A)=\dim(\text{Row}(A))=\dim(\text{Col}(A))\) = banyaknya pivot, dan \(\text{nullity}(A)=\dim(\text{Nul}(A)) = n-\text{rank}(A)\).
+    <br><br>
     <b>Empat ruang fundamental:</b>
     <ul>
       <li>\(\text{Row}(A)\) dan \(\text{Nul}(A)\) adalah subruang \(\mathbb{R}^n\) yang saling ortogonal komplemen.</li>
@@ -7576,6 +7711,8 @@ def analisis_stokastik_interaktif(
     display(html(html_table))   </script></div>
   </div> 
 
+
+
   <!-- Latihan -->
   <div class="card example">
     <b>Latihan:</b>
@@ -7616,7 +7753,7 @@ def analisis_stokastik_interaktif(
         <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
       </filter>
     </defs>
-
+<g>
     <!-- ============================================================ -->
     <!-- JUDUL UTAMA – Kontras tinggi dengan latar putih              -->
     <!-- ============================================================ -->
@@ -7738,10 +7875,10 @@ def analisis_stokastik_interaktif(
     <rect x="20" y="810" width="1060" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
     <text x="550" y="835" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">Hasil kali dalam memperluas konsep geometri Euclid ke ruang vektor abstrak seperti polinomial dan fungsi.</text>
     <text x="550" y="857" text-anchor="middle" fill="#334155" font-size="13">Gram–Schmidt, QR, least squares, dan Fourier adalah aplikasi utama yang mendasari optimasi, analisis data, dan pemrosesan sinyal.</text>
-
+</g>
   </svg>
 </div>
-
+ 
   <p align="justify">
   Di \(\mathbb{R}^n\) kita memiliki <b>hasil kali titik (dot product)</b>. Namun, dalam ruang yang lebih abstrak seperti himpunan fungsi kontinu \(C[a,b]\) atau polinomial \(P_n\), kita memerlukan generalisasi yang disebut <b>hasil kali dalam (inner product)</b>. Dengan hasil kali dalam, kita dapat mendefinisikan panjang (norma), sudut, ortogonalitas, dan proyeksi yang menjadi fondasi bagi metode kuadrat terkecil (least squares), deret Fourier, dan berbagai teknik optimasi.
   </p>
@@ -10865,8 +11002,8 @@ display(html(f"Error Frobenius untuk rank-1: {err_k:.5f}"))
   </div>
 
 
- <h2><i class="fas fa-book"></i> Referensi dan Sumber Belajar</h2>
- <h3><strong>Buku Teks Rekomendasi:</strong></h3>
+ <h3><i class="fas fa-book"></i> Referensi dan Sumber Belajar</h3>
+ <p><strong>Buku Teks Rekomendasi:</strong></p>
 <br>
 <div style="margin-left:-40px; width: calc(100% + 80px);">
   <iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/Subiono2021/Dokumen-PDF/main/BukuALE2027.pdf#zoom=125" 
