@@ -6847,10 +6847,381 @@ def analisis_ruang_vektor_interaktif(
     </ul>
   </div>
 
+
+ <!-- ============================================================ -->
+  <!-- KOMPUTASI Nilai eigen dan vektor eigen SAGEMATH INTERAKTIF                                 -->
+  <!-- ============================================================ -->
+  <h3>Komputasi SageMath — Nilai dan Vektor Eigen</h3>
+  <div class="sage">
+    <div class="sage-header"><span>SageMath Cell — Berikan Matriks A!</span></div>
+    <div class="compute"><script type="text/x-sage">
+# =========================================================
+# KALKULATOR EIGEN SAGEMATH
+# OUTPUT RAPI: SIMBOLIK + NUMERIK
+# =========================================================
+
+@interact
+def hitung_eigen_sage_symbolic(
+    matriks_input=input_box(
+        default="[[4, -2], [1, 1]]",
+        label="Matriks A:",
+        type=str,
+        width=50
+    )
+):
+
+    try:
+        from sage.misc.sage_eval import sage_eval
+
+        # =================================================
+        # 1. MEMBACA MATRIKS
+        # =================================================
+        data = sage_eval(matriks_input)
+        A = matrix(SR, data)
+
+        if not A.is_square():
+            show(html(
+                "<div style='color:red; font-weight:bold;'>"
+                "❌ Matriks harus persegi! "
+                f"Ukuran: {A.nrows()} × {A.ncols()}"
+                "</div>"
+            ))
+            return
+
+        # =================================================
+        # FUNGSI PEMBANTU UNTUK OUTPUT
+        # =================================================
+        def judul(teks):
+            show(html(
+                f"""
+                <div style="
+                    margin-top:18px;
+                    margin-bottom:8px;
+                    padding:8px 12px;
+                    border-left:5px solid #444;
+                    background:#f2f2f2;
+                    font-size:18px;
+                    font-weight:bold;">
+                    {teks}
+                </div>
+                """
+            ))
+
+        def formula(teks):
+            show(html(
+                f"""
+                <div style="
+                    margin:8px 0;
+                    font-size:16px;">
+                    $$ {teks} $$
+                </div>
+                """
+            ))
+
+        def info(teks):
+            show(html(
+                f"""
+                <div style="
+                    margin:5px 0;
+                    font-size:14px;">
+                    {teks}
+                </div>
+                """
+            ))
+
+        # =================================================
+        # 2. MATRIKS INPUT
+        # =================================================
+        judul("MATRIKS INPUT")
+
+        formula(
+            rf"A = {latex(A)}"
+        )
+
+        info(
+            f"<b>Ukuran:</b> {A.nrows()} × {A.ncols()}"
+        )
+
+        # =================================================
+        # 3. HASIL SIMBOLIK
+        # =================================================
+        judul("1. HASIL SIMBOLIK (EKSAK)")
+
+        x = var('x')
+
+        # -------------------------------------------------
+        # Polinomial karakteristik
+        # -------------------------------------------------
+        poly = A.charpoly(x)
+
+        info("<b>Polinomial Karakteristik:</b>")
+
+        formula(
+            rf"p_A({latex(x)}) = {latex(poly)}"
+        )
+
+        formula(
+            rf"p_A({latex(x)}) = 0"
+        )
+
+        # -------------------------------------------------
+        # Nilai eigen dan vektor eigen
+        # -------------------------------------------------
+        try:
+            eigen_data = A.eigenvectors_right()
+        except Exception as e:
+            eigen_data = []
+            info(
+                "<span style='color:#b00000;'>"
+                f"⚠️ Gagal menghitung eigen secara simbolik: {e}"
+                "</span>"
+            )
+
+        if eigen_data:
+
+            info("<b>Nilai Eigen dan Vektor Eigen:</b>")
+
+            for k, (eig_val, eig_vecs, alg_mult) in enumerate(
+                eigen_data, start=1
+            ):
+
+                # Nilai eigen
+                formula(
+                    rf"\lambda_{k} = {latex(eig_val)}"
+                )
+
+                info(
+                    f"&nbsp;&nbsp;"
+                    f"<b>Multiplicitas aljabar:</b> {alg_mult}"
+                    f"&nbsp;&nbsp;|&nbsp;&nbsp;"
+                    f"<b>Dimensi eigenspace:</b> {len(eig_vecs)}"
+                )
+
+                # Basis eigenspace
+                for i, v in enumerate(eig_vecs, start=1):
+
+                    v_col = vector(SR, v).column()
+
+                    formula(
+                        rf"v_{{{k},{i}}} = {latex(v_col)}"
+                    )
+
+        else:
+
+            info(
+                "<span style='color:#b00000;'>"
+                "Tidak ada data eigen simbolik yang ditemukan."
+                "</span>"
+            )
+
+        # =================================================
+        # 4. KONVERSI NUMERIK
+        # =================================================
+        judul("2. HASIL NUMERIK (DESIMAL)")
+
+        numeric_ok = False
+        eigen_num = None
+
+        # -------------------------------------------------
+        # Coba langsung menggunakan CDF
+        # -------------------------------------------------
+        try:
+
+            A_num = A.change_ring(CDF)
+
+            eigen_num = A_num.eigenvectors_right()
+
+            numeric_ok = True
+
+        except Exception as e:
+
+            info(
+                "<span style='color:#b00000;'>"
+                f"⚠️ Konversi langsung ke CDF gagal: {e}"
+                "</span>"
+            )
+
+            # -------------------------------------------------
+            # Alternatif: evaluasi hasil simbolik
+            # -------------------------------------------------
+            if eigen_data:
+
+                eigen_num = []
+
+                try:
+
+                    for eig_val, eig_vecs, alg_mult in eigen_data:
+
+                        eig_val_num = CDF(eig_val)
+
+                        vecs_num = []
+
+                        for v in eig_vecs:
+
+                            vv = vector(
+                                CDF,
+                                [CDF(z) for z in v]
+                            )
+
+                            vecs_num.append(vv)
+
+                        eigen_num.append(
+                            (
+                                eig_val_num,
+                                vecs_num,
+                                alg_mult
+                            )
+                        )
+
+                    numeric_ok = True
+
+                except Exception as e:
+
+                    eigen_num = None
+
+                    info(
+                        "<span style='color:#b00000;'>"
+                        f"⚠️ Evaluasi numerik gagal: {e}"
+                        "</span>"
+                    )
+
+        # =================================================
+        # 5. MENAMPILKAN HASIL NUMERIK
+        # =================================================
+        if numeric_ok and eigen_num:
+
+            for k, item in enumerate(eigen_num, start=1):
+
+                if len(item) == 3:
+                    eig_val, eig_vecs, alg_mult = item
+                else:
+                    eig_val = item[0]
+                    eig_vecs = item[1]
+                    alg_mult = None
+
+                # -----------------------------------------
+                # Nilai eigen numerik
+                # -----------------------------------------
+                eig_real = RR(eig_val.real())
+                eig_imag = RR(eig_val.imag())
+
+                if abs(eig_imag) < 1e-10:
+
+                    formula(
+                        rf"\lambda_{k} \approx "
+                        rf"{eig_real.n(digits=8)}"
+                    )
+
+                else:
+
+                    formula(
+                        rf"\lambda_{k} \approx "
+                        rf"{eig_real.n(digits=8)}"
+                        rf" + "
+                        rf"{eig_imag.n(digits=8)}\,i"
+                    )
+
+                # -----------------------------------------
+                # Vektor eigen
+                # -----------------------------------------
+                for i, v in enumerate(eig_vecs, start=1):
+
+                    vv = vector(CDF, v)
+
+                    # Normalisasi
+                    norm = vv.norm()
+
+                    if norm > 1e-12:
+                        vv = vv / norm
+
+                    # Konversi setiap elemen menjadi
+                    # bilangan desimal yang mudah dibaca
+                    entries = []
+
+                    for z in vv:
+
+                        zr = RR(z.real())
+                        zi = RR(z.imag())
+
+                        if abs(zi) < 1e-10:
+                            entries.append(
+                                zr.n(digits=6)
+                            )
+                        else:
+                            entries.append(
+                                zr.n(digits=6)
+                                + zi.n(digits=6)*I
+                            )
+
+                    vv_display = vector(CDF, entries).column()
+
+                    formula(
+                        rf"v_{{{k},{i}}} \approx "
+                        rf"{latex(vv_display)}"
+                    )
+
+        else:
+
+            info(
+                "<span style='color:#b00000;'>"
+                "❌ Tidak dapat menghasilkan nilai numerik."
+                "</span>"
+            )
+
+        # =================================================
+        # 6. CATATAN
+        # =================================================
+        show(html(
+            """
+            <div style="
+                margin-top:20px;
+                padding:10px 14px;
+                background:#f8f8f8;
+                border:1px solid #ccc;
+                border-radius:6px;
+                font-size:13px;">
+
+                <b>Catatan:</b><br>
+                • Hasil simbolik diberikan dalam bentuk eksak jika memungkinkan.<br>
+                • Hasil numerik menggunakan aproksimasi desimal.<br>
+                • Vektor eigen numerik dinormalisasi sehingga
+                  <b>‖v‖ = 1</b>.<br>
+                • Untuk nilai eigen kompleks, bagian real dan imajiner
+                  ditampilkan secara eksplisit.
+            </div>
+            """
+        ))
+
+    except Exception as err:
+
+        show(html(
+            f"""
+            <div style="
+                margin-top:15px;
+                padding:12px;
+                background:#ffecec;
+                border:1px solid #cc0000;
+                color:#990000;
+                border-radius:6px;">
+
+                <b>❌ ERROR</b><br>
+                {err}<br><br>
+
+                <b>Format matriks yang benar:</b><br>
+                <code>[[1, 2], [3, 4]]</code>
+
+            </div>
+            """
+        ))
+   </script></div>
+  </div>
+
+
 <!-- Sisipan Real Problem 5.1 -->
   <p align="justify">
   Di industri aslinya citra $100 \times 100 = 10.000$ piksel, tapi prinsip matematikanya sama persis. Kita kecilkan jadi $2 \times 2$ piksel agar bisa dihitung manual:
 </p>
+
 <div class="card example" style="text-align: justify;">
     <b>Aplikasi Real-Problem (Biometrik Wajah & Eigenfaces) - Dengan Komputasi Real:</b><br>
     Misalkan sistem menyimpan 2 sampel wajah yang sudah diubah jadi grayscale $2 \times 2$ piksel. Setiap citra kita vektorisasi menjadi vektor di $\mathbb R^4$.
@@ -7711,7 +8082,467 @@ def analisis_stokastik_interaktif(
     display(html(html_table))   </script></div>
   </div> 
 
+<div class="container">
+    <h1>Model Matematika Penyebaran Abu Vulkanik</h1>
 
+    <p>Model matematika penyebaran abu vulkanik dapat dirumuskan menggunakan sistem persamaan diferensial linier atau <strong>Model Rantai Markov Diskrit</strong>.</p>
+
+    <p align="justify">
+	Pendekatan Rantai Markov Diskrit paling relevan dalam aljabar linier karena menggambarkan perpindahan massa abu antar-wilayah secara bertahap (per satuan waktu \(t\)) menggunakan matriks transisi stokastik, di mana nilai eigen dan vektor eigen berperan menentukan keadaan setimbang (<em>steady state</em>) penyebaran abu.</p>
+
+    <h2>1. Formulasi Model Matriks</h2>
+    <p>Asumsikan wilayah terdampak dibagi menjadi \(n\) zona (misalnya: Zona 1 = Gunung Anak Krakatau, Zona 2 = Selat Sunda, Zona 3 = Pesisir Banten/Lampung, Zona 4 = Atmosfer Luas/Luar Wilayah).</p>
+
+    <p>Definisikan vektor keadaan pada langkah waktu ke-\(t\):</p>
+    <div class="math-block">
+        $$\mathbf{x}(t) = \begin{bmatrix} x_1(t) \\ x_2(t) \\ \vdots \\ x_n(t) \end{bmatrix}$$
+    </div>
+    <p>Di mana \(x_i(t)\) menyatakan proporsi/konsentrasi abu vulkanik di Zona \(i\) pada jam/hari ke-\(t\).</p>
+
+    <p>Dinamika perpindahan abu antar-zona akibat angin dan gravitasi dimodelkan dengan matriks transisi \(P\):</p>
+    <div class="math-block">
+        $$\mathbf{x}(t+1) = P \mathbf{x}(t)$$
+    </div>
+    <p>Elemen \(p_{ij}\) pada matriks \(P\) mewakili peluang/laju perpindahan abu dari Zona \(j\) ke Zona \(i\) dalam satu satuan waktu (\(\sum_{i=1}^n p_{ij} = 1\)).</p>
+
+    <p>Secara rekursif, konsentrasi abu pada waktu \(t\) adalah:</p>
+    <div class="math-block">
+        $$\mathbf{x}(t) = P^t \mathbf{x}(0)$$
+    </div>
+    <p>di mana \(\mathbf{x}(0)\) adalah kondisi awal konsentrasi abu saat erupsi terjadi.</p>
+
+    <h2>2. Peran Nilai Eigen (\(\lambda\)) dan Vektor Eigen (\(\mathbf{v}\))</h2>
+    <p>Untuk menganalisis perilaku penyebaran abu jangka panjang (\(t \to \infty\)) tanpa menghitung perkalian matriks \(P^t\) berulang kali, kita lakukan diagonalisasi matriks memanfaatkan nilai eigen dan vektor eigen.</p>
+
+    <h3>A. Persamaan Karakteristik</h3>
+    <p>Nilai eigen \(\lambda\) dan vektor eigen \(\mathbf{v}\) dari matriks \(P\) memenuhi:</p>
+    <div class="math-block">
+        $$P \mathbf{v} = \lambda \mathbf{v} \implies (P - \lambda I)\mathbf{v} = \mathbf{0}$$
+    </div>
+
+    <h3>B. Dekomposisi dan Prediksi Distribusi (\(\mathbf{x}(t)\))</h3>
+    <p align="justify">
+	Jika matriks \(P\) berukuran \(n \times n\) memiliki \(n\) vektor eigen yang bebas linier \(\{\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_n\}\) dengan nilai eigen bersesuaian \(\{\lambda_1, \lambda_2, \dots, \lambda_n\}\), kondisi awal \(\mathbf{x}(0)\) dapat dinyatakan sebagai kombinasi linier:</p>
+    <div class="math-block">
+        $$\mathbf{x}(0) = c_1 \mathbf{v}_1 + c_2 \mathbf{v}_2 + \dots + c_n \mathbf{v}_n$$
+    </div>
+    <p>Mengalikan kedua ruas dengan \(P^t\):</p>
+    <div class="math-block">
+        $$\mathbf{x}(t) = P^t \mathbf{x}(0) = c_1 \lambda_1^t \mathbf{v}_1 + c_2 \lambda_2^t \mathbf{v}_2 + \dots + c_n \lambda_n^t \mathbf{v}_n$$
+    </div>
+
+    <h3>C. Analisis Keadaan Setimbang (Steady State)</h3>
+    <p>Berdasarkan Teorema Perron-Frobenius untuk matriks stokastik \(P\):</p>
+    <ul>
+        <li>Nilai eigen dominan selalu bernilai \(\lambda_1 = 1\).</li>
+        <li>Nilai eigen lainnya memenuhi \(\vert{}\lambda_i\vert{} < 1\) untuk \(i = 2, 3, \dots, n\).</li>
+    </ul>
+
+    <p>Saat \(t \to \infty\), suku \(\lambda_i^t \to 0\) untuk semua \(\vert{}\lambda_i\vert{} < 1\). Maka:</p>
+    <div class="math-block">
+        $$\lim_{t \to \infty} \mathbf{x}(t) = c_1 (1)^t \mathbf{v}_1 = c_1 \mathbf{v}_1$$
+    </div>
+
+    <div class="conclusion">
+        <strong>Kesimpulan Matematis:</strong>
+        <ul align="justify">
+            <li>Vektor eigen \(\mathbf{v}_1\) yang bersesuaian dengan \(\lambda_1 = 1\) menggambarkan distribusi akhir abu vulkanik secara permanen/setimbang di setiap zona setelah waktu yang cukup lama.</li>
+            <li>Nilai eigen kedua terbesar (\(\vert{}\lambda_2\vert{}\)) menentukan kecepatan penyebaran abu menuju kondisi setimbang tersebut (semakin kecil \(\vert{}\lambda_2\vert{}\), semakin cepat abu menyebar/mengendap).</li>
+        </ul>
+    </div>
+
+    <h2>3. Contoh Numerik Sederhana (\(3 \times 3\))</h2>
+    <p>Misalkan wilayah dibagi menjadi 3 zona:</p>
+    <ul>
+        <li><strong>Zona 1 (\(x_1\)):</strong> Sekitar Anak Krakatau</li>
+        <li><strong>Zona 2 (\(x_2\)):</strong> Pesisir Lampung/Banten</li>
+        <li><strong>Zona 3 (\(x_3\)):</strong> Atmosfer/Luar Wilayah (Sinks/Endapan)</li>
+    </ul>
+
+    <p>Matriks transisi perpindahan abu per jam (\(P\)):</p>
+    <div class="math-block">
+        $$P = \begin{bmatrix} 0.5 & 0.1 & 0 \\ 0.3 & 0.6 & 0 \\ 0.2 & 0.3 & 1.0 \end{bmatrix}$$
+    </div>
+
+    <h3>Langkah 1: Mencari Nilai Eigen</h3>
+    <p>Hitung \(\det(P - \lambda I) = 0\):</p>
+    <div class="math-block">
+        $$\begin{vmatrix} 0.5 - \lambda & 0.1 & 0 \\ 0.3 & 0.6 - \lambda & 0 \\ 0.2 & 0.3 & 1.0 - \lambda \end{vmatrix} = 0$$
+    </div>
+    <p>Diperoleh nilai eigen:</p>
+    <div class="math-block">
+        $$\lambda_1 = 1, \quad \lambda_2 = 0.8, \quad \lambda_3 = 0.3$$
+    </div>
+
+    <h3>Langkah 2: Mencari Vektor Eigen untuk \(\lambda_1 = 1\)</h3>
+    <p>Substitusi \(\lambda_1 = 1\) ke \((P - I)\mathbf{v}_1 = \mathbf{0}\):</p>
+    <div class="math-block">
+        $$\begin{bmatrix} -0.5 & 0.1 & 0 \\ 0.3 & -0.4 & 0 \\ 0.2 & 0.3 & 0 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}$$
+    </div>
+    <p>Dari baris 1 dan 2, diperoleh \(v_1 = 0\) dan \(v_2 = 0\). Variabel \(v_3\) bebas (misal \(v_3 = 1\)).</p>
+    <p>Vektor eigen untuk \(\lambda_1 = 1\) adalah:</p>
+    <div class="math-block">
+        $$\mathbf{v}_1 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$$
+    </div>
+
+    <div class="highlight-box">
+	   <p align="justify">
+        <strong>Interpretasi Fisis:</strong><br>
+        Karena \(\mathbf{v}_1 = \begin{bmatrix} 0 & 0 & 1 \end{bmatrix}^T\), ini menunjukkan bahwa dalam jangka panjang (\(t \to \infty\)), seluruh abu vulkanik (\(100\%\)) akan berpindah dan tersisa/terendap di Zona 3 (Atmosfer Luas/Endapan Tanah).
+		</p>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+  <!-- KOMPUTASI Simulasi Abu Vulkanik Anak krakatau SAGEMATH INTERAKTIF                                 -->
+  <!-- ============================================================ -->
+  <h3>Komputasi SageMath — Simulasi Penyebaran Abu Vulkanik Anak Krakatau</h3>
+  <div class="sage">
+    <div class="sage-header"><span>SageMath Cell — Simulasi Penyebaran Abu Vulkanik Anak Krakatau</span></div>
+    <div class="compute"><script type="text/x-sage">
+# =====================================================================
+# SIMULASI RANTAI MARKOV & EIGEN: PENYEBARAN ABU VULKANIK ANAK KRAKATAU
+# (FORMAT DESIMAL DIBATASI 4 DIGIT DIBELAKANG KOMA)
+# =====================================================================
+
+import matplotlib.pyplot as plt
+
+# =====================================================================
+# 1. DEFINISI MATRIKS TRANSISI
+# =====================================================================
+
+data_P = [
+    [0.5, 0.1, 0.0],
+    [0.3, 0.6, 0.0],
+    [0.2, 0.3, 1.0]
+]
+
+# Matriks simbolik/eksak
+P_sym = matrix(SR, data_P)
+
+# Matriks numerik
+P_num = matrix(RDF, data_P)
+
+# =====================================================================
+# 2. FUNGSI TAMPILAN
+# =====================================================================
+
+def judul(teks):
+    show(html(
+        '<div style="'
+        'margin-top:20px;'
+        'margin-bottom:10px;'
+        'padding:10px 14px;'
+        'background:#f1f1f1;'
+        'border-left:5px solid #444;'
+        'font-size:18px;'
+        'font-weight:bold;">'
+        + teks +
+        '</div>'
+    ))
+
+def info(teks):
+    show(html(
+        '<div style="'
+        'margin:6px 0;'
+        'font-size:15px;">'
+        + teks +
+        '</div>'
+    ))
+
+def formula(teks):
+    show(html(
+        '<div style="'
+        'margin:10px 0;'
+        'font-size:17px;">'
+        '$$' + teks + '$$'
+        '</div>'
+    ))
+
+# =====================================================================
+# 3. TAMPILKAN MATRIKS TRANSISI
+# =====================================================================
+
+judul("MATRIKS TRANSISI P")
+
+formula("P = " + latex(P_sym))
+
+info(
+    "<b>Interpretasi kolom:</b> "
+    "Kolom ke-j menyatakan distribusi perpindahan massa abu dari Zona j."
+)
+
+# =====================================================================
+# 4. VERIFIKASI MATRIKS STOKASTIK KOLOM
+# =====================================================================
+
+judul("VERIFIKASI MATRIKS STOKASTIK KOLOM")
+
+column_sums = [sum(P_num[i, j] for i in range(P_num.nrows())) for j in range(P_num.ncols())]
+
+info(
+    "<b>Jumlah setiap kolom:</b> "
+    + ", ".join("{:.4f}".format(float(s)) for s in column_sums)
+)
+
+if all(abs(float(s) - 1.0) < 1e-12 for s in column_sums):
+    info(
+        "<span style='color:green; font-weight:bold;'>"
+        "✓ Semua kolom berjumlah 1.<br>"
+        "✓ P adalah matriks stokastik kolom."
+        "</span>"
+    )
+else:
+    info(
+        "<span style='color:red; font-weight:bold;'>"
+        "✗ P bukan matriks stokastik kolom."
+        "</span>"
+    )
+
+# =====================================================================
+# 5. ANALISIS EIGEN SIMBOLIK
+# =====================================================================
+
+judul("1. ANALISIS EIGEN (SIMBOLIK / EKSAK)")
+
+eigen_data = P_sym.eigenvectors_right()
+
+for k, data in enumerate(eigen_data, start=1):
+    eig_val = data[0]
+    eig_vecs = data[1]
+    alg_mult = data[2]
+
+    val_num = N(eig_val, digits=4)
+
+    formula(
+        "\\lambda_{} = {} \\qquad (\\approx {:.4f})".format(
+            k, latex(eig_val), float(val_num)
+        )
+    )
+
+    info(
+        "<b>Multiplisitas aljabar:</b> {} &nbsp;|&nbsp; "
+        "<b>Dimensi eigenspace:</b> {}".format(alg_mult, len(eig_vecs))
+    )
+
+    for i, v in enumerate(eig_vecs, start=1):
+        v_col = vector(SR, v).column()
+        formula("v_{{{}, {}}} = {}".format(k, i, latex(v_col)))
+
+# =====================================================================
+# 6. IDENTIFIKASI EIGENVALUE λ = 1
+# =====================================================================
+
+judul("2. EIGENVALUE λ = 1")
+
+steady_vectors = []
+
+for data in eigen_data:
+    eig_val = data[0]
+    if eig_val == 1:
+        steady_vectors = data[1]
+        break
+
+if steady_vectors:
+    info("<b>Untuk λ = 1:</b> Eigenvector memenuhi persamaan steady state:")
+    formula("P x^* = x^*")
+
+    for i, v in enumerate(steady_vectors, start=1):
+        v_col = vector(SR, v).column()
+        formula("v^*_{} = {}".format(i, latex(v_col)))
+
+        total_v = sum(v)
+        if total_v != 0:
+            v_normalized = vector(SR, [z / total_v for z in v])
+            formula("x^*_{} = {}".format(i, latex(v_normalized.column())))
+else:
+    info("<span style='color:red;'>✗ Eigenvalue λ = 1 tidak ditemukan.</span>")
+
+# =====================================================================
+# 7. KONDISI AWAL
+# =====================================================================
+
+judul("3. KONDISI AWAL")
+
+x_0 = vector(RDF, [1.0, 0.0, 0.0])
+
+formula("x_0 = \\begin{pmatrix} 1 \\\\ 0 \\\\ 0 \\end{pmatrix}")
+
+info("<b>Interpretasi:</b> Pada t = 0, seluruh proporsi abu berada di Zona 1 (Anak Krakatau).")
+
+# =====================================================================
+# 8 & 9. SIMULASI & EKSTRAKSI DATA
+# =====================================================================
+
+t_max = 20
+history = [x_0]
+x_t = x_0
+
+for t in range(1, t_max + 1):
+    x_t = P_num * x_t
+    history.append(x_t)
+
+waktu = list(range(t_max + 1))
+history_z1 = [float(x[0]) for x in history]
+history_z2 = [float(x[1]) for x in history]
+history_z3 = [float(x[2]) for x in history]
+
+# =====================================================================
+# 10. HASIL PADA t = 20
+# =====================================================================
+
+judul("4. KONDISI SISTEM PADA t = 20")
+
+x_20 = history[-1]
+
+formula(
+    "x_{{20}} = \\begin{{pmatrix}} {:.4f} \\\\ {:.4f} \\\\ {:.4f} \\end{{pmatrix}}".format(
+        x_20[0], x_20[1], x_20[2]
+    )
+)
+
+info("<b>Zona 1 — Anak Krakatau:</b> {:.4f} &nbsp; ({:.4f}%)".format(x_20[0], 100.0 * x_20[0]))
+info("<b>Zona 2 — Pesisir Banten/Lampung:</b> {:.4f} &nbsp; ({:.4f}%)".format(x_20[1], 100.0 * x_20[1]))
+info("<b>Zona 3 — Endapan/Atmosfer Luas:</b> {:.4f} &nbsp; ({:.4f}%)".format(x_20[2], 100.0 * x_20[2]))
+
+# =====================================================================
+# 11. VERIFIKASI JUMLAH PROBABILITAS
+# =====================================================================
+
+total_20 = sum(x_20)
+
+info("<b>Total proporsi pada t = 20:</b> {:.4f}".format(total_20))
+
+if abs(total_20 - 1.0) < 1e-12:
+    info("<span style='color:green; font-weight:bold;'>✓ Total proporsi = 1.</span>")
+else:
+    info("<span style='color:red; font-weight:bold;'>✗ Total proporsi tidak sama dengan 1.</span>")
+
+# =====================================================================
+# 12. STEADY STATE
+# =====================================================================
+
+judul("5. STEADY STATE")
+
+x_star = vector(RDF, [0.0, 0.0, 1.0])
+
+formula("x^* = \\begin{pmatrix} 0 \\\\ 0 \\\\ 1 \\end{pmatrix}")
+
+Px_star = P_num * x_star
+residual_norm = float((Px_star - x_star).norm())
+
+formula("P x^* = x^*")
+info("<b>Residual:</b> ‖Px* − x*‖ = {:.4f}".format(residual_norm))
+
+if residual_norm < 1e-12:
+    info("<span style='color:green; font-weight:bold;'>✓ x* adalah distribusi steady state.</span>")
+else:
+    info("<span style='color:red; font-weight:bold;'>✗ x* bukan distribusi steady state.</span>")
+
+# =====================================================================
+# 13. ANALISIS KONVERGENSI
+# =====================================================================
+
+judul("6. KONVERGENSI")
+
+formula("x_t = P^t x_0")
+formula("\\lim_{t\\to\\infty} x_t = \\begin{pmatrix} 0 \\\\ 0 \\\\ 1 \\end{pmatrix}")
+
+e_vals_sorted = sorted([float(N(d[0])) for d in eigen_data], reverse=True)
+
+info("<b>Eigenvalue matriks:</b> λ = {:.4f}, {:.4f}, {:.4f}".format(
+    e_vals_sorted[0], e_vals_sorted[1], e_vals_sorted[2]
+))
+
+info("<b>Eigenvalue non-dominan:</b> |{:.4f}| < 1 dan |{:.4f}| < 1.".format(
+    e_vals_sorted[1], e_vals_sorted[2]
+))
+
+info("Akibatnya komponen transient meluruh dan sistem bergerak menuju steady state.")
+
+# =====================================================================
+# 14. STATUS ZONA 3
+# =====================================================================
+
+judul("7. SIFAT ZONA 3")
+
+info("Zona 3 merupakan <b>absorbing state</b> karena:")
+formula("P_{33} = 1")
+info("dan seluruh elemen lain pada kolom ke-3 adalah nol:")
+formula("P_{13}=0, \\qquad P_{23}=0, \\qquad P_{33}=1")
+info("Dengan demikian, sekali massa/proporsi memasuki Zona 3, model tidak mengizinkannya kembali ke Zona 1 atau Zona 2.")
+
+# =====================================================================
+# 15. GRAFIK DINAMIKA
+# =====================================================================
+
+plt.figure(figsize=(10, 5.5))
+
+plt.plot(waktu, history_z1, marker='o', linewidth=2, label='Zona 1: Anak Krakatau')
+plt.plot(waktu, history_z2, marker='s', linewidth=2, label='Zona 2: Pesisir')
+plt.plot(waktu, history_z3, marker='^', linewidth=2, label='Zona 3: Endapan/Luar')
+
+plt.xlabel('Waktu (t)', fontsize=12)
+plt.ylabel('Proporsi Abu', fontsize=12)
+plt.title('Dinamika Penyebaran Abu Vulkanik\nModel Rantai Markov', fontsize=14)
+plt.xlim(0, t_max)
+plt.ylim(-0.02, 1.02)
+plt.grid(True, alpha=0.3)
+plt.legend(fontsize=10)
+plt.tight_layout()
+
+plt.show()
+
+# =====================================================================
+# 16. TABEL RINGKAS PERKEMBANGAN (HTML TABLE - 4 DESIMAL)
+# =====================================================================
+
+judul("8. PERKEMBANGAN PROPORSI")
+
+tampilkan = [0, 1, 2, 5, 10, 15, 20]
+
+html_table = """
+<table style="width:70%; border-collapse: collapse; text-align: center; margin-top: 10px;">
+  <thead>
+    <tr style="background-color: #f2f2f2; border-bottom: 2px solid #ddd;">
+      <th style="padding: 8px;">t</th>
+      <th style="padding: 8px;">Zona 1 (Krakatau)</th>
+      <th style="padding: 8px;">Zona 2 (Pesisir)</th>
+      <th style="padding: 8px;">Zona 3 (Endapan)</th>
+    </tr>
+  </thead>
+  <tbody>
+"""
+
+for t in tampilkan:
+    html_table += """
+    <tr style="border-bottom: 1px solid #ddd;">
+      <td style="padding: 6px;"><b>{}</b></td>
+      <td style="padding: 6px;">{:.4f}</td>
+      <td style="padding: 6px;">{:.4f}</td>
+      <td style="padding: 6px;">{:.4f}</td>
+    </tr>
+    """.format(t, history_z1[t], history_z2[t], history_z3[t])
+
+html_table += "</tbody></table>"
+
+show(html(html_table))
+
+# =====================================================================
+# 17. RINGKASAN AKHIR
+# =====================================================================
+
+judul("9. RINGKASAN MODEL")
+
+info("<b>Model:</b> Rantai Markov diskrit")
+info("<b>Persamaan:</b> x<sub>t+1</sub> = P x<sub>t</sub>")
+info("<b>Matriks:</b> Column-stochastic")
+info("<b>Eigenvalue:</b> λ = 1.0000, 0.6000, 0.5000")
+info("<b>Steady state:</b> x* = (0, 0, 1)<sup>T</sup>")
+info("<b>Zona absorbing:</b> Zona 3")
+info("<b>Kesimpulan:</b> Dalam model matematis sederhana ini, proporsi abu secara asimtotik bergerak menuju Zona 3.")
+   </script></div>
+  </div>
 
   <!-- Latihan -->
   <div class="card example">
