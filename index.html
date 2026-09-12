@@ -2774,6 +2774,170 @@ Dalam analisis data numerik, sering kali kita diberikan sekumpulan titik data di
 </div>
 
 
+<!-- ============================================================ -->
+<!-- LATIHAN SOAL BAB 1                                           -->
+<!-- ============================================================ -->
+<h2 class="sec">Latihan Soal Bab 1</h2>
+
+<p align="justify">
+Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, invers matriks, interpretasi rank, atau pemodelan SPL sesuai kebutuhan. Soal 1–5 menekankan konsep dan komputasi dasar, sedangkan soal 6–10 merupakan <b>real problem</b>.
+</p>
+
+<h3 class="sec">A. Soal Konseptual dan Komputasi</h3>
+<ol>
+  <li>
+    Kelompokkan persamaan berikut sebagai <b>linier</b> atau <b>non-linier</b>, lalu jelaskan alasan singkatnya.
+    <ol type="a">
+      <li>$2x - 3y + z = 5$</li>
+      <li>$x^2 + y = 1$</li>
+      <li>$xy + z = 0$</li>
+      <li>$\frac{1}{2}x - y = 4$</li>
+      <li>$\sin(x) + y = 2$</li>
+    </ol>
+  </li>
+
+  <li>
+    Diberikan Sistem Persamaan Linier berikut:
+    $$
+    \begin{cases}
+    x + 2y + z = 4,\\
+    2x + 4y + 2z = 8,\\
+    x + y + z = 3.
+    \end{cases}
+    $$
+    <ol type="a">
+      <li>Tuliskan matriks augmented $[A \mid \mathbf{b}]$.</li>
+      <li>Tentukan $\text{rank}(A)$ dan $\text{rank}([A \mid \mathbf{b}])$.</li>
+      <li>Tentukan solusi umum sistem dan sebutkan variabel bebasnya.</li>
+    </ol>
+  </li>
+
+  <li>
+    Selesaikan SPL berikut menggunakan <b>Eliminasi Gauss-Jordan</b>:
+    $$
+    \begin{cases}
+    x + y + z = 6,\\
+    2x - y + z = 3,\\
+    x + 2y - z = 2.
+    \end{cases}
+    $$
+    Tuliskan bentuk RREF yang diperoleh dan tentukan solusinya.
+  </li>
+
+  <li>
+    Diketahui matriks
+    $$
+    A = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix},
+    \qquad
+    B = \begin{bmatrix} 1 & -1 \\ 4 & 2 \end{bmatrix}.
+    $$
+    Hitung:
+    <ol type="a">
+      <li>$A + B$</li>
+      <li>$2A - 3B$</li>
+      <li>$AB$</li>
+      <li>$BA$</li>
+      <li>$A^T$</li>
+      <li>Tunjukkan bahwa $AB \neq BA$.</li>
+    </ol>
+  </li>
+
+  <li>
+    Diketahui
+    $$
+    A = \begin{bmatrix} 1 & 2 \\ 3 & 5 \end{bmatrix}.
+    $$
+    <ol type="a">
+      <li>Tentukan $A^{-1}$ menggunakan metode matriks diperbesar $[A \mid I]$.</li>
+      <li>Verifikasi bahwa $A A^{-1} = I$.</li>
+      <li>Gunakan $A^{-1}$ untuk menyelesaikan sistem $A\mathbf{x} = \mathbf{b}$ dengan $\mathbf{b} = \begin{bmatrix} 7 \\ 11 \end{bmatrix}$.</li>
+    </ol>
+  </li>
+</ol>
+
+<h3 class="sec">B. Soal Real Problem</h3>
+<ol start="6">
+  <li>
+    <b>Alokasi Bahan Baku Produksi Kue.</b><br>
+    Sebuah UMKM memproduksi tiga jenis kue: Produk A, Produk B, dan Produk C. Kebutuhan bahan untuk setiap batch produk diberikan sebagai berikut:
+    <ul>
+      <li>Produk A membutuhkan 2 kg tepung, 1 kg gula, dan 1 kg mentega.</li>
+      <li>Produk B membutuhkan 1 kg tepung, 2 kg gula, dan 1 kg mentega.</li>
+      <li>Produk C membutuhkan 1 kg tepung, 1 kg gula, dan 2 kg mentega.</li>
+    </ul>
+    Persediaan bahan yang tersedia adalah 17 kg tepung, 16 kg gula, dan 15 kg mentega. Jika $x$, $y$, dan $z$ berturut-turut menyatakan banyak batch Produk A, B, dan C, maka model SPL-nya adalah:
+    $$
+    \begin{cases}
+    2x + y + z = 17,\\
+    x + 2y + z = 16,\\
+    x + y + 2z = 15.
+    \end{cases}
+    $$
+    Tentukan nilai $x$, $y$, dan $z$ menggunakan Eliminasi Gauss-Jordan, lalu interpretasikan hasilnya.
+  </li>
+
+  <li>
+    <b>Analisis Arus Lalu Lintas.</b><br>
+    Sebuah jaringan jalan satu arah memiliki empat persimpangan $A$, $B$, $C$, dan $D$. Arus masuk dari luar ke persimpangan $A$ adalah 600 kendaraan/jam, ke persimpangan $B$ adalah 200 kendaraan/jam. Arus keluar dari persimpangan $C$ adalah 500 kendaraan/jam, dan dari persimpangan $D$ adalah 300 kendaraan/jam. Misalkan:
+    <ul>
+      <li>$x_1$ = arus dari $A$ ke $B$,</li>
+      <li>$x_2$ = arus dari $A$ ke $D$,</li>
+      <li>$x_3$ = arus dari $B$ ke $C$,</li>
+      <li>$x_4$ = arus dari $D$ ke $C$.</li>
+    </ul>
+    Dengan prinsip kekekalan aliran di setiap persimpangan, bentuk SPL-nya adalah:
+    $$
+    \begin{cases}
+    x_1 + x_2 = 600,\\
+    x_1 - x_3 = -200,\\
+    x_3 + x_4 = 500,\\
+    x_2 - x_4 = 300.
+    \end{cases}
+    $$
+    Tentukan solusi umum sistem tersebut. Karena arus tidak boleh negatif, tentukan pula rentang nilai parameter agar semua $x_i \ge 0$.
+  </li>
+
+  <li>
+    <b>Rangkaian Listrik Dua Loop.</b><br>
+    Diberikan rangkaian listrik dua loop dengan hambatan $R_1 = 2\,\Omega$, $R_2 = 4\,\Omega$, dan $R_3 = 3\,\Omega$. Sumber tegangan yang digunakan adalah $V_1 = 8\text{ V}$ dan $V_2 = 1\text{ V}$. Misalkan $I_1$ adalah arus loop 1 dan $I_2$ adalah arus loop 2. Berdasarkan Hukum Tegangan Kirchhoff, diperoleh sistem:
+    $$
+    \begin{cases}
+    6I_1 - 4I_2 = 8,\\
+    -4I_1 + 7I_2 = -1.
+    \end{cases}
+    $$
+    Tentukan nilai arus $I_1$ dan $I_2$ menggunakan metode invers matriks atau Eliminasi Gauss-Jordan.
+  </li>
+
+  <li>
+    <b>Penyetaraan Reaksi Kimia.</b><br>
+    Setarakan reaksi pembakaran butana berikut:
+    $$
+    x_1 \text{C}_4\text{H}_{10} + x_2 \text{O}_2 \longrightarrow x_3 \text{CO}_2 + x_4 \text{H}_2\text{O}.
+    $$
+    <ol type="a">
+      <li>Susun persamaan keseimbangan atom untuk unsur C, H, dan O.</li>
+      <li>Tuliskan SPL homogen yang terbentuk.</li>
+      <li>Tentukan solusi bulat positif terkecil untuk $x_1, x_2, x_3, x_4$.</li>
+    </ol>
+  </li>
+
+  <li>
+    <b>Interpolasi Polinomial.</b><br>
+    Tentukan polinomial kuadrat
+    $$
+    p(x) = a_0 + a_1 x + a_2 x^2
+    $$
+    yang melalui titik-titik $(1,6)$, $(2,11)$, dan $(3,20)$.
+    <ol type="a">
+      <li>Bentuk SPL dari kondisi $p(1)=6$, $p(2)=11$, dan $p(3)=20$.</li>
+      <li>Tuliskan matriks Vandermonde yang sesuai.</li>
+      <li>Selesaikan SPL tersebut untuk memperoleh $a_0$, $a_1$, dan $a_2$.</li>
+      <li>Tuliskan bentuk akhir polinomial $p(x)$.</li>
+    </ol>
+  </li>
+</ol>
+
 
  <!-- ============================================================ -->
   <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
@@ -3657,6 +3821,182 @@ def analisa_spl_interaktif(
   Strategi ini memberikan pendapatan total sebesar <b>Rp 162.500.000</b>. Permasalahan ini membuktikan peran penting <b>Invers Matriks $3 \times 3$</b> dalam bidang <i>Reliability & Maintenance Engineering</i> untuk menyelesaikan perencanaan kapasitas multivariabel secara presisi.
   </p>
 </div>
+
+
+<!-- ============================================================ -->
+<!-- LATIHAN SOAL BAB 2                                           -->
+<!-- ============================================================ -->
+<h2 class="sec">Latihan Soal Bab 2</h2>
+
+<p align="justify">
+Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Aturan Sarrus, ekspansi kofaktor, reduksi baris, sifat-sifat determinan, Aturan Cramer, atau interpretasi geometris sesuai kebutuhan. Soal 1–5 menekankan konsep dan komputasi dasar, sedangkan soal 6–10 merupakan <b>real problem</b>.
+</p>
+
+<h3 class="sec">A. Soal Konseptual dan Komputasi</h3>
+<ol>
+  <li>
+    Hitung determinan matriks berikut. Tentukan pula apakah matriks tersebut invertibel.
+    <ol type="a">
+      <li>
+        $$
+        A = \begin{bmatrix} 3 & -1 \\ 2 & 4 \end{bmatrix}
+        $$
+      </li>
+      <li>
+        $$
+        B = \begin{bmatrix} 2 & 1 & 3 \\ 0 & -1 & 2 \\ 4 & 5 & 1 \end{bmatrix}
+        $$
+      </li>
+    </ol>
+  </li>
+
+  <li>
+    Diberikan matriks
+    $$
+    C = \begin{bmatrix}
+    2 & 1 & 0 & 0 \\
+    1 & 2 & 1 & 0 \\
+    0 & 1 & 2 & 1 \\
+    0 & 0 & 1 & 2
+    \end{bmatrix}.
+    $$
+    <ol type="a">
+      <li>Hitung $\det(C)$ menggunakan reduksi baris / Eliminasi Gauss.</li>
+      <li>Tuliskan matriks segitiga atas $U$ yang diperoleh.</li>
+      <li>Verifikasi hasil determinan dengan rumus $\det(C) = (-1)^r \prod_{k=1}^{4} u_{kk}$.</li>
+    </ol>
+  </li>
+
+  <li>
+    Diketahui $A$ dan $B$ adalah matriks berukuran $3 \times 3$ dengan $\det(A)=4$ dan $\det(B)=-3$.
+    Hitung:
+    <ol type="a">
+      <li>$\det(2A)$</li>
+      <li>$\det(A^T)$</li>
+      <li>$\det(A^{-1})$</li>
+      <li>$\det(AB)$</li>
+      <li>$\det(A^2)$</li>
+      <li>$\det(A^{-1}B^T)$</li>
+    </ol>
+    Jelaskan sifat determinan yang digunakan pada setiap langkah.
+  </li>
+
+  <li>
+    Selesaikan Sistem Persamaan Linier berikut menggunakan <b>Aturan Cramer</b>:
+    $$
+    \begin{cases}
+    2x + y + z = 18,\\
+    x + 3y + 2z = 26,\\
+    3x + 2y + 2z = 32.
+    \end{cases}
+    $$
+    Tentukan $\det(A)$, $\det(A_1)$, $\det(A_2)$, $\det(A_3)$, lalu tentukan nilai $x$, $y$, dan $z$.
+  </li>
+
+  <li>
+    Diberikan matriks
+    $$
+    A = \begin{bmatrix} k & 2 \\ 3 & k-1 \end{bmatrix}.
+    $$
+    <ol type="a">
+      <li>Tentukan nilai $k$ agar matriks $A$ singular.</li>
+      <li>Untuk nilai $k$ yang diperoleh, jelaskan makna geometrisnya ditinjau dari determinan sebagai faktor skala luas.</li>
+    </ol>
+  </li>
+</ol>
+
+<h3 class="sec">B. Soal Real Problem</h3>
+<ol start="6">
+  <li>
+    <b>Optimasi Produksi CV. Furni Jaya.</b><br>
+    CV. Furni Jaya memproduksi meja dan kursi kayu. Setiap unit meja memerlukan 4 jam mesin dan 2 jam tenaga kerja, sedangkan setiap unit kursi memerlukan 2 jam mesin dan 3 jam tenaga kerja. Kapasitas mingguan yang tersedia adalah 120 jam mesin dan 100 jam tenaga kerja. Misalkan $x$ menyatakan banyak meja dan $y$ menyatakan banyak kursi, sehingga model SPL-nya adalah:
+    $$
+    \begin{cases}
+    4x + 2y = 120,\\
+    2x + 3y = 100.
+    \end{cases}
+    $$
+    <ol type="a">
+      <li>Hitung $\det(A)$ dan simpulkan apakah sistem memiliki solusi tunggal.</li>
+      <li>Gunakan Aturan Cramer untuk menentukan nilai $x$ dan $y$.</li>
+      <li>Jika keuntungan per meja adalah Rp 500.000 dan per kursi adalah Rp 300.000, hitung total keuntungan maksimum.</li>
+    </ol>
+  </li>
+
+  <li>
+    <b>Alokasi Sumber Daya Pemeliharaan Pabrik.</b><br>
+    PT. Tri Medika Manufaktur memiliki tiga paket pemeliharaan: Paket A, B, dan C. Kebutuhan sumber daya dinyatakan oleh sistem:
+    $$
+    \begin{cases}
+    x + 2y + 3z = 100,\\
+    2x + y + 2z = 80,\\
+    x + 3y + z = 90.
+    \end{cases}
+    $$
+    dengan $x$, $y$, dan $z$ berturut-turut menyatakan banyak Paket A, B, dan C.
+    <ol type="a">
+      <li>Hitung $\det(A)$ dan tentukan apakah sistem memiliki solusi tunggal.</li>
+      <li>Gunakan Aturan Cramer atau invers matriks untuk menentukan $x$, $y$, dan $z$.</li>
+      <li>Verifikasi bahwa seluruh sumber daya terpakai habis.</li>
+      <li>Jika nilai kontrak Paket A = Rp 2.000.000, Paket B = Rp 4.000.000, dan Paket C = Rp 3.500.000, hitung total nilai kontrak.</li>
+    </ol>
+  </li>
+
+  <li>
+    <b>Rangkaian Listrik Dua Loop.</b><br>
+    Diberikan rangkaian listrik dua loop dengan sistem persamaan:
+    $$
+    \begin{cases}
+    6I_1 - 4I_2 = 12,\\
+    -4I_1 + 7I_2 = -6.
+    \end{cases}
+    $$
+    <ol type="a">
+      <li>Hitung determinan matriks koefisiennya.</li>
+      <li>Gunakan Aturan Cramer untuk menentukan arus $I_1$ dan $I_2$.</li>
+      <li>Nyatakan hasil akhir dalam satuan Ampere.</li>
+    </ol>
+  </li>
+
+  <li>
+    <b>Transformasi Geometris pada Grafika Komputer.</b><br>
+    Sebuah transformasi linier pada ruang 3D direpresentasikan oleh matriks
+    $$
+    T = \begin{bmatrix}
+    2 & 0 & 1 \\
+    0 & 3 & 0 \\
+    1 & 0 & 2
+    \end{bmatrix}.
+    $$
+    <ol type="a">
+      <li>Hitung $\det(T)$.</li>
+      <li>Tentukan faktor skala volume yang dihasilkan transformasi tersebut.</li>
+      <li>Jelaskan apakah orientasi ruang dipertahankan atau dibalik.</li>
+      <li>Periksa apakah $T$ invertibel.</li>
+    </ol>
+  </li>
+
+  <li>
+    <b>Interpolasi Polinomial dengan Aturan Cramer.</b><br>
+    Tentukan polinomial kuadrat
+    $$
+    p(x) = a_0 + a_1 x + a_2 x^2
+    $$
+    yang melalui titik-titik $(1,6)$, $(2,11)$, dan $(3,20)$.
+    <ol type="a">
+      <li>Susun SPL dari kondisi $p(1)=6$, $p(2)=11$, dan $p(3)=20$.</li>
+      <li>Tuliskan matriks Vandermonde yang sesuai.</li>
+      <li>Hitung determinan matriks Vandermonde tersebut.</li>
+      <li>Gunakan Aturan Cramer untuk menentukan $a_0$, $a_1$, dan $a_2$.</li>
+      <li>Tuliskan bentuk akhir polinomial $p(x)$ dan verifikasi bahwa ketiga titik dilalui oleh polinomial tersebut.</li>
+    </ol>
+  </li>
+</ol>
+
+<div class="card note">
+  <b>Petunjuk:</b> Gunakan sel SageMath interaktif di atas untuk memverifikasi determinan, invers matriks, maupun solusi SPL dengan Aturan Cramer.
+</div>
+
 
  <!-- ============================================================ -->
   <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
