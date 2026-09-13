@@ -2794,6 +2794,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>$\frac{1}{2}x - y = 4$</li>
       <li>$\sin(x) + y = 2$</li>
     </ol>
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Suatu persamaan disebut linier jika setiap variabel berpangkat satu, tidak saling dikalikan, dan tidak berada di dalam fungsi seperti $\sin$, $\cos$, $\ln$, atau akar. Periksa satu per satu: bentuk $x^2$, $xy$, dan $\sin(x)$ membuat persamaan menjadi non-linier.</p>
   </li>
 
   <li>
@@ -2810,6 +2812,9 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>Tentukan $\text{rank}(A)$ dan $\text{rank}([A \mid \mathbf{b}])$.</li>
       <li>Tentukan solusi umum sistem dan sebutkan variabel bebasnya.</li>
     </ol>
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Tulis matriks augmented, lalu lakukan operasi baris elementer. Perhatikan bahwa baris kedua adalah $2$ kali baris pertama, sehingga rank $A$ dan rank augmented sama. Dari persamaan pertama dan ketiga, kurangkan sehingga diperoleh $y=1$ dan $x+z=2$. Misalkan $z=t$ sebagai variabel bebas, lalu nyatakan $x$ dan $y$ dalam $t$.
+	</p>
   </li>
 
   <li>
@@ -2822,6 +2827,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
     \end{cases}
     $$
     Tuliskan bentuk RREF yang diperoleh dan tentukan solusinya.
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Bentuk matriks augmented, lalu lakukan OBE sampai sisi kiri menjadi matriks identitas. Gunakan operasi seperti $R_2-2R_1$ dan $R_3-R_1$. Jika RREF tercapai, solusi langsung terbaca pada kolom terakhir. Hasil yang diharapkan adalah $x=1$, $y=2$, dan $z=3$.</p>
   </li>
 
   <li>
@@ -2840,6 +2847,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>$A^T$</li>
       <li>Tunjukkan bahwa $AB \neq BA$.</li>
     </ol>
+   <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Untuk $A+B$ dan $2A-3B$, operasikan entri yang seletak. Untuk $AB$ dan $BA$, gunakan aturan perkalian matriks: baris dari matriks kiri dikalikan dengan kolom matriks kanan. Untuk $A^T$, tukar baris dan kolom. Bandingkan hasil $AB$ dan $BA$; jika ada entri yang berbeda, maka $AB \neq BA$.</p>
   </li>
 
   <li>
@@ -2852,6 +2861,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>Verifikasi bahwa $A A^{-1} = I$.</li>
       <li>Gunakan $A^{-1}$ untuk menyelesaikan sistem $A\mathbf{x} = \mathbf{b}$ dengan $\mathbf{b} = \begin{bmatrix} 7 \\ 11 \end{bmatrix}$.</li>
     </ol>
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Buat matriks diperbesar $[A \mid I]$, lalu lakukan OBE sampai menjadi $[I \mid A^{-1}]$. Determinan $A$ adalah $1\cdot 5 - 2\cdot 3 = -1$. Setelah diperoleh $A^{-1}$, kalikan $A$ dengan $A^{-1}$ untuk verifikasi. Untuk sistem, gunakan $\mathbf{x}=A^{-1}\mathbf{b}$.</p>
   </li>
 </ol>
 
@@ -2874,6 +2885,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
     \end{cases}
     $$
     Tentukan nilai $x$, $y$, dan $z$ menggunakan Eliminasi Gauss-Jordan, lalu interpretasikan hasilnya.
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Susun matriks augmented dari SPL tersebut, lalu lakukan Eliminasi Gauss-Jordan. Bisa juga kurangkan persamaan-persamaan untuk memperoleh hubungan sederhana, misalnya $x-y=1$, $x-z=2$, dan $y-z=1$. Dari hubungan itu, misalkan $z=t$, lalu substitusikan ke salah satu persamaan untuk mendapatkan $t$. Interpretasikan hasil akhir sebagai banyak batch Produk A, B, dan C.</p>
   </li>
 
   <li>
@@ -2895,6 +2908,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
     \end{cases}
     $$
     Tentukan solusi umum sistem tersebut. Karena arus tidak boleh negatif, tentukan pula rentang nilai parameter agar semua $x_i \ge 0$.
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Gunakan satu variabel sebagai parameter, misalnya $x_1=t$. Dari persamaan pertama, $x_2=600-t$. Dari persamaan kedua, $x_3=t+200$. Dari persamaan ketiga, $x_4=500-x_3=300-t$. Selanjutnya terapkan syarat $x_1,x_2,x_3,x_4 \ge 0$ untuk memperoleh rentang nilai $t$.</p>
   </li>
 
   <li>
@@ -2907,6 +2922,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
     \end{cases}
     $$
     Tentukan nilai arus $I_1$ dan $I_2$ menggunakan metode invers matriks atau Eliminasi Gauss-Jordan.
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Tulis matriks koefisien $\begin{bmatrix}6&-4\\-4&7\end{bmatrix}$. Determinan matriks ini adalah $6\cdot 7 - (-4)(-4)=26$. Gunakan invers matriks atau Eliminasi Gauss-Jordan untuk menyelesaikan sistem. Pastikan hasil akhir memenuhi kedua persamaan.</p>
   </li>
 
   <li>
@@ -2920,6 +2937,8 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>Tuliskan SPL homogen yang terbentuk.</li>
       <li>Tentukan solusi bulat positif terkecil untuk $x_1, x_2, x_3, x_4$.</li>
     </ol>
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Buat keseimbangan atom: C: $4x_1=x_3$; H: $10x_1=2x_4$ atau $5x_1=x_4$; O: $2x_2=2x_3+x_4$. Susun SPL homogen, lalu pilih satu variabel bebas, misalnya $x_1=t$. Nyatakan $x_2,x_3,x_4$ dalam $t$, lalu pilih $t$ terkecil yang membuat semua variabel bulat positif.</p>
   </li>
 
   <li>
@@ -2935,9 +2954,10 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan Eliminasi Gauss-Jordan, in
       <li>Selesaikan SPL tersebut untuk memperoleh $a_0$, $a_1$, dan $a_2$.</li>
       <li>Tuliskan bentuk akhir polinomial $p(x)$.</li>
     </ol>
+    <p align="justify">
+	<b>Petunjuk Penyelesaian:</b> Substitusikan setiap titik ke $p(x)=a_0+a_1x+a_2x^2$. Dari $(1,6)$: $a_0+a_1+a_2=6$; dari $(2,11)$: $a_0+2a_1+4a_2=11$; dari $(3,20)$: $a_0+3a_1+9a_2=20$. Matriks Vandermonde-nya berbentuk $\begin{bmatrix}1&1&1\\1&2&4\\1&3&9\end{bmatrix}$. Selesaikan SPL tersebut, misalnya dengan Eliminasi Gauss-Jordan, lalu tuliskan $p(x)$.</p>
   </li>
 </ol>
-
 
  <!-- ============================================================ -->
   <!-- KOMPUTASI SAGEMATH INTERAKTIF                                 -->
@@ -3848,6 +3868,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
         $$
       </li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Untuk matriks $2\times 2$, gunakan rumus $\det\begin{bmatrix}a&b\\c&d\end{bmatrix}=ad-bc$. Untuk matriks $3\times 3$, gunakan Aturan Sarrus atau ekspansi kofaktor. Matriks invertibel jika dan hanya jika determinannya tidak sama dengan nol. Periksa bahwa $\det(A)=14$ dan $\det(B)=-2$.</p>
   </li>
 
   <li>
@@ -3865,6 +3886,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Tuliskan matriks segitiga atas $U$ yang diperoleh.</li>
       <li>Verifikasi hasil determinan dengan rumus $\det(C) = (-1)^r \prod_{k=1}^{4} u_{kk}$.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Lakukan operasi baris elementer untuk mengubah $C$ menjadi matriks segitiga atas. Misalnya, gunakan $R_2 \leftarrow R_2 - \frac12 R_1$, lalu lanjutkan pada baris berikutnya. Catat setiap pertukaran baris karena memengaruhi tanda determinan. Determinan akhirnya adalah hasil kali entri diagonal matriks segitiga atas. Sebagai verifikasi, $\det(C)=5$.</p>
   </li>
 
   <li>
@@ -3879,6 +3901,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>$\det(A^{-1}B^T)$</li>
     </ol>
     Jelaskan sifat determinan yang digunakan pada setiap langkah.
+    <p><b>Petunjuk Penyelesaian:</b> Gunakan sifat-sifat determinan berikut: $\det(cA)=c^n\det(A)$ untuk matriks $n\times n$, $\det(A^T)=\det(A)$, $\det(A^{-1})=1/\det(A)$, $\det(AB)=\det(A)\det(B)$, dan $\det(A^2)=(\det(A))^2$. Karena ukuran matriks $3\times 3$, maka $n=3$. Hasil yang diharapkan antara lain $\det(2A)=32$, $\det(AB)=-12$, dan $\det(A^{-1}B^T)=-\frac34$.</p>
   </li>
 
   <li>
@@ -3891,6 +3914,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
     \end{cases}
     $$
     Tentukan $\det(A)$, $\det(A_1)$, $\det(A_2)$, $\det(A_3)$, lalu tentukan nilai $x$, $y$, dan $z$.
+    <p><b>Petunjuk Penyelesaian:</b> Bentuk matriks koefisien $A$, lalu hitung $\det(A)$. Jika $\det(A)\neq 0$, Aturan Cramer berlaku. Matriks $A_1$ diperoleh dengan mengganti kolom pertama $A$ dengan vektor konstanta $\mathbf{b}$, $A_2$ mengganti kolom kedua, dan $A_3$ mengganti kolom ketiga. Gunakan $x=\det(A_1)/\det(A)$, $y=\det(A_2)/\det(A)$, dan $z=\det(A_3)/\det(A)$. Diperoleh $\det(A)=1$, sehingga solusinya adalah $x=4$, $y=2$, dan $z=8$.</p>
   </li>
 
   <li>
@@ -3902,6 +3926,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Tentukan nilai $k$ agar matriks $A$ singular.</li>
       <li>Untuk nilai $k$ yang diperoleh, jelaskan makna geometrisnya ditinjau dari determinan sebagai faktor skala luas.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Matriks singular terjadi ketika determinannya nol. Hitung $\det(A)=k(k-1)-6$, lalu selesaikan $k^2-k-6=0$. Faktorkan menjadi $(k-3)(k+2)=0$, sehingga $k=3$ atau $k=-2$. Secara geometris, determinan menyatakan faktor skala luas; jika determinan nol, transformasi memampatkan bidang menjadi garis atau titik sehingga tidak invertibel.</p>
   </li>
 </ol>
 
@@ -3921,6 +3946,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Gunakan Aturan Cramer untuk menentukan nilai $x$ dan $y$.</li>
       <li>Jika keuntungan per meja adalah Rp 500.000 dan per kursi adalah Rp 300.000, hitung total keuntungan maksimum.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Matriks koefisiennya adalah $A=\begin{bmatrix}4&2\\2&3\end{bmatrix}$ dengan $\det(A)=8\neq 0$, sehingga sistem memiliki solusi tunggal. Gunakan Aturan Cramer dengan mengganti kolom pertama dan kedua oleh vektor $\mathbf{b}=\begin{bmatrix}120\\100\end{bmatrix}$. Diperoleh $x=20$ meja dan $y=20$ kursi. Total keuntungan adalah $500.000x+300.000y$.</p>
   </li>
 
   <li>
@@ -3940,6 +3966,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Verifikasi bahwa seluruh sumber daya terpakai habis.</li>
       <li>Jika nilai kontrak Paket A = Rp 2.000.000, Paket B = Rp 4.000.000, dan Paket C = Rp 3.500.000, hitung total nilai kontrak.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Hitung determinan matriks koefisien $A$. Diperoleh $\det(A)=10\neq 0$, sehingga sistem memiliki solusi tunggal. Gunakan Aturan Cramer dengan mengganti setiap kolom oleh vektor konstanta $\mathbf{b}=\begin{bmatrix}100\\80\\90\end{bmatrix}$. Solusi yang diperoleh adalah $x=15$, $y=20$, dan $z=15$. Verifikasi dengan mensubstitusikan nilai tersebut ke ketiga persamaan. Total nilai kontrak dihitung dari $2.000.000x+4.000.000y+3.500.000z$.</p>
   </li>
 
   <li>
@@ -3956,6 +3983,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Gunakan Aturan Cramer untuk menentukan arus $I_1$ dan $I_2$.</li>
       <li>Nyatakan hasil akhir dalam satuan Ampere.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Matriks koefisiennya adalah $\begin{bmatrix}6&-4\\-4&7\end{bmatrix}$ dengan determinan $6\cdot 7-(-4)(-4)=26$. Gunakan Aturan Cramer: $I_1=\det(A_1)/\det(A)$ dan $I_2=\det(A_2)/\det(A)$, dengan $A_1$ dan $A_2$ diperoleh dengan mengganti kolom pertama dan kedua oleh vektor $\begin{bmatrix}12\\-6\end{bmatrix}$. Hasilnya $I_1=\frac{30}{13}$ A dan $I_2=\frac{6}{13}$ A.</p>
   </li>
 
   <li>
@@ -3974,6 +4002,7 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Jelaskan apakah orientasi ruang dipertahankan atau dibalik.</li>
       <li>Periksa apakah $T$ invertibel.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Hitung determinan dengan ekspansi kofaktor pada baris atau kolom yang paling banyak memuat nol, misalnya baris kedua. Diperoleh $\det(T)=9$. Faktor skala volume adalah $|\det(T)|=9$. Orientasi ruang dipertahankan jika $\det(T)>0$ dan dibalik jika $\det(T)<0$. Matriks invertibel karena $\det(T)\neq 0$.</p>
   </li>
 
   <li>
@@ -3990,6 +4019,15 @@ Kerjakan soal-soal berikut secara sistematis. Gunakan definisi determinan, Atura
       <li>Gunakan Aturan Cramer untuk menentukan $a_0$, $a_1$, dan $a_2$.</li>
       <li>Tuliskan bentuk akhir polinomial $p(x)$ dan verifikasi bahwa ketiga titik dilalui oleh polinomial tersebut.</li>
     </ol>
+    <p><b>Petunjuk Penyelesaian:</b> Substitusikan setiap titik ke $p(x)=a_0+a_1x+a_2x^2$ sehingga diperoleh SPL:
+    $$
+    \begin{cases}
+    a_0+a_1+a_2=6,\\
+    a_0+2a_1+4a_2=11,\\
+    a_0+3a_1+9a_2=20.
+    \end{cases}
+    $$
+    Matriks Vandermonde-nya adalah $\begin{bmatrix}1&1&1\\1&2&4\\1&3&9\end{bmatrix}$ dengan determinan $2$. Gunakan Aturan Cramer dengan mengganti kolom sesuai koefisien yang dicari. Diperoleh $a_0=5$, $a_1=-1$, dan $a_2=2$, sehingga $p(x)=5-x+2x^2$. Verifikasi dengan menghitung $p(1)$, $p(2)$, dan $p(3)$.</p>
   </li>
 </ol>
 
