@@ -8991,7 +8991,7 @@ info("<b>Kesimpulan:</b> Dalam model matematis sederhana ini, proporsi abu secar
   <div class="badge">Bab 6</div>
   <h1>Ruang Hasil Kali Dalam</h1>
 
-  <div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
+<div class="container" style="width: 100%; max-width: 1100px; margin: 0 auto; overflow: auto; background: #ffffff; padding: 10px; border-radius: 12px;">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1080" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
     <defs>
       <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
@@ -9089,248 +9089,1029 @@ info("<b>Kesimpulan:</b> Dalam model matematis sederhana ini, proporsi abu secar
 </div>
 
   <p align="justify">
-  Di \(\mathbb{R}^n\) kita sudah familiar dengan <b>dot product</b> \(\mathbf{u}\cdot\mathbf{v}\). Tetapi bagaimana cara mengukur panjang, sudut, dan kemiripan di ruang yang lebih abstrak seperti ruang matriks \(M_{m\times n}\), polinomial \(P_n\), atau fungsi kontinu \(C[a,b]\)? Jawabannya adalah <b>hasil kali dalam (inner product)</b>. Konsep ini adalah generalisasi geometri Euclid. Dengan inner product, kita bisa menjawab pertanyaan fundamental: kapan dua fungsi saling tegak lurus? Apa pendekatan terbaik dari sebuah fungsi rumit dengan polinomial sederhana? Ini adalah fondasi dari Machine Learning (least squares), kompresi data (QR), dan pemrosesan sinyal (Fourier).
+  Di \(\mathbb{R}^n\) kita mengenal <b>dot product</b> \(\mathbf{u}\cdot\mathbf{v}\). Konsep ini dipakai untuk mengukur panjang vektor, sudut antar vektor, dan kemiripan arah. Pertanyaannya: dapatkah kita melakukan hal serupa di ruang yang lebih abstrak, misalnya ruang matriks \(M_{m\times n}\), ruang polinomial \(P_n\), atau ruang fungsi kontinu \(C[a,b]\)? Jawabannya adalah <b>hasil kali dalam</b> atau <b>inner product</b>. Inner product adalah generalisasi dot product yang memungkinkan kita mendefinisikan norma, jarak, sudut, ortogonalitas, proyeksi, dan pendekatan terbaik. Konsep ini menjadi dasar bagi Gram–Schmidt, dekomposisi QR, least squares, regresi, machine learning, kompresi data, dan deret Fourier.
   </p>
 
   <h2 class="sec">6.1 Hasil Kali Dalam (Inner Products)</h2>
+
   <p align="justify">
-  Dot product di \(\mathbb{R}^n\) memiliki 3 sifat penting: simetris, linier, dan \(\mathbf{u}\cdot\mathbf{u} \ge 0\). Sifat inilah yang kita abstraksikan.
+  Dot product di \(\mathbb{R}^n\) memiliki tiga sifat penting: simetris, linier, dan positif definit. Ketiga sifat inilah yang diangkat menjadi definisi umum hasil kali dalam.
   </p>
+
   <div class="card def">
-    <b>Definisi:</b> Hasil kali dalam pada ruang vektor real \(V\) adalah fungsi \(\langle\cdot,\cdot\rangle: V\times V \to \mathbb{R}\) yang memenuhi:
+    <b>Definisi 6.1 (Hasil Kali Dalam).</b>
+    Misalkan \(V\) adalah ruang vektor real. Fungsi
+    \[
+    \langle \cdot,\cdot\rangle: V\times V\to \mathbb{R}
+    \]
+    disebut <b>hasil kali dalam</b> jika untuk semua \(\mathbf{u},\mathbf{v},\mathbf{w}\in V\) dan semua skalar \(c\in\mathbb{R}\) berlaku:
     <ol>
-      <li><b>Simetri:</b> \(\langle \mathbf{u},\mathbf{v}\rangle = \langle \mathbf{v},\mathbf{u}\rangle\)</li>
-      <li><b>Linearitas:</b> \(\langle \mathbf{u}+\mathbf{v},\mathbf{w}\rangle = \langle \mathbf{u},\mathbf{w}\rangle + \langle \mathbf{v},\mathbf{w}\rangle\) dan \(\langle c\mathbf{u},\mathbf{v}\rangle = c\langle \mathbf{u},\mathbf{v}\rangle\)</li>
-      <li><b>Definit positif:</b> \(\langle \mathbf{u},\mathbf{u}\rangle \ge 0\) dan \(\langle \mathbf{u},\mathbf{u}\rangle = 0 \iff \mathbf{u}=0\).</li>
+      <li>
+        <b>Simetri:</b>
+        \[
+        \langle \mathbf{u},\mathbf{v}\rangle=\langle \mathbf{v},\mathbf{u}\rangle.
+        \]
+      </li>
+      <li>
+        <b>Linear pada argumen pertama:</b>
+        \[
+        \langle \mathbf{u}+\mathbf{v},\mathbf{w}\rangle
+        =
+        \langle \mathbf{u},\mathbf{w}\rangle+\langle \mathbf{v},\mathbf{w}\rangle,
+        \]
+        \[
+        \langle c\mathbf{u},\mathbf{v}\rangle
+        =
+        c\langle \mathbf{u},\mathbf{v}\rangle.
+        \]
+        Karena simetri, sifat linear juga berlaku pada argumen kedua.
+      </li>
+      <li>
+        <b>Positif definit:</b>
+        \[
+        \langle \mathbf{u},\mathbf{u}\rangle\ge 0,
+        \]
+        dan
+        \[
+        \langle \mathbf{u},\mathbf{u}\rangle=0
+        \iff
+        \mathbf{u}=\mathbf{0}.
+        \]
+      </li>
     </ol>
-    Norma (panjang) didefinisikan sebagai \(\|\mathbf{u}\| = \sqrt{\langle \mathbf{u},\mathbf{u}\rangle}\). Dari sini muncul dua teorema besar:
-    <br> <b>Ketaksamaan Cauchy-Schwarz:</b> \(|\langle u,v\rangle| \le \|u\|\|v\|\) <br>
-    <b>Ketaksamaan Segitiga:</b> \(\|u+v\| \le \|u\| + \|v\|\). Tanpa ini, definisi sudut tidak akan valid.
+    Dari hasil kali dalam, didefinisikan <b>norma</b> atau panjang vektor:
+    \[
+    \|\mathbf{u}\|=\sqrt{\langle \mathbf{u},\mathbf{u}\rangle}.
+    \]
+    Jarak antara \(\mathbf{u}\) dan \(\mathbf{v}\) didefinisikan sebagai
+    \[
+    d(\mathbf{u},\mathbf{v})=\|\mathbf{u}-\mathbf{v}\|.
+    \]
+  </div>
+
+  <div class="card theorem">
+    <b>Teorema 6.1 (Cauchy–Schwarz dan Ketaksamaan Segitiga).</b>
+    Untuk setiap \(\mathbf{u},\mathbf{v}\in V\),
+    \[
+    |\langle \mathbf{u},\mathbf{v}\rangle|
+    \le
+    \|\mathbf{u}\|\|\mathbf{v}\|.
+    \]
+    Selain itu,
+    \[
+    \|\mathbf{u}+\mathbf{v}\|
+    \le
+    \|\mathbf{u}\|+\|\mathbf{v}\|.
+    \]
+    Ketaksamaan Cauchy–Schwarz menjamin bahwa definisi sudut
+    \[
+    \cos\theta
+    =
+    \frac{\langle \mathbf{u},\mathbf{v}\rangle}{\|\mathbf{u}\|\|\mathbf{v}\|}
+    \]
+    selalu bernilai antara \(-1\) dan \(1\).
   </div>
 
   <p align="justify"><b>Contoh-contoh hasil kali dalam:</b></p>
   <ul>
-    <li><b>\(\mathbb{R}^n\) standar:</b> \(\langle \mathbf{u},\mathbf{v}\rangle = \mathbf{u}\cdot\mathbf{v} = \sum_{i=1}^n u_i v_i\).</li>
-    <li><b>\(\mathbb{R}^n\) berbobot:</b> \(\langle \mathbf{u},\mathbf{v}\rangle = \sum_{i=1}^n w_i u_i v_i\) dengan \(w_i > 0\). Berguna jika tiap fitur punya kepentingan berbeda.</li>
-    <li><b>Ruang matriks \(M_{m\times n}\):</b> \(\langle A,B\rangle = \text{tr}(A^T B) = \sum_{i,j} a_{ij} b_{ij}\) (Frobenius). Ini adalah dot product jika matriks direntangkan jadi vektor panjang \(mn\).</li>
-    <li><b>Ruang polinomial \(P_n\) pada \([a,b]\):</b> \(\langle p,q\rangle = \int_a^b p(x)q(x)\,dx\).</li>
-    <li><b>Ruang fungsi kontinu \(C[a,b]\):</b> \(\langle f,g\rangle = \int_a^b f(x)g(x)\,dx\). Luas di bawah perkalian dua fungsi.</li>
+    <li>
+      <b>Ruang Euclid \(\mathbb{R}^n\):</b>
+      \[
+      \langle \mathbf{u},\mathbf{v}\rangle
+      =
+      \mathbf{u}\cdot\mathbf{v}
+      =
+      \sum_{i=1}^n u_i v_i.
+      \]
+    </li>
+    <li>
+      <b>\(\mathbb{R}^n\) berbobot:</b>
+      \[
+      \langle \mathbf{u},\mathbf{v}\rangle
+      =
+      \sum_{i=1}^n w_i u_i v_i,
+      \qquad w_i>0.
+      \]
+      Bobot \(w_i\) menyatakan tingkat kepentingan fitur ke-\(i\).
+    </li>
+    <li>
+      <b>Ruang matriks \(M_{m\times n}\):</b>
+      \[
+      \langle A,B\rangle
+      =
+      \operatorname{tr}(A^T B)
+      =
+      \sum_{i=1}^m\sum_{j=1}^n a_{ij}b_{ij}.
+      \]
+      Ini disebut hasil kali dalam Frobenius.
+    </li>
+    <li>
+      <b>Ruang polinomial \(P_n\) pada \([a,b]\):</b>
+      \[
+      \langle p,q\rangle
+      =
+      \int_a^b p(x)q(x)\,dx.
+      \]
+    </li>
+    <li>
+      <b>Ruang fungsi kontinu \(C[a,b]\):</b>
+      \[
+      \langle f,g\rangle
+      =
+      \int_a^b f(x)g(x)\,dx.
+      \]
+      Bentuk berbobot:
+      \[
+      \langle f,g\rangle
+      =
+      \int_a^b w(x)f(x)g(x)\,dx,
+      \qquad w(x)>0.
+      \]
+    </li>
   </ul>
 
   <div class="card example">
-    <b>Contoh hitungan:</b> Di \(P_2\) dengan \(\langle p,q\rangle = \int_{-1}^1 p(x)q(x)\,dx\), ambil \(p(x)=x\) dan \(q(x)=x^2\). Maka
+    <b>Contoh 6.1.</b>
+    Di \(P_2\) dengan
     \[
-    \langle p,q\rangle = \int_{-1}^1 x\cdot x^2\,dx = \int_{-1}^1 x^3\,dx = 0.
+    \langle p,q\rangle=\int_{-1}^1 p(x)q(x)\,dx,
     \]
-    Jadi \(x \perp x^2\) pada interval \([-1,1]\). Norma \(\|p\|^2 = \int_{-1}^1 x^2\,dx = \frac{2}{3}\), sehingga \(\|p\| = \sqrt{2/3}\). Ini contoh fungsi ganjil tegak lurus fungsi genap pada interval simetris.
+    ambil \(p(x)=x\) dan \(q(x)=x^2\). Maka
+    \[
+    \langle p,q\rangle
+    =
+    \int_{-1}^1 x\cdot x^2\,dx
+    =
+    \int_{-1}^1 x^3\,dx
+    =
+    0.
+    \]
+    Jadi \(p\perp q\) pada interval \([-1,1]\). Selanjutnya,
+    \[
+    \|p\|^2=\int_{-1}^1 x^2\,dx=\frac{2}{3},
+    \]
+    sehingga
+    \[
+    \|p\|=\sqrt{\frac{2}{3}}.
+    \]
+    Contoh ini menunjukkan bahwa fungsi ganjil dan fungsi genap pada interval simetris saling ortogonal.
   </div>
 
   <h2 class="sec">6.2 Sudut, Ortogonalitas, dan Proyeksi</h2>
+
   <p align="justify">
-  Setelah punya inner product, kita bisa mendefinisikan geometri. Dua vektor ortogonal jika inner product-nya nol. Ini menggeneralisasi konsep tegak lurus. Himpunan yang saling ortogonal pasti bebas linier, sehingga menjadi basis yang sangat baik karena perhitungannya tidak saling mengganggu.
-  <br>Ide paling penting adalah <b>Proyeksi Ortogonal</b>. Jika kita punya subruang \(W\) dan vektor \(\mathbf{u}\) di luar \(W\), vektor di dalam \(W\) yang paling dekat ke \(\mathbf{u}\) adalah bayangannya (proyeksi) ke \(W\). Sisa error-nya pasti tegak lurus terhadap \(W\). Ini prinsip di balik semua metode aproksimasi.
+  Setelah memiliki hasil kali dalam, kita dapat mendefinisikan geometri secara umum. Dua vektor disebut <b>ortogonal</b> jika hasil kali dalamnya nol. Himpunan vektor tak nol yang saling ortogonal pasti bebas linier, sehingga dapat menjadi basis yang sangat baik. Jika semua vektor juga bernorma satu, basis tersebut disebut <b>ortonormal</b>.
   </p>
 
   <div class="card theorem">
-    Sudut antara dua vektor tak nol didefinisikan oleh
-    \[
-    \cos\theta = \frac{\langle \mathbf{u},\mathbf{v}\rangle}{\|\mathbf{u}\|\|\mathbf{v}\|}.
-    \]
-    Valid karena Cauchy-Schwarz menjamin \(|\cos\theta| \le 1\).
-    Vektor \(\mathbf{u}\) dan \(\mathbf{v}\) dikatakan <b>ortogonal</b> jika \(\langle \mathbf{u},\mathbf{v}\rangle = 0\).
-    <br> <b>Teorema Pythagoras Umum:</b> Jika \(u\perp v\), maka \(\|\mathbf{u}+\mathbf{v}\|^2 = \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2\).
-    <br> Proyeksi ortogonal dari \(\mathbf{u}\) ke subruang \(W = \text{span}\{\mathbf{v}\}\) adalah
-    \[
-    \text{proj}_W \mathbf{u} = \frac{\langle \mathbf{u},\mathbf{v}\rangle}{\langle \mathbf{v},\mathbf{v}\rangle}\mathbf{v}.
-    \]
-    Jika \(W\) direntang basis ortogonal \(\{w_1,...,w_k\}\), maka \(\text{proj}_W u = \sum \frac{\langle u,w_i\rangle}{\langle w_i,w_i\rangle}w_i\).
+    <b>Definisi dan Sifat Dasar.</b>
+    <ul>
+      <li>
+        Sudut antara dua vektor tak nol \(\mathbf{u}\) dan \(\mathbf{v}\):
+        \[
+        \cos\theta
+        =
+        \frac{\langle \mathbf{u},\mathbf{v}\rangle}
+        {\|\mathbf{u}\|\|\mathbf{v}\|}.
+        \]
+      </li>
+      <li>
+        \(\mathbf{u}\perp \mathbf{v}\) jika dan hanya jika
+        \[
+        \langle \mathbf{u},\mathbf{v}\rangle=0.
+        \]
+      </li>
+      <li>
+        <b>Teorema Pythagoras umum:</b> jika \(\mathbf{u}\perp \mathbf{v}\), maka
+        \[
+        \|\mathbf{u}+\mathbf{v}\|^2
+        =
+        \|\mathbf{u}\|^2+\|\mathbf{v}\|^2.
+        \]
+      </li>
+    </ul>
   </div>
 
-<div class="card example">
-  <h3>Contoh: Vektor di \(\mathbb R^5\) - Sistem Rekomendasi Pelanggan</h3>
-  <p align="justify">Di Tokopedia / Shopee, setiap pelanggan direpresentasikan sebagai vektor fitur di \(\mathbb R^5\). Misal format vektor = [Umur, Total Belanja/bulan (juta), Frekuensi belanja, Rata-rata Rating, Jarak ke gudang (km)].</p>
-  <p>Pelanggan P: \(\mathbf{p} = (25, 2, 8, 4.8, 5)\) <br> Pelanggan Q: \(\mathbf{q} = (27, 2.5, 9, 4.7, 6)\)</p>
-  <p align="justify"><b>Masalah:</b> Apakah P dan Q memiliki perilaku mirip? Sistem AI menghitung kemiripan dengan Cosine Similarity:</p>
-  $$
-  \cos\theta = \frac{\mathbf{p} \cdot \mathbf{q}}{\|\mathbf{p}\|\|\mathbf{q}\|} = \frac{804.56}{27.22 \times 29.57} \approx 0.9996
-  $$
-  Nilai mendekati 1 artinya sangat mirip. Maka sistem akan merekomendasikan produk yang dibeli Q kepada P. Model AI modern seperti BERT bahkan menggunakan \(\mathbb R^{768}\), prinsipnya identik.
-  </div>
-
-  <h2 class="sec">6.3 Proses Gram-Schmidt dan Dekomposisi QR</h2>
   <p align="justify">
-  Basis ortonormal adalah basis terbaik: koordinat mudah dicari (cukup inner product), stabil secara numerik, dan tidak ada redundansi. Tetapi basis yang diberikan soal biasanya tidak ortonormal. <b>Proses Gram-Schmidt</b> adalah algoritma untuk mengubah basis sembarang menjadi basis ortogonal/ortonormal dengan cara mengurangi komponen yang sudah ada secara iteratif.
-  <br>Jika kita terapkan Gram-Schmidt pada kolom-kolom matriks \(A\), kita mendapatkan faktorisasi \(A=QR\). \(Q\) berisi basis ortonormal, \(R\) menyimpan koefisien kombinasi. Dekomposisi ini adalah jantung dari algoritma eigenvalue modern dan solusi least squares yang stabil.
+  Ide paling penting pada bagian ini adalah <b>proyeksi ortogonal</b>. Jika \(W\) adalah subruang dan \(\mathbf{u}\) berada di luar \(W\), maka vektor di dalam \(W\) yang paling dekat dengan \(\mathbf{u}\) adalah proyeksi ortogonal \(\mathbf{u}\) ke \(W\). Selisih antara \(\mathbf{u}\) dan proyeksinya selalu tegak lurus terhadap \(W\).
   </p>
 
-  <div class="card def">
-    <b>Proses Gram-Schmidt:</b> Diberikan basis \(\{v_1,\dots,v_k\}\), bentuk basis ortogonal \(\{w_1,\dots,w_k\}\) dengan:
-    \[
-    w_1 = v_1, \quad w_k = v_k - \sum_{j=1}^{k-1} \frac{\langle v_k, w_j\rangle}{\langle w_j,w_j\rangle} w_j.
-    \]
-    Kemudian normalisasi \(q_k = w_k/\|w_k\|\) menghasilkan basis ortonormal.
-    <br><br>
-    <b>Dekomposisi QR:</b> Jika \(A_{m\times n}\) kolom bebas linier, maka \(A = QR\), dengan \(Q\) kolom ortonormal (\(Q^TQ=I\)) dan \(R\) segitiga atas invertibel. \(R = Q^T A\).
+  <div class="card theorem">
+    <b>Proyeksi Ortogonal.</b>
+    <ul>
+      <li>
+        Proyeksi \(\mathbf{u}\) ke arah vektor tak nol \(\mathbf{v}\):
+        \[
+        \operatorname{proj}_{\mathbf{v}}\mathbf{u}
+        =
+        \frac{\langle \mathbf{u},\mathbf{v}\rangle}
+        {\langle \mathbf{v},\mathbf{v}\rangle}
+        \mathbf{v}.
+        \]
+      </li>
+      <li>
+        Jika \(W=\operatorname{span}\{\mathbf{w}_1,\dots,\mathbf{w}_k\}\) dengan basis ortogonal, maka
+        \[
+        \operatorname{proj}_W\mathbf{u}
+        =
+        \sum_{i=1}^k
+        \frac{\langle \mathbf{u},\mathbf{w}_i\rangle}
+        {\langle \mathbf{w}_i,\mathbf{w}_i\rangle}
+        \mathbf{w}_i.
+        \]
+      </li>
+      <li>
+        Jika \(\{q_1,\dots,q_k\}\) adalah basis ortonormal, maka
+        \[
+        \operatorname{proj}_W\mathbf{u}
+        =
+        \sum_{i=1}^k \langle \mathbf{u},q_i\rangle q_i.
+        \]
+      </li>
+      <li>
+        <b>Sifat pendekatan terbaik:</b>
+        \[
+        \|\mathbf{u}-\operatorname{proj}_W\mathbf{u}\|
+        \le
+        \|\mathbf{u}-\mathbf{w}\|
+        \]
+        untuk setiap \(\mathbf{w}\in W\).
+      </li>
+    </ul>
   </div>
 
   <div class="card example">
-    <b>Contoh lengkap QR:</b> Misalkan \(A = \begin{bmatrix}1&1&0\\1&0&1\\0&1&1\end{bmatrix}\). Gram-Schmidt pada kolom \(A\):
-    \(w_1=(1,1,0), q_1 = \frac{1}{\sqrt{2}}(1,1,0)\);
-    \(w_2 = (\frac12,-\frac12,1), q_2 = \frac{1}{\sqrt{6}}(1,-1,2)\);
-    \(w_3 = (-\frac23, \frac23, \frac23), q_3 = \frac{1}{\sqrt{3}}(-1,1,-1)\) (setelah koreksi tanda). Maka \(Q = [q_1\;q_2\;q_3]\) dan \(R = Q^T A\) segitiga atas. Perhatikan \(R\) selalu segitiga atas karena \(w_k\) tegak lurus terhadap kolom sebelumnya.
+    <b>Contoh 6.2: Cosine similarity pada sistem rekomendasi.</b>
+    <p align="justify">
+    Misalkan setiap pelanggan direpresentasikan sebagai vektor fitur di \(\mathbb{R}^5\):
+    \[
+    \text{[umur, total belanja/bulan, frekuensi belanja, rating rata-rata, jarak ke gudang]}.
+    \]
+    Pelanggan \(P\):
+    \[
+    \mathbf{p}=(25,2,8,4.8,5),
+    \]
+    pelanggan \(Q\):
+    \[
+    \mathbf{q}=(27,2.5,9,4.7,6).
+    \]
+    Hasil kali dalam:
+    \[
+    \mathbf{p}\cdot\mathbf{q}
+    =
+    25(27)+2(2.5)+8(9)+4.8(4.7)+5(6)
+    =
+    804.56.
+    \]
+    Norma:
+    \[
+    \|\mathbf{p}\|\approx 27.222,
+    \qquad
+    \|\mathbf{q}\|\approx 29.569.
+    \]
+    Maka
+    \[
+    \cos\theta
+    =
+    \frac{804.56}{27.222\cdot 29.569}
+    \approx 0.9995.
+    \]
+    Karena nilai cosinus mendekati \(1\), perilaku \(P\) dan \(Q\) sangat mirip. Sistem dapat merekomendasikan produk yang dibeli \(Q\) kepada \(P\). Pada model modern seperti BERT, dimensi vektor dapat mencapai ratusan, misalnya \(\mathbb{R}^{768}\), tetapi prinsipnya tetap sama.
+    </p>
   </div>
 
-  <h2 class="sec">6.4 Pendekatan Terbaik dan Kuadrat Terkecil</h2>
-  <p align="justify">
-  Mengapa proyeksi penting? Misalkan kita punya sistem \(A\mathbf{x}=\mathbf{b}\) dengan 100 persamaan 2 variabel (overdetermined) – umumnya tidak ada solusi eksak. Yang bisa kita lakukan adalah mencari \(\hat{x}\) yang membuat error \(\|A\hat{x}-b\|\) sekecil mungkin. Secara geometri, ini berarti mencari proyeksi \(b\) ke ruang kolom \(Col(A)\). Syarat proyeksi adalah residual \(b - A\hat{x}\) harus ortogonal terhadap \(Col(A)\), yang menghasilkan <b>persamaan normal</b> \(A^T A \hat{x} = A^T b\).
-  </p>
+  <h2 class="sec">6.3 Proses Gram–Schmidt dan Dekomposisi QR</h2>
 
-  <div class="card theorem">
-    <b>Best Approximation:</b> Proyeksi ortogonal \(\text{proj}_W\mathbf{u}\) adalah vektor terdekat di \(W\) ke \(\mathbf{u}\).
-    <br><b>Least Squares:</b> Solusi yang meminimumkan \(\|A\mathbf{x}-\mathbf{b}\|^2\) memenuhi \(A^T A \hat{\mathbf{x}} = A^T \mathbf{b}\). Jika \(A=QR\), maka selesaikan \(R\hat{\mathbf{x}} = Q^T\mathbf{b}\) – jauh lebih stabil daripada membentuk \(A^T A\) yang bisa ill-conditioned.
-  </div>
-
-  <h2 class="sec">6.5 Model Matematika Menggunakan Kuadrat Terkecil</h2>
   <p align="justify">
-  Tidak semua hubungan linier. Namun banyak model non-linier dapat dilinierisasi:
-  <ul>
-    <li><b>Eksponensial:</b> \(y = a e^{bx} \Rightarrow \ln y = \ln a + bx\), set \(Y=\ln y\).</li>
-    <li><b>Power law:</b> \(y = a x^b \Rightarrow \ln y = \ln a + b\ln x\)</li>
-    <li><b>Regresi polinomial:</b> \(y = c_0 + c_1 x + c_2 x^2\) tetap linier terhadap koefisien \(c_i\), matriks \(A\) menjadi matriks Vandermonde.</li>
-  </ul>
-  Setelah dilinierisasi, semua diselesaikan dengan kerangka \(A\mathbf{c} \approx \mathbf{b}\).
-  </p>
-
-  <h2 class="sec">6.6 Aproksimasi Fungsi dan Deret Fourier</h2>
-  <p align="justify">
-  Ini adalah puncak dari ide ruang hasil kali dalam. Di ruang fungsi \(C[-\pi,\pi]\) dengan \(\langle f,g\rangle = \int_{-\pi}^{\pi} f(x)g(x)dx\), fungsi-fungsi \(\{1,\cos x,\sin x,\cos 2x,...\}\) saling ortogonal. Jadi untuk mengaproksimasi fungsi rumit \(f(x)\) seperti gelombang kotak atau gergaji, kita cukup memproyeksikannya ke subruang trigonometri. Koefisien Fourier \(a_n, b_n\) tidak lain adalah koefisien proyeksi \(\langle f, \cos nx\rangle / \langle \cos nx, \cos nx\rangle\). Proyeksi ini memberikan aproksimasi terbaik dalam arti rata-rata kuadrat terkecil (norm \(L^2\)).
+  Basis ortonormal adalah basis yang sangat nyaman karena koordinat vektor dapat dihitung hanya dengan hasil kali dalam. Namun, basis yang diberikan biasanya belum ortogonal. <b>Proses Gram–Schmidt</b> mengubah basis sembarang menjadi basis ortogonal, lalu dengan normalisasi diperoleh basis ortonormal. Jika proses ini diterapkan pada kolom-kolom matriks \(A\), kita memperoleh dekomposisi \(A=QR\).
   </p>
 
   <div class="card def">
-    Deret Fourier dari \(f\) adalah:
+    <b>Proses Gram–Schmidt.</b>
+    Diberikan basis \(\{v_1,\dots,v_k\}\). Bentuk vektor ortogonal \(\{w_1,\dots,w_k\}\) dengan:
     \[
-    f(x) \sim \frac{a_0}{2} + \sum_{n=1}^{\infty} \left(a_n \cos nx + b_n \sin nx\right),
+    w_1=v_1,
     \]
-    dengan \(a_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos nx\,dx,\quad b_n = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\sin nx\,dx\).
+    dan untuk \(k\ge 2\),
+    \[
+    w_k
+    =
+    v_k
+    -
+    \sum_{j=1}^{k-1}
+    \frac{\langle v_k,w_j\rangle}
+    {\langle w_j,w_j\rangle}
+    w_j.
+    \]
+    Setelah itu, normalisasi:
+    \[
+    q_k=\frac{w_k}{\|w_k\|}.
+    \]
+    Himpunan \(\{q_1,\dots,q_k\}\) adalah basis ortonormal.
   </div>
 
-  <h2 class="sec">6.7 Contoh Real Problem: Optimasi Prediksi Penjualan</h2>
+  <div class="card def">
+    <b>Dekomposisi QR.</b>
+    Jika \(A\) adalah matriks \(m\times n\) dengan kolom-kolom bebas linier, maka
+    \[
+    A=QR,
+    \]
+    dengan:
+    <ul>
+      <li>
+        \(Q\) berukuran \(m\times n\), kolom-kolomnya ortonormal, sehingga
+        \[
+        Q^TQ=I.
+        \]
+      </li>
+      <li>
+        \(R\) berukuran \(n\times n\), berbentuk segitiga atas, dan invertibel.
+      </li>
+      <li>
+        \[
+        R=Q^TA.
+        \]
+      </li>
+    </ul>
+    Dekomposisi QR lebih stabil secara numerik daripada membentuk \(A^TA\), terutama untuk masalah least squares.
+  </div>
+
+  <div class="card example">
+    <b>Contoh 6.3: QR dari matriks \(3\times 3\).</b>
+    Misalkan
+    \[
+    A=
+    \begin{bmatrix}
+    1&1&0\\
+    1&0&1\\
+    0&1&1
+    \end{bmatrix}.
+    \]
+    Kolom-kolom \(A\) adalah
+    \[
+    v_1=(1,1,0),\quad v_2=(1,0,1),\quad v_3=(0,1,1).
+    \]
+    Terapkan Gram–Schmidt.
+
+    <br><br>
+    <b>Langkah 1.</b>
+    \[
+    w_1=v_1=(1,1,0),
+    \]
+    \[
+    q_1=\frac{w_1}{\|w_1\|}
+    =
+    \frac{1}{\sqrt2}(1,1,0).
+    \]
+
+    <br><br>
+    <b>Langkah 2.</b>
+    \[
+    \langle v_2,w_1\rangle=1,\qquad
+    \langle w_1,w_1\rangle=2.
+    \]
+    \[
+    w_2
+    =
+    v_2-\frac{1}{2}w_1
+    =
+    (1,0,1)-\frac12(1,1,0)
+    =
+    \left(\frac12,-\frac12,1\right).
+    \]
+    \[
+    \|w_2\|=\sqrt{\frac32}=\frac{\sqrt6}{2},
+    \]
+    sehingga
+    \[
+    q_2=\frac{1}{\sqrt6}(1,-1,2).
+    \]
+
+    <br><br>
+    <b>Langkah 3.</b>
+    \[
+    \langle v_3,w_1\rangle=1,\qquad
+    \langle w_1,w_1\rangle=2,
+    \]
+    \[
+    \langle v_3,w_2\rangle=\frac12,\qquad
+    \langle w_2,w_2\rangle=\frac32.
+    \]
+    Maka
+    \[
+    w_3
+    =
+    v_3
+    -
+    \frac12 w_1
+    -
+    \frac{1}{3}w_2
+    =
+    \left(-\frac23,\frac23,\frac23\right).
+    \]
+    Karena
+    \[
+    \|w_3\|=\frac{2}{\sqrt3},
+    \]
+    maka
+    \[
+    q_3=\frac{1}{\sqrt3}(-1,1,1).
+    \]
+    Jadi
+    \[
+    Q=
+    \begin{bmatrix}
+    \frac1{\sqrt2} & \frac1{\sqrt6} & -\frac1{\sqrt3}\\[4pt]
+    \frac1{\sqrt2} & -\frac1{\sqrt6} & \frac1{\sqrt3}\\[4pt]
+    0 & \frac2{\sqrt6} & \frac1{\sqrt3}
+    \end{bmatrix}.
+    \]
+    Selanjutnya,
+    \[
+    R=Q^TA
+    =
+    \begin{bmatrix}
+    \sqrt2 & \frac1{\sqrt2} & \frac1{\sqrt2}\\[4pt]
+    0 & \frac{3}{\sqrt6} & \frac1{\sqrt6}\\[4pt]
+    0 & 0 & \frac{2}{\sqrt3}
+    \end{bmatrix}.
+    \]
+    Perhatikan bahwa \(R\) berbentuk segitiga atas.
+  </div>
+
+  <h2 class="sec">6.4 Pendekatan Terbaik dan Kuadrat Terkecil</h2>
+
   <p align="justify">
-  Sebuah perusahaan ritel ingin memprediksi penjualan bulanan berdasarkan biaya iklan. Data: \((x,y) = \{(1, 10), (2, 18), (3, 25), (4, 30), (5, 38), (6, 42)\}\), model \(y = c_0 + c_1 x\). Dengan \(A^T A = \begin{bmatrix}6 & 21\\ 21 & 91\end{bmatrix}, A^T b = [163, 637]^T\), didapat \(c_0\approx13.8667, c_1=3.8\). Model \(y = 13.8667 + 3.8x\). Jika \(x=7\), prediksi \(40.4667\) juta unit. Ini adalah keputusan berbasis data.
+  Misalkan kita mempunyai sistem \(A\mathbf{x}=\mathbf{b}\) dengan banyak persamaan tetapi sedikit variabel. Sistem seperti ini biasanya tidak memiliki solusi eksak. Yang dapat dilakukan adalah mencari \(\hat{\mathbf{x}}\) yang membuat error
+  \[
+  \|A\hat{\mathbf{x}}-\mathbf{b}\|
+  \]
+  sekecil mungkin. Masalah ini disebut <b>least squares</b> atau kuadrat terkecil.
   </p>
 
-  <h3>Komputasi SageMath — Semua Konsep 6.1–6.7</h3>
+  <div class="card theorem">
+    <b>Least Squares dan Persamaan Normal.</b>
+    Solusi least squares \(\hat{\mathbf{x}}\) yang meminimumkan
+    \[
+    \|A\mathbf{x}-\mathbf{b}\|^2
+    \]
+    memenuhi <b>persamaan normal</b>
+    \[
+    A^TA\hat{\mathbf{x}}=A^T\mathbf{b}.
+    \]
+    Secara geometri, \(A\hat{\mathbf{x}}\) adalah proyeksi ortogonal \(\mathbf{b}\) ke ruang kolom \(A\):
+    \[
+    A\hat{\mathbf{x}}=\operatorname{proj}_{\operatorname{Col}(A)}\mathbf{b}.
+    \]
+    Residual
+    \[
+    \mathbf{r}=\mathbf{b}-A\hat{\mathbf{x}}
+    \]
+    tegak lurus terhadap \(\operatorname{Col}(A)\).
+    <br><br>
+    Jika \(A=QR\), maka
+    \[
+    A^TA\hat{\mathbf{x}}=A^T\mathbf{b}
+    \]
+    menjadi
+    \[
+    R^TR\hat{\mathbf{x}}=R^TQ^T\mathbf{b}.
+    \]
+    Karena \(R\) invertibel, diperoleh
+    \[
+    R\hat{\mathbf{x}}=Q^T\mathbf{b}.
+    \]
+    Sistem ini diselesaikan dengan substitusi balik dan lebih stabil secara numerik.
+  </div>
+
+  <h2 class="sec">6.5 Model Matematika dengan Kuadrat Terkecil</h2>
+
+  <p align="justify">
+  Banyak model nonlinier dapat dilinierisasi sehingga dapat diselesaikan dengan least squares.
+  </p>
+
+  <ul>
+    <li>
+      <b>Regresi linear:</b>
+      \[
+      y=c_0+c_1x.
+      \]
+    </li>
+    <li>
+      <b>Regresi polinomial:</b>
+      \[
+      y=c_0+c_1x+c_2x^2+\cdots+c_kx^k.
+      \]
+      Model ini tetap linear terhadap koefisien \(c_i\), sehingga matriks \(A\) berbentuk matriks Vandermonde.
+    </li>
+    <li>
+      <b>Model eksponensial:</b>
+      \[
+      y=ae^{bx}.
+      \]
+      Ambil logaritma natural:
+      \[
+      \ln y=\ln a+bx.
+      \]
+      Misalkan \(Y=\ln y\), maka diperoleh model linear
+      \[
+      Y=\ln a+bx.
+      \]
+    </li>
+    <li>
+      <b>Model power law:</b>
+      \[
+      y=ax^b.
+      \]
+      Ambil logaritma:
+      \[
+      \ln y=\ln a+b\ln x.
+      \]
+      Misalkan \(Y=\ln y\) dan \(X=\ln x\), maka
+      \[
+      Y=\ln a+bX.
+      \]
+    </li>
+  </ul>
+
+  <p align="justify">
+  Catatan: transformasi logaritma mengubah ukuran error. Jika ingin meminimumkan error pada skala data asli, perlu digunakan metode nonlinear least squares. Namun, untuk pengantar, linearisasi memberikan pendekatan yang sangat berguna.
+  </p>
+
+  <h2 class="sec">6.6 Aproksimasi Fungsi dan Deret Fourier</h2>
+
+  <p align="justify">
+  Salah satu penerapan paling penting dari ruang hasil kali dalam adalah aproksimasi fungsi. Di ruang fungsi \(C[-\pi,\pi]\) atau \(L^2[-\pi,\pi]\), kita definisikan
+  \[
+  \langle f,g\rangle
+  =
+  \int_{-\pi}^{\pi} f(x)g(x)\,dx.
+  \]
+  Fungsi-fungsi
+  \[
+  1,\ \cos x,\ \sin x,\ \cos 2x,\ \sin 2x,\dots
+  \]
+  saling ortogonal terhadap hasil kali dalam ini. Oleh karena itu, fungsi rumit \(f(x)\) dapat didekati dengan memproyeksikannya ke subruang trigonometri.
+  </p>
+
+  <div class="card def">
+    <b>Deret Fourier.</b>
+    Untuk fungsi \(f\) yang terdefinisi pada \([-\pi,\pi]\),
+    \[
+    f(x)\sim
+    \frac{a_0}{2}
+    +
+    \sum_{n=1}^{\infty}
+    \left(
+    a_n\cos nx+b_n\sin nx
+    \right),
+    \]
+    dengan koefisien Fourier
+    \[
+    a_n
+    =
+    \frac{1}{\pi}
+    \int_{-\pi}^{\pi}
+    f(x)\cos nx\,dx,
+    \qquad n\ge 0,
+    \]
+    \[
+    b_n
+    =
+    \frac{1}{\pi}
+    \int_{-\pi}^{\pi}
+    f(x)\sin nx\,dx,
+    \qquad n\ge 1.
+    \]
+    Koefisien-koefisien ini tidak lain adalah koefisien proyeksi ortogonal \(f\) terhadap basis trigonometri.
+  </div>
+
+  <div class="card example">
+    <b>Contoh 6.4: Deret Fourier untuk \(f(x)=x\).</b>
+    Fungsi \(f(x)=x\) pada \([-\pi,\pi]\) adalah fungsi ganjil. Maka
+    \[
+    a_0=0,\qquad a_n=0.
+    \]
+    Untuk \(b_n\),
+    \[
+    b_n
+    =
+    \frac{1}{\pi}
+    \int_{-\pi}^{\pi}
+    x\sin nx\,dx
+    =
+    \frac{2(-1)^{n+1}}{n}.
+    \]
+    Jadi
+    \[
+    x
+    \sim
+    2\sum_{n=1}^{\infty}
+    \frac{(-1)^{n+1}}{n}\sin nx.
+    \]
+    Deret ini adalah aproksimasi terbaik \(f(x)=x\) dalam norma \(L^2\) menggunakan fungsi sinus.
+  </div>
+
+  <div class="card theorem">
+    <b>Identitas Parseval.</b>
+    Untuk fungsi \(f\) pada \([-\pi,\pi]\),
+    \[
+    \frac{1}{\pi}
+    \int_{-\pi}^{\pi}
+    |f(x)|^2\,dx
+    =
+    \frac{a_0^2}{2}
+    +
+    \sum_{n=1}^{\infty}
+    \left(a_n^2+b_n^2\right).
+    \]
+    Identitas ini menyatakan kekekalan energi: norma fungsi sama dengan jumlah kuadrat koefisien Fourier.
+  </div>
+
+  <h2 class="sec">6.7 Contoh Real Problem: Prediksi Penjualan</h2>
+
+  <p align="justify">
+  Sebuah perusahaan ritel ingin memprediksi penjualan bulanan berdasarkan biaya iklan. Data yang dimiliki:
+  \[
+  (x,y)=
+  \{(1,10),(2,18),(3,25),(4,30),(5,38),(6,42)\}.
+  \]
+  Model yang dipilih:
+  \[
+  y=c_0+c_1x.
+  \]
+  Dalam bentuk matriks,
+  \[
+  A=
+  \begin{bmatrix}
+  1&1\\
+  1&2\\
+  1&3\\
+  1&4\\
+  1&5\\
+  1&6
+  \end{bmatrix},
+  \qquad
+  \mathbf{b}=
+  \begin{bmatrix}
+  10\\
+  18\\
+  25\\
+  30\\
+  38\\
+  42
+  \end{bmatrix}.
+  \]
+  Hitung:
+  \[
+  A^TA=
+  \begin{bmatrix}
+  6&21\\
+  21&91
+  \end{bmatrix},
+  \]
+  dan
+  \[
+  A^T\mathbf{b}
+  =
+  \begin{bmatrix}
+  163\\
+  683
+  \end{bmatrix}.
+  \]
+  Persamaan normal:
+  \[
+  \begin{bmatrix}
+  6&21\\
+  21&91
+  \end{bmatrix}
+  \begin{bmatrix}
+  c_0\\
+  c_1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  163\\
+  683
+  \end{bmatrix}.
+  \]
+  Solusinya:
+  \[
+  c_0=\frac{14}{3}\approx 4.6667,
+  \qquad
+  c_1=\frac{45}{7}\approx 6.4286.
+  \]
+  Jadi model least squares-nya adalah
+  \[
+  y=4.6667+6.4286x.
+  \]
+  Jika biaya iklan \(x=7\), prediksi penjualan:
+  \[
+  y=4.6667+6.4286(7)=49.6667
+  \]
+  juta unit. Jika \(x=8\),
+  \[
+  y=4.6667+6.4286(8)=56.0952
+  \]
+  juta unit.
+  </p>
+
+  <h2 class="sec">Intisari</h2>
+
+  <ul>
+    <li>
+      <b>Hasil kali dalam</b> adalah generalisasi dot product yang memungkinkan definisi panjang, sudut, jarak, dan ortogonalitas di ruang vektor abstrak.
+    </li>
+    <li>
+      <b>Norma</b> didefinisikan oleh \(\|\mathbf{u}\|=\sqrt{\langle \mathbf{u},\mathbf{u}\rangle}\).
+    </li>
+    <li>
+      Dua vektor ortogonal jika \(\langle \mathbf{u},\mathbf{v}\rangle=0\).
+    </li>
+    <li>
+      <b>Proyeksi ortogonal</b> memberikan pendekatan terbaik suatu vektor ke subruang.
+    </li>
+    <li>
+      <b>Gram–Schmidt</b> mengubah basis sembarang menjadi basis ortogonal atau ortonormal.
+    </li>
+    <li>
+      <b>Dekomposisi QR</b> \(A=QR\) digunakan untuk menyelesaikan least squares secara stabil.
+    </li>
+    <li>
+      <b>Least squares</b> menyelesaikan sistem overdetermined dengan meminimumkan \(\|A\mathbf{x}-\mathbf{b}\|^2\).
+    </li>
+    <li>
+      <b>Deret Fourier</b> adalah proyeksi fungsi ke basis trigonometri ortogonal.
+    </li>
+  </ul>
+
+  <h3>Komputasi SageMath — Inner Product, Gram–Schmidt, QR, Least Squares, Fourier</h3>
+
   <div class="sage">
-    <div class="sage-header"><span>SageMath Cell — Inner Product, Gram-Schmidt, QR, Least Squares, Fourier</span></div>
-    <div class="compute"><script type="text/x-sage">
+    <div class="sage-header">
+      <span>SageMath Cell — Inner Product, Gram–Schmidt, QR, Least Squares, Fourier</span>
+    </div>
+    <div class="compute">
+      <script type="text/x-sage">
 from sage.all import *
+
 @interact
 def analisis_ruang_hasil_kali_dalam_interaktif(
     u_input=input_box(default="[1, 2, 3]", label="Vektor u:", type=str),
     v_input=input_box(default="[1, 0, 1]", label="Vektor v:", type=str),
-    pts_input=input_box(default="[(1,10), (2,18), (3,25), (4,30), (5,38), (6,42)]", label="Data Titik LS (x,y):", type=str),
-    n_fourier=input_box(default=5, label="Banyak Koefisien Fourier (n):", type=Integer)
+    pts_input=input_box(default="[(1,10), (2,18), (3,25), (4,30), (5,38), (6,42)]", label="Data titik LS (x,y):", type=str),
+    n_fourier=input_box(default=5, label="Banyak koefisien Fourier (n):", type=Integer)
 ):
     try:
         u_vec = vector(QQ, sage_eval(u_input))
         v_vec = vector(QQ, sage_eval(v_input))
         pts = sage_eval(pts_input)
     except Exception as e:
-        display(html("<b style='color: red;'>Format input salah: " + str(e) + "</b>"))
+        display(html("<b style='color:red;'>Format input salah: %s</b>" % e))
         return
-    display(html("<h2>Analisis Ruang Hasil Kali Dalam &amp; Ortogonalitas</h2>"))
+
+    display(html("<h2>Analisis Ruang Hasil Kali Dalam & Ortogonalitas</h2>"))
+
     dot_uv = u_vec.dot_product(v_vec)
     norm_u = u_vec.norm()
     norm_v = v_vec.norm()
-    display(html("<h3>6.1 Hasil Kali Dalam (Dot Product) &amp; Norm Vektor</h3>"))
-    display(html("<b>Vektor $\\mathbf{u}$:</b> $" + latex(u_vec.column()) + "$ &nbsp;&nbsp; <b>Vektor $\\mathbf{v}$:</b> $" + latex(v_vec.column()) + "$"))
-    display(html("<b>⟨u,v⟩:</b> $" + str(dot_uv) + "$ <b>‖u‖:</b> $" + latex(norm_u) + "$ <b>‖v‖:</b> $" + latex(norm_v) + "$"))
-    display(html("---"))
+
+    display(html("<h3>6.1 Hasil Kali Dalam dan Norm</h3>"))
+    display(html("<b>u =</b> $%s$ &nbsp;&nbsp; <b>v =</b> $%s$" % (latex(u_vec.column()), latex(v_vec.column()))))
+    
+    # Menampilkan nilai desimal dengan 4 angka penting jika berupa bilangan float/irasional
+    display(html("<b>⟨u,v⟩ =</b> $%s$ &nbsp;&nbsp; <b>‖u‖ =</b> $%.4f$ &nbsp;&nbsp; <b>‖v‖ =</b> $%.4f$" % (dot_uv, float(norm_u), float(norm_v))))
+
+    if norm_u != 0 and norm_v != 0:
+        cos_theta = float(dot_uv / (norm_u * norm_v))
+        display(html("<b>cos θ =</b> $%.4f$" % cos_theta))
+
     display(html("<h3>6.2 Proyeksi Ortogonal</h3>"))
-    if v_vec.dot_product(v_vec)!= 0:
-        proj_u_v = (u_vec.dot_product(v_vec) / v_vec.dot_product(v_vec)) * v_vec
-        err_orth = u_vec - proj_u_v
-        display(html("<b>Proj:</b> $" + latex(proj_u_v.column()) + "$ <b>Residu:</b> $" + latex(err_orth.column()) + "$ Verifikasi: $" + str(err_orth.dot_product(v_vec)) + "$"))
-    display(html("---"))
-    display(html("<h3>6.3 Gram-Schmidt &amp; QR</h3>"))
-    V_vecs = [vector(QQ, [1, 1, 0]), vector(QQ, [1, 0, 1]), vector(QQ, [0, 1, 1])]
-    A_mat = matrix(QQ, V_vecs).transpose()
-    display(html("$" + latex(A_mat) + "$"))
-    A_rdf = matrix(RDF, A_mat)
-    Q, R = A_rdf.QR()
-    display(html("Q=$" + latex(Q) + "$ R=$" + latex(R) + "$"))
-    display(html("---"))
+    vv = v_vec.dot_product(v_vec)
+    if vv != 0:
+        proj = (dot_uv / vv) * v_vec
+        residu = u_vec - proj
+        display(html("<b>proj_v(u) =</b> $%s$" % latex(proj.column())))
+        display(html("<b>residu =</b> $%s$" % latex(residu.column())))
+        display(html("<b>⟨residu,v⟩ =</b> $%s$" % residu.dot_product(v_vec)))
+
+    display(html("<h3>6.3 Gram–Schmidt dan QR</h3>"))
+    V = [vector(RDF, [1,1,0]), vector(RDF, [1,0,1]), vector(RDF, [0,1,1])]
+    A = matrix(RDF, V).transpose()
+    display(html("<b>A =</b> $%s$" % latex(A)))
+
+    W = []
+    for v in V:
+        w = v
+        for u in W:
+            w = w - (v.dot_product(u) / u.dot_product(u)) * u
+        W.append(w)
+
+    Q = [w / w.norm() for w in W]
+    Qmat = matrix(RDF, Q).transpose()
+    Rmat = Qmat.transpose() * A
+
+    # Format matriks Q, R, dan Q^T Q agar menampilkan 4 angka di belakang koma
+    Qmat_rounded = matrix(RDF, Qmat.nrows(), Qmat.ncols(), lambda i, j: round(Qmat[i, j], 4))
+    Rmat_rounded = matrix(RDF, Rmat.nrows(), Rmat.ncols(), lambda i, j: round(Rmat[i, j], 4))
+    QtQ_rounded = matrix(RDF, (Qmat.transpose() * Qmat).nrows(), (Qmat.transpose() * Qmat).ncols(), lambda i, j: round((Qmat.transpose() * Qmat)[i, j], 4))
+
+    display(html("<b>Q =</b> $%s$" % latex(Qmat_rounded)))
+    display(html("<b>R =</b> $%s$" % latex(Rmat_rounded)))
+    display(html("<b>Q^T Q =</b> $%s$" % latex(QtQ_rounded)))
+
     display(html("<h3>6.4 Least Squares</h3>"))
     if len(pts) >= 2:
-        A_ls = matrix(QQ, [[1, float(p[0])] for p in pts])
-        b_ls = vector(QQ, [float(p[1]) for p in pts])
+        A_ls = matrix(RDF, [[1, float(p[0])] for p in pts])
+        b_ls = vector(RDF, [float(p[1]) for p in pts])
         ATA = A_ls.transpose() * A_ls
         ATb = A_ls.transpose() * b_ls
-        if ATA.det()!= 0:
+
+        if ATA.det() != 0:
             x_hat = ATA.solve_right(ATb)
-            display(html("Model: y = %.5f + %.5fx" % (float(x_hat[0]), float(x_hat[1]))))
-    display(html("---"))
-    display(html("<h3>6.5 Fourier</h3>"))
-    fourier_results = []
-    for k in range(1, int(n_fourier) + 1):
-        bn = 2 * (-1)**(k + 1) / k
-        fourier_results.append(f"$b_{{{k}}} = {float(bn):.5f}$")
-    display(html(" ".join(fourier_results)))
-        </script></div>
+            display(html("<b>Model:</b> $y = %.4f + %.4f x$" % (x_hat[0], x_hat[1])))
+            display(html("<b>Prediksi x=7:</b> $%.4f$" % (x_hat[0] + x_hat[1]*7)))
+        else:
+            display(html("Matriks A^T A singular; solusi least squares tidak tunggal."))
+
+    display(html("<h3>6.6 Fourier</h3>"))
+    display(html("Untuk $f(x)=x$ pada $[-\\pi,\\pi]$: $a_0=0$, $a_n=0$, $b_n=2(-1)^{n+1}/n$."))
+    hasil = []
+    for k in range(1, int(n_fourier)+1):
+        bn = 2 * (-1)**(k+1) / k
+        hasil.append("$b_{%d}=%.4f$" % (k, float(bn)))
+    display(html(" ".join(hasil)))
+      </script>
+    </div>
   </div>
 
   <div class="card example">
-    <b>Latihan: 10 Soal (dengan Hint)</b>
+    <b>Latihan 10 Soal (dengan Petunjuk)</b>
     <ol>
       <li>
-        Periksa apakah \(\langle \mathbf{u},\mathbf{v}\rangle = 2u_1v_1 + 3u_2v_2\) adalah inner product di \(\mathbb{R}^2\).<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Cek 3 aksioma. Definit positif: \(2u_1^2+3u_2^2 \ge 0\) dan =0 hanya jika u=0. Simetri dan linearitas jelas.</span>
+        Periksa apakah \(\langle \mathbf{u},\mathbf{v}\rangle=2u_1v_1+3u_2v_2\) adalah hasil kali dalam di \(\mathbb{R}^2\).
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b> Cek simetri, linearitas, dan positif definit. Positif definit:
+        \(2u_1^2+3u_2^2\ge 0\), dan sama dengan nol hanya jika \(u_1=u_2=0\).
+        </span>
       </li>
       <li>
-        Di \(P_1\) dengan \(\langle p,q\rangle = \int_0^1 p(x)q(x)dx\), hitung sudut antara \(p(x)=x\) dan \(q(x)=1-x\).<br>
-        <span style="color:#0d9488;"><b>Hint:</b> \(\langle p,q\rangle = \int_0^1 x(1-x)dx = 1/6\). \(\|p\|^2=1/3, \|q\|^2=1/3\). \(\cos\theta = (1/6)/ (1/3) = 1/2 \to \theta=60°\).</span>
+        Di \(P_1\) dengan \(\langle p,q\rangle=\int_0^1 p(x)q(x)\,dx\), hitung sudut antara \(p(x)=x\) dan \(q(x)=1-x\).
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        \(\langle p,q\rangle=\int_0^1 x(1-x)\,dx=1/6\).
+        \(\|p\|^2=1/3\), \(\|q\|^2=1/3\).
+        Maka \(\cos\theta=(1/6)/(1/3)=1/2\), sehingga \(\theta=60^\circ\).
+        </span>
       </li>
       <li>
-        Terapkan Gram-Schmidt pada basis \(\{1,x,x^2\}\) dengan \(\langle p,q\rangle = \int_{-1}^1 p(x)q(x)dx\) untuk mendapatkan polinomial Legendre sampai derajat 2.<br>
-        <span style="color:#0d9488;"><b>Hint:</b> \(w_0=1\). \(w_1=x - \langle x,1\rangle/\langle1,1\rangle*1 = x\) karena integral ganjil 0. \(w_2=x^2 - \langle x^2,1\rangle/\langle1,1\rangle*1 - \langle x^2,x\rangle/\langle x,x\rangle*x\). \(\langle x^2,1\rangle=2/3, \langle1,1\rangle=2\). Hasil \(x^2-1/3\), normalisasi jadi \((3x^2-1)/2\).</span>
+        Terapkan Gram–Schmidt pada basis \(\{1,x,x^2\}\) dengan \(\langle p,q\rangle=\int_{-1}^1 p(x)q(x)\,dx\) untuk memperoleh polinomial Legendre sampai derajat 2.
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        \(w_0=1\). Karena \(\langle x,1\rangle=0\), maka \(w_1=x\).
+        Selanjutnya
+        \[
+        w_2=x^2-\frac{\langle x^2,1\rangle}{\langle1,1\rangle}1-\frac{\langle x^2,x\rangle}{\langle x,x\rangle}x.
+        \]
+        Diperoleh \(w_2=x^2-\frac13\), yang setelah normalisasi menjadi \(\frac{3x^2-1}{2}\).
+        </span>
       </li>
       <li>
-        Cari dekomposisi QR dari \(A=\begin{bmatrix}1&2\\0&1\\1&0\end{bmatrix}\).<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Kolom1 \(v1=(1,0,1), \|v1\|=\sqrt2 \to q1\). Kolom2 \(v2=(2,1,0)\), proyeksikan ke \(q1\): \(\langle v2,q1\rangle = 2/\sqrt2 =\sqrt2\). \(w2=v2-\sqrt2 q1 = (1,1,-1)\). Normalisasi \(q2\). \(R = Q^T A\) pasti segitiga atas.</span>
+        Cari dekomposisi QR dari
+        \[
+        A=\begin{bmatrix}1&2\\0&1\\1&0\end{bmatrix}.
+        \]
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Kolom pertama \(v_1=(1,0,1)\), \(\|v_1\|=\sqrt2\), sehingga
+        \(q_1=(1,0,1)/\sqrt2\).
+        Kolom kedua \(v_2=(2,1,0)\).
+        Proyeksi \(v_2\) ke \(q_1\) menghasilkan \((1,0,1)\).
+        Maka \(w_2=(1,1,-1)\), dan \(q_2=(1,1,-1)/\sqrt3\).
+        Akhirnya \(R=Q^TA\) berbentuk segitiga atas.
+        </span>
       </li>
       <li>
-        Cari garis least squares untuk data \((0,0), (1,1), (2,0)\).<br>
-        <span style="color:#0d9488;"><b>Hint:</b> \(A=[[1,0],[1,1],[1,2]], b=[0,1,0]^T\). \(A^T A=[[3,3],[3,5]], A^T b=[1,1]^T\). Selesaikan \(3c0+3c1=1, 3c0+5c1=1 \to c1=0, c0=1/3\). Garis \(y=1/3\).</span>
+        Cari garis least squares untuk data \((0,0),(1,1),(2,0)\).
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        \(A=\begin{bmatrix}1&0\\1&1\\1&2\end{bmatrix}\),
+        \(\mathbf{b}=\begin{bmatrix}0\\1\\0\end{bmatrix}\).
+        \(A^TA=\begin{bmatrix}3&3\\3&5\end{bmatrix}\),
+        \(A^T\mathbf{b}=\begin{bmatrix}1\\1\end{bmatrix}\).
+        Solusinya \(c_0=1/3\), \(c_1=0\), sehingga garisnya \(y=1/3\).
+        </span>
       </li>
       <li>
-        (Optimasi) Gunakan data penjualan di 6.7 untuk memprediksi penjualan jika biaya iklan = 8 juta.<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Model sudah ada \(y=13.8667+3.8x\). Substitusi \(x=8 \to y=13.8667+30.4=44.2667\) juta unit.</span>
+        Gunakan data penjualan pada Subbab 6.7 untuk memprediksi penjualan jika biaya iklan \(x=8\) juta.
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Model least squares yang benar adalah
+        \[
+        y=4.6667+6.4286x.
+        \]
+        Untuk \(x=8\):
+        \[
+        y=4.6667+6.4286(8)=56.0952.
+        \]
+        Jadi prediksinya sekitar \(56.0952\) juta unit.
+        </span>
       </li>
       <li>
-        Cari proyeksi terbaik dari \(f(x)=e^x\) ke \(P_1\) (polinomial derajat ≤1) pada \([0,1]\) dengan inner product integral.<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Cari basis ortonormal dulu atau selesaikan persamaan normal \(A^T A c = A^T b\) di ruang fungsi: \(\langle 1,1\rangle=1, \langle1,x\rangle=1/2, \langle x,x\rangle=1/3, \langle e^x,1\rangle=e-1, \langle e^x,x\rangle=1\).</span>
+        Cari proyeksi terbaik dari \(f(x)=e^x\) ke \(P_1\) pada \([0,1]\) dengan hasil kali dalam integral.
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Misalkan \(p(x)=c_0+c_1x\). Persamaan normal:
+        \[
+        \begin{bmatrix}
+        \langle1,1\rangle & \langle1,x\rangle\\
+        \langle x,1\rangle & \langle x,x\rangle
+        \end{bmatrix}
+        \begin{bmatrix}c_0\\c_1\end{bmatrix}
+        =
+        \begin{bmatrix}
+        \langle1,e^x\rangle\\
+        \langle x,e^x\rangle
+        \end{bmatrix}.
+        \]
+        Diperoleh \(\langle1,1\rangle=1\), \(\langle1,x\rangle=1/2\), \(\langle x,x\rangle=1/3\), \(\langle1,e^x\rangle=e-1\), \(\langle x,e^x\rangle=1\).
+        Solusinya \(c_0=4e-10\), \(c_1=18-6e\).
+        </span>
       </li>
       <li>
-        Hitung koefisien Fourier \(a_0\) untuk \(f(x)=x^2\) pada \([-\pi,\pi]\).<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Fungsi genap, jadi \(b_n=0\). \(a_0 = \frac{1}{\pi}\int_{-\pi}^\pi x^2 dx = \frac{1}{\pi} * 2\pi^3/3 = 2\pi^2/3\). Jadi suku konstan \(a_0/2 = \pi^2/3\).</span>
+        Hitung koefisien Fourier \(a_0\) untuk \(f(x)=x^2\) pada \([-\pi,\pi]\).
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Karena \(f\) genap, semua \(b_n=0\).
+        \[
+        a_0=\frac1\pi\int_{-\pi}^{\pi}x^2\,dx
+        =
+        \frac1\pi\cdot\frac{2\pi^3}{3}
+        =
+        \frac{2\pi^2}{3}.
+        \]
+        Suku konstan deret adalah \(a_0/2=\pi^2/3\).
+        </span>
       </li>
       <li>
-        Buktikan Ketaksamaan Cauchy-Schwarz \(|\langle u,v\rangle| \le \|u\|\|v\|\) menggunakan diskriminan kuadrat.<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Tinjau \(\|u + t v\|^2 = \|u\|^2 + 2t\langle u,v\rangle + t^2\|v\|^2 \ge 0\) untuk semua \(t\). Polinomial kuadrat dalam \(t\) tidak pernah negatif → diskriminan ≤0.</span>
+        Buktikan Ketaksamaan Cauchy–Schwarz
+        \[
+        |\langle u,v\rangle|\le \|u\|\|v\|
+        \]
+        menggunakan diskriminan.
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Tinjau
+        \[
+        \|u+tv\|^2
+        =
+        \|u\|^2+2t\langle u,v\rangle+t^2\|v\|^2\ge 0
+        \]
+        untuk semua \(t\in\mathbb{R}\).
+        Ini adalah polinomial kuadrat dalam \(t\) yang tidak pernah negatif. Jika \(v\neq 0\), diskriminannya harus \(\le 0\):
+        \[
+        4\langle u,v\rangle^2-4\|u\|^2\|v\|^2\le 0.
+        \]
+        Hasilnya adalah Cauchy–Schwarz.
+        </span>
       </li>
       <li>
-        (Regresi Eksponensial) Data \((x,y): (0,2), (1,4), (2,8)\) cocok model \(y = a e^{bx}\). Linearisasi dan cari \(a,b\) dengan least squares.<br>
-        <span style="color:#0d9488;"><b>Hint:</b> Ambil ln: \(Y=\ln y = \ln a + bx\). \(Y = [0.693, 1.386, 2.079]\). Matriks \(A=[[1,0],[1,1],[1,2]]\). Selesaikan normal equation → \(b≈0.693=\ln2, \ln a≈0.693 \to a≈2\). Model asli \(y=2e^{0.693x}=2*2^x\) tepat.</span>
+        Data \((x,y):(0,2),(1,4),(2,8)\) cocok dengan model \(y=ae^{bx}\). Linearisasi dan cari \(a,b\) dengan least squares.
+        <br>
+        <span style="color:#0d9488;">
+        <b>Petunjuk:</b>
+        Ambil \(Y=\ln y=\ln a+bx\).
+        Data \(Y\): \(\ln2,\ln4,\ln8\).
+        Dari least squares diperoleh \(b=\ln2\) dan \(\ln a=\ln2\), sehingga \(a=2\).
+        Modelnya \(y=2e^{(\ln2)x}=2\cdot2^x\).
+        </span>
       </li>
     </ol>
   </div>
 
-  <h3>Komputasi SageMath — Disediakan untuk latihan!</h3>
+  <h3>Komputasi SageMath — Latihan</h3>
   <div class="sage">
-    <div class="sage-header"><span>SageMath Cell — Tuliskan kode program dalam sel yang disediakan!</span></div>
-    <div class="compute"><script type="text/x-sage">
-# Silahkan sel ini digunakan untuk latihan latihan di atas!
-    </script></div>
+    <div class="sage-header">
+      <span>SageMath Cell — Gunakan sel ini untuk mencoba latihan di atas</span>
+    </div>
+    <div class="compute">
+      <script type="text/x-sage">
+# Silakan gunakan sel ini untuk latihan.
+# Contoh:
+# u = vector(QQ, [1,2,3])
+# v = vector(QQ, [1,0,1])
+# print(u.dot_product(v))
+      </script>
+    </div>
   </div>
 </section>
 <!-- END BAB 6 -->
@@ -9435,137 +10216,618 @@ def analisis_ruang_hasil_kali_dalam_interaktif(
 </div>
 
   <p align="justify">
-  Pada bab-bab sebelumnya kita belajar bahwa tidak semua matriks bisa didiagonalisasi, dan kalaupun bisa, matriks \(P\) belum tentu mempertahankan panjang dan sudut. Di Bab 7 ini kita fokus pada kelas matriks yang paling baik perilakunya: <b>matriks simetris real</b> \(A^T=A\). Kelas ini istimewa karena <b>selalu bisa didiagonalisasi secara ortogonal</b> \(A = QDQ^T\) dengan \(Q\) ortogonal. Artinya kita hanya melakukan rotasi/refleksi sumbu koordinat, bukan distorsi. Konsekuensinya sangat besar untuk memahami <b>bentuk kuadratik</b> \(Q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x}\) yang muncul sebagai model energi, risiko, variansi, dan fungsi biaya di machine learning.
+  Pada bab-bab sebelumnya kita belajar bahwa tidak semua matriks bisa didiagonalisasi, dan kalaupun bisa, matriks \(P\) belum tentu mempertahankan panjang dan sudut. Di Bab 7 ini kita fokus pada kelas matriks yang paling baik perilakunya: <b>matriks simetris real</b> \(A^T=A\). Kelas ini istimewa karena <b>selalu bisa didiagonalisasi secara ortogonal</b> \(A = QDQ^T\) dengan \(Q\) ortogonal. Artinya kita hanya melakukan rotasi atau refleksi sumbu koordinat, bukan distorsi. Konsekuensinya sangat besar untuk memahami <b>bentuk kuadratik</b> \(Q(\mathbf{x}) = \mathbf{x}^T A \mathbf{x}\) yang muncul sebagai model energi, risiko, variansi, dan fungsi biaya di machine learning.
+  </p>
+
+  <h2 class="sec">Tujuan Pembelajaran</h2>
+  <p align="justify">
+  Setelah mempelajari bab ini, pembaca diharapkan mampu:
+  </p>
+  <ol>
+    <li>Menjelaskan matriks ortogonal dan sifat geometrinya.</li>
+    <li>Melakukan diagonalisasi ortogonal pada matriks simetris real.</li>
+    <li>Menyatakan bentuk kuadratik tanpa suku silang melalui Teorema Sumbu Utama.</li>
+    <li>Mengklasifikasikan bentuk kuadratik menjadi definit positif, definit negatif, indefinit, atau semidefinit.</li>
+    <li>Menyelesaikan masalah optimasi bentuk kuadratik pada bola satuan.</li>
+    <li>Memahami analog kompleks: Hermitian, unitari, dan normal.</li>
+    <li>Menjelaskan PCA sebagai aplikasi diagonalisasi ortogonal.</li>
+  </ol>
+
+  <h2 class="sec">Peta Konsep</h2>
+  <p align="justify">
+  \[
+\begin{gathered}
+\text{Matriks simetris} \\
+\Downarrow \\
+A=QDQ^T \\
+\Downarrow \\
+\text{bentuk kuadratik tanpa suku silang} \\
+\Downarrow \\
+\text{klasifikasi dan optimasi} \\
+\Downarrow \\
+\text{PCA, portofolio, Hessian}
+\end{gathered}
+\]
   </p>
 
   <!-- 7.1 -->
   <h2 class="sec">7.1 Matriks Ortogonal</h2>
+
+  <h3 class="sec">Motivasi</h3>
   <p align="justify">
-  Bayangkan Anda memutar bidang tanpa merusak bentuk. Itulah matriks ortogonal. Secara aljabar, matriks persegi \(Q\) ortogonal jika inversnya sama dengan transposenya, \(Q^T Q = I\). Secara geometri, ini berarti kolom-kolomnya adalah vektor-vektor yang saling tegak lurus dan panjangnya 1 (basis ortonormal).
-  <br><b>Kenapa penting?</b> Karena transformasi ortogonal tidak mengubah panjang \(\|Qx\|=\|x\|\) dan tidak mengubah sudut. Jadi ini adalah transformasi yang paling stabil secara numerik – tidak memperbesar error pembulatan. Determinannya hanya \(\pm 1\): \(+1\) untuk rotasi murni, \(-1\) untuk refleksi.
+  Bayangkan Anda memutar atau mencerminkan suatu bangun. Bentuk dan ukurannya tidak berubah; yang berubah hanya orientasinya. Transformasi seperti ini disebut <b>transformasi ortogonal</b>. Secara aljabar, transformasi ortogonal dinyatakan oleh matriks ortogonal.
   </p>
+
   <div class="card def">
-    <b>Definisi:</b> \(Q_{n\times n}\) ortogonal jika \(Q^T Q = I \iff Q^T = Q^{-1}\).
-    <br><b>Sifat:</b>
-    <ul>
-      <li>Mempertahankan inner product: \(\langle Qx, Qy\rangle = \langle x,y\rangle\)</li>
-      <li>\(\det(Q) = \pm 1\)</li>
-      <li>Hasil kali dua matriks ortogonal tetap ortogonal</li>
-    </ul>
-  </div>
-  <div class="card example">
-    <b>Contoh Geometri:</b> Rotasi \(R_\theta = \begin{bmatrix}\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta\end{bmatrix}\) dan refleksi \(H = I - 2nn^T\) keduanya ortogonal. Matriks \(Q = \frac13\begin{bmatrix}2&2&-1\\2&-1&2\\-1&2&2\end{bmatrix}\) juga ortogonal, cek \(Q^T Q=I\) dan \(\det Q=-1\) → refleksi di \(\mathbb{R}^3\).
+    <b>Definisi:</b> Matriks persegi \(Q_{n\times n}\) disebut <b>ortogonal</b> jika
+    \[
+    Q^TQ=I
+    \quad\Longleftrightarrow\quad
+    Q^T=Q^{-1}.
+    \]
+    Kolom-kolom \(Q\) membentuk <b>basis ortonormal</b> di \(\mathbb{R}^n\). Artinya, setiap kolom panjangnya 1 dan saling tegak lurus.
   </div>
 
-  <!-- 7.2 -->
-  <h2 class="sec">7.2 Diagonalisasi Ortogonal & Teorema Spektral</h2>
-  <p align="justify">
-  Tidak semua matriks bisa didiagonalisasi secara ortogonal. Teorema Spektral Real mengatakan: <b>hanya dan hanya jika matriks simetris</b>. Ini luar biasa karena matriks simetris muncul di mana-mana (kovarians, Hessian, graf tak berarah). Lebih jauh, semua nilai eigennya pasti real dan vektor eigen dari nilai eigen berbeda pasti ortogonal – kita tidak perlu Gram-Schmidt antar ruang eigen yang berbeda.
-  </p>
-  <div class="card theorem">
-    <b>Teorema Spektral:</b> \(A\) simetris \(\iff A = Q D Q^T\) dengan \(Q\) ortogonal, \(D=\text{diag}(\lambda_1,...,\lambda_n)\), \(\lambda_i\) real.
-    <br>Akibat: \(A^k = Q D^k Q^T\), dan untuk fungsi matriks \(f(A)=Q f(D) Q^T\). Ini membuat komputasi \(A^{100}\) yang tadinya mustahil menjadi trivial.
+  <h3 class="sec">Sifat Penting</h3>
+  <div class="card def">
+    <ol>
+      <li><b>Mempertahankan hasil kali dalam</b>:
+        \[
+        \langle Qx,Qy\rangle=\langle x,y\rangle.
+        \]
+      </li>
+      <li><b>Mempertahankan panjang</b>:
+        \[
+        \|Qx\|=\|x\|.
+        \]
+      </li>
+      <li><b>Determinan hanya \(\pm1\)</b>:
+        \[
+        \det(Q)=\pm1.
+        \]
+        Nilai \(+1\) untuk rotasi murni, \(-1\) untuk refleksi.
+      </li>
+      <li><b>Hasil kali dua matriks ortogonal tetap ortogonal</b>.</li>
+      <li><b>Stabil secara numerik</b>: tidak memperbesar error pembulatan.</li>
+    </ol>
   </div>
+
   <div class="card example">
-    <b>Algoritma Lengkap:</b> \(A = \begin{bmatrix}3&1\\1&3\end{bmatrix}\) → \(p(\lambda)=\lambda^2-6\lambda+8\) → \(\lambda=4,2\). Ruang eigen \(\lambda=4\): \((1,1)\); \(\lambda=2\): \((-1,1)\). Normalisasi → \(Q=\frac1{\sqrt2}\begin{bmatrix}1&-1\\1&1\end{bmatrix}\). Maka \(Q^T A Q = \text{diag}(4,2)\). Interpretasi: sumbu baru \(45^\circ\) adalah sumbu utama elips.
+    <b>Contoh Geometri:</b> Rotasi di bidang
+    \[
+    R_\theta=
+    \begin{bmatrix}
+    \cos\theta & -\sin\theta\\
+    \sin\theta & \cos\theta
+    \end{bmatrix}
+    \]
+    adalah matriks ortogonal. Refleksi terhadap garis dengan vektor normal satuan \(n\) diberikan oleh
+    \[
+    H=I-2nn^T,
+    \]
+    juga ortogonal.
+    <br>
+    Matriks
+    \[
+    Q=\frac13
+    \begin{bmatrix}
+    2&2&-1\\
+    2&-1&2\\
+    -1&2&2
+    \end{bmatrix}
+    \]
+    adalah ortogonal dengan \(\det(Q)=-1\), sehingga merupakan refleksi di \(\mathbb{R}^3\).
+  </div>
+
+  <p align="justify">
+  <b>Mengapa penting?</b> Diagonalisasi biasa \(A=PDP^{-1}\) belum tentu mempertahankan panjang dan sudut. Diagonalisasi ortogonal \(A=QDQ^T\) melakukannya. Inilah sebabnya matriks ortogonal sangat penting dalam komputasi numerik, geometri, statistika, dan machine learning.
+  </p>
+
+  <!-- 7.2 -->
+  <h2 class="sec">7.2 Diagonalisasi Ortogonal dan Teorema Spektral</h2>
+
+  <div class="card theorem">
+    <b>Teorema Spektral Real:</b> Matriks real \(A\) dapat didiagonalisasi secara ortogonal,
+    \[
+    A=QDQ^T,
+    \]
+    dengan \(Q\) ortogonal dan \(D=\operatorname{diag}(\lambda_1,\dots,\lambda_n)\), <b>jika dan hanya jika</b> \(A\) simetris, yaitu \(A=A^T\).
+    <br><br>
+    Akibatnya:
+    <ol>
+      <li>Semua nilai eigen matriks simetris real adalah <b>real</b>.</li>
+      <li>Vektor eigen dari nilai eigen berbeda saling <b>ortogonal</b>.</li>
+      <li>Selalu tersedia basis ortonormal dari vektor eigen.</li>
+    </ol>
+  </div>
+
+  <h3 class="sec">Bukti Ringkas</h3>
+  <p align="justify">
+  <b>Nilai eigen real.</b> Jika \(Ax=\lambda x\), maka
+  \[
+  \lambda \|x\|^2=x^T A x.
+  \]
+  Karena \(A\) simetris, \(x^T A x\) real, sehingga \(\lambda\) real.
+  </p>
+  <p align="justify">
+  <b>Vektor eigen berbeda ortogonal.</b> Jika \(Ax=\lambda x\) dan \(Ay=\mu y\) dengan \(\lambda\neq\mu\), maka
+  \[
+  \lambda x^T y=(Ax)^T y=x^T A y=\mu x^T y.
+  \]
+  Jadi \((\lambda-\mu)x^T y=0\), sehingga \(x^T y=0\).
+  </p>
+  <p align="justify">
+  <b>Kelengkapan basis.</b> Dengan induksi atau dekomposisi Schur, matriks simetris selalu memiliki \(n\) vektor eigen ortonormal.
+  </p>
+
+  <h3 class="sec">Algoritma Diagonalisasi Ortogonal</h3>
+  <ol>
+    <li>Cari semua nilai eigen \(A\).</li>
+    <li>Untuk setiap nilai eigen, cari basis ruang eigen.</li>
+    <li>Ortogonalisasi dan normalkan basis tersebut.</li>
+    <li>Susun vektor eigen ortonormal sebagai kolom \(Q\).</li>
+    <li>Maka
+      \[
+      Q^T A Q=D=\operatorname{diag}(\lambda_1,\dots,\lambda_n).
+      \]
+    </li>
+  </ol>
+
+  <div class="card example">
+    <b>Contoh Lengkap:</b> Diberikan
+    \[
+    A=\begin{bmatrix}3&1\\1&3\end{bmatrix}.
+    \]
+    Polinomial karakteristik:
+    \[
+    p(\lambda)=\lambda^2-6\lambda+8=(\lambda-4)(\lambda-2).
+    \]
+    Jadi \(\lambda_1=4\), \(\lambda_2=2\).
+    <ul>
+      <li>Untuk \(\lambda=4\): vektor eigen \((1,1)\).</li>
+      <li>Untuk \(\lambda=2\): vektor eigen \((-1,1)\).</li>
+    </ul>
+    Setelah dinormalkan:
+    \[
+    Q=\frac1{\sqrt2}
+    \begin{bmatrix}
+    1&-1\\
+    1&1
+    \end{bmatrix}.
+    \]
+    Maka
+    \[
+    Q^T A Q=
+    \begin{bmatrix}
+    4&0\\
+    0&2
+    \end{bmatrix}.
+    \]
+  </div>
+
+  <div class="card example">
+    <b>Manfaat: Menghitung Pangkat Matriks.</b> Karena \(A=QDQ^T\), maka
+    \[
+    A^k=QD^kQ^T.
+    \]
+    Contoh di atas:
+    \[
+    A^{10}=Q
+    \begin{bmatrix}
+    4^{10}&0\\
+    0&2^{10}
+    \end{bmatrix}
+    Q^T.
+    \]
+    Perhitungan yang tampaknya berat menjadi trivial.
   </div>
 
   <!-- 7.3 -->
-  <h2 class="sec">7.3 Bentuk Kuadratik & Teorema Sumbu Utama</h2>
-  <p align="justify">
-  Bentuk kuadratik \(Q(x)=x^T A x\) adalah polinomial derajat dua homogen. Contoh 2D: \(ax^2+2bxy+cy^2\). Suku silang \(2bxy\) menunjukkan elips/hiperbola miring terhadap sumbu standar. Pertanyaan: bisakah kita menghilangkan suku silang dengan memutar sumbu? Jawabannya ya, dengan diagonalisasi ortogonal. Ganti koordinat \(x=Qy\), maka \(Q(x)=y^T D y = \lambda_1 y_1^2+...+\lambda_n y_n^2\) – tanpa suku silang! Inilah <b>Teorema Sumbu Utama</b>.
-  </p>
+  <h2 class="sec">7.3 Bentuk Kuadratik dan Teorema Sumbu Utama</h2>
+
   <div class="card def">
-    <b>Definisi:</b> \(Q(\mathbf{x})=\mathbf{x}^T A \mathbf{x}\), \(A=A^T\). 
-    <br><b>Teorema Sumbu Utama:</b> \(\exists Q\) ortogonal sehingga dengan \(\mathbf{x}=Q\mathbf{y}\), \(Q(\mathbf{x})=\sum \lambda_i y_i^2\).
-    <br><b>Klasifikasi:</b> \(\lambda_i>0\) ∀i → Definit Positif (bowl, minimum global), \(\lambda_i<0\) ∀i → Definit Negatif (maksimum), campuran → Indefinit (saddle), ada nol → Semidefinit.
+    <b>Definisi:</b> <b>Bentuk kuadratik</b> adalah fungsi
+    \[
+    Q(\mathbf{x})=\mathbf{x}^T A\mathbf{x},
+    \]
+    dengan \(A=A^T\). Di \(\mathbb{R}^2\):
+    \[
+    Q(x,y)=ax^2+2bxy+cy^2.
+    \]
+    Suku \(2bxy\) disebut <b>suku silang</b>. Suku ini membuat grafik elips atau hiperbola miring terhadap sumbu koordinat standar.
   </div>
 
-  <h3 class="sec">Aplikasi Kekinian</h3>
+  <div class="card theorem">
+    <b>Teorema Sumbu Utama:</b> Karena \(A\) simetris, kita dapat menulis \(A=QDQ^T\). Dengan substitusi
+    \[
+    \mathbf{x}=Q\mathbf{y},
+    \]
+    diperoleh
+    \[
+    Q(\mathbf{x})
+    =\mathbf{x}^T A\mathbf{x}
+    =\mathbf{y}^T Q^T A Q\mathbf{y}
+    =\mathbf{y}^T D\mathbf{y}
+    =\lambda_1 y_1^2+\cdots+\lambda_n y_n^2.
+    \]
+    Jadi <b>suku silang hilang</b> setelah rotasi sumbu. Sumbu baru disebut <b>sumbu utama</b>.
+  </div>
+
+  <h3 class="sec">Klasifikasi Bentuk Kuadratik</h3>
+  <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+    <thead>
+      <tr style="background: #f1f5f9;">
+        <th>Tanda nilai eigen</th>
+        <th>Jenis</th>
+        <th>Geometri</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Semua \(\lambda_i>0\)</td>
+        <td>Definit positif</td>
+        <td>Mangkuk, minimum global</td>
+      </tr>
+      <tr>
+        <td>Semua \(\lambda_i<0\)</td>
+        <td>Definit negatif</td>
+        <td>Maksimum global</td>
+      </tr>
+      <tr>
+        <td>Ada positif dan negatif</td>
+        <td>Indefinit</td>
+        <td>Pelana</td>
+      </tr>
+      <tr>
+        <td>Ada \(\lambda_i=0\), sisanya \(\geq0\) atau \(\leq0\)</td>
+        <td>Semidefinit</td>
+        <td>Datar di satu arah</td>
+      </tr>
+    </tbody>
+  </table>
+
   <div class="card example">
-    <b>Aplikasi 1: Portofolio Markowitz</b> Risiko \(Q(w)=w^T \Sigma w\), \(\Sigma=\begin{bmatrix}5&3\\3&5\end{bmatrix}\). Nilai eigen 8 dan 2 → definit positif, risiko selalu >0. Vektor eigen \(\frac1{\sqrt2}(1,1)\) risiko tinggi, \(\frac1{\sqrt2}(-1,1)\) risiko rendah (strategi hedging).
-    <br><b>Aplikasi 2: Loss Surface ML</b> Hessian \(H=\begin{bmatrix}2&4\\4&10\end{bmatrix}\), \(\lambda≈11.657,0.343\) → definit positif (titik minimum). Condition number \(\kappa=λ_{max}/λ_{min}≈34\) besar → elips sangat lonjong → Gradient Descent lambat, perlu Adam/momentum.
+    <b>Contoh Geometri:</b>
+    \[
+    Q(x,y)=3x^2+2xy+3y^2.
+    \]
+    Matriksnya
+    \[
+    A=\begin{bmatrix}3&1\\1&3\end{bmatrix}
+    \]
+    dengan \(\lambda=4,2\). Dalam koordinat utama:
+    \[
+    Q=4y_1^2+2y_2^2.
+    \]
+    Karena semua nilai eigen positif, \(Q\) definit positif. Grafiknya elips.
   </div>
 
   <!-- 7.4 -->
-  <h2 class="sec">7.4 Optimisasi Menggunakan Bentuk Kuadratik</h2>
-  <p align="justify">
-  Masalah optimasi paling sering: maksimisasi bentuk kuadratik pada bola satuan \(\|x\|=1\). Jawabannya elegan: maksimumnya adalah \(\lambda_{max}\) dan minimumnya \(\lambda_{min}\), tercapai pada vektor eigennya. Ini adalah dasar dari <b>Rayleigh Quotient</b> \(R(x)=x^T A x / x^T x\) yang selalu terjepit di antara \(\lambda_{min}\) dan \(\lambda_{max}\). Dalam machine learning, memaksimalkan variansi sama dengan memaksimalkan Rayleigh quotient dari matriks kovarians.
-  </p>
+  <h2 class="sec">7.4 Optimasi Menggunakan Bentuk Kuadratik</h2>
+
   <div class="card theorem">
-    \(\max_{\|x\|=1} x^T A x = \lambda_{max}\), \(\min_{\|x\|=1} x^T A x = \lambda_{min}\). Untuk \(A\) definit positif, meminimalkan \(\phi(x)=\frac12 x^T A x - b^T x\) ekuivalen menyelesaikan \(Ax=b\).
+    <b>Masalah Standar:</b> Cari nilai maksimum dan minimum
+    \[
+    Q(\mathbf{x})=\mathbf{x}^T A\mathbf{x}
+    \]
+    dengan kendala
+    \[
+    \|\mathbf{x}\|=1.
+    \]
+    <b>Rayleigh Quotient:</b>
+    \[
+    R(\mathbf{x})=\frac{\mathbf{x}^T A\mathbf{x}}{\mathbf{x}^T\mathbf{x}}.
+    \]
+    Untuk matriks simetris \(A\),
+    \[
+    \lambda_{\min}\le R(\mathbf{x})\le \lambda_{\max}.
+    \]
+    Bahkan,
+    \[
+    \max_{\|\mathbf{x}\|=1}\mathbf{x}^T A\mathbf{x}=\lambda_{\max},
+    \qquad
+    \min_{\|\mathbf{x}\|=1}\mathbf{x}^T A\mathbf{x}=\lambda_{\min}.
+    \]
+    Nilai ekstrem tercapai pada vektor eigen yang bersesuaian.
   </div>
+
   <div class="card example">
-    <b>Contoh:</b> \(Q(x,y)=3x^2+2xy+3y^2\), kendala \(x^2+y^2=1\). Matriks \(A=[[3,1],[1,3]]\), \(\lambda=4,2\). Jadi \(Q_{max}=4\) di \((\frac1{\sqrt2},\frac1{\sqrt2})\), \(Q_{min}=2\) di \((\frac1{\sqrt2},-\frac1{\sqrt2})\). Verifikasi substitusi menghasilkan 4 dan 2.
+    <b>Contoh:</b>
+    \[
+    Q(x,y)=3x^2+2xy+3y^2,
+    \qquad x^2+y^2=1.
+    \]
+    Matriks \(A=[[3,1],[1,3]]\) memiliki \(\lambda_{\max}=4\) dan \(\lambda_{\min}=2\). Jadi
+    \[
+    Q_{\max}=4
+    \quad\text{di}\quad
+    \frac1{\sqrt2}(1,1),
+    \]
+    \[
+    Q_{\min}=2
+    \quad\text{di}\quad
+    \frac1{\sqrt2}(-1,1).
+    \]
+  </div>
+
+  <div class="card example">
+    <b>Kaitan dengan Sistem Linear:</b> Jika \(A\) definit positif, maka meminimalkan
+    \[
+    \phi(\mathbf{x})=\frac12\mathbf{x}^T A\mathbf{x}-\mathbf{b}^T\mathbf{x}
+    \]
+    ekuivalen dengan menyelesaikan
+    \[
+    A\mathbf{x}=\mathbf{b}.
+    \]
+    Ini menghubungkan optimasi, aljabar linear, dan metode numerik seperti gradient descent.
   </div>
 
   <!-- 7.5 -->
   <h2 class="sec">7.5 Hermitian, Unitari, dan Matriks Normal</h2>
+
   <p align="justify">
-  Di dunia kompleks \(\mathbb{C}^n\), transpos diganti dengan <i>conjugate transpose</i> \(A^*=\bar{A}^T\). Matriks <b>Hermitian</b> \(A^*=A\) adalah analog simetris real: nilai eigen tetap real. Matriks <b>Unitari</b> \(U^*U=I\) analog ortogonal: mempertahankan panjang kompleks. Kelas terbesar yang bisa didiagonalisasi secara unitari adalah <b>matriks Normal</b> \(A^*A=AA^*\). Ini penting di kuantum dan Fourier kompleks.
+  Di ruang kompleks \(\mathbb{C}^n\), transpos diganti dengan <b>conjugate transpose</b>:
+  \[
+  A^*=\overline{A}^T.
+  \]
   </p>
+
   <div class="card def">
-    Hermitian: \(A^*=A\) → \(\lambda\) real. Unitari: \(U^*U=I\) → \(|\lambda|=1\). Normal: \(A^*A=AA^*\) ⇔ \(A=UDU^*\). Contoh: Matriks Pauli \(\sigma_y=\begin{bmatrix}0&-i\\i&0\end{bmatrix}\) Hermitian.
+    <b>Definisi:</b>
+    <ol>
+      <li><b>Hermitian</b>:
+        \[
+        A^*=A.
+        \]
+        Analog matriks simetris real. Semua nilai eigennya real.
+      </li>
+      <li><b>Unitari</b>:
+        \[
+        U^*U=I.
+        \]
+        Analog matriks ortogonal. Semua nilai eigennya memiliki modulus 1:
+        \[
+        |\lambda|=1.
+        \]
+      </li>
+      <li><b>Normal</b>:
+        \[
+        A^*A=AA^*.
+        \]
+        Matriks normal dapat didiagonalisasi secara unitari:
+        \[
+        A=UDU^*.
+        \]
+      </li>
+    </ol>
+  </div>
+
+  <div class="card example">
+    <b>Contoh: Matriks Pauli.</b>
+    \[
+    \sigma_y=
+    \begin{bmatrix}
+    0&-i\\
+    i&0
+    \end{bmatrix}.
+    \]
+    Cek:
+    \[
+    \sigma_y^*=\sigma_y,
+    \]
+    jadi Hermitian. Juga
+    \[
+    \sigma_y^*\sigma_y=I,
+    \]
+    jadi unitari. Nilai eigennya \(\pm1\), real dan modulusnya 1.
   </div>
 
   <!-- 7.6 -->
-  <h2 class="sec">7.6 Real Problem: PCA – Inti dari AI Modern</h2>
+  <h2 class="sec">7.6 Real Problem: PCA — Inti dari AI Modern</h2>
+
   <p align="justify">
-  PCA mencari arah di mana data paling menyebar. Langkahnya: (1) pusatkan data, (2) bentuk matriks kovarians \(C=X^T X/(n-1)\) yang simetris, (3) diagonalisasi ortogonal \(C=Q D Q^T\). Kolom \(Q\) adalah Principal Components, \(D\) adalah varians di arah tersebut. Komponen dengan \(\lambda\) kecil bisa dibuang untuk kompresi.
-  <br>Contoh data \((1,2),(2,3),(3,4),(4,5),(5,6)\) pada garis \(y=x+1\). Setelah dipusatkan, \(C=[[2.5,2.5],[2.5,2.5]]\), \(\lambda=5,0\). Jadi 100% varians ada di arah \((1,1)/\sqrt2\) – cukup 1 dimensi untuk merepresentasikan data 2D. Inilah ide di balik Eigenfaces dan kompresi citra.
+  <b>Principal Component Analysis (PCA)</b> mencari arah di mana data paling menyebar.
   </p>
 
-  <h3>Komputasi SageMath — Semua Konsep 7.1–7.6</h3>
+  <div class="card def">
+    <b>Langkah PCA:</b>
+    <ol>
+      <li>Pusatkan data:
+        \[
+        X_c=X-\bar{X}.
+        \]
+      </li>
+      <li>Bentuk matriks kovarians:
+        \[
+        C=\frac{1}{n-1}X_c^T X_c.
+        \]
+        Matriks \(C\) simetris.
+      </li>
+      <li>Diagonalisasi ortogonal:
+        \[
+        C=QDQ^T.
+        \]
+      </li>
+      <li>Kolom \(Q\) adalah <b>principal components</b>.</li>
+      <li>Entri diagonal \(D\) adalah varians di arah tersebut.</li>
+      <li>Buang komponen dengan varians kecil untuk reduksi dimensi.</li>
+    </ol>
+  </div>
+
+  <div class="card example">
+    <b>Contoh:</b> Data:
+    \[
+    (1,2),(2,3),(3,4),(4,5),(5,6).
+    \]
+    Data terpusat:
+    \[
+    (-2,-2),(-1,-1),(0,0),(1,1),(2,2).
+    \]
+    Matriks kovarians:
+    \[
+    C=
+    \begin{bmatrix}
+    2.5&2.5\\
+    2.5&2.5
+    \end{bmatrix}.
+    \]
+    Nilai eigen:
+    \[
+    \lambda_1=5,\qquad \lambda_2=0.
+    \]
+    Komponen utama:
+    \[
+    v_1=\frac1{\sqrt2}(1,1).
+    \]
+    Jadi 100% varians berada pada arah \((1,1)\). Data 2D sebenarnya cukup direpresentasikan dengan 1 dimensi. Inilah ide di balik kompresi citra, Eigenfaces, dan reduksi dimensi.
+  </div>
+
+  <h3 class="sec">Aplikasi Kekinian</h3>
+
+  <div class="card example">
+    <b>Aplikasi 1: Portofolio Markowitz.</b> Risiko portofolio:
+    \[
+    R(w)=w^T\Sigma w,
+    \]
+    dengan \(\Sigma\) matriks kovarians. Contoh:
+    \[
+    \Sigma=
+    \begin{bmatrix}
+    5&3\\
+    3&5
+    \end{bmatrix}.
+    \]
+    Nilai eigen \(8\) dan \(2\), keduanya positif. Jadi risiko selalu positif. Arah \((1,1)\) berisiko tinggi, sedangkan \((-1,1)\) berisiko rendah dan dapat dipakai untuk hedging.
+  </div>
+
+  <div class="card example">
+    <b>Aplikasi 2: Loss Surface Machine Learning.</b> Hessian:
+    \[
+    H=
+    \begin{bmatrix}
+    2&4\\
+    4&10
+    \end{bmatrix}.
+    \]
+    Nilai eigen:
+    \[
+    \lambda_{\max}\approx 11.657,\qquad
+    \lambda_{\min}\approx 0.343.
+    \]
+    Karena keduanya positif, titik kritis adalah minimum. Condition number:
+    \[
+    \kappa=\frac{\lambda_{\max}}{\lambda_{\min}}\approx 34.
+    \]
+    Nilai \(\kappa\) besar berarti permukaan loss berbentuk elips sangat lonjong. Gradient descent akan lambat; diperlukan momentum atau Adam.
+  </div>
+
+  <h2 class="sec">Intisari</h2>
+  <div class="card def">
+    <ol>
+      <li>Matriks ortogonal mempertahankan panjang dan sudut.</li>
+      <li>Matriks simetris real selalu dapat didiagonalisasi secara ortogonal:
+        \[
+        A=QDQ^T.
+        \]
+      </li>
+      <li>Bentuk kuadratik dapat diubah menjadi jumlah kuadrat murni:
+        \[
+        Q(x)=x^T A x=\lambda_1 y_1^2+\cdots+\lambda_n y_n^2.
+        \]
+      </li>
+      <li>Tanda nilai eigen menentukan jenis titik kritis.</li>
+      <li>Optimasi pada bola satuan dikendalikan oleh Rayleigh quotient.</li>
+      <li>PCA adalah aplikasi langsung diagonalisasi ortogonal pada matriks kovarians.</li>
+      <li>Di ruang kompleks, analognya adalah Hermitian, unitari, dan normal.</li>
+    </ol>
+  </div>
+
+  <h3>Komputasi SageMath  Semua Konsep 7.1–7.6</h3>
   <div class="sage">
     <div class="sage-header"><span>SageMath Cell — Ortogonal, Kuadratik, Optimasi, Hermitian</span></div>
     <div class="compute"><script type="text/x-sage">
 from sage.all import *
-# Kode SageMath tetap sama seperti versi Anda
+
+# 7.1-7.2 Diagonalisasi ortogonal
+A = matrix(QQ, [[3,1],[1,3]])
+D, P = A.eigenmatrix_right()
+
+# Normalisasi kolom P menjadi Q ortogonal
+Q = matrix([v.normalized() for v in P.columns()]).transpose()
+
+display(html(r"$A = %s$" % latex(A)))
+display(html(r"$D = %s$" % latex(D)))
+display(html(r"$Q = %s$" % latex(Q.n(digits=4))))
+display(html(r"$Q^T A Q = %s$" % latex((Q.transpose() * A * Q).n(digits=4))))
+display(html(r"$A^{10} = %s$" % latex((Q * D^10 * Q.transpose()).n(digits=4))))
+
+# 7.3-7.4 Bentuk kuadratik dan Rayleigh quotient
+var('x y')
+v = vector([x, y])
+Qform = v.dot_product(A * v)
+display(html(r"$Q(x,y) = %s$" % latex(Qform)))
+display(html(r"$\text{Eigenvalues} = %s$" % latex(A.eigenvalues())))
+display(html(r"$\lambda_{\max} = %s$" % latex(max(A.eigenvalues()))))
+display(html(r"$\lambda_{\min} = %s$" % latex(min(A.eigenvalues()))))
+
+# 7.5 Hermitian dan unitari
+sigma_y = matrix(CC, [[0, -I], [I, 0]])
+display(html(r"$\sigma_y^* = %s$" % latex(sigma_y.conjugate_transpose().n(digits=4))))
+display(html(r"$\sigma_y^* \sigma_y = %s$" % latex((sigma_y.conjugate_transpose() * sigma_y).n(digits=4))))
+display(html(r"$\text{Eigenvalues}(\sigma_y) = %s$" % latex([val.n(digits=4) for val in sigma_y.eigenvalues()])))
+
+# 7.6 PCA sederhana
+X = matrix(RDF, [[-1,-1],[0,0],[1,1]])
+C = X.transpose() * X / (X.nrows() - 1)
+Dpca, Qpca = C.eigenmatrix_right()
+display(html(r"$C = %s$" % latex(C.n(digits=4))))
+display(html(r"$\text{Eigenvalues PCA} = %s$" % latex([val.n(digits=4) for val in Dpca.diagonal()])))
+display(html(r"$\text{Principal components} = %s$" % latex(Qpca.n(digits=4))))
     </script></div>
   </div>
 
   <div class="card example">
-    <b>Latihan: 10 Soal + Real Problem (dengan Hint)</b>
+    <b>Latihan: 10 Soal + Real Problem (dengan Hint dan Pembahasan)</b>
     <ol>
       <li>
         Apakah \(Q = \begin{bmatrix}0&1\\1&0\end{bmatrix}\) ortogonal? Tentukan jenis transformasinya.<br>
-        <span style="color:#059669;"><b>Hint:</b> Hitung \(Q^T Q\). \(\det Q = -1\). Ini refleksi terhadap garis \(y=x\), bukan rotasi.</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> Hitung \(Q^T Q=I\). Jadi ortogonal. \(\det Q = -1\), sehingga ini refleksi terhadap garis \(y=x\), bukan rotasi.</span>
       </li>
       <li>
         Diagonalisasi ortogonal \(A=\begin{bmatrix}2&1\\1&2\end{bmatrix}\) dan hitung \(A^{10}\) dengan cepat.<br>
-        <span style="color:#059669;"><b>Hint:</b> \(\lambda=3,1\), \(Q=\frac1{\sqrt2}[[1,-1],[1,1]]\). \(A^{10}=Q \text{diag}(3^{10},1) Q^T\). Tidak perlu kali matriks 10x.</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> \(\lambda=3,1\), \(Q=\frac1{\sqrt2}[[1,-1],[1,1]]\). Maka \(A^{10}=Q \text{diag}(3^{10},1) Q^T\). Tidak perlu mengalikan matriks 10 kali.</span>
       </li>
       <li>
         Klasifikasikan \(Q(x,y)=x^2+4xy+y^2\). Definit positif, negatif, atau indefinit?<br>
-        <span style="color:#059669;"><b>Hint:</b> Matriks \([[1,2],[2,1]]\), \(\det=1-4=-3<0\) → nilai eigen berlawanan tanda → indefinit (saddle). \(\lambda=3,-1\).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> Matriks \([[1,2],[2,1]]\), \(\det=1-4=-3<0\) → nilai eigen berlawanan tanda → indefinit (saddle). \(\lambda=3,-1\).</span>
       </li>
       <li>
         Cari maksimum dan minimum \(Q(x,y)=2x^2+4xy+5y^2\) dengan kendala \(x^2+y^2=1\).<br>
-        <span style="color:#059669;"><b>Hint:</b> Matriks \([[2,2],[2,5]]\). \(\lambda^2-7\lambda+6=0\) → \(\lambda=6,1\). Jadi \(Q_{max}=6, Q_{min}=1\). Vektor eigen untuk \(\lambda=6\) adalah \((1,2)/\sqrt5\).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> Matriks \([[2,2],[2,5]]\). \(\lambda^2-7\lambda+6=0\) → \(\lambda=6,1\). Jadi \(Q_{max}=6, Q_{min}=1\). Vektor eigen untuk \(\lambda=6\) adalah \((1,2)/\sqrt5\).</span>
       </li>
       <li>
         Buktikan matriks Pauli \(\sigma_y = \begin{bmatrix}0&-i\\i&0\end{bmatrix}\) adalah Hermitian dan Unitari.<br>
-        <span style="color:#059669;"><b>Hint:</b> \(A^* = \bar{A}^T\). Cek \(\sigma_y^* = \sigma_y\) dan \(\sigma_y^* \sigma_y = I\). Nilai eigennya real ±1 dengan \(|\lambda|=1\).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> \(A^* = \bar{A}^T\). Cek \(\sigma_y^* = \sigma_y\) dan \(\sigma_y^* \sigma_y = I\). Nilai eigennya real \(\pm1\) dengan \(|\lambda|=1\).</span>
       </li>
       <li>
         <b>[Real Problem – Portofolio]</b> Matriks kovarians \(\Sigma=\begin{bmatrix}4&2\\2&3\end{bmatrix}\). Apakah risiko selalu positif? Cari alokasi risiko minimum.<br>
-        <span style="color:#059669;"><b>Hint:</b> \(\text{tr}=7, \det=8\) → \(\lambda>0\) → definit positif. \(\lambda = (7±√17)/2 ≈5.56,1.44\). Arah risiko minimum adalah vektor eigen untuk \(\lambda_{min}\). Hitung \((A-1.44I)v=0\).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> \(\text{tr}=7, \det=8\) → \(\lambda>0\) → definit positif. \(\lambda = (7±√17)/2 ≈5.56,1.44\). Arah risiko minimum adalah vektor eigen untuk \(\lambda_{min}\). Hitung \((A-1.44I)v=0\).</span>
       </li>
       <li>
         <b>[Real Problem – ML]</b> Hessian \(H=\begin{bmatrix}10&6\\6&10\end{bmatrix}\). Tentukan jenis titik kritis dan condition number \(\kappa\). Apa implikasi untuk Gradient Descent?<br>
-        <span style="color:#059669;"><b>Hint:</b> \(\lambda=16,4\) → definit positif → minimum. \(\kappa=16/4=4\) → kondisi bagus, GD konvergen cepat (elips tidak terlalu lonjong).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> \(\lambda=16,4\) → definit positif → minimum. \(\kappa=16/4=4\) → kondisi bagus, GD konvergen cepat (elips tidak terlalu lonjong).</span>
       </li>
       <li>
         <b>[Real Problem – PCA]</b> Data terpusat \(X=\begin{bmatrix}-1&-1\\0&0\\1&1\end{bmatrix}\). Lakukan PCA: cari arah komponen utama.<br>
-        <span style="color:#059669;"><b>Hint:</b> \(X^T X = [[2,2],[2,2]]\), \(C = (1/2)X^T X = [[1,1],[1,1]]\). \(\lambda=2,0\). Komponen utama \(v_1=(1,1)/\sqrt2\) menjelaskan 100% varians.</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> \(X^T X = [[2,2],[2,2]]\), \(C = (1/2)X^T X = [[1,1],[1,1]]\). \(\lambda=2,0\). Komponen utama \(v_1=(1,1)/\sqrt2\) menjelaskan 100% varians.</span>
       </li>
       <li>
         Gunakan Teorema Sumbu Utama untuk menghilangkan suku silang dari \(3x^2+2xy+3y^2=8\). Gambar geometrinya.<br>
-        <span style="color:#059669;"><b>Hint:</b> Dari soal 2, bentuk kanonis \(4y_1^2+2y_2^2=8\) → \(y_1^2/2 + y_2^2/4 =1\). Ini elips dengan sumbu panjang \(\sqrt4=2\) di arah \(y_2\) (vektor \((-1,1)\)).</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> Dari contoh sebelumnya, bentuk kanonis \(4y_1^2+2y_2^2=8\) → \(y_1^2/2 + y_2^2/4 =1\). Ini elips dengan sumbu panjang \(\sqrt4=2\) di arah \(y_2\) (vektor \((-1,1)\)).</span>
       </li>
       <li>
         Diberikan \(A=\begin{bmatrix}2&-1&-1\\-1&2&-1\\-1&-1&2\end{bmatrix}\). Apakah \(A\) semidefinit positif? Jelaskan hubungannya dengan Laplacian graf.<br>
-        <span style="color:#059669;"><b>Hint:</b> Cari nilai eigen: \(\lambda=0,3,3\). Ada nol → semidefinit positif. Vektor eigen \(\lambda=0\) adalah \((1,1,1)\) → konstanta pada graf. Matriks ini adalah Laplacian graf lengkap \(K_3\), selalu semidefinit positif.</span>
+        <span style="color:#059669;"><b>Pembahasan:</b> Cari nilai eigen: \(\lambda=0,3,3\). Ada nol → semidefinit positif. Vektor eigen \(\lambda=0\) adalah \((1,1,1)\) → konstanta pada graf. Matriks ini adalah Laplacian graf lengkap \(K_3\), selalu semidefinit positif.</span>
       </li>
     </ol>
   </div>
@@ -9575,10 +10837,14 @@ from sage.all import *
     <div class="sage-header"><span>SageMath Cell — Latihan Bab 7</span></div>
     <div class="compute"><script type="text/x-sage">
 # Gunakan sel ini untuk mengerjakan 10 soal di atas
+from sage.all import *
+
 A = matrix(RDF, [[3,1],[1,3]])
-print("Eigen:", A.eigenvalues())
-Q, D = A.eigenmatrix_right()
-print("Q:", Q, "\nD:", D)
+display(html(r"$A = %s$"%latex(A)))
+display(html(r"$\text{Eigen} = %s$" % latex([val.n(digits=4) for val in A.eigenvalues()])))
+D, Q = A.eigenmatrix_right()
+display(html(r"$D = %s$" % latex(D.n(digits=4))))
+display(html(r"$Q = %s$" % latex(Q.n(digits=4))))
     </script></div>
   </div>
 </section>
@@ -9683,39 +10949,71 @@ print("Q:", Q, "\nD:", D)
 </div>
 
   <p align="justify">
-  Transformasi linier adalah aturan yang memetakan satu ruang vektor ke ruang vektor lain <b>tanpa merusak operasi penjumlahan dan perkalian skalar</b>. Intuitifnya: jika Anda menggambar garis lurus di domain, hasilnya tetap garis lurus (bisa jadi titik) di kodomain, dan titik asal \(0\) selalu dipetakan ke \(0\). Hampir semua model dalam Riset Operasi (RO) adalah transformasi linier: \(Ax = b\) adalah transformasi dari ruang keputusan \(x\) (jumlah produk) ke ruang sumber daya \(b\) (bahan baku, jam kerja). Memahami Kernel (kombinasi produksi yang menghabiskan nol sumber daya / redundansi) dan Image (sumber daya apa yang bisa dicapai) adalah kunci kelayakan model.
+  <b>Transformasi linier</b> adalah aturan yang memetakan satu ruang vektor ke ruang vektor lain <b>tanpa merusak operasi penjumlahan dan perkalian skalar</b>. Secara intuitif: jika Anda menggambar garis lurus di domain, hasilnya tetap garis lurus (bisa jadi titik) di kodomain, dan titik asal \(0\) selalu dipetakan ke \(0\). Tidak ada pembelokan, tidak ada pembengkakan tak terduga — semuanya proporsional dan dapat diprediksi.
+  </p>
+  <p align="justify">
+  Hampir semua model dalam Riset Operasi (RO) adalah transformasi linier: \(Ax = b\) adalah transformasi dari ruang keputusan \(x\) (jumlah produk) ke ruang sumber daya \(b\) (bahan baku, jam kerja, anggaran). Memahami <b>Kernel</b> (kombinasi produksi yang menghabiskan nol sumber daya / redundansi) dan <b>Image</b> (sumber daya apa yang bisa dicapai) adalah kunci kelayakan model. Bab ini akan memandu Anda dari definisi formal, sifat-sifat inti, hingga aplikasi nyata di bidang produksi, ekonomi, blending, Markov, dan lokasi fasilitas.
   </p>
 
   <!-- 8.1 -->
   <h2 class="sec">8.1 Transformasi Linier, Kernel, dan Citra</h2>
   <p align="justify">
-  Formalnya, \(T: V \to W\) linier jika \(T(c_1u + c_2v) = c_1T(u)+c_2T(v)\). Dua himpunan penting muncul:
-  <br><b>1. Kernel \(\text{Ker}(T) = \{v | T(v)=0\}\):</b> Semua input yang hilang / dianggap nol oleh transformasi. Dalam RO, ini adalah siklus produksi net-zero atau dependensi antar kendala. Jika Kernel hanya \(\{0\}\), transformasi satu-satu (injektif) → solusi unik jika ada.
-  <br><b>2. Image \(\text{Im}(T) = \{T(v)\}\):</b> Semua output yang mungkin tercapai. Dalam RO, ini adalah daerah feasible dalam ruang sumber daya. Jika \(\text{Im}(T)=W\), transformasi onto (surjektif) → setiap target \(b\) bisa dicapai.
-  <br>Hubungan keduanya diikat oleh <b>Teorema Rank-Nullity</b>: \(\dim \text{Ker} + \dim \text{Im} = \dim V\). Ini adalah hukum kekekalan dimensi: apa yang hilang + apa yang tersisa = dimensi awal.
+  Secara formal, \(T: V \to W\) disebut <b>linier</b> jika untuk semua \(u, v \in V\) dan semua skalar \(c_1, c_2\) berlaku:
+  \[
+  T(c_1u + c_2v) = c_1T(u) + c_2T(v)
+  \]
+  Persamaan ini mengandung dua sifat sekaligus: <b>aditivitas</b> \(T(u+v) = T(u) + T(v)\) dan <b>homogenitas</b> \(T(cu) = c\,T(u)\). Konsekuensi langsung: \(T(0) = 0\). Jika sebuah pemetaan memetakan \(0\) ke selain \(0\), ia <i>bukan</i> transformasi linier.
+  </p>
+  <p align="justify">
+  Setiap transformasi linier memiliki dua himpunan yang menjadi "sidik jari"-nya:
+  <br><b>1. Kernel (Ruang Nol) \(\text{Ker}(T) = \{v \mid T(v)=0\}\):</b> Semua input yang "hilang" / dianggap nol oleh transformasi. Dalam RO, ini mewakili <b>siklus produksi net-zero</b>: kombinasi perubahan produksi yang tidak mengubah beban sumber daya sama sekali. Kernel selalu merupakan subruang dari \(V\). Sifat kunci: \(T\) <b>satu-satu (injektif)</b> jika dan hanya jika \(\text{Ker}(T) = \{0\}\). Artinya, jika tidak ada input nontrivial yang dipetakan ke nol, maka setiap output memiliki paling banyak satu preimage — solusi unik jika ada.
+  <br><b>2. Image / Citra \(\text{Im}(T) = \{T(v) \mid v \in V\}\):</b> Semua output yang mungkin tercapai. Dalam RO, ini adalah <b>daerah feasible</b> dalam ruang sumber daya: sumber daya apa saja yang benar-benar bisa dihasilkan oleh model. Image selalu merupakan subruang dari \(W\). Sifat kunci: \(T\) <b>onto (surjektif)</b> jika dan hanya jika \(\text{Im}(T) = W\). Artinya, setiap target \(b\) di kodomain bisa dicapai oleh suatu input.
+  <br>Hubungan keduanya diikat oleh <b>Teorema Rank–Nullity</b>:
+  \[
+  \dim \text{Ker}(T) + \dim \text{Im}(T) = \dim V
+  \]
+  Ini adalah <b>hukum kekekalan dimensi</b>: apa yang hilang (nullity) + apa yang tersisa (rank) = dimensi awal. Teorema ini sangat berguna untuk memeriksa konsistensi perhitungan.
   </p>
   <div class="card def">
-    <b>Definisi:</b> \(T\) linier jika mempertahankan kombinasi linier. \(\text{Ker}(T)\) subruang \(V\), \(\text{Im}(T)\) subruang \(W\). \(T\) satu-satu ⇔ \(\text{Ker}=0\), \(T\) onto ⇔ \(\text{Im}=W\).
+    <b>Definisi:</b> \(T\) linier jika mempertahankan kombinasi linier. \(\text{Ker}(T)\) subruang \(V\), \(\text{Im}(T)\) subruang \(W\). \(T\) satu-satu ⇔ \(\text{Ker}=\{0\}\), \(T\) onto ⇔ \(\text{Im}=W\). Berlaku \(\dim\text{Ker} + \dim\text{Im} = \dim V\).
   </div>
 
   <div class="card example">
-    <b>Contoh RO Sederhana:</b> \(T: \mathbb{R}^3 \to \mathbb{R}^2\), \(T(x,y,z)=(x+y,\ y+z)\). Matriks \(A=[[1,1,0],[0,1,1]]\). Ini model 3 produk, 2 mesin. Kernel: \(x=-y, z=-y\) → basis \((-1,1,-1)\) → Anda bisa tambah 1 unit produk 2 sambil kurangi produk 1 dan 3 tanpa mengubah beban mesin (siklus). Rank=2 → Im = seluruh \(\mathbb{R}^2\), semua beban mesin bisa dicapai.
+    <b>Contoh RO Sederhana:</b> \(T: \mathbb{R}^3 \to \mathbb{R}^2\), \(T(x,y,z)=(x+y,\ y+z)\). Matriks \(A=\begin{bmatrix}1&1&0\\0&1&1\end{bmatrix}\). Ini model 3 produk, 2 mesin.
+    <br><b>Mencari Kernel:</b> Selesaikan \(Ax=0\): \(x+y=0 \Rightarrow x=-y\); \(y+z=0 \Rightarrow z=-y\). Solusi umum: \((-y,y,-y) = y\cdot(-1,1,-1)\). Basis Kernel \(\{(-1,1,-1)\}\), dimensi 1.
+    <br><b>Interpretasi:</b> Anda bisa tambah 1 unit produk 2 sambil kurangi produk 1 dan 3 tanpa mengubah beban mesin (siklus net-zero).
+    <br><b>Rank:</b> \(\text{rank}(A)=2\), maka \(\text{Im}(T)=\mathbb{R}^2\) — semua beban mesin bisa dicapai. Transformasi ini <i>onto</i> tapi tidak <i>satu-satu</i>.
+    <br><b>Cek Rank–Nullity:</b> \(1 + 2 = 3 = \dim\mathbb{R}^3\). ✓
   </div>
 
   <!-- 8.2 -->
   <h2 class="sec">8.2 Komposisi dan Invers – Rangkaian Proses Produksi</h2>
   <p align="justify">
-  Dalam industri, proses sering berantai: bahan mentah → setengah jadi → produk jadi. Jika \(T\) adalah tahap 1 dan \(S\) tahap 2, maka total proses adalah komposisi \(S \circ T\). Secara matriks, ini adalah perkalian matriks \([S][T]\) – urutan penting!
-  <br>\(T\) punya invers jika prosesnya bisa dibalik (bijektif). Dalam RO, invers \(A^{-1}\) berarti kita bisa menghitung kebutuhan bahan baku secara unik dari target produksi. Jika \(\det(A)=0\), sistem tidak invertibel → ada ketergantungan, perlu optimasi (misal least squares atau LP), bukan sekadar invers.
+  Dalam industri, proses sering berantai: bahan mentah → setengah jadi → produk jadi. Jika \(T\) adalah tahap 1 dan \(S\) tahap 2, maka total proses adalah <b>komposisi</b> \((S\circ T)(v) = S(T(v))\). Secara matriks, jika \(T(x)=Ax\) dan \(S(y)=By\), maka \((S\circ T)(x) = B(Ax) = (BA)x\). <b>Urutan penting!</b> \(BA 
+eq AB\) pada umumnya. Dalam bahasa produksi: "proses A lalu B" tidak sama dengan "proses B lalu A".
+  </p>
+  <p align="justify">
+  \(T\) punya invers jika prosesnya bisa dibalik (bijektif). Untuk \(T(x)=Ax\) pada ruang berdimensi sama, \(T\) invertibel \(\iff \det(A) 
+eq 0\). Jika \(\det(A)=0\), sistem tidak invertibel → ada ketergantungan antar baris/kolom, sehingga tidak semua target \(b\) bisa dicapai secara unik. Dalam RO, kasus ini memerlukan pendekatan optimasi (misal <i>least squares</i> atau <i>linear programming</i>), bukan sekadar inversi matriks. Jika \(A\) adalah matriks teknologi, maka \(x = A^{-1}b\) memberi jumlah produksi yang diperlukan untuk mencapai target sumber daya \(b\).
   </p>
   <div class="card def">
-    \((S\circ T)(v)=S(T(v))\), \([S\circ T]=[S][T]\). \(T\) invertibel ⇔ bijektif ⇔ \(\text{Ker}=0\) dan \(\text{Im}=W\). Untuk \(T(x)=Ax\), invertibel ⇔ \(\det A \neq 0\).
+    \((S\circ T)(v)=S(T(v))\), \([S\circ T]=[S][T]\). \(T\) invertibel ⇔ bijektif ⇔ \(\text{Ker}=\{0\}\) dan \(\text{Im}=W\). Untuk \(T(x)=Ax\), invertibel ⇔ \(\det A \neq 0\).
   </div>
 
   <!-- 8.3 -->
   <h2 class="sec">8.3 Isomorfisma – Semua Ruang n-Dimensi Sama</h2>
   <p align="justify">
-  Isomorfisma adalah transformasi linier bijektif – kamus sempurna antara dua ruang. Teorema fundamental: dua ruang berdimensi hingga isomorfik <b>jika dan hanya jika dimensinya sama</b>. Artinya, \(P_2\) (polinomial derajat ≤2) secara aljabar identik dengan \(\mathbb{R}^3\). Koordinat \([v]_B\) adalah isomorfisma eksplisit. Inilah alasan kenapa di komputer kita selalu bekerja di \(\mathbb{R}^n\) meskipun masalah aslinya abstrak (polinomial, matriks).
+  <b>Isomorfisma</b> adalah transformasi linier bijektif — sebuah "kamus sempurna" antara dua ruang vektor. Jika ada isomorfisma antara \(V\) dan \(W\), kita tulis \(V \cong W\) dan mengatakan keduanya <b>isomorfik</b>.
+  </p>
+  <p align="justify">
+  <b>Teorema fundamental:</b> Dua ruang vektor berdimensi hingga isomorfik <b>jika dan hanya jika dimensinya sama</b>:
+  \[
+  V \cong W \iff \dim V = \dim W
+  \]
+  Artinya, \(P_2\) (polinomial derajat ≤2) secara aljabar identik dengan \(\mathbb{R}^3\); ruang matriks \(2\times 2\) isomorfik dengan \(\mathbb{R}^4\); setiap ruang berdimensi \(n\) isomorfik dengan \(\mathbb{R}^n\). Koordinat \([v]_B\) adalah isomorfisma eksplisit — ia menerjemahkan vektor abstrak menjadi daftar angka yang bisa diproses komputer.
+  </p>
+  <p align="justify">
+  Inilah alasan kenapa di komputer kita selalu bekerja di \(\mathbb{R}^n\) meskipun masalah aslinya abstrak (polinomial, matriks, fungsi). Isomorfisma mempertahankan semua struktur penting: basis, kebebasan linier, dimensi, rank, dan kernel. Jadi, menyelesaikan masalah di \(\mathbb{R}^n\) sama dengan menyelesaikannya di ruang abstrak aslinya.
   </p>
   <div class="card theorem">
     \(V \cong W \iff \dim V = \dim W\). Isomorfisma mempertahankan basis, bebas linier, dimensi. Setiap ruang \(V\) berdimensi \(n\) isomorf dengan \(\mathbb{R}^n\) via \(v \mapsto [v]_B\).
@@ -9724,26 +11022,62 @@ print("Q:", Q, "\nD:", D)
   <!-- 8.4 -->
   <h2 class="sec">8.4 Representasi Matriks – Bergantung pada Basis</h2>
   <p align="justify">
-  Setiap transformasi linier di ruang berdimensi hingga pada akhirnya adalah perkalian matriks, TAPI matriksnya tergantung basis yang dipilih. \([T]_{B'}^{B}\) dibangun dengan: hitung \(T\) pada setiap vektor basis domain, lalu nyatakan hasilnya dalam koordinat basis kodomain – koordinat itu menjadi kolom matriks.
-  <br>Dalam RO, mengganti basis = mengganti satuan atau perspektif. Misal basis baru adalah produk bundel, matriks teknologi \(A\) akan berubah menjadi \(P^{-1} A P\). Ini adalah konsep <b>similaritas</b>.
+  Setiap transformasi linier di ruang berdimensi hingga pada akhirnya adalah perkalian matriks, TAPI matriksnya tergantung basis yang dipilih. Notasi \([T]_{B'}^{B}\) berarti matriks representasi \(T\) relatif terhadap basis \(B\) di domain dan \(B'\) di kodomain. Matriks ini dibangun dengan langkah berikut:
+  <br>1. Tentukan basis \(B = \{u_1, \dots, u_n\}\) untuk domain dan \(B'\) untuk kodomain.
+  <br>2. Hitung \(T(u_j)\) untuk setiap vektor basis domain.
+  <br>3. Nyatakan setiap \(T(u_j)\) dalam koordinat basis \(B'\): \([T(u_j)]_{B'}\).
+  <br>4. Susun koordinat-koordinat ini sebagai kolom-kolom matriks.
+  \[
+  [T]_{B'}^{B} = \begin{bmatrix} [T(u_1)]_{B'} & [T(u_2)]_{B'} & \cdots & [T(u_n)]_{B'} \end{bmatrix}
+  \]
+  Maka berlaku hubungan fundamental \([T(v)]_{B'} = [T]_{B'}^{B} \cdot [v]_{B}\).
+  </p>
+  <p align="justify">
+  Dalam RO, mengganti basis = mengganti satuan atau perspektif. Misalnya basis baru adalah produk bundel, maka matriks teknologi \(A\) akan berubah menjadi \(P^{-1} A P\). Ini adalah konsep <b>similaritas</b>. Hubungan antara matriks lama dan baru: \([T]_{B'} = P^{-1}[T]_B P\), di mana \(P\) adalah matriks transisi basis.
   </p>
   <div class="card def">
     \([T]_{B'}^{B} = \big[ [T(u_1)]_{B'} \cdots [T(u_n)]_{B'} \big]\). Maka \([T(v)]_{B'} = [T]_{B'}^{B}[v]_B\). Ganti basis: \([T]_{B'} = P^{-1}[T]_B P\).
   </div>
   <div class="card example">
-    <b>Contoh:</b> \(T(p)=p'+2p\) di \(P_2\), basis \(B=\{1,x,x^2\}\). \(T(1)=2\), \(T(x)=1+2x\), \(T(x^2)=2x+2x^2\) → \([T]_B = \begin{bmatrix}2&1&0\\0&2&2\\0&0&2\end{bmatrix}\). Matriks segitiga atas → nilai eigen 2 triple, tapi tidak diagonalizable – ciri sistem dengan akumulasi.
+    <b>Contoh Operator Diferensial:</b> \(T(p)=p'+2p\) di \(P_2\), basis \(B=\{1,x,x^2\}\).
+    <br>\(T(1)=0+2\cdot 1 = 2 \Rightarrow (2,0,0)\)
+    <br>\(T(x)=1+2x \Rightarrow (1,2,0)\)
+    <br>\(T(x^2)=2x+2x^2 \Rightarrow (0,2,2)\)
+    <br>Maka \([T]_B = \begin{bmatrix}2&1&0\\0&2&2\\0&0&2\end{bmatrix}\). Matriks segitiga atas → nilai eigen 2 (triple), tapi hanya ada satu vektor eigen bebas → <b>tidak dapat didiagonalisasi</b>. Ciri sistem dengan akumulasi — tidak bisa didekomposisi menjadi mode independen.
   </div>
 
   <!-- 8.5 -->
   <h2 class="sec">8.5 Similaritas – Invarian yang Penting</h2>
   <p align="justify">
-  Dua matriks similar \(B=P^{-1}AP\) merepresentasikan transformasi yang SAMA tapi dilihat dari basis berbeda. Sifat yang tidak berubah (invarian) adalah yang paling penting: determinant, trace, polinomial karakteristik, nilai eigen, rank. Jika \(A\) similar dengan diagonal \(D\), maka \(A\) dapat didiagonalisasi – sistem dapat didekomposisi menjadi mode-mode independen, sangat berguna untuk analisis stabilitas dan optimasi.
+  Dua matriks \(A\) dan \(B\) disebut <b>similar</b> jika terdapat matriks invertibel \(P\) sedemikian sehingga \(B = P^{-1}AP\). Kedua matriks merepresentasikan transformasi linier yang <i>sama</i>, hanya dilihat dari basis berbeda.
+  </p>
+  <p align="justify">
+  Sifat-sifat yang <b>tidak berubah (invarian)</b> di bawah similaritas adalah yang paling penting:
+  <ul>
+    <li><b>Determinan</b> — menentukan invertibilitas</li>
+    <li><b>Trace</b> — jumlah nilai eigen</li>
+    <li><b>Polinomial karakteristik</b> — menentukan nilai eigen</li>
+    <li><b>Nilai eigen</b> — mode fundamental sistem</li>
+    <li><b>Rank</b> — dimensi image</li>
+  </ul>
+  Jika \(A\) similar dengan diagonal \(D\), maka \(A = PDP^{-1}\) <b>dapat didiagonalisasi</b>. Artinya, sistem dapat didekomposisi menjadi <b>mode-mode independen</b> — sangat berguna untuk analisis stabilitas, optimasi, dan pemahaman jangka panjang sistem dinamis. Matriks dapat didiagonalisasi jika dan hanya jika memiliki \(n\) vektor eigen bebas linier. Matriks simetris selalu dapat didiagonalisasi (bahkan secara ortogonal).
   </p>
 
   <!-- 8.6 -->
   <h2 class="sec">8.6 Geometri Operator – Apa yang Terjadi di \(\mathbb{R}^2\)?</h2>
   <p align="justify">
-  Di \(\mathbb{R}^2\), setiap matriks 2x2 punya makna visual: rotasi \(R_\theta\) memutar, refleksi \(H=I-2nn^T\) mencerminkan, proyeksi \(P=A(A^TA)^{-1}A^T\) menjatuhkan bayangan ke subruang, shear \([[1,k],[0,1]]\) menggeser (model deformasi), dilatasi \(\text{diag}(s_x,s_y)\) meregang. Matriks ortogonal = isometri (tidak ubah panjang), matriks simetris = meregang di sepanjang sumbu eigen. Dalam RO, dilatasi adalah scaling produksi, shear adalah substitusi sumber daya.
+  Di \(\mathbb{R}^2\), setiap matriks \(2\times 2\) punya makna visual yang konkret. Memahami geometri ini membantu membangun intuisi tentang transformasi linier:
+  <ul>
+    <li><b>Rotasi</b> \(R_\theta = \begin{bmatrix}\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta\end{bmatrix}\) — memutar bidang sebesar \(\theta\)</li>
+    <li><b>Refleksi</b> \(H = I - 2nn^T\) — mencerminkan terhadap garis dengan normal \(n\)</li>
+    <li><b>Proyeksi</b> \(P = A(A^TA)^{-1}A^T\) — menjatuhkan bayangan ke subruang</li>
+    <li><b>Shear (Geseran)</b> \(\begin{bmatrix}1 & k \\ 0 & 1\end{bmatrix}\) — menggeser, model deformasi</li>
+    <li><b>Dilatasi</b> \(\text{diag}(s_x, s_y)\) — meregang/menyusut sepanjang sumbu</li>
+  </ul>
+  <b>Matriks ortogonal</b> (\(Q^TQ=I\)) = <b>isometri</b>: mempertahankan panjang dan sudut (contoh: rotasi, refleksi). <b>Matriks simetris</b> (\(A^T=A\)) = <b>meregang di sepanjang sumbu eigen</b>: selalu dapat didiagonalisasi secara ortogonal.
+  </p>
+  <p align="justify">
+  <b>Interpretasi RO:</b> Dilatasi = <i>scaling</i> produksi; shear = <i>substitusi sumber daya</i>; rotasi = <i>perubahan koordinat</i>; proyeksi = <i>least squares</i> (solusi terbaik saat sistem overdetermined).
   </p>
 
   <!-- 8.7 -->
@@ -9751,25 +11085,236 @@ print("Q:", Q, "\nD:", D)
   <p align="justify">
   Hampir semua model RO adalah transformasi linier \(T(x)=Ax\) dengan kendala:
   <ul>
-    <li><b>Model Produksi:</b> \(x\) = vektor jumlah produk, \(A\) = matriks teknologi (kebutuhan sumber daya per produk), \(b=Ax\) = total sumber daya terpakai. Kernel = kombinasi produksi net-zero.</li>
-    <li><b>Model Leontief Input-Output:</b> \((I-C)x=d\), \(C\) matriks konsumsi antar-sektor, \(d\) permintaan akhir, \(x\) total produksi. Transformasi \((I-C)\) harus invertibel.</li>
-    <li><b>Model Markov:</b> \(x_{k+1}=P x_k\), \(P\) matriks stokastik (kolom sum=1). Transformasi ini mempertahankan total probabilitas.</li>
-    <li><b>Transformasi Affine \(T(x)=Ax+t\):</b> Model lokasi fasilitas, registrasi citra, dan linear programming dengan translasi (biaya tetap).</li>
+    <li><b>Model Produksi:</b> \(Ax = b\). \(x\) = vektor jumlah produk, \(A\) = matriks teknologi (kebutuhan sumber daya per produk), \(b=Ax\) = total sumber daya terpakai. Kernel = kombinasi produksi net-zero. Image = semua target sumber daya yang bisa dicapai.</li>
+    <li><b>Model Leontief Input–Output:</b> \((I-C)x=d\). \(C\) = matriks konsumsi antar-sektor, \(d\) = permintaan akhir, \(x\) = total produksi. Transformasi \((I-C)\) harus invertibel agar solusi ada. Jika tidak, ekonomi tidak stabil.</li>
+    <li><b>Model Markov:</b> \(x_{k+1}=P x_k\). \(P\) = matriks stokastik (jumlah kolom = 1). Transformasi ini <b>mempertahankan total probabilitas</b>. Steady state dicapai saat \(Px=x\) — eigenvector dengan eigenvalue 1.</li>
+    <li><b>Transformasi Affine \(T(x)=Ax+t\):</b> Model lokasi fasilitas, registrasi citra, dan LP dengan biaya tetap. \(A\) = matriks linier (scaling, rotasi, shear), \(t\) = vektor translasi.</li>
+    <li><b>Least Squares:</b> Jika \(Ax=b\) tidak punya solusi (overdetermined), kita cari \(\min_x \|Ax-b\|^2\). Solusinya \(x = (A^TA)^{-1}A^Tb\) — sebuah <b>proyeksi ortogonal</b>, yang juga transformasi linier.</li>
   </ul>
-  Jika \(Ax=b\) tidak punya solusi (overdetermined), kita cari solusi least squares \(\min \|Ax-b\|^2\) → proyeksi ortogonal, yang juga transformasi linier.
   </p>
 
   <div class="card example">
-    <b>Contoh Affine:</b> Sumber \((0,0),(1,0),(0,1)\) → Target \((1,2),(3,4),(1,5)\). Dari \(\mathbf{t}= (1,2)\) (dari titik 0), kolom 1 \(A = (2,2)\), kolom 2 \(A=(0,3)\) → \(A=[[2,0],[2,3]]\). Jika ada 100 titik, selesaikan \(M^TMp=M^Tq\) (least squares).
+    <b>Contoh Affine Numerik:</b> Sumber \((0,0),(1,0),(0,1)\) → Target \((1,2),(3,4),(1,5)\).
+    <br>Dari titik \((0,0)\) ke \((1,2)\): \(\mathbf{t} = (1,2)\)
+    <br>Kolom 1: \(A\cdot(1,0) = (3,4)-(1,2) = (2,2)\)
+    <br>Kolom 2: \(A\cdot(0,1) = (1,5)-(1,2) = (0,3)\)
+    <br>Maka \(A = \begin{bmatrix}2&0\\2&3\end{bmatrix}\), \(t = (1,2)\). Jika ada 100 titik, selesaikan \(M^TMp = M^Tq\) (least squares) untuk mencari \(A\) dan \(t\) terbaik.
   </div>
 
   <h3>Komputasi SageMath — Semua Konsep 8.1–8.7</h3>
   <div class="sage">
     <div class="sage-header"><span>SageMath Cell — Transformasi, Kernel, RO, Similaritas</span></div>
-    <div class="compute"><script type="text/x-sage">
+    <div class="compute">
+	<script type="text/x-sage">
 from sage.all import *
-# Kode SageMath interaktif Anda tetap di sini
-    </script></div>
+
+# ============================================================
+# MUAT MATHJAX — cukup sekali di awal
+# ============================================================
+display(html(r"""
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)'], ['$','$']],
+             displayMath: [['\\[','\\]'], ['$$','$$']] },
+      svg: { fontCache: 'global' }
+    };
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    s.async = true;
+    document.head.appendChild(s);
+  } else if (MathJax.typesetPromise) {
+    MathJax.typesetPromise();
+  }
+</script>
+"""))
+
+
+# ============================================================
+# UTILITAS — format matriks/vektor ke LaTeX bmatrix
+# ============================================================
+def bmatrix_latex(M):
+    r"""Ubah matriks Sage menjadi string LaTeX \begin{bmatrix}...\end{bmatrix}."""
+    M = matrix(M)
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join(latex(M[i, j]) for j in range(M.ncols())))
+    return r"\begin{bmatrix}" + r" \\ ".join(rows) + r"\end{bmatrix}"
+
+def vec_latex(v):
+    r"""Ubah vektor Sage menjadi string LaTeX (x1, x2, ...)."""
+    v = vector(v)
+    return r"\left(" + ", ".join(latex(x) for x in v) + r"\right)"
+
+
+# ============================================================
+# 1. KERNEL, IMAGE, DAN RANK–NULLITY
+# ============================================================
+A = matrix(QQ, [[1, 1, 0], [0, 1, 1]])
+ker_basis = A.right_kernel().basis()
+rank_A    = A.rank()
+null_A    = A.right_nullity()
+
+display(html(r"""
+<h3 style="color:#2563eb;">1. Kernel, Image, dan Rank–Nullity</h3>
+<p><b>Matriks A:</b> \( A = %s \)</p>
+<p><b>Basis Kernel:</b> \( \mathrm{Ker}(A) = \mathrm{span}\{%s\} \)</p>
+<p><b>Rank:</b> %d &nbsp;|&nbsp; <b>Nullity:</b> %d</p>
+<p><b>Cek Rank–Nullity:</b> \( %d + %d = %d = \dim V \) ✓</p>
+<p style="color:#059669;"><b>Interpretasi RO:</b> Terdapat 1 siklus produksi net-zero;
+transformasi <i>onto</i> (Image = ℝ²) tetapi tidak <i>satu-satu</i>.</p>
+""" % (bmatrix_latex(A), vec_latex(ker_basis[0]),
+       rank_A, null_A, rank_A, null_A, rank_A + null_A)))
+
+
+# ============================================================
+# 2. KOMPOSISI DAN INVERS
+# ============================================================
+B       = matrix(QQ, [[2, 1], [1, 1]])
+B_inv   = B.inverse()
+I_check = B * B_inv
+
+display(html(r"""
+<h3 style="color:#2563eb;">2. Komposisi dan Invers</h3>
+<p><b>Matriks B:</b> \( B = %s \), \( \det(B) = %d \)</p>
+<p><b>Invers B:</b> \( B^{-1} = %s \)</p>
+<p><b>Cek \( B \cdot B^{-1} = I \):</b> \( %s \) ✓</p>
+<p style="color:#059669;"><b>Interpretasi RO:</b> Proses produksi ini <i>invertibel</i> —
+kebutuhan bahan baku bisa dihitung secara unik dari target produksi:
+\( x = B^{-1} b \).</p>
+""" % (bmatrix_latex(B), B.det(), bmatrix_latex(B_inv), bmatrix_latex(I_check))))
+
+
+# ============================================================
+# 3. REPRESENTASI MATRIKS — OPERATOR DIFERENSIAL
+# ============================================================
+T_mat  = matrix(QQ, [[2, 1, 0], [0, 2, 2], [0, 0, 2]])
+T_eig  = T_mat.eigenvalues()
+T_diag = T_mat.is_diagonalizable()
+
+display(html(r"""
+<h3 style="color:#2563eb;">3. Representasi Matriks — Operator Diferensial</h3>
+<p><b>Operator:</b> \( T(p) = p' + 2p \) pada \( P_2 \), basis \( B = \{1, x, x^2\} \)</p>
+<p><b>Matriks representasi:</b> \( [T]_B = %s \)</p>
+<p><b>Nilai eigen:</b> \( %s \)</p>
+<p><b>Diagonalizable?</b> <b style="color:#dc2626;">%s</b></p>
+<p style="color:#059669;"><b>Interpretasi:</b> Matriks segitiga atas dengan eigen tunggal 2 (triple)
+tetapi hanya memiliki 1 vektor eigen bebas → <b>tidak dapat didiagonalisasi</b> →
+sistem tidak dapat didekomposisi menjadi mode independen.</p>
+""" % (bmatrix_latex(T_mat), vec_latex(T_eig), "Ya" if T_diag else "Tidak")))
+
+
+# ============================================================
+# 4. SIMILARITAS
+# ============================================================
+A_sim = matrix(QQ, [[4, 1], [2, 3]])
+P     = matrix(QQ, [[1, 1], [1, -1]])
+B_sim = P.inverse() * A_sim * P
+det_sama   = (A_sim.det()   == B_sim.det())
+trace_sama = (A_sim.trace() == B_sim.trace())
+
+display(html(r"""
+<h3 style="color:#2563eb;">4. Similaritas</h3>
+<p><b>A</b> = \( %s \) &nbsp;|&nbsp; <b>B</b> = \( P^{-1} A P \) = \( %s \)</p>
+<p><b>det(A) = %s</b> = <b>det(B) = %s</b> → %s</p>
+<p><b>tr(A) = %s</b> = <b>tr(B) = %s</b> → %s</p>
+<p style="color:#059669;"><b>Interpretasi:</b> Determinan dan trace adalah
+<b>invarian similaritas</b>.</p>
+""" % (bmatrix_latex(A_sim), bmatrix_latex(B_sim),
+       A_sim.det(), B_sim.det(), "✓ sama" if det_sama else "✗ beda",
+       A_sim.trace(), B_sim.trace(), "✓ sama" if trace_sama else "✗ beda")))
+
+
+# ============================================================
+# 5. APLIKASI RO — MODEL PRODUKSI
+# ============================================================
+A_prod = matrix(QQ, [[2, 1], [1, 2]])
+b_prod = vector(QQ, [10, 8])
+x_prod = A_prod.solve_right(b_prod)
+
+display(html(r"""
+<h3 style="color:#ea580c;">5. Aplikasi RO — Model Produksi</h3>
+<p>\( A = %s \), \( b = %s \), \( \det(A) = %d \)</p>
+<p><b>Solusi \( Ax = b \):</b> \( x = %s \)</p>
+<p><b>Kernel:</b> \( \mathrm{Ker}(A) = \{0\} \) karena \( \det(A) \neq 0 \)
+→ solusi unik.</p>
+<p style="color:#059669;"><b>Interpretasi:</b> Untuk mencapai beban mesin \( (10, 8) \),
+pabrik harus memproduksi \( P_1 = 4 \) unit dan \( P_2 = 2 \) unit secara unik.</p>
+""" % (bmatrix_latex(A_prod), vec_latex(b_prod), A_prod.det(), vec_latex(x_prod))))
+
+
+# ============================================================
+# 6. APLIKASI RO — LEONTIEF INPUT–OUTPUT
+# ============================================================
+C       = matrix(QQ, [[0.2, 0.3], [0.4, 0.1]])
+I2      = identity_matrix(2)
+d_leon  = vector(QQ, [10, 20])
+IminusC = I2 - C
+x_leon  = IminusC.solve_right(d_leon)
+
+display(html(r"""
+<h3 style="color:#ea580c;">6. Aplikasi RO — Leontief Input–Output</h3>
+<p>\( C = %s \), \( d = %s \)</p>
+<p>\( I - C = %s \), \( \det(I-C) = %s \)</p>
+<p><b>Solusi \( (I-C)x = d \):</b> \( x = %s \)</p>
+<p style="color:#059669;"><b>Interpretasi:</b> Total produksi harus melebihi permintaan akhir
+karena sebagian output dikonsumsi antar-sektor.</p>
+""" % (bmatrix_latex(C), vec_latex(d_leon), bmatrix_latex(IminusC),
+       latex(IminusC.det()), vec_latex(x_leon))))
+
+
+# ============================================================
+# 7. APLIKASI RO — MARKOV STEADY STATE
+# ============================================================
+P_markov = matrix(QQ, [[0.9, 0.2], [0.1, 0.8]])
+eig_list = P_markov.eigenvectors_right()
+
+steady_vec = None
+for val, vecs, mult in eig_list:
+    if val == 1:
+        steady_vec = vecs[0] / sum(vecs[0])
+        break
+
+display(html(r"""
+<h3 style="color:#ea580c;">7. Aplikasi RO — Markov Steady State</h3>
+<p>\( P = %s \)</p>
+<p><b>Steady state (dinormalisasi):</b> \( x^* = %s \)</p>
+<p style="color:#059669;"><b>Interpretasi:</b> Dalam jangka panjang, pangsa pasar
+merek 1 = 66,7%% dan merek 2 = 33,3%%.</p>
+""" % (bmatrix_latex(P_markov), vec_latex(steady_vec))))
+
+
+# ============================================================
+# 8. GEOMETRI — ROTASI DAN PROYEKSI
+# ============================================================
+theta  = RR(pi) / 4
+R      = matrix(RR, [[cos(theta), -sin(theta)],
+                     [sin(theta),  cos(theta)]])
+
+a      = vector(RR, [1, 1])
+P_proj = (a.column() * a.row()) / (a.dot_product(a))
+
+display(html(r"""
+<h3 style="color:#7c3aed;">8. Geometri — Rotasi dan Proyeksi</h3>
+<p><b>Rotasi 45°:</b> \( R_{\pi/4} = %s \)</p>
+<p><b>Proyeksi ortogonal ke \( y = x \):</b> \( P = %s \)</p>
+<p style="color:#059669;"><b>Interpretasi RO:</b> Rotasi = perubahan basis pandang;
+proyeksi = solusi <i>least squares</i>.</p>
+""" % (bmatrix_latex(R.n(digits=4)), bmatrix_latex(P_proj.n(digits=4)))))
+
+
+# ============================================================
+# Paksa MathJax typeset ulang setelah semua output dirender
+# ============================================================
+display(html(r"""
+<script>
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise();
+  }
+</script>
+"""))
+    </script>
+	</div>
   </div>
 
   <div class="card example">
@@ -9777,15 +11322,15 @@ from sage.all import *
     <ol>
       <li>
         Cari \(\text{Ker}\) dan \(\text{Im}\) dari \(T(x,y,z)=(x+y,\ y+z,\ x+z)\) dan verifikasi Rank-Nullity.<br>
-        <span style="color:#059669;"><b>Hint:</b> Matriks \(A=[[1,1,0],[0,1,1],[1,0,1]]\). \(\det A = 2 \neq 0\) → Ker={0}, Rank=3, Nullity=0. Satu-satu dan onto. Solusi \(Ax=0\) hanya trivial.</span>
+        <span style="color:#059669;"><b>Hint:</b> Matriks \(A=\begin{bmatrix}1&1&0\\0&1&1\\1&0&1\end{bmatrix}\). \(\det A = 2 \neq 0\) → \(\text{Ker}=\{0\}\), Rank=3, Nullity=0. Satu-satu dan onto. Solusi \(Ax=0\) hanya trivial.</span>
       </li>
       <li>
         Tentukan invers dari \(T(x,y)=(2x+y,\ x+y)\) dan interpretasikan sebagai pembalikan proses produksi.<br>
-        <span style="color:#059669;"><b>Hint:</b> Matriks \([[2,1],[1,1]]\), \(\det=1\). Invers \([[1,-1],[-1,2]]\). Jadi \(T^{-1}(u,v)=(u-v, -u+2v)\). Cek \(A^{-1}A=I\).</span>
+        <span style="color:#059669;"><b>Hint:</b> Matriks \(\begin{bmatrix}2&1\\1&1\end{bmatrix}\), \(\det=1\). Invers \(\begin{bmatrix}1&-1\\-1&2\end{bmatrix}\). Jadi \(T^{-1}(u,v)=(u-v, -u+2v)\). Cek \(A^{-1}A=I\).</span>
       </li>
       <li>
         Cari \([T]_B\) untuk \(T: P_1 \to P_1\), \(T(a+bx)=b+(a+b)x\), basis \(B=\{1,x\}\).<br>
-        <span style="color:#059669;"><b>Hint:</b> \(T(1)=0+1·x → (0,1)\), \(T(x)=1+1·x → (1,1)\). Jadi \([T]_B=[[0,1],[1,1]]\). Ini matriks Fibonacci!</span>
+        <span style="color:#059669;"><b>Hint:</b> \(T(1)=0+1·x → (0,1)\), \(T(x)=1+1·x → (1,1)\). Jadi \([T]_B=\begin{bmatrix}0&1\\1&1\end{bmatrix}\). Ini matriks Fibonacci!</span>
       </li>
       <li>
         Apakah \(A=\begin{bmatrix}2&1\\0&2\end{bmatrix}\) similar dengan matriks diagonal? Jelaskan kaitannya dengan defisiensi produksi.<br>
@@ -9796,24 +11341,23 @@ from sage.all import *
         <span style="color:#059669;"><b>Hint:</b> Dilatasi anisotropik: regang 2x arah x, susut 0.5x arah y. \(\det=1\) → luas tetap, tapi bentuk berubah. Ortogonal? Tidak, karena tidak mempertahankan panjang.</span>
       </li>
       <li>
-        <b>[RO – Model Produksi]</b> Pabrik membuat 2 produk \(P_1,P_2\). Kebutuhan mesin: \(M_1: 2P_1+1P_2\), \(M_2: 1P_1+2P_2\). Transformasi \(T(x)=Ax\), \(A=[[2,1],[1,2]]\). Jika tersedia \(b=(10,8)\), cari \(x\). Apakah ada kombinasi produksi net-zero (Ker)?<br>
-        <span style="color:#059669;"><b>Hint:</b> Selesaikan \(Ax=b\). \(\det=3\), \(A^{-1}=1/3[[2,-1],[-1,2]]\) → \(x=(4,2)\). Ker={0} karena \(\det≠0\), tidak ada siklus net-zero → solusi unik. Jika \(b=(9,9)\) → \(x=(3,3)\).</span>
+        <b>[RO – Model Produksi]</b> Pabrik membuat 2 produk \(P_1,P_2\). Kebutuhan mesin: \(M_1: 2P_1+1P_2\), \(M_2: 1P_1+2P_2\). Transformasi \(T(x)=Ax\), \(A=\begin{bmatrix}2&1\\1&2\end{bmatrix}\). Jika tersedia \(b=(10,8)\), cari \(x\). Apakah ada kombinasi produksi net-zero (Ker)?<br>
+        <span style="color:#059669;"><b>Hint:</b> Selesaikan \(Ax=b\). \(\det=3\), \(A^{-1}=1/3\begin{bmatrix}2&-1\\-1&2\end{bmatrix}\) → \(x=(4,2)\). Ker={0} karena \(\det\neq0\), tidak ada siklus net-zero → solusi unik. Jika \(b=(9,9)\) → \(x=(3,3)\).</span>
       </li>
       <li>
-        <b>[RO – Leontief Input-Output]</b> Ekonomi 2 sektor dengan matriks konsumsi \(C=[[0.2,0.3],[0.4,0.1]]\), permintaan akhir \(d=(10,20)\). Cari total produksi \(x\) dari \((I-C)x=d\).<br>
-        <span style="color:#059669;"><b>Hint:</b> \(I-C=[[0.8,-0.3],[-0.4,0.9]]\), \(\det=0.8*0.9-0.12=0.6\). Invers \(=1/0.6 [[0.9,0.3],[0.4,0.8]]\). \(x=(I-C)^{-1}d\). Hitung: \(x_1=(0.9*10+0.3*20)/0.6=25\), \(x_2=(0.4*10+0.8*20)/0.6=33.33\). Harus produksi lebih dari permintaan karena konsumsi internal.</span>
+        <b>[RO – Leontief Input-Output]</b> Ekonomi 2 sektor dengan matriks konsumsi \(C=\begin{bmatrix}0.2&0.3\\0.4&0.1\end{bmatrix}\), permintaan akhir \(d=(10,20)\). Cari total produksi \(x\) dari \((I-C)x=d\).<br>
+        <span style="color:#059669;"><b>Hint:</b> \(I-C=\begin{bmatrix}0.8&-0.3\\-0.4&0.9\end{bmatrix}\), \(\det=0.8\cdot0.9-0.12=0.6\). Invers \(=1/0.6\begin{bmatrix}0.9&0.3\\0.4&0.8\end{bmatrix}\). \(x=(I-C)^{-1}d\). Hitung: \(x_1=(0.9\cdot10+0.3\cdot20)/0.6=25\), \(x_2=(0.4\cdot10+0.8\cdot20)/0.6=33.33\). Harus produksi lebih dari permintaan karena konsumsi internal.</span>
       </li>
       <li>
         <b>[RO – Blending & Diet]</b> \(T: \mathbb{R}^3 \to \mathbb{R}^2\), \(T(x_1,x_2,x_3)=(2x_1+x_2+3x_3,\ x_1+2x_2+x_3)\) = total protein & karbohidrat dari 3 bahan. Cari semua komposisi yang memberi nutrisi \((7,5)\) dan deskripsikan Ker(T) sebagai substitusi bahan.<br>
-        <span style="color:#059669;">
-		<b>Hint:</b> Matriks \([[2,1,3],[1,2,1]]\). Rank 2, Nullity 1 (3-2). Solusi partikular: misal \(x_3=0\) → \(2x_1+x_2=7, x_1+2x_2=5\) → \(x_1=3,x_2=1\). Basis Ker: selesaikan \(Ax=0\) → \((-5,3,3?)\) cek: \(2(-5)+3+9=2\), salah. Hitung benar: dari eliminasi \(x_1=-5/3 x_3, x_2=-?\). Cari Ker = span{(5,-1,-3)?} → Ker adalah resep substitusi net-zero nutrisi.</span>
+        <span style="color:#059669;"><b>Hint:</b> Matriks \(\begin{bmatrix}2&1&3\\1&2&1\end{bmatrix}\). Rank 2, Nullity 1 (3-2). Solusi partikular: misal \(x_3=0\) → \(2x_1+x_2=7, x_1+2x_2=5\) → \(x_1=3,x_2=1\). Basis Ker: selesaikan \(Ax=0\). Dari eliminasi: \(x_3=3x_2, x_1=-5x_2\). Jadi Ker = span{(5,-1,-3)} (atau (-5,1,3)). Cek: \(2(5)+(-1)+3(-3)=10-1-9=0\) ✓. Solusi umum: \((3,1,0)+t(5,-1,-3)\). Ker adalah resep substitusi net-zero nutrisi.</span>
       </li>
       <li>
-        <b>[RO – Markov & Pangsa Pasar]</b> Matriks transisi pelanggan \(P=[[0.9,0.2],[0.1,0.8]]\). Jika \(x_k\) distribusi pangsa pasar, \(x_{k+1}=P x_k\). Cari steady state \(P x = x\), \(\sum x_i=1\).<br>
-        <span style="color:#059669;"><b>Hint:</b> Ini eigen untuk \(\lambda=1\). Selesaikan \((P-I)x=0\): \([[-0.1,0.2],[0.1,-0.2]]x=0\) → \(-0.1x_1+0.2x_2=0\) → \(x_1=2x_2\). Dengan \(x_1+x_2=1\) → \(x=(2/3,1/3)\). Jangka panjang 66.7% di merek 1.</span>
+        <b>[RO – Markov & Pangsa Pasar]</b> Matriks transisi pelanggan \(P=\begin{bmatrix}0.9&0.2\\0.1&0.8\end{bmatrix}\). Jika \(x_k\) distribusi pangsa pasar, \(x_{k+1}=P x_k\). Cari steady state \(P x = x\), \(\sum x_i=1\).<br>
+        <span style="color:#059669;"><b>Hint:</b> Ini eigen untuk \(\lambda=1\). Selesaikan \((P-I)x=0\): \(\begin{bmatrix}-0.1&0.2\\0.1&-0.2\end{bmatrix}x=0\) → \(-0.1x_1+0.2x_2=0\) → \(x_1=2x_2\). Dengan \(x_1+x_2=1\) → \(x=(2/3,1/3)\). Jangka panjang 66.7% di merek 1.</span>
       </li>
       <li>
-        <b>[RO – Affine & Lokasi Fasilitas]</b> Transformasi affine \(T(x)=Ax+t\) dengan \(A=[[2,0],[0,2]]\), \(t=(1,1)\) memetakan gudang lokal ke koordinat global. Jika gudang lokal di \((0,0),(1,0),(0,1),(1,1)\), di mana posisi global? Jika biaya transport \(c^T x\) ingin diminimalkan, bagaimana \(A\) memengaruhi LP?<br>
+        <b>[RO – Affine & Lokasi Fasilitas]</b> Transformasi affine \(T(x)=Ax+t\) dengan \(A=\begin{bmatrix}2&0\\0&2\end{bmatrix}\), \(t=(1,1)\) memetakan gudang lokal ke koordinat global. Jika gudang lokal di \((0,0),(1,0),(0,1),(1,1)\), di mana posisi global? Jika biaya transport \(c^T x\) ingin diminimalkan, bagaimana \(A\) memengaruhi LP?<br>
         <span style="color:#059669;"><b>Hint:</b> \(T(x)=2x+(1,1)\) → scaling 2x + translasi. Posisi global: \((1,1),(3,1),(1,3),(3,3)\) → persegi membesar. Dalam LP, \(Ax\) = transformasi kendala, \(t\) = biaya tetap. Scaling \(A\) mengubah feasible region, \(t\) menggesernya. Solusi optimal LP berubah secara linier jika \(A\) invertibel.</span>
       </li>
     </ol>
@@ -9838,8 +11382,75 @@ P = matrix(QQ, [[0.9,0.2],[0.1,0.8]])
 # steady state: (P-I)x=0, sum=1
 eig = P.eigenvectors_right()
 print("Eigen P:", eig)
+
+# Blending: solusi partikular dan Kernel
+A_blend = matrix(QQ, [[2, 1, 3], [1, 2, 1]])
+b_blend = vector(QQ, [7, 5])
+print("Kernel basis:", A_blend.right_kernel().basis())
+print("Solusi partikular:", A_blend.solve_right(b_blend))
     </script></div>
   </div>
+
+  <div class="card theorem">
+    <b>Intisari Bab:</b>
+    <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+      <tr style="background:#f1f5f9;">
+        <th style="padding:6px; text-align:left; border:1px solid #cbd5e1;">Konsep</th>
+        <th style="padding:6px; text-align:left; border:1px solid #cbd5e1;">Makna</th>
+        <th style="padding:6px; text-align:left; border:1px solid #cbd5e1;">Aplikasi RO</th>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Transformasi Linier</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Mempertahankan struktur ruang vektor</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Semua model LP: \(T(x)=Ax\)</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Kernel</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Input yang dipetakan ke nol</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Siklus produksi net-zero, redundansi</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Image</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Output yang bisa dicapai</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Daerah feasible, target yang mungkin</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Rank–Nullity</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">\(\dim\text{Ker} + \dim\text{Im} = \dim V\)</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Cek konsistensi dimensi model</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Komposisi</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">\(S\circ T\), matriks \([S][T]\)</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Rangkaian proses produksi</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Invers</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Membalik transformasi</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Hitung kebutuhan dari target</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Isomorfisma</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">\(V\cong W \iff \dim V=\dim W\)</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Semua ruang \(n\)-dimensi = \(\mathbb{R}^n\)</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Similaritas</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">\(B=P^{-1}AP\)</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Invarian: det, trace, eigen</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; border:1px solid #cbd5e1;"><b>Geometri</b></td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Rotasi, refleksi, proyeksi, shear, dilatasi</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">Scaling, substitusi, least squares</td>
+      </tr>
+    </table>
+  </div>
+
+  <p align="justify" style="margin-top:16px;">
+  <b>Pesan utama:</b> Transformasi linier adalah <b>jembatan</b> antara aljabar abstrak dan aplikasi nyata di Riset Operasi. Dengan memahami Kernel, Image, Rank–Nullity, komposisi, invers, isomorfisma, representasi matriks, similaritas, dan geometri operator, Anda memiliki <b>perangkat lengkap</b> untuk menganalisis dan menyelesaikan masalah optimasi, produksi, ekonomi, dan sistem dinamis. Setiap model RO — dari LP hingga Markov — pada dasarnya adalah transformasi linier. Menguasai bab ini berarti menguasai fondasi matematis dari seluruh Riset Operasi.
+  </p>
+
 </section>
 <!-- END BAB 8 -->
 
