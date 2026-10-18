@@ -11108,6 +11108,10 @@ eq 0\). Jika \(\det(A)=0\), sistem tidak invertibel → ada ketergantungan antar
 	<script type="text/x-sage">
 from sage.all import *
 
+# Catatan: jangan pernah tulis tag penutup script secara literal di source,
+# termasuk di komentar. Gunakan konkatenasi string seperti di bawah.
+CLOSE_SCRIPT = "</" + "script>"
+
 # ============================================================
 # MUAT MATHJAX — cukup sekali di awal
 # ============================================================
@@ -11126,15 +11130,13 @@ display(html(r"""
   } else if (MathJax.typesetPromise) {
     MathJax.typesetPromise();
   }
-</script>
-"""))
-
+""" + CLOSE_SCRIPT))
 
 # ============================================================
-# UTILITAS — format matriks/vektor ke LaTeX bmatrix
+# UTILITAS
 # ============================================================
 def bmatrix_latex(M):
-    r"""Ubah matriks Sage menjadi string LaTeX \begin{bmatrix}...\end{bmatrix}."""
+    r"""Ubah matriks Sage menjadi string LaTeX bmatrix."""
     M = matrix(M)
     rows = []
     for i in range(M.nrows()):
@@ -11145,7 +11147,6 @@ def vec_latex(v):
     r"""Ubah vektor Sage menjadi string LaTeX (x1, x2, ...)."""
     v = vector(v)
     return r"\left(" + ", ".join(latex(x) for x in v) + r"\right)"
-
 
 # ============================================================
 # 1. KERNEL, IMAGE, DAN RANK–NULLITY
@@ -11166,7 +11167,6 @@ transformasi <i>onto</i> (Image = ℝ²) tetapi tidak <i>satu-satu</i>.</p>
 """ % (bmatrix_latex(A), vec_latex(ker_basis[0]),
        rank_A, null_A, rank_A, null_A, rank_A + null_A)))
 
-
 # ============================================================
 # 2. KOMPOSISI DAN INVERS
 # ============================================================
@@ -11183,7 +11183,6 @@ display(html(r"""
 kebutuhan bahan baku bisa dihitung secara unik dari target produksi:
 \( x = B^{-1} b \).</p>
 """ % (bmatrix_latex(B), B.det(), bmatrix_latex(B_inv), bmatrix_latex(I_check))))
-
 
 # ============================================================
 # 3. REPRESENTASI MATRIKS — OPERATOR DIFERENSIAL
@@ -11202,7 +11201,6 @@ display(html(r"""
 tetapi hanya memiliki 1 vektor eigen bebas → <b>tidak dapat didiagonalisasi</b> →
 sistem tidak dapat didekomposisi menjadi mode independen.</p>
 """ % (bmatrix_latex(T_mat), vec_latex(T_eig), "Ya" if T_diag else "Tidak")))
-
 
 # ============================================================
 # 4. SIMILARITAS
@@ -11224,7 +11222,6 @@ display(html(r"""
        A_sim.det(), B_sim.det(), "✓ sama" if det_sama else "✗ beda",
        A_sim.trace(), B_sim.trace(), "✓ sama" if trace_sama else "✗ beda")))
 
-
 # ============================================================
 # 5. APLIKASI RO — MODEL PRODUKSI
 # ============================================================
@@ -11242,11 +11239,10 @@ display(html(r"""
 pabrik harus memproduksi \( P_1 = 4 \) unit dan \( P_2 = 2 \) unit secara unik.</p>
 """ % (bmatrix_latex(A_prod), vec_latex(b_prod), A_prod.det(), vec_latex(x_prod))))
 
-
 # ============================================================
 # 6. APLIKASI RO — LEONTIEF INPUT–OUTPUT
 # ============================================================
-C       = matrix(QQ, [[0.2, 0.3], [0.4, 0.1]])
+C       = matrix(QQ, [[1/5, 3/10], [2/5, 1/10]])
 I2      = identity_matrix(2)
 d_leon  = vector(QQ, [10, 20])
 IminusC = I2 - C
@@ -11262,11 +11258,10 @@ karena sebagian output dikonsumsi antar-sektor.</p>
 """ % (bmatrix_latex(C), vec_latex(d_leon), bmatrix_latex(IminusC),
        latex(IminusC.det()), vec_latex(x_leon))))
 
-
 # ============================================================
 # 7. APLIKASI RO — MARKOV STEADY STATE
 # ============================================================
-P_markov = matrix(QQ, [[0.9, 0.2], [0.1, 0.8]])
+P_markov = matrix(QQ, [[9/10, 1/5], [1/10, 4/5]])
 eig_list = P_markov.eigenvectors_right()
 
 steady_vec = None
@@ -11275,14 +11270,19 @@ for val, vecs, mult in eig_list:
         steady_vec = vecs[0] / sum(vecs[0])
         break
 
+if steady_vec is None:
+    raise ValueError("Tidak ditemukan eigenvalue 1 pada matriks Markov.")
+
+x1pct = (steady_vec[0] * 100).n(digits=4)
+x2pct = (steady_vec[1] * 100).n(digits=4)
+
 display(html(r"""
 <h3 style="color:#ea580c;">7. Aplikasi RO — Markov Steady State</h3>
 <p>\( P = %s \)</p>
 <p><b>Steady state (dinormalisasi):</b> \( x^* = %s \)</p>
 <p style="color:#059669;"><b>Interpretasi:</b> Dalam jangka panjang, pangsa pasar
-merek 1 = 66,7%% dan merek 2 = 33,3%%.</p>
-""" % (bmatrix_latex(P_markov), vec_latex(steady_vec))))
-
+merek 1 = %s%% dan merek 2 = %s%%.</p>
+""" % (bmatrix_latex(P_markov), vec_latex(steady_vec), x1pct, x2pct)))
 
 # ============================================================
 # 8. GEOMETRI — ROTASI DAN PROYEKSI
@@ -11302,7 +11302,6 @@ display(html(r"""
 proyeksi = solusi <i>least squares</i>.</p>
 """ % (bmatrix_latex(R.n(digits=4)), bmatrix_latex(P_proj.n(digits=4)))))
 
-
 # ============================================================
 # Paksa MathJax typeset ulang setelah semua output dirender
 # ============================================================
@@ -11311,8 +11310,7 @@ display(html(r"""
   if (window.MathJax && MathJax.typesetPromise) {
     MathJax.typesetPromise();
   }
-</script>
-"""))
+""" + CLOSE_SCRIPT))
     </script>
 	</div>
   </div>
@@ -11367,27 +11365,94 @@ display(html(r"""
   <div class="sage">
     <div class="sage-header"><span>SageMath Cell — Latihan Riset Operasi</span></div>
     <div class="compute"><script type="text/x-sage">
-# Contoh RO: Selesaikan Leontief dan Markov
-A = matrix(QQ, [[2,1],[1,2]])
-b = vector(QQ, [10,8])
-print("Produksi:", A.solve_right(b))
+# Contoh RO: Produksi, Leontief, Markov, dan Blending
+# Semua output ditampilkan lewat display(html(...)) dengan LaTeX.
 
-C = matrix(QQ, [[0.2,0.3],[0.4,0.1]])
-I = identity_matrix(2)
-d = vector(QQ, [10,20])
-x = (I-C).solve_right(d)
-print("Leontief x:", x)
+# ============================================================
+# 1. PRODUKSI SEDERHANA — Ax = b
+# ============================================================
+A_prod = matrix(QQ, [[2, 1], [1, 2]])
+b_prod = vector(QQ, [10, 8])
+x_prod = A_prod.solve_right(b_prod)
 
-P = matrix(QQ, [[0.9,0.2],[0.1,0.8]])
-# steady state: (P-I)x=0, sum=1
-eig = P.eigenvectors_right()
-print("Eigen P:", eig)
+display(html(r"""
+<h3 style="color:#2563eb;">1. Produksi Sederhana: \( Ax = b \)</h3>
+<p>\( A = %s,\quad b = %s,\quad \det(A) = %s \)</p>
+<p><b>Solusi unik:</b> \( x = A^{-1} b = %s \)</p>
+""" % (latex(A_prod), latex(b_prod), latex(A_prod.det()), latex(x_prod))))
 
-# Blending: solusi partikular dan Kernel
-A_blend = matrix(QQ, [[2, 1, 3], [1, 2, 1]])
-b_blend = vector(QQ, [7, 5])
-print("Kernel basis:", A_blend.right_kernel().basis())
-print("Solusi partikular:", A_blend.solve_right(b_blend))
+# ============================================================
+# 2. LEONTIEF INPUT–OUTPUT — (I − C) x = d
+# ============================================================
+C       = matrix(QQ, [[1/5, 3/10], [2/5, 1/10]])
+I2      = identity_matrix(2)
+d_leon  = vector(QQ, [10, 20])
+IminusC = I2 - C
+x_leon  = IminusC.solve_right(d_leon)
+
+display(html(r"""
+<h3 style="color:#ea580c;">2. Leontief Input–Output: \( (I-C)x = d \)</h3>
+<p>\( C = %s,\quad d = %s \)</p>
+<p>\( I - C = %s,\quad \det(I-C) = %s \)</p>
+<p><b>Solusi:</b> \( x = %s \)</p>
+<p><b>Cek \( (I-C)x = d \):</b> \( %s \) ✓</p>
+""" % (latex(C), latex(d_leon),
+       latex(IminusC), latex(IminusC.det()),
+       latex(x_leon), latex(IminusC * x_leon))))
+
+# ============================================================
+# 3. MARKOV — STEADY STATE
+# ============================================================
+P_markov = matrix(QQ, [[9/10, 1/5], [1/10, 4/5]])
+eig = P_markov.eigenvectors_right()
+
+steady_vec = None
+for val, vecs, mult in eig:
+    if val == 1:
+        steady_vec = vecs[0] / sum(vecs[0])
+        break
+
+if steady_vec is None:
+    raise ValueError("Tidak ditemukan eigenvalue 1 pada matriks Markov.")
+
+eig_summary = r",\quad ".join(
+    r"\lambda = %s\ (\text{mult } %d)" % (latex(val), mult)
+    for val, vecs, mult in eig
+)
+
+display(html(r"""
+<h3 style="color:#ea580c;">3. Markov: Steady State</h3>
+<p>\( P = %s \)</p>
+<p><b>Nilai eigen:</b> \( %s \)</p>
+<p><b>Steady state (dinormalisasi, \( \sum x_i = 1 \)):</b> \( x^* = %s \)</p>
+<p><b>Cek \( P x^* = x^* \):</b> \( %s \) ✓</p>
+""" % (latex(P_markov), eig_summary, latex(steady_vec),
+       latex(P_markov * steady_vec))))
+
+# ============================================================
+# 4. BLENDING — KERNEL DAN SOLUSI PARTIKULAR
+# ============================================================
+A_blend   = matrix(QQ, [[2, 1, 3], [1, 2, 1]])
+b_blend   = vector(QQ, [7, 5])
+ker_basis = A_blend.right_kernel().basis()
+x_part    = A_blend.solve_right(b_blend)
+
+ker_tex = r"\mathrm{span}\left\{ %s \right\}" % r",\ ".join(
+    latex(v) for v in ker_basis
+)
+
+display(html(r"""
+<h3 style="color:#7c3aed;">4. Blending: Kernel dan Solusi Partikular</h3>
+<p>\( A = %s,\quad b = %s \)</p>
+<p><b>Rank:</b> \( %d \), <b>Nullity:</b> \( %d \)</p>
+<p><b>Kernel:</b> \( \mathrm{Ker}(A) = %s \)</p>
+<p><b>Solusi partikular:</b> \( x_p = %s \)</p>
+<p><b>Solusi umum:</b> \( x = x_p + \ker(A) \) (tak hingga banyak solusi)</p>
+<p><b>Cek \( A x_p = b \):</b> \( %s \) ✓</p>
+""" % (latex(A_blend), latex(b_blend),
+       A_blend.rank(), A_blend.right_nullity(),
+       ker_tex, latex(x_part),
+       latex(A_blend * x_part))))
     </script></div>
   </div>
 
