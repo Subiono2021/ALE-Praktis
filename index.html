@@ -10623,7 +10623,7 @@ A=QDQ^T \\
   </div>
 
   <!-- 7.6 -->
-  <h2 class="sec">7.6 Real Problem: PCA — Inti dari AI Modern</h2>
+  <h2 class="sec">7.6 Real Problem: PCA - Inti dari AI Modern</h2>
 
   <p align="justify">
   <b>Principal Component Analysis (PCA)</b> mencari arah di mana data paling menyebar.
@@ -10721,6 +10721,862 @@ A=QDQ^T \\
     Nilai \(\kappa\) besar berarti permukaan loss berbentuk elips sangat lonjong. Gradient descent akan lambat; diperlukan momentum atau Adam.
   </div>
 
+<!-- 7.7 -->
+<h3 class="sec">7.7 Soal Tambahan: Bentuk Kuadrat, PCA, dan Optimasi</h3>
+
+<p align="justify">
+Catatan: kode SageMath di bawah dapat dijalankan di Sage Cell. Output numerik ditulis ringkas dan dibulatkan.
+</p>
+
+<div class="card example">
+<b>Soal 1: PCA data 2D.</b>
+Diberikan data
+\[
+(1,2),(2,3),(3,3),(4,3),(5,4).
+\]
+Tentukan matriks kovarians, nilai eigen, komponen utama, dan persentase varians yang dijelaskan komponen pertama.
+
+<br><b>Pembahasan:</b><br>
+Rata-rata data adalah
+\[
+\bar X=(3,3).
+\]
+Data terpusat:
+\[
+(-2,-1),(-1,0),(0,0),(1,0),(2,1).
+\]
+Matriks kovarians:
+\[
+C=\frac{1}{n-1}X_c^T X_c
+=
+\begin{bmatrix}
+2.5&1\\
+1&0.5
+\end{bmatrix}.
+\]
+Nilai eigen:
+\[
+\lambda_1=\frac{3+\sqrt8}{2}\approx 2.9142,\qquad
+\lambda_2=\frac{3-\sqrt8}{2}\approx 0.0858.
+\]
+Komponen utama pertama kira-kira searah \((0.9239,0.3827)\), yaitu arah dengan varians terbesar. Persentase varians komponen pertama:
+\[
+\frac{\lambda_1}{\lambda_1+\lambda_2}
+=
+\frac{2.9142}{3}
+\approx 97.14\%.
+\]
+Jadi hampir seluruh informasi data dapat direpresentasikan oleh satu dimensi.
+
+<br><b>SageMath:</b>
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 1: PCA data 2D.</span></div>
+<div class="compute"><script type="text/x-sage">
+X = matrix(RR, [[1,2],[2,3],[3,3],[4,3],[5,4]])
+n = X.nrows(); d = X.ncols()
+
+# Hitung mean
+m = vector(RR, [sum(X.column(j))/n for j in range(d)])
+
+# Matriks terpusat dan kovarians
+Xc = matrix(RR, [[X[i,j]-m[j] for j in range(d)] for i in range(n)])
+C = (Xc.transpose()*Xc)/(n-1)
+
+# Eigenvalues
+lam = C.eigenvalues()
+# Eigenvectors
+eig_right = C.eigenvectors_right()
+
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk membuat format matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i,j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk membuat format vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Mean (Format Tuple)
+m_str = "(" + ", ".join([fmt(x) for x in m]) + ")"
+display(html(r"$\text{mean} = %s$" % m_str))
+
+# 2. Matriks Kovarians C
+display(html(r"$C = %s$" % latex_matrix(C)))
+
+# 3. Eigenvalues (Format List)
+lam_str = "[" + ", ".join([fmt(l) for l in lam]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % lam_str))
+
+# 4. Eigenvectors (Vektor Kolom)
+for val, vecs, mult in eig_right:
+    for i, v in enumerate(vecs):
+        display(html(r"$\lambda = %s, \quad v_{%d} = %s$" % (fmt(val), i+1, latex_col_vector(v))))
+
+# 5. Variance explained
+var_exp = max(lam)/sum(lam)
+display(html(r"$\text{variance explained} = %s$" % fmt(var_exp)))
+</script>
+</div>
+</div>
+</div>
+
+<div class="card example">
+<b>Soal 2: Risiko portofolio Markowitz.</b>
+Matriks kovarians return dua aset adalah
+\[
+\Sigma=
+\begin{bmatrix}
+4&2\\
+2&3
+\end{bmatrix},
+\qquad
+w=
+\begin{bmatrix}
+0.6\\
+0.4
+\end{bmatrix}.
+\]
+Hitung risiko portofolio \(R(w)=w^T\Sigma w\) dan tentukan tanda nilai eigen \(\Sigma\).
+
+<br><b>Pembahasan:</b><br>
+\[
+R(w)=w^T\Sigma w
+=
+\begin{bmatrix}0.6&0.4\end{bmatrix}
+\begin{bmatrix}4&2\\2&3\end{bmatrix}
+\begin{bmatrix}0.6\\0.4\end{bmatrix}
+=2.88.
+\]
+Nilai eigen \(\Sigma\):
+\[
+\det(\Sigma-\lambda I)
+=(4-\lambda)(3-\lambda)-4
+=\lambda^2-7\lambda+8=0,
+\]
+sehingga
+\[
+\lambda_{1,2}=\frac{7\pm\sqrt{17}}{2}
+\approx 5.5615,\;1.4385.
+\]
+Karena kedua nilai eigen positif, \(\Sigma\) positif definit. Artinya risiko \(w^T\Sigma w>0\) untuk setiap \(w\neq 0\), sesuai fakta risiko portofolio tidak negatif.
+
+
+<br><b>SageMath:</b>
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 2: Risiko portofolio Markowitz.</span></div>
+<div class="compute"><script type="text/x-sage">
+S = matrix(RR, [[4,2],[2,3]])
+w = vector(RR, [0.6, 0.4])
+risk = w*S*w
+
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i,j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks Kovarians S
+display(html(r"$S = %s$" % latex_matrix(S)))
+
+# 2. Risiko Portofolio
+display(html(r"$\text{risk} = %s$" % fmt(risk)))
+
+# 3. Eigenvalues
+lam = S.eigenvalues()
+lam_str = "[" + ", ".join([fmt(l) for l in lam]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % lam_str))
+
+# 4. Positive Definite
+display(html(r"$\text{is positive definite? } %s$" % S.is_positive_definite()))
+
+# 5. Eigenvectors (Sebagai Vektor Kolom)
+eig_right = S.eigenvectors_right()
+for val, vecs, mult in eig_right:
+    for i, v in enumerate(vecs):
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+</script>
+</div>
+</div>
+</div>
+
+
+
+
+
+<div class="card example">
+<b>Soal 3: Hessian loss surface machine learning.</b>
+Diberikan Hessian
+\[
+H=
+\begin{bmatrix}
+3&1\\
+1&3
+\end{bmatrix}.
+\]
+Tentukan nilai eigen, jenis titik kritis, dan condition number.
+
+<br><b>Pembahasan:</b><br>
+Polinomial karakteristik:
+\[
+\det(H-\lambda I)
+=(3-\lambda)^2-1
+=\lambda^2-6\lambda+8
+=(\lambda-4)(\lambda-2).
+\]
+Jadi
+\[
+\lambda_1=4,\qquad \lambda_2=2.
+\]
+Karena semua nilai eigen positif, \(H\) positif definit dan titik kritis merupakan minimum lokal. Condition number:
+\[
+\kappa=\frac{\lambda_{\max}}{\lambda_{\min}}
+=\frac{4}{2}=2.
+\]
+Karena \(\kappa\) tidak terlalu besar, permukaan loss tidak terlalu lonjong; gradient descent relatif stabil.
+
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 3: Hessian loss surface machine learning.</span></div>
+<div class="compute"><script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS HESSIAN H ---
+# Ganti dengan Hessian dari persoalan Anda, misalnya:
+H = matrix(RR, [[4, 2], [2, 3]])
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks Hessian H
+display(html(r"$H = %s$" % latex_matrix(H)))
+
+# 2. Eigenvalues
+ev = H.eigenvalues()
+ev_str = "[" + ", ".join([fmt(l) for l in ev]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % ev_str))
+
+# 3. Positive Definite?
+display(html(r"$\text{is positive definite? } %s$" % H.is_positive_definite()))
+
+# 4. Condition Number
+# Catatan: untuk matriks simetris definit positif, cond = lambda_max / lambda_min
+cond = max(ev) / min(ev)
+display(html(r"$\text{condition number} = %s$" % fmt(cond)))
+
+# 5. Eigenvectors (sebagai vektor kolom)
+for val, vecs, mult in H.eigenvectors_right():
+    for v in vecs:
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+</script>
+</div>
+</div>
+</div>
+
+
+
+<div class="card example">
+<b>Soal 4: Geometri ellipsoid dari bentuk kuadrat.</b>
+Diberikan
+\[
+Q=
+\begin{bmatrix}
+2&1\\
+1&2
+\end{bmatrix}.
+\]
+Gambarkan sifat level set \(x^TQx=1\): tentukan nilai eigen, arah sumbu utama, dan panjang setengah sumbu.
+
+<br><b>Pembahasan:</b><br>
+Nilai eigen:
+\[
+\det(Q-\lambda I)
+=(2-\lambda)^2-1
+=\lambda^2-4\lambda+3
+=(\lambda-3)(\lambda-1).
+\]
+Jadi
+\[
+\lambda_1=3,\qquad \lambda_2=1.
+\]
+Vektor eigen untuk \(\lambda_1=3\) adalah \((1,1)/\sqrt2\), dan untuk \(\lambda_2=1\) adalah \((-1,1)/\sqrt2\). Pada level set
+\[
+x^TQx=1,
+\]
+panjang setengah sumbu adalah
+\[
+\frac{1}{\sqrt{\lambda_1}}=\frac1{\sqrt3},
+\qquad
+\frac{1}{\sqrt{\lambda_2}}=1.
+\]
+Jadi level set berupa elips dengan sumbu pendek pada arah \((1,1)\) dan sumbu panjang pada arah \((-1,1)\).
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 4: Geometri ellipsoid dari bentuk kuadrat.</span></div>
+<div class="compute"><script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS Q ---
+Q = matrix(RR, [[2, 1], [1, 2]])
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks Q
+display(html(r"$Q = %s$" % latex_matrix(Q)))
+
+# 2. Eigenvalues
+ev = Q.eigenvalues()
+ev_str = "[" + ", ".join([fmt(l) for l in ev]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % ev_str))
+
+# 3. Eigenvectors (sebagai vektor kolom)
+for val, vecs, mult in Q.eigenvectors_right():
+    for v in vecs:
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+
+# 4. Half-axis lengths = 1 / sqrt(eigenvalue)
+half_axes = [1 / sqrt(e) for e in ev]
+ha_str = "[" + ", ".join([fmt(x) for x in half_axes]) + "]"
+display(html(r"$\text{half-axis lengths} = %s$" % ha_str))
+</script>
+</div>
+</div>
+</div>
+
+
+
+<div class="card example">
+<b>Soal 5: Ridge regression sebagai bentuk kuadrat.</b>
+Diberikan matriks desain
+\[
+A=
+\begin{bmatrix}
+1&0\\
+0&1\\
+1&1
+\end{bmatrix}
+\]
+dan parameter regularisasi \(\lambda=2\). Bentuk Hessian ridge:
+\[
+H=A^TA+\lambda I.
+\]
+Hitung \(H\), nilai eigen, dan jelaskan definiteness-nya.
+
+<br><b>Pembahasan:</b><br>
+\[
+A^TA=
+\begin{bmatrix}
+1&0&1\\
+0&1&1
+\end{bmatrix}
+\begin{bmatrix}
+1&0\\
+0&1\\
+1&1
+\end{bmatrix}
+=
+\begin{bmatrix}
+2&1\\
+1&2
+\end{bmatrix}.
+\]
+Maka
+\[
+H=A^TA+2I
+=
+\begin{bmatrix}
+2&1\\
+1&2
+\end{bmatrix}
++
+\begin{bmatrix}
+2&0\\
+0&2
+\end{bmatrix}
+=
+\begin{bmatrix}
+4&1\\
+1&3
+\end{bmatrix}.
+\]
+Nilai eigen:
+\[
+\det(H-\mu I)
+=(4-\mu)(3-\mu)-1
+=\mu^2-7\mu+11.
+\]
+Jadi
+\[
+\mu_{1,2}=\frac{7\pm\sqrt5}{2}
+\approx 4.618,\;2.382.
+\]
+Karena semua nilai eigen positif, \(H\) positif definit. Ridge regression menambahkan \(\lambda I\) sehingga Hessian lebih stabil dan masalah optimasi lebih teratur.
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 5: Ridge regression sebagai bentuk kuadrat.</span></div>
+<div class="compute"><script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS A DAN HESSIAN H ---
+A   = matrix(RR, [[1, 0], [0, 1], [1, 1]])
+lam = 2
+ATA = A.transpose() * A
+H   = ATA + lam * identity_matrix(2)
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks A
+display(html(r"$A = %s$" % latex_matrix(A)))
+
+# 2. A^T A
+display(html(r"$A^{T}A = %s$" % latex_matrix(ATA)))
+
+# 3. H = A^T A + lambda I  (dengan lambda = 2)
+display(html(r"$H = A^{T}A + \lambda I = %s,\quad \lambda = %s$"
+             % (latex_matrix(H), fmt(lam))))
+
+# 4. Eigenvalues
+ev = H.eigenvalues()
+ev_str = "[" + ", ".join([fmt(l) for l in ev]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % ev_str))
+
+# 5. Positive Definite?
+display(html(r"$\text{is positive definite? } %s$" % H.is_positive_definite()))
+
+# 6. (Opsional) Eigenvectors sebagai vektor kolom
+for val, vecs, mult in H.eigenvectors_right():
+    for v in vecs:
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+</script>
+</div>
+</div>
+</div>
+
+
+<div class="card example">
+<b>Soal 6: Kompresi citra dan rank satu.</b>
+Matriks kovarians fitur citra adalah
+\[
+C=
+\begin{bmatrix}
+8&4\\
+4&2
+\end{bmatrix}.
+\]
+Tentukan nilai eigen, komponen utama, dan persentase varians komponen pertama.
+
+<br><b>Pembahasan:</b><br>
+\[
+\det(C-\lambda I)
+=(8-\lambda)(2-\lambda)-16
+=\lambda^2-10\lambda
+=\lambda(\lambda-10).
+\]
+Jadi
+\[
+\lambda_1=10,\qquad \lambda_2=0.
+\]
+Komponen utama pertama adalah vektor eigen untuk \(\lambda_1=10\). Dari
+\[
+(C-10I)v=0
+\Rightarrow
+\begin{bmatrix}-2&4\\4&-8\end{bmatrix}v=0,
+\]
+diperoleh \(v=(2,1)/\sqrt5\). Persentase varians:
+\[
+\frac{10}{10+0}=100\%.
+\]
+Karena \(\lambda_2=0\), data sebenarnya berpangkat satu. Inilah dasar reduksi dimensi dan kompresi citra: banyak fitur dapat diringkas menjadi satu arah utama.
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 6: Kompresi citra dan rank satu.</span></div>
+<div class="compute">
+<script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS KOVARIANS C ---
+C = matrix(RR, [[8, 4], [4, 2]])
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks C
+display(html(r"$C = %s$" % latex_matrix(C)))
+
+# 2. Eigenvalues
+ev = C.eigenvalues()
+ev_str = "[" + ", ".join([fmt(l) for l in ev]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % ev_str))
+
+# 3. Eigenvectors (sebagai vektor kolom)
+for val, vecs, mult in C.eigenvectors_right():
+    for v in vecs:
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+
+# 4. Variance explained = lambda_max / sum(lambda)
+var_exp = max(ev) / sum(ev)
+display(html(r"$\text{variance explained} = %s$" % fmt(var_exp)))
+
+# 5. Rank
+display(html(r"$\text{rank}(C) = %s$" % C.rank()))
+</script>
+</div>
+</div>
+</div>
+
+
+
+<div class="card example">
+<b>Soal 7 (Optimasi 1): Rayleigh quotient pada lingkaran satuan.</b>
+Maksimumkan dan minimumkan
+\[
+f(x)=x^TQx,
+\qquad
+Q=
+\begin{bmatrix}
+5&2\\
+2&2
+\end{bmatrix},
+\]
+dengan kendala \(\|x\|^2=x_1^2+x_2^2=1\).
+
+<br><b>Pembahasan:</b><br>
+Untuk masalah Rayleigh quotient pada \(\|x\|=1\), nilai maksimum dan minimum adalah nilai eigen terbesar dan terkecil dari \(Q\). Polinomial karakteristik:
+\[
+\det(Q-\lambda I)
+=(5-\lambda)(2-\lambda)-4
+=\lambda^2-7\lambda+6
+=(\lambda-6)(\lambda-1).
+\]
+Jadi
+\[
+\lambda_{\max}=6,\qquad \lambda_{\min}=1.
+\]
+Maksimum \(f=6\) dicapai pada vektor eigen untuk \(\lambda=6\):
+\[
+(Q-6I)x=0
+\Rightarrow
+\begin{bmatrix}-1&2\\2&-4\end{bmatrix}x=0
+\Rightarrow
+x=\frac1{\sqrt5}(2,1).
+\]
+Minimum \(f=1\) dicapai pada vektor eigen untuk \(\lambda=1\):
+\[
+(Q-I)x=0
+\Rightarrow
+\begin{bmatrix}4&2\\2&1\end{bmatrix}x=0
+\Rightarrow
+x=\frac1{\sqrt5}(1,-2).
+\]
+Jadi arah \((2,1)\) adalah arah varians/energi terbesar, sedangkan \((1,-2)\) adalah arah dengan energi terkecil.
+
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 7 (Optimasi 1): Rayleigh quotient pada lingkaran satuan.</span></div>
+<div class="compute">
+<script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS Q ---
+Q = matrix(RR, [[5, 2], [2, 2]])
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks Q
+display(html(r"$Q = %s$" % latex_matrix(Q)))
+
+# 2. Eigenvalues
+ev = Q.eigenvalues()
+ev_str = "[" + ", ".join([fmt(l) for l in ev]) + "]"
+display(html(r"$\text{eigenvalues} = %s$" % ev_str))
+
+# 3. Max & Min Rayleigh Quotient
+# Untuk matriks simetris: max Rayleigh = lambda_max, min Rayleigh = lambda_min
+display(html(r"$\text{max Rayleigh} = %s$" % fmt(max(ev))))
+display(html(r"$\text{min Rayleigh} = %s$" % fmt(min(ev))))
+
+# 4. Eigenvectors (sebagai vektor kolom)
+for val, vecs, mult in Q.eigenvectors_right():
+    for v in vecs:
+        display(html(r"$\lambda = %s, \quad v = %s$" % (fmt(val), latex_col_vector(v))))
+</script>
+</div>
+</div>
+</div>
+
+<div class="card example">
+<b>Soal 8 (Optimasi 2): Minimisasi varians portofolio dengan kendala anggaran.</b>
+Diberikan matriks kovarians
+\[
+\Sigma=
+\begin{bmatrix}
+4&2\\
+2&3
+\end{bmatrix}.
+\]
+Minimumkan risiko portofolio
+\[
+R(w)=w^T\Sigma w
+\]
+dengan kendala
+\[
+w_1+w_2=1.
+\]
+Tentukan bobot optimal dan risiko minimumnya.
+
+<br><b>Pembahasan:</b><br>
+Gunakan Lagrange:
+\[
+L(w,\mu)=w^T\Sigma w+\mu(1-w_1-w_2).
+\]
+Syarat stasioner:
+\[
+2\Sigma w-\mu\mathbf 1=0,
+\qquad
+\mathbf 1^Tw=1.
+\]
+Solusi bobot minimum varians adalah
+\[
+w^*=
+\frac{\Sigma^{-1}\mathbf 1}
+{\mathbf 1^T\Sigma^{-1}\mathbf 1}.
+\]
+Karena
+\[
+\Sigma^{-1}
+=
+\frac18
+\begin{bmatrix}
+3&-2\\
+-2&4
+\end{bmatrix},
+\]
+maka
+\[
+\Sigma^{-1}\mathbf 1
+=
+\frac18
+\begin{bmatrix}1\\2\end{bmatrix},
+\qquad
+\mathbf 1^T\Sigma^{-1}\mathbf 1
+=
+\frac38.
+\]
+Sehingga
+\[
+w^*
+=
+\frac{(1/8,2/8)}{3/8}
+=
+\left(\frac13,\frac23\right).
+\]
+Risiko minimum:
+\[
+R(w^*)
+=
+\frac{1}{\mathbf 1^T\Sigma^{-1}\mathbf 1}
+=
+\frac{8}{3}
+\approx 2.667.
+\]
+Karena kedua bobot positif, solusi ini juga memenuhi batasan tanpa short-selling.
+
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell Soal 8 (Optimasi 2): Minimisasi varians portofolio dengan kendala anggaran.</span></div>
+<div class="compute">
+<script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    # Hapus nol di belakang koma, lalu pastikan tetap ada ".0" jika bilangan bulat
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX
+def latex_matrix(M):
+    rows = []
+    for i in range(M.nrows()):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(M.ncols())]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# Fungsi bantuan untuk vektor KOLOM LaTeX
+def latex_col_vector(v):
+    return r"\begin{pmatrix} " + r" \\ ".join([fmt(x) for x in v]) + r" \end{pmatrix}"
+
+# --- MATRIKS KOVARIANS S ---
+S    = matrix(RR, [[4, 2], [2, 3]])
+one  = vector(RR, [1, 1])
+Sinv = S.inverse()
+
+# Bobot optimal: w = S^{-1} 1 / (1^T S^{-1} 1)
+denom = one * Sinv * one
+w     = Sinv * one / denom
+
+# Risiko minimum: w^T S w
+risk = w * S * w
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Matriks kovarians S
+display(html(r"$S = %s$" % latex_matrix(S)))
+
+# 2. Invers matriks kovarians
+display(html(r"$S^{-1} = %s$" % latex_matrix(Sinv)))
+
+# 3. Bobot optimal
+display(html(r"$w = \dfrac{S^{-1}\mathbf{1}}{\mathbf{1}^{T}S^{-1}\mathbf{1}} = %s$"
+             % latex_col_vector(w)))
+
+# 4. Risiko minimum
+display(html(r"$\text{minimum risk} = w^{T}Sw = %s$" % fmt(risk)))
+</script>
+</div>
+</div>
+</div>
+
+
   <h2 class="sec">Intisari</h2>
   <div class="card def">
     <ol>
@@ -10743,9 +11599,9 @@ A=QDQ^T \\
   </div>
 
   <h3>Komputasi SageMath  Semua Konsep 7.1–7.6</h3>
-  <div class="sage">
-    <div class="sage-header"><span>SageMath Cell — Ortogonal, Kuadratik, Optimasi, Hermitian</span></div>
-    <div class="compute"><script type="text/x-sage">
+<div class="sage">
+<div class="sage-header"><span>SageMath Cell — Ortogonal, Kuadratik, Optimasi, Hermitian</span></div>
+<div class="compute"><script type="text/x-sage">
 from sage.all import *
 
 # 7.1-7.2 Diagonalisasi ortogonal
@@ -10783,8 +11639,9 @@ Dpca, Qpca = C.eigenmatrix_right()
 display(html(r"$C = %s$" % latex(C.n(digits=4))))
 display(html(r"$\text{Eigenvalues PCA} = %s$" % latex([val.n(digits=4) for val in Dpca.diagonal()])))
 display(html(r"$\text{Principal components} = %s$" % latex(Qpca.n(digits=4))))
-    </script></div>
-  </div>
+</script>
+</div>
+</div>
 
   <div class="card example">
     <b>Latihan: 10 Soal + Real Problem (dengan Hint dan Pembahasan)</b>
@@ -10837,14 +11694,7 @@ display(html(r"$\text{Principal components} = %s$" % latex(Qpca.n(digits=4))))
     <div class="sage-header"><span>SageMath Cell — Latihan Bab 7</span></div>
     <div class="compute"><script type="text/x-sage">
 # Gunakan sel ini untuk mengerjakan 10 soal di atas
-from sage.all import *
 
-A = matrix(RDF, [[3,1],[1,3]])
-display(html(r"$A = %s$"%latex(A)))
-display(html(r"$\text{Eigen} = %s$" % latex([val.n(digits=4) for val in A.eigenvalues()])))
-D, Q = A.eigenmatrix_right()
-display(html(r"$D = %s$" % latex(D.n(digits=4))))
-display(html(r"$Q = %s$" % latex(Q.n(digits=4))))
     </script></div>
   </div>
 </section>
@@ -11513,7 +12363,7 @@ display(html(r"""
   </div>
 
   <p align="justify" style="margin-top:16px;">
-  <b>Pesan utama:</b> Transformasi linier adalah <b>jembatan</b> antara aljabar abstrak dan aplikasi nyata di Riset Operasi. Dengan memahami Kernel, Image, Rank–Nullity, komposisi, invers, isomorfisma, representasi matriks, similaritas, dan geometri operator, Anda memiliki <b>perangkat lengkap</b> untuk menganalisis dan menyelesaikan masalah optimasi, produksi, ekonomi, dan sistem dinamis. Setiap model RO — dari LP hingga Markov — pada dasarnya adalah transformasi linier. Menguasai bab ini berarti menguasai fondasi matematis dari seluruh Riset Operasi.
+  <b>Pesan utama:</b> Transformasi linier adalah <b>jembatan</b> antara aljabar abstrak dan aplikasi nyata di Riset Operasi. Dengan memahami Kernel, Image, Rank–Nullity, komposisi, invers, isomorfisma, representasi matriks, similaritas, dan geometri operator, Anda memiliki <b>perangkat lengkap</b> untuk menganalisis dan menyelesaikan masalah optimasi, produksi, ekonomi, dan sistem dinamis. Setiap model RO — dari LP hingga Markov pada dasarnya adalah transformasi linier. Menguasai bab ini berarti menguasai fondasi matematis dari seluruh Riset Operasi.
   </p>
 
 </section>
@@ -11618,7 +12468,7 @@ display(html(r"""
 </div>
 
   <p align="justify">
-  Untuk matriks besar \(n>1000\) seperti yang muncul di Riset Operasi (model transportasi 100 gudang x 1000 pelanggan, atau matriks input-output 500 sektor), eliminasi Gauss biasa terlalu mahal dan tidak stabil. Bab ini membahas <b>tiga dekomposisi yang menjadi mesin utama optimasi modern</b>. Di RO, matriks \(A\) (teknologi, biaya) sering tetap, tapi vektor \(b\) (permintaan, ketersediaan) berubah-ubah untuk analisis skenario. Kita butuh metode yang faktorkan sekali, pakai berkali-kali.
+  Untuk matriks besar \(n > 1000\) seperti yang muncul di Riset Operasi (model transportasi 100 gudang x 1000 pelanggan, atau matriks input-output 500 sektor), eliminasi Gauss biasa terlalu mahal dan tidak stabil. Bab ini membahas <b>tiga dekomposisi yang menjadi mesin utama optimasi modern</b>. Di RO, matriks \(A\) (teknologi, biaya) sering tetap, tapi vektor \(b\) (permintaan, ketersediaan) berubah-ubah untuk analisis skenario. Kita butuh metode yang faktorkan sekali, pakai berkali-kali.
   </p>
 
   <!-- 9.1 -->
@@ -11633,8 +12483,501 @@ display(html(r"""
     \(A=LU\), \(L\) unit lower triangular, \(U\) upper. Dengan pivoting \(PA=LU\). Solusi: \(Ly=b\) (maju), \(Ux=y\) (mundur). Jika \(A\) SPD (simetris definit positif) → Cholesky \(A=LL^T\) setengah biaya, sangat stabil untuk model kuadratik.
   </div>
   <div class="card example">
-    <b>Contoh RO:</b> \(A=\begin{bmatrix}2&1&1\\4&3&3\\8&7&9\end{bmatrix}\) → \(L=[[1,0,0],[2,1,0],[4,3,1]], U=[[2,1,1],[0,1,1],[0,0,2]]\). Untuk \(b=(4,10,24)^T\), \(Ly=b\) → \(y=(4,2,2)^T\), \(Ux=y\) → \(x=(1,1,1)^T\). Untuk skenario baru \(b'=(2,5,13)^T\), tidak perlu LU lagi, langsung substitusi → \(y'=(2,1,1)\), \(x'=(0.5,0.5,0.5)\).
-  </div>
+  <b>Contoh RO (dilengkapi langkah):</b>
+  \(A=\begin{bmatrix}2&1&1\\4&3&3\\8&7&9\end{bmatrix}\).
+  Eliminasi kolom 1: baris\(_2\leftarrow\) baris\(_2-2\cdot\)baris\(_1\),
+  baris\(_3\leftarrow\) baris\(_3-4\cdot\)baris\(_1\) → multiplier
+  \(m_{21}=2,\ m_{31}=4\). Hasil antara:
+  \(\begin{bmatrix}2&1&1\\0&1&1\\0&3&5\end{bmatrix}\).
+  Eliminasi kolom 2: baris\(_3\leftarrow\) baris\(_3-3\cdot\)baris\(_2\)
+  → multiplier \(m_{32}=3\). Hasil akhir
+  \(U=\begin{bmatrix}2&1&1\\0&1&1\\0&0&2\end{bmatrix}\), dan multiplier
+  ditempel ke \(L\):
+  \(L=\begin{bmatrix}1&0&0\\2&1&0\\4&3&1\end{bmatrix}\).
+  Cek: \(LU=\begin{bmatrix}2&1&1\\4&3&3\\8&7&9\end{bmatrix}=A\). ✓
+  Untuk \(b=(4,10,24)^{T}\), substitusi maju \(Ly=b\) memberi
+  \(y=(4,2,2)^{T}\), lalu substitusi mundur \(Ux=y\) memberi
+  \(x=(1,1,1)^{T}\). Untuk skenario baru \(b'=(2,5,13)^{T}\), <b>tanpa</b>
+  faktorisasi ulang: \(y'=(2,1,1)^{T}\), \(x'=(0.5,0.5,0.5)^{T}\).
+</div>
+
+<h3 class="subsec">9.1.1 Penurunan Matematis: Dari Eliminasi Gauss ke \(A=LU\)</h3>
+<p align="justify">
+  Supaya dekomposisi LU tidak terasa seperti "sulap", kita turunkan dari satu ide
+  yang sangat mendasar: <b>setiap operasi baris pada eliminasi Gauss dapat
+  direpresentasikan sebagai perkalian dengan sebuah matriks</b>. Ambil operasi
+  klasik "kurangi baris \(j\) dengan \(m_{ji}\) kali baris \(i\)":
+  \[
+    \text{baris}_j \;\leftarrow\; \text{baris}_j - m_{ji}\,\text{baris}_i .
+  \]
+  Operasi ini identik dengan mengalikan \(A\) dari kiri dengan matriks
+  <b>unit lower triangular</b> \(E_{ji}=I - m_{ji}\,e_j e_i^{T}\), yaitu matriks
+  identitas yang <i>satu-satunya</i> elemen bukan-nol di luar diagonal adalah
+  \(-m_{ji}\) pada posisi \((j,i)\), dengan \(j>i\).
+</p>
+
+<p align="justify">
+  Eliminasi Gauss penuh pada \(A_{n\times n}\) adalah komposisi berhingga
+  operasi-operasi semacam itu. Jika kita pakai urutan kolom-per-kolom:
+  <b>kolom 1</b> dulu (eliminasi \(a_{21},\dots,a_{n1}\)), lalu <b>kolom 2</b>
+  (eliminasi \(a_{32},\dots,a_{n2}\)), dan seterusnya, maka
+  \[
+    E_{n,n-1}\cdots E_{n,1}\,E_{n-1,n-2}\cdots E_{3,1}\,E_{2,1}\,A = U,
+  \]
+  dengan \(U\) adalah bentuk <b>upper triangular</b> hasil eliminasi. Kalikan
+  kedua sisi dengan inversnya:
+  \[
+    A \;=\; \underbrace{E_{2,1}^{-1}E_{3,1}^{-1}\cdots E_{n,n-1}^{-1}}_{:=\,L}\;U .
+  \]
+  Karena invers \(E_{ji}^{-1}=I + m_{ji}\,e_j e_i^{T}\) juga unit lower
+  triangular, dan hasil kali matriks-matriks unit lower triangular tetap unit
+  lower triangular, maka \(L\) <b>pasti</b> unit lower triangular. Selesai —
+  inilah bukti eksistensi \(A=LU\).
+</p>
+
+<div class="card def">
+  <b>Hasil kunci (struktur \(L\)).</b> Entri \(L\) ternyata <i>persis</i> multiplier yang kita pakai
+  saat eliminasi:
+  \[
+    L \;=\;
+    \begin{bmatrix}
+      1      & 0      & \cdots & 0 \\
+      m_{21} & 1      & \cdots & 0 \\
+      \vdots & m_{32} & \ddots & \vdots \\
+      m_{n1} & m_{n2} & \cdots & 1
+    \end{bmatrix},\qquad
+    U \;=\; \text{bentuk eselon baris dari } A .
+  \]
+  Tidak perlu menghitung invers apa pun — cukup <i>catat</i> setiap multiplier
+  ke dalam \(L\). Inilah alasan LU disebut "tulang punggung" metode simpleks:
+  faktorisasi yang lahir langsung dari proses eliminasi.
+</div>
+
+<p align="justify">
+  <b>Verifikasi kecil (mengapa hasilnya konsisten).</b> Ilustrasi \(3\times3\)
+  dengan tiga operasi:
+  \(E_{21}\) (eliminasi \(a_{21}\)), \(E_{31}\) (eliminasi \(a_{31}\)),
+  \(E_{32}\) (eliminasi \(a_{32}\)). Maka
+  \[
+    L \;=\; E_{21}^{-1}E_{31}^{-1}E_{32}^{-1}
+        \;=\; \bigl(I+m_{21}e_2e_1^{T}\bigr)
+              \bigl(I+m_{31}e_3e_1^{T}\bigr)
+              \bigl(I+m_{32}e_3e_2^{T}\bigr).
+  \]
+  Karena \(e_1^{T}e_3=0\) dan \(e_2^{T}e_1=0\), semua perkalian silang
+  yang "tidak searah" lenyap, sehingga hasil akhirnya persis berbentuk
+  \[
+    L=\begin{bmatrix}1&0&0\\ m_{21}&1&0\\ m_{31}&m_{32}&1\end{bmatrix}.
+  \]
+  Inilah sebabnya multiplier dapat "ditempel" di posisi \((j,i)\) tanpa saling
+  mengganggu.
+</p>
+
+<div class="card example">
+  <b>Contoh lengkap substitusi maju–mundur.</b>
+  Ambil matriks yang sama dengan §9.1.1:
+  \[
+    A=\begin{bmatrix}1&2&3\\[2pt]4&5&6\\[2pt]7&8&10\end{bmatrix}.
+  \]
+  Dari eliminasi Gauss diperoleh multiplier \(m_{21}=4,\ m_{31}=7,\ m_{32}=2\),
+  sehingga
+  \[
+    L=\begin{bmatrix}1&0&0\\[2pt]4&1&0\\[2pt]7&2&1\end{bmatrix},
+    \qquad
+    U=\begin{bmatrix}1&2&3\\[2pt]0&-3&-6\\[2pt]0&0&1\end{bmatrix}.
+  \]
+  Cek cepat: \(LU=A\). ✓
+
+  <br><br>
+  <b>Skenario pertama: \(b=(6,\,15,\,25)^{T}\).</b>
+
+  <br>
+  <i>Langkah 1 — Substitusi maju \(Ly=b\).</i>
+  Karena \(L_{ii}=1\), tiap baris memberi satu persamaan skalar:
+  \[
+    \begin{aligned}
+      y_1 &= 6, \\[2pt]
+      y_2 &= 15 - 4\,y_1 = 15 - 24 = -9, \\[2pt]
+      y_3 &= 25 - 7\,y_1 - 2\,y_2
+           = 25 - 42 + 18 = 1 .
+    \end{aligned}
+  \]
+  Jadi \(y=(6,\,-9,\,1)^{T}\).
+
+  <br>
+  <i>Langkah 2 — Substitusi mundur \(Ux=y\).</i>
+  Kali ini kita mulai dari baris <b>paling bawah</b>:
+  \[
+    \begin{aligned}
+      x_3 &= \frac{1}{1} = 1, \\[4pt]
+      x_2 &= \frac{-9 - (-6)\,x_3}{-3}
+           = \frac{-9+6}{-3} = 1, \\[4pt]
+      x_1 &= \frac{6 - 2\,x_2 - 3\,x_3}{1}
+           = \frac{6-2-3}{1} = 1.
+    \end{aligned}
+  \]
+  Jadi \(x=(1,\,1,\,1)^{T}\).
+  Verifikasi: \(A\,(1,1,1)^{T}=(6,\,15,\,25)^{T}\). ✓
+
+  <br><br>
+  <b>Skenario kedua: \(b'=(1,\,2,\,3)^{T}\).</b>
+  <i>Tidak ada faktorisasi ulang!</i> \(L\) dan \(U\) yang sama dipakai kembali.
+  Inilah inti moto "faktorkan sekali, pakai berkali-kali".
+
+  <br>
+  <i>Substitusi maju \(Ly=b'\):</i>
+  \[
+    y_1'=1,\quad
+    y_2'=2-4\cdot 1=-2,\quad
+    y_3'=3-7\cdot 1-2\cdot(-2)=0 .
+  \]
+  <i>Substitusi mundur \(Ux'=y'\):</i>
+  \[
+    x_3'=0,\quad
+    x_2'=\frac{-2-(-6)\cdot 0}{-3}=\frac{2}{3},\quad
+    x_1'=\frac{1-2\cdot\tfrac{2}{3}-3\cdot 0}{1}=-\frac{1}{3}.
+  \]
+  Jadi \(x'=\bigl(-\tfrac13,\ \tfrac23,\ 0\bigr)^{T}\).
+  Verifikasi: \(A\,x'=(1,\,2,\,3)^{T}\). ✓
+</div>
+
+
+<div class="card def">
+  <b>Analisis biaya operasi (mengapa LU unggul untuk banyak skenario).</b>
+  Untuk matriks \(n\times n\), hitungan kasar operasi aritmetik:
+  <ul>
+    <li>Faktorisasi \(A=LU\) (sekali saja): \(\approx \tfrac{2}{3}n^{3}\).</li>
+    <li>Substitusi maju \(Ly=b\): \(\approx n^{2}/2\).</li>
+    <li>Substitusi mundur \(Ux=y\): \(\approx n^{2}/2\).</li>
+    <li><b>Biaya per skenario</b> setelah LU tersedia: \(\approx n^{2}\) (bukan \(n^{3}\)!).</li>
+  </ul>
+  Untuk \(m\) skenario \(b_1,\dots,b_m\):
+  \[
+    \text{Gauss biasa: } m\cdot\tfrac{2}{3}n^{3}
+    \qquad\text{vs}\qquad
+    \text{LU: } \tfrac{2}{3}n^{3} + m\cdot n^{2}.
+  \]
+  Rasio biayanya \(\approx \dfrac{m\cdot\tfrac{2}{3}n^{3}}{\tfrac{2}{3}n^{3}+m\,n^{2}} \approx \dfrac{m}{\,1+\tfrac{3m}{2n}\,}\).
+  Untuk \(n=1000\) dan \(m=1000\), rasionya \(\approx \dfrac{1000}{1+\tfrac32}\approx 400\),
+  yaitu <b>ratusan kali lebih cepat</b> (≈ 2.5–3 orde besaran).
+  Inilah sebabnya perangkat lunak RO (Lindo, CPLEX, Gurobi) <i>tidak pernah</i>
+  menghitung ulang \(A^{-1}b\) atau eliminasi Gauss di setiap iterasi simpleks:
+  mereka memelihara \(LU\) dari matriks basis \(B\) dan meng-update-nya secara
+  inkremental (misalnya metode <i>product form of the inverse</i> atau
+  <i>Forrest–Tomlin</i>). Dengan cara ini, 100 gudang × 1000 pelanggan atau
+  model input-output 500 sektor tetap dapat diselesaikan dalam hitungan detik
+   sesuatu yang mustahil jika tiap skenario harus dieliminasi dari awal.
+</div>
+
+
+<h3 class="subsec">9.1.2 Mengapa \(L\) dan \(U\) Berguna: Substitusi Maju–Mundur</h3>
+<p align="justify">
+  Setelah \(A=LU\) tersedia, menyelesaikan \(Ax=b\) dipecah menjadi dua sistem
+  segitiga:
+  \[
+    A x = b
+    \;\Longleftrightarrow\;
+    \underbrace{L y = b}_{\text{substitusi maju }O(n^{2})},
+    \quad
+    \underbrace{U x = y}_{\text{substitusi mundur }O(n^{2})}.
+  \]
+  <b>Substitusi maju</b> menyelesaikan \(Ly=b\) baris demi baris dari atas:
+  \[
+    y_i = b_i - \sum_{j < i} L_{ij}\,y_j, \qquad i=1,\dots,n,
+  \]
+  karena \(L_{ii}=1\). Setelah \(y\) diperoleh, <b>substitusi mundur</b> pada
+  \(Ux=y\) bekerja dari bawah:
+  \[
+    x_i = \frac{1}{U_{ii}}\Bigl(y_i - \sum_{j > i} U_{ij}\,x_j\Bigr),
+    \qquad i=n,\dots,1 .
+  \]
+  Bandingkan dengan eliminasi Gauss pada tiap \(b\): \(O(n^{3})\) per skenario.
+  Dengan LU: <b>satu kali</b> \(O(n^{3})\) untuk faktorisasi, lalu
+  \(1000\cdot O(n^{2})\) untuk 1000 skenario. Untuk \(n=1000\), ini selisih
+  sekitar <b>tiga orde besaran</b> inti dari moto "faktorkan sekali, pakai
+  berkali-kali".
+</p>
+
+<h3 class="subsec">9.1.3 Pivoting: \(PA=LU\) untuk Stabilitas Numerik</h3>
+<p align="justify">
+  Penurunan di §9.1.1 diam-diam mengasumsikan <b>pivot tidak nol</b> (\(a_{kk}\neq0\)).
+  Kenyataannya, dalam model RO dengan matriks jarang (transportasi, input-output),
+  pivot bisa bernilai nol atau sangat kecil. Solusinya: <b>tukar baris</b>
+  sebelum eliminasi. Setiap penukaran baris \(i\leftrightarrow j\) adalah
+  perkalian dengan matriks permutasi \(P_{ij}\), sehingga
+  \[
+    P_{n,n-1}\cdots P_{3,1}\,A = LU
+    \quad\Longrightarrow\quad
+    \boxed{\,PA=LU\,}.
+  \]
+  Menyelesaikan \(Ax=b\) lalu menjadi
+  \[
+    LUx = Pb \;\Longrightarrow\; Ly = Pb \text{ (maju)},\quad Ux=y\text{ (mundur)} .
+  \]
+  Perhatikan: \(P\) hanya "memindahkan" baris \(b\); faktorisasi \(L,U\)
+  <b>tidak diulang</b>. Software seperti Lindo, CPLEX, Gurobi mengombinasikan
+  pivoting parsial (pilih pivot terbesar di kolom) dengan struktur jarang
+  \(L,U\) inilah "LU jarang" (<i>sparse LU</i>) yang membuat model 100×1000
+  tetap dapat diselesaikan dalam hitungan detik.
+</p>
+
+<div class="card example">
+  <b>Contoh lengkap: pivot nol memaksa \(PA=LU\).</b>
+  Tinjau matriks
+  \[
+    A=\begin{bmatrix}0&1&2\\[2pt]1&3&1\\[2pt]2&2&1\end{bmatrix}.
+  \]
+  Karena \(a_{11}=0\), eliminasi Gauss langsung memberi
+  \(m_{21}=1/a_{11}=1/0\) <b>pembagian oleh nol</b>. Eliminasi berhenti.
+  Inilah kasus paling elementer di mana \(PA=LU\) wajib dipakai. Perhatikan
+  juga bahwa \(A\) non-singular: \(\det A=-7\neq 0\), jadi solusi \(Ax=b\)
+  pasti ada dan tunggal masalahnya murni numerik, bukan aljabar.
+
+  <br><br>
+  <b>Langkah 1 pilih pivot di kolom 1 dan tukar.</b>
+  Elemen kolom 1 adalah \((0,\,1,\,2)^{T}\); yang terbesar nilai mutlaknya
+  \(a_{31}=2\) (baris 3). <i>Pivoting parsial</i> menukar baris 1 dengan baris 3:
+  \[
+    P_1=\begin{bmatrix}0&0&1\\[2pt]0&1&0\\[2pt]1&0&0\end{bmatrix},
+    \qquad
+    P_1A=\begin{bmatrix}2&2&1\\[2pt]1&3&1\\[2pt]0&1&2\end{bmatrix}.
+  \]
+  Pivot \(a_{11}^{\ast}=2\neq 0\) aman.
+
+  <br>
+  <b>Langkah 2 eliminasi kolom 1.</b>
+  Multiplier:
+  \(m_{21}=\dfrac{1}{2}\),
+  \(m_{31}=\dfrac{0}{2}=0\).
+  \[
+    \text{baris}_2\leftarrow \text{baris}_2-\tfrac12\,\text{baris}_1
+    = \bigl[0,\ 2,\ \tfrac12\bigr],
+  \]
+  \[
+    \text{baris}_3\leftarrow \text{baris}_3
+    = \bigl[0,\ 1,\ 2\bigr]\quad(\text{karena } m_{31}=0).
+  \]
+  Matriks aktif setelah langkah 2:
+  \[
+    U^{(2)}=\begin{bmatrix}2&2&1\\[2pt]0&2&\tfrac12\\[2pt]0&1&2\end{bmatrix},
+    \qquad
+    L^{(2)}=\begin{bmatrix}1&0&0\\[2pt]\tfrac12&1&0\\[2pt]0&0&1\end{bmatrix}.
+  \]
+  (Kita baru "menyimpan" \(m_{21}\), \(m_{31}\) pada \(L\); sisanya nanti.)
+
+  <br>
+  <b>Langkah 3 — pivot kolom 2.</b>
+  Kandidat pivot di kolom 2 adalah
+  \(|U^{(2)}_{22}|=2\) (baris 2) dan \(|U^{(2)}_{32}|=1\) (baris 3).
+  Yang terbesar sudah di posisi pivot, jadi <b>tidak perlu tukar baris</b>
+  (\(P_2=I\)). Ini ilustrasi bagus: pivoting parsial <i>tidak selalu</i>
+  menukar; ia menukar hanya bila ada elemen yang lebih besar.
+  Multiplier:
+  \(m_{32}=\dfrac{1}{2}\),
+  \[
+    \text{baris}_3\leftarrow\text{baris}_3-\tfrac12\,\text{baris}_2
+    = \bigl[0,\ 0,\ 2-\tfrac14\bigr]
+    = \bigl[0,\ 0,\ \tfrac74\bigr].
+  \]
+
+  <br><br>
+  <b>Hasil faktorisasi.</b>
+  \[
+    U=\begin{bmatrix}2&2&1\\[2pt]0&2&\tfrac12\\[2pt]0&0&\tfrac74\end{bmatrix},
+    \qquad
+    L=\begin{bmatrix}1&0&0\\[2pt]\tfrac12&1&0\\[2pt]0&\tfrac12&1\end{bmatrix},
+    \qquad
+    P=P_2P_1=P_1=\begin{bmatrix}0&0&1\\[2pt]0&1&0\\[2pt]1&0&0\end{bmatrix}.
+  \]
+  Cek \(PA=LU\):
+  \[
+    PA=\begin{bmatrix}2&2&1\\[2pt]1&3&1\\[2pt]0&1&2\end{bmatrix},
+    \qquad
+    LU=\begin{bmatrix}1&0&0\\[2pt]\tfrac12&1&0\\[2pt]0&\tfrac12&1\end{bmatrix}
+        \begin{bmatrix}2&2&1\\[2pt]0&2&\tfrac12\\[2pt]0&0&\tfrac74\end{bmatrix}
+       =\begin{bmatrix}2&2&1\\[2pt]1&3&1\\[2pt]0&1&2\end{bmatrix}
+       =PA.\ \checkmark
+  \]
+
+  <br><br>
+  <b>Menyelesaikan \(Ax=b\) dengan \(b=(3,5,5)^{T}\).</b>
+  Solusi eksaknya \(x=(1,1,1)^{T}\); akan kita lihat bahwa jalur \(Ly=Pb\)
+  dan \(Ux=y\) memberi hasil yang persis sama.
+
+  <br>
+  <i>Langkah 4 — substitusi maju \(Ly=Pb\).</i>
+  Pertama terapkan permutasi ke \(b\):
+  \[
+    Pb=P_1\!\begin{bmatrix}3\\5\\5\end{bmatrix}
+       =\begin{bmatrix}5\\5\\3\end{bmatrix}.
+  \]
+  Lalu selesaikan \(Ly=Pb\) baris demi baris dari atas:
+  \[
+    \begin{aligned}
+      y_1 &= 5, \\[2pt]
+      y_2 &= 5 - \tfrac12\,y_1
+           = 5 - \tfrac52 = \tfrac52, \\[2pt]
+      y_3 &= 3 - 0\cdot y_1 - \tfrac12\,y_2
+           = 3 - \tfrac54 = \tfrac74 .
+    \end{aligned}
+  \]
+  Jadi \(y=(5,\ \tfrac52,\ \tfrac74)^{T}\).
+
+  <br>
+  <i>Langkah 5 — substitusi mundur \(Ux=y\).</i>
+  Mulai dari baris bawah:
+  \[
+    \begin{aligned}
+      x_3 &= \frac{7/4}{7/4}=1, \\[4pt]
+      x_2 &= \frac{\tfrac52 - \tfrac12 x_3}{2}
+           = \frac{\tfrac52-\tfrac12}{2} = 1, \\[4pt]
+      x_1 &= \frac{5 - 2 x_2 - x_3}{2}
+           = \frac{5-2-1}{2} = 1.
+    \end{aligned}
+  \]
+  Diperoleh \(x=(1,1,1)^{T}\), cocok dengan solusi eksak.
+  Verifikasi: \(A\,(1,1,1)^{T}=(3,\,5,\,5)^{T}=b\). ✓
+</div>
+
+
+<h3 class="subsec">9.1.4 Kasus Khusus: Cholesky \(A=LL^{T}\) untuk SPD</h3>
+<p align="justify">
+  Bila \(A\) <b>simetris definit positif</b> (SPD) sering muncul di RO karena
+  matriks kovarians, matriks Hessian fungsi tujuan kuadratik, atau matriks
+  jarak Euclidean dekomposisi LU dapat <i>dipercepat</i>. Karena \(A=A^{T}\),
+  kita bisa memilih \(U=L^{T}\), sehingga
+  \[
+    A = L\,L^{T}, \qquad L \text{ lower triangular (bukan lagi unit)} .
+  \]
+  Penurunan singkat: tulis entri \((i,j)\) dari \(A=LL^{T}\),
+  \[
+    A_{ij} = \sum_{k=1}^{\min(i,j)} L_{ik}\,L_{jk} ,
+  \]
+  lalu isi \(L\) kolom-demi-kolom. Untuk diagonal:
+  \(L_{ii}=\sqrt{A_{ii}-\sum_{k < i}L_{ik}^{2}}\), dan untuk \(j < i\):
+  \(L_{ij}=\bigl(A_{ij}-\sum_{k < j}L_{ik}L_{jk}\bigr)/L_{jj}\).
+  <b>Keuntungan ganda</b>:
+  (i) hanya \(\tfrac12 n(n+1)\) entri yang perlu dihitung (separuh biaya
+  \(O(n^{3})\)), dan
+  (ii) prosesnya <b>selalu stabil</b> tanpa pivoting karena SPD menjamin
+  \(A_{ii}-\sum L_{ik}^{2} > 0\). Inilah yang dipakai CPLEX untuk matriks dasar
+  simpleks yang SPD (misalnya pada model aliran jaringan).
+</p>
+
+<div class="card example">
+  <b>Contoh lengkap Cholesky: dari matriks SPD ke \(A=LL^{T}\) dan solusi
+  \(Ax=b\).</b>
+  Tinjau
+  \[
+    A=\begin{bmatrix}4&2&2\\[2pt]2&5&3\\[2pt]2&3&6\end{bmatrix}.
+  \]
+  <i>Cek cepat SPD.</i> (i) \(a_{11}=4>0\); (ii) minor utama \(2\times2\)
+  \(\det\begin{bmatrix}4&2\\2&5\end{bmatrix}=16>0\);
+  (iii) \(\det A=4\cdot(30-9)-2\cdot(12-6)+2\cdot(6-10)=84-12-8=64>0\).
+  Karena semua minor utama positif (kriteria Sylvester), \(A\) <b>SPD</b>
+  — jadi Cholesky dijamin berhasil tanpa pivoting.
+
+  <br><br>
+  <b>Langkah 1 — isi kolom 1 dari \(L\).</b>
+  Formula diagonal untuk \(i=1\):
+  \[
+    L_{11}=\sqrt{A_{11}}=\sqrt{4}=2 .
+  \]
+  Lalu \(j=1< i=2,3\):
+  \[
+    L_{21}=\frac{A_{21}}{L_{11}}=\frac{2}{2}=1,
+    \qquad
+    L_{31}=\frac{A_{31}}{L_{11}}=\frac{2}{2}=1 .
+  \]
+
+  <br>
+  <b>Langkah 2 — isi kolom 2 dari \(L\).</b>
+  Diagonal \(i=2\):
+  \[
+    L_{22}=\sqrt{A_{22}-L_{21}^{2}}
+         =\sqrt{5-1^{2}}=\sqrt{4}=2 .
+  \]
+  Lalu \(j=2< i=3\):
+  \[
+    L_{32}=\frac{A_{32}-L_{31}L_{21}}{L_{22}}
+         =\frac{3-1\cdot 1}{2}=1 .
+  \]
+
+  <br>
+  <b>Langkah 3 — isi kolom 3 (hanya diagonal).</b>
+  \[
+    L_{33}=\sqrt{A_{33}-L_{31}^{2}-L_{32}^{2}}
+         =\sqrt{6-1-1}=\sqrt{4}=2 .
+  \]
+
+  <br><br>
+  <b>Hasil.</b>
+  \[
+    L=\begin{bmatrix}2&0&0\\[2pt]1&2&0\\[2pt]1&1&2\end{bmatrix},
+    \qquad
+    L^{T}=\begin{bmatrix}2&1&1\\[2pt]0&2&1\\[2pt]0&0&2\end{bmatrix}.
+  \]
+  Verifikasi \(LL^{T}=A\):
+  \[
+    LL^{T}=
+    \begin{bmatrix}2&0&0\\1&2&0\\1&1&2\end{bmatrix}
+    \begin{bmatrix}2&1&1\\0&2&1\\0&0&2\end{bmatrix}
+    =\begin{bmatrix}4&2&2\\2&5&3\\2&3&6\end{bmatrix}=A .\ \checkmark
+  \]
+  Perhatikan bahwa \(L_{ii}=2\) semua (kebetulan karena contoh dirancang
+  agar aritmetikanya bersih); pada umumnya entri diagonal berbeda-beda dan
+  bisa irasional, misalnya \(L_{ii}=\sqrt{\cdot}\) yang bukan kuadrat
+  sempurna.
+
+  <br><br>
+  <b>Menyelesaikan \(Ax=b\) dengan \(b=(8,10,11)^{T}\).</b>
+  Solusi eksaknya \(x=(1,1,1)^{T}\) (karena jumlah setiap baris \(A\)
+  berturut-turut \(8,10,11\)). Jalur Cholesky memberi hasil sama.
+
+  <br>
+  <i>Langkah 4 — substitusi maju \(Ly=b\).</i>
+  \[
+    \begin{aligned}
+      y_1 &= \frac{8}{2}=4, \\[2pt]
+      y_2 &= \frac{10-L_{21}y_1}{L_{22}}
+           =\frac{10-1\cdot 4}{2}=3, \\[2pt]
+      y_3 &= \frac{11-L_{31}y_1-L_{32}y_2}{L_{33}}
+           =\frac{11-1\cdot 4-1\cdot 3}{2}=2 .
+    \end{aligned}
+  \]
+  Jadi \(y=(4,\,3,\,2)^{T}\).
+
+  <br>
+  <i>Langkah 5 — substitusi mundur \(L^{T}x=y\).</i>
+  Karena \(L^{T}\) <b>upper</b> triangular, mulai dari baris bawah:
+  \[
+    \begin{aligned}
+      x_3 &= \frac{2}{2}=1, \\[2pt]
+      x_2 &= \frac{3-1\cdot x_3}{2}
+           =\frac{3-1}{2}=1, \\[2pt]
+      x_1 &= \frac{4-1\cdot x_2-1\cdot x_3}{2}
+           =\frac{4-1-1}{2}=1 .
+    \end{aligned}
+  \]
+  Diperoleh \(x=(1,1,1)^{T}\). Verifikasi: \(Ax=(8,10,11)^{T}=b\). ✓
+
+  <br><br>
+  <b>Skenario kedua: \(b'=(4,\,5,\,6)^{T}\).</b>
+  Faktorisasi \(L\) yang sama dipakai kembali (tidak diulang):
+  <br>
+  <i>Maju \(Ly=b'\):</i>
+  \(y_1'=4/2=2,\ \ y_2'=(5-1\cdot 2)/2=\tfrac32,\ \
+   y_3'=(6-1\cdot 2-1\cdot \tfrac32)/2=\tfrac54\).
+  <br>
+  <i>Mundur \(L^{T}x'=y'\):</i>
+  \(x_3'=\tfrac{5/4}{2}=\tfrac58,\ \
+   x_2'=\bigl(\tfrac32-\tfrac58\bigr)/2=\tfrac{7}{16},\ \
+   x_1'=\bigl(2-\tfrac{7}{16}-\tfrac58\bigr)/2=\dfrac{11}{32}\).
+  <br>
+  Jadi \(x'=\bigl(\tfrac{11}{32},\ \tfrac{7}{16},\ \tfrac58\bigr)^{T}\).
+  Verifikasi \(Ax'=(4,5,6)^{T}\) mudah dicek secara langsung. ✓
+</div>
+
 
   <!-- 9.2 -->
   <h2 class="sec">9.2 Metode Pangkat – Steady State Rantai Markov & PageRank</h2>
@@ -11647,6 +12990,293 @@ display(html(r"""
   <div class="card def">
     Iterasi: \(x_0\) acak, \(x_{k+1}=A x_k/\|A x_k\|\), \(\lambda_k = x_k^T A x_k / x_k^T x_k\). Jika \(|\lambda_1|>|\lambda_2|\), \(x_k \to v_1\), \(\lambda_k \to \lambda_1\).
   </div>
+
+
+<h3 class="subsec">9.2.1 Mengapa Metode Pangkat Bekerja: Penurunan Singkat</h3>
+<p align="justify">
+  Alasan metode pangkat berhasil sangat bersih dan hanya memakai aljabar linear
+  dasar. Misalkan \(A\) dapat didiagonalkan (cukup diasumsikan di sini; kasus
+  <i>defective</i> ditangani dengan bentuk Jordan dan kesimpulannya sama).
+  Maka ada basis eigen \(v_1,\dots,v_n\) dengan nilai eigen
+  \(|\lambda_1|\ge|\lambda_2|\ge\cdots\ge|\lambda_n|\). Tulis vektor awal
+  \(x_0\) dalam basis itu:
+  \[
+    x_0 = c_1 v_1 + c_2 v_2 + \cdots + c_n v_n .
+  \]
+  Terapkan \(A\) sebanyak \(k\) kali:
+  \[
+    A^{k} x_0
+    = c_1\lambda_1^{k} v_1 + c_2\lambda_2^{k} v_2 + \cdots + c_n\lambda_n^{k} v_n
+    = \lambda_1^{k}\!\left[c_1 v_1
+      + \sum_{i\ge 2} c_i \Bigl(\frac{\lambda_i}{\lambda_1}\Bigr)^{k} v_i\right]\!.
+  \]
+  Karena \(\bigl|\lambda_i/\lambda_1\bigr|<1\) untuk semua \(i\ge 2\), suku-suku
+  dalam tanda kurung <b>menyusut menuju nol</b> secepat \((\lambda_2/\lambda_1)^{k}\).
+  Jadi arah \(A^k x_0\) mendekati arah \(v_1\), <b>tanpa bergantung pada
+  \(c_1\) yang kecil</b> — kehadiran \(c_1\ne 0\) (hampir pasti benar untuk
+  \(x_0\) acak) hanya memengaruhi faktor skala, bukan arah limit.
+</p>
+
+<div class="card def">
+  <b>Laju konvergensi dan Rayleigh quotient.</b>
+  <ul>
+    <li><b>Galat arah</b> menyusut seperti \((\lambda_2/\lambda_1)^{k}\).
+        Semakin kecil rasionya (semakin lebar <i>gap</i> \(\lambda_1\)–\(\lambda_2\)),
+        semakin cepat konvergensi. Jika \(|\lambda_2|/|\lambda_1|\approx 0.9\),
+        butuh puluhan iterasi; jika \(0.1\), hanya 5–6 iterasi untuk galat \(10^{-6}\).</li>
+    <li><b>Rayleigh quotient</b> \(\lambda_k = \dfrac{x_k^{T} A x_k}{x_k^{T}x_k}\)
+        memberi estimasi \(\lambda_1\). Untuk \(A\) simetris, galat \(\lambda_k\)
+        menyusut sebagai \((\lambda_2/\lambda_1)^{2k}\) — <b>dua kali lebih
+        cepat</b> daripada galat arah \(x_k\).</li>
+    <li><b>Kegagalan</b> terjadi bila \(|\lambda_1|=|\lambda_2|\) (dua nilai
+        eigen dominan sama besarnya, bisa dengan tanda berbeda): arah \(x_k\)
+        berosilasi atau tidak konvergen. Ini akan disorot pada contoh
+        shift-inverse di §9.2.4.</li>
+  </ul>
+</div>
+
+<h3 class="subsec">9.2.2 Contoh Lengkap: Pangsa Pasar sebagai Rantai Markov</h3>
+<div class="card example">
+  <b>Situasi.</b> Dua merek, \(A\) dan \(B\), bersaing di pasar. Setiap kuartal:
+  <ul>
+    <li>80% pelanggan merek \(A\) tetap setia; 20% pindah ke \(B\).</li>
+    <li>40% pelanggan merek \(B\) pindah ke \(A\); 60% tetap setia.</li>
+  </ul>
+  Jika \(x_k=(x_k^A, x_k^B)^{T}\) menyatakan pangsa pasar pada kuartal \(k\),
+  maka \(x_{k+1}=A x_k\) dengan
+  \[
+    A=\begin{bmatrix}0.8&0.4\\[2pt]0.2&0.6\end{bmatrix}.
+  \]
+  (Kolom menjumlah 1 karena setiap pelanggan pasti ke salah satu merek;
+  \(A\) adalah <b>matriks stokastik kolom</b>.)
+
+  <br><br>
+  <b>Eigen-teori singkat.</b> \(\operatorname{tr}A=1.4\),
+  \(\det A=0.8\cdot0.6-0.4\cdot0.2=0.40\), jadi persamaan karakteristik
+  \(\lambda^{2}-1.4\lambda+0.40=0\) memberi \(\lambda_{1}=1\),
+  \(\lambda_{2}=0.4\). <b>Nilai eigen dominan \(=1\)</b> ciri khas rantai
+  Markov: perilaku jangka panjang menuju steady state, bukan meledak atau
+  lenyap. Rasio \(\lambda_2/\lambda_1=0.4\), jadi galat konvergensi menyusut
+  sekitar 40% per iterasi.
+
+  <br><br>
+  <b>Steady state (target).</b> Selesaikan \(Ax=x\):
+  \(0.8x_1+0.4x_2=x_1 \Rightarrow x_1=2x_2\). Normalisasi
+  \(x_1+x_2=1\) memberi \(x^\ast=(\tfrac{2}{3},\tfrac{1}{3})^{T}\approx(0.6667,0.3333)^{T}\).
+  Jadi dalam jangka panjang, merek \(A\) menguasai \(2/3\) pasar dan
+  \(B\) menguasai \(1/3\) <b>terlepas dari pangsa awal</b>.
+
+  <br><br>
+  <b>Iterasi metode pangkat.</b> Mulai dari \(x_0=(1,0)^{T}\) (pangsa awal
+  \(A\) mendominasi). Setiap langkah dinormalkan dengan jumlah, karena
+  pangsa pasar harus berjumlah 1:
+  \[
+    x_{k+1}=\frac{A x_k}{\|A x_k\|_{1}} .
+  \]
+
+  <table style="border-collapse:collapse;margin-top:8px">
+    <tr style="border-bottom:1px solid #999">
+      <th style="padding:4px 12px">\(k\)</th>
+      <th style="padding:4px 12px">\(x_k^{A}\)</th>
+      <th style="padding:4px 12px">\(x_k^{B}\)</th>
+      <th style="padding:4px 12px">\(\|x_k - x^\ast\|_{\infty}\)</th>
+    </tr>
+    <tr><td style="padding:2px 12px">0</td><td style="padding:2px 12px">1.0000</td><td style="padding:2px 12px">0.0000</td><td style="padding:2px 12px">0.3333</td></tr>
+    <tr><td style="padding:2px 12px">1</td><td style="padding:2px 12px">0.8000</td><td style="padding:2px 12px">0.2000</td><td style="padding:2px 12px">0.1333</td></tr>
+    <tr><td style="padding:2px 12px">2</td><td style="padding:2px 12px">0.7200</td><td style="padding:2px 12px">0.2800</td><td style="padding:2px 12px">0.0533</td></tr>
+    <tr><td style="padding:2px 12px">3</td><td style="padding:2px 12px">0.6880</td><td style="padding:2px 12px">0.3120</td><td style="padding:2px 12px">0.0213</td></tr>
+    <tr><td style="padding:2px 12px">4</td><td style="padding:2px 12px">0.6752</td><td style="padding:2px 12px">0.3248</td><td style="padding:2px 12px">0.0085</td></tr>
+    <tr><td style="padding:2px 12px">6</td><td style="padding:2px 12px">0.6680</td><td style="padding:2px 12px">0.3320</td><td style="padding:2px 12px">0.0014</td></tr>
+    <tr><td style="padding:2px 12px">8</td><td style="padding:2px 12px">0.6669</td><td style="padding:2px 12px">0.3331</td><td style="padding:2px 12px">0.0002</td></tr>
+    <tr><td style="padding:2px 12px">\(\to\infty\)</td><td style="padding:2px 12px">0.6667</td><td style="padding:2px 12px">0.3333</td><td style="padding:2px 12px">0</td></tr>
+  </table>
+
+  <br>
+  Perhatikan galat turun hampir persis mengikuti \(0.4^{k}\): 0.3333 → 0.1333
+  (×0.4) → 0.0533 (×0.4) → 0.0213 (×0.4) — sangat sesuai dengan prediksi
+  teoretis \(|\lambda_2/\lambda_1|=0.4\) dari §9.2.1.
+
+  <br><br>
+  <b>Interpretasi RO.</b> Prediksi pangsa jangka panjang \(x^\ast=(2/3,1/3)\)
+  adalah kesetimbangan strategis: berapa pun pangsa awal, kekuatan retensi
+  pelanggan (80% untuk \(A\) vs 60% untuk \(B\)) dan tingkat perpindahan
+  (20% vs 40%) menentukan kemenangan akhir \(A\). Metode pangkat <b>tidak
+  perlu menghitung \(\det(A-\lambda I)\)</b> cukup iterasi matriks–vektor
+  yang biayanya \(O(n^{2})\) per langkah, jauh lebih murah dan stabil,
+  terutama jika \(A\) jarang (<i>sparse</i>).
+</div>
+
+<h3 class="subsec">9.2.3 Contoh Lengkap: Mini-PageRank 3 Node</h3>
+<div class="card example">
+  <b>Situasi.</b> Tiga halaman web saling tertaut:
+  <ul>
+    <li>Halaman 1 menaut ke 2 dan 3.</li>
+    <li>Halaman 2 menaut ke 1 dan 3.</li>
+    <li>Halaman 3 menaut ke 1 saja.</li>
+  </ul>
+  Definisikan \(A_{ij}=1/\operatorname{outdeg}(j)\) jika \(j\to i\), nol jika
+  tidak. Maka \(A\) adalah <b>matriks stokastik kolom</b>, dan vektor pangkat
+  halaman \(x\) (skor penting tiap halaman, total = 1) memenuhi
+  \(Ax=x\) <i>persis</i> persamaan steady state rantai Markov.
+
+  <br>
+  Kolom-kolom \(A\):
+  \[
+    A=\begin{bmatrix}
+      0 & \tfrac12 & 1 \\[2pt]
+      \tfrac12 & 0 & 0 \\[2pt]
+      \tfrac12 & \tfrac12 & 0
+    \end{bmatrix}.
+  \]
+
+  <br><br>
+  <b>Eigenvalues.</b> Persamaan karakteristik:
+  \[
+    \det(A-\lambda I)
+    = -\lambda^{3}+\tfrac{3}{4}\lambda+\tfrac{1}{4}
+    = -(\lambda-1)\Bigl(\lambda+\tfrac12\Bigr)^{2}.
+  \]
+  Jadi \(\lambda_1=1\), \(\lambda_2=\lambda_3=-\tfrac12\). Rasio
+  \(|\lambda_2|/|\lambda_1|=0.5\) konvergensi cepat.
+
+  <br>
+  <b>Steady state.</b> Selesaikan \(Ax=x\) dengan normalisasi \(x_1+x_2+x_3=1\):
+  \(x_1=2x_2,\ x_3=x_1/2+x_2/2=\tfrac{3}{4}x_1\). Normalisasi:
+  \(x_1(1+\tfrac12+\tfrac34)=x_1\cdot\tfrac94=1 \Rightarrow x_1=\tfrac{4}{9}\).
+  Maka \(x^{\ast}=(\tfrac49,\tfrac29,\tfrac13)^{T}\approx(0.4444,0.2222,0.3333)^{T}\).
+
+  <br><br>
+  <b>Iterasi (mulai dari seragam).</b> \(x_0=(1,1,1)^{T}/3\).
+  \[
+    \begin{aligned}
+      x_1 &= A x_0/\|Ax_0\|_1
+           = (0.5000,\ 0.1667,\ 0.3333)^{T}, \\
+      x_2 &= (0.4167,\ 0.2500,\ 0.3333)^{T}, \\
+      x_3 &= (0.4583,\ 0.2083,\ 0.3333)^{T}, \\
+      x_4 &= (0.4375,\ 0.2292,\ 0.3333)^{T}, \\
+      &\vdots \\
+      x^{\ast} &= (0.4444,\ 0.2222,\ 0.3333)^{T}.
+    \end{aligned}
+  \]
+  Galat (dihitung pada \(x_1,x_2\)): \(0.0833,\ 0.0417,\ 0.0208,\ 0.0104,\dots\)
+   menyusut persis setengah setiap iterasi, sesuai prediksi
+  \((\lambda_2/\lambda_1)^{k}=0.5^{k}\).
+
+  <br><br>
+  <b>Interpretasi.</b>
+  <ul>
+    <li>Halaman 1 memiliki skor tertinggi karena <b>banyak ditaut</b> (oleh 2
+        dan 3) sekaligus penting tidaknya sumber tautan itu sendiri inti
+        PageRank: <i>a page is important if important pages link to it</i>.</li>
+    <li>Halaman 2 memiliki skor terendah karena meskipun menaut ke 1 dan 3,
+        hanya 1 halaman (yaitu 1) yang menaut balik ke 2, dan itu hanya
+        memberi sebagian kecil dari "pentingnya" halaman 1.</li>
+    <li>Pada web sungguhan dengan \(10^{10}\) halaman, \(A\) <b>sangat jarang</b>
+        (rata-rata hanya \(O(\log n)\) tautan per halaman). Metode pangkat
+        mengambil keuntungan penuh: setiap iterasi hanya \(O(\text{nnz}(A))\)
+        = \(O(n\log n)\) operasi, bukan \(O(n^{2})\). Itulah mengapa Google
+        awalnya memakai metode pangkat, bukan dekomposisi eigen penuh.</li>
+    <li><b>Damping.</b> Pada web nyata, ada halaman "sink" (tidak menaut ke
+        mana pun) yang membuat \(A\) punya kolom nol sehingga iterasi
+        "bocor". Solusinya matriks Google \(G=\alpha A + (1-\alpha)\tfrac{1}{n}\mathbf{1}\mathbf{1}^{T}\)
+        dengan \(\alpha\approx 0.85\): setiap halaman, dengan peluang
+        \(1-\alpha\), "melompat acak" ke halaman sembarang. Matriks \(G\)
+        juga stokastik kolom, nilai eigen dominannya tetap 1, dan
+        steady state-nya adalah PageRank sesungguhnya.</li>
+  </ul>
+</div>
+
+<h3 class="subsec">9.2.4 Contoh Lengkap: Shifted Inverse Power (Mencari \(\lambda\) Terkecil)</h3>
+<div class="card example">
+  <b>Motivasi RO.</b> Untuk analisis sensitivitas, kita sering butuh
+  <b>nilai eigen terkecil</b> (bukan terbesar) misalnya pada matriks
+  kovarians, \(\lambda_{\min}\) mengukur arah risiko terendah; pada matriks
+  Hessian, \(\lambda_{\min}\) mengukur seberapa "datar" fungsi tujuan di
+  titik optimum. Metode pangkat biasa hanya memberi \(\lambda_1\) (terbesar).
+
+  <b>Trik shift-inverse.</b> Jika \(A\) punya nilai eigen
+  \(\lambda_1,\dots,\lambda_n\), maka \((A-\mu I)^{-1}\) punya nilai eigen
+  \((\lambda_i-\mu)^{-1}\). Nilai eigen <b>terbesar</b> dari
+  \((A-\mu I)^{-1}\) berpasangan dengan \(\lambda_i\) yang
+  <b>paling dekat ke \(\mu\)</b>. Jadi: pilih \(\mu\), jalankan metode
+  pangkat pada \((A-\mu I)^{-1}\), dan kita dapat eigenpair yang
+  diinginkan.
+
+  <br><br>
+  <b>Matriks.</b> Ambil
+  \[
+    A=\begin{bmatrix}4&2\\[2pt]2&4\end{bmatrix},
+    \quad \lambda_1=6,\ \lambda_2=2,\quad
+    v_1=\tfrac{1}{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix},\
+    v_2=\tfrac{1}{\sqrt2}\begin{bmatrix}1\\-1\end{bmatrix}.
+  \]
+
+  <b>Mencari \(\lambda_{\min}\) (target \(=2\)).</b> Pilih \(\mu=1\)
+  (dekat \(\lambda_2\)). Maka
+  \[
+    A-I=\begin{bmatrix}3&2\\[2pt]2&3\end{bmatrix},
+    \qquad
+    B:=(A-I)^{-1}=\frac{1}{5}\begin{bmatrix}3&-2\\[2pt]-2&3\end{bmatrix}.
+  \]
+  Nilai eigen \(B\): \(\bigl(\lambda_i-1\bigr)^{-1}\) = \(1/5\) dan \(1/1=1\).
+  Rasio \(0.2\) → konvergensi cepat. Vektor eigen \(B\) untuk \(\lambda_B=1\)
+  adalah \(v_2=(1,-1)^{T}/\sqrt2\) (berpasangan dengan \(\lambda_A=1+1=2\)). ✓
+
+  <br>
+  <b>Iterasi.</b> \(x_0=(1,0)^{T}\), \(\lambda_B\) dari Rayleigh quotient:
+  <table style="border-collapse:collapse;margin-top:8px">
+    <tr style="border-bottom:1px solid #999">
+      <th style="padding:4px 12px">\(k\)</th>
+      <th style="padding:4px 12px">\(x_k/\|x_k\|\)</th>
+      <th style="padding:4px 12px">\(\lambda_{B,k}=x_k^{T}Bx_k\)</th>
+      <th style="padding:4px 12px">\(\lambda_{A,k}=1+1/\lambda_{B,k}\)</th>
+    </tr>
+    <tr><td style="padding:2px 12px">0</td><td style="padding:2px 12px">\((1.000,\ 0.000)\)</td><td style="padding:2px 12px">0.600</td><td style="padding:2px 12px">2.667</td></tr>
+    <tr><td style="padding:2px 12px">1</td><td style="padding:2px 12px">\((0.832,-0.555)\)</td><td style="padding:2px 12px">0.842</td><td style="padding:2px 12px">2.188</td></tr>
+    <tr><td style="padding:2px 12px">2</td><td style="padding:2px 12px">\((0.735,-0.678)\)</td><td style="padding:2px 12px">0.952</td><td style="padding:2px 12px">2.050</td></tr>
+    <tr><td style="padding:2px 12px">3</td><td style="padding:2px 12px">\((0.715,-0.699)\)</td><td style="padding:2px 12px">0.988</td><td style="padding:2px 12px">2.012</td></tr>
+    <tr><td style="padding:2px 12px">4</td><td style="padding:2px 12px">\((0.709,-0.705)\)</td><td style="padding:2px 12px">0.998</td><td style="padding:2px 12px">2.002</td></tr>
+    <tr><td style="padding:2px 12px">\(\to\infty\)</td><td style="padding:2px 12px">\((0.707,-0.707)\)</td><td style="padding:2px 12px">1.000</td><td style="padding:2px 12px">2.000</td></tr>
+  </table>
+
+  <br>
+  Galat arah \(x_k\) menyusut sebesar \(0.2^{k}\) (rasio \((\lambda_B)_2/(\lambda_B)_1
+  = 0.2/1=0.2\)), dan \(\lambda_{A,k}\to 2=\lambda_{\min}\) setelah hanya
+  sekitar 4–5 iterasi. <b>Bandingkan</b> dengan metode pangkat biasa pada \(A\)
+  yang akan memberi \(\lambda_{\max}=6\) kebalikan dari yang kita inginkan.
+</div>
+
+<div class="card def">
+  <b>Ringkasan pemakaian varian.</b>
+  <ul>
+    <li><b>Power method pada \(A\)</b> → \(\lambda_{\max}\), \(v_{\max}\).
+        Pakai untuk rantai Markov (steady state), PageRank, dan analisis
+        pertumbuhan jangka panjang.</li>
+    <li><b>Inverse power pada \(A^{-1}\)</b> (ambil \(\mu=0\)) → \(\lambda_{\min}\),
+        \(v_{\min}\). Pakai untuk analisis sensitivitas, risiko minimum,
+        dan <i>well-posedness</i> (SPD ⟺ \(\lambda_{\min}>0\)).</li>
+    <li><b>Shifted inverse pada \((A-\mu I)^{-1}\)</b> → \(\lambda_i\) yang
+        terdekat ke \(\mu\). Pakai untuk mencari nilai eigen di sekitar
+        target, mis. modus getaran (<i>eigenmode</i>) atau near-optimal
+        parameter.</li>
+    <li><b>Rayleigh Quotient Iteration</b> (RQI) varian paling canggih:
+        \(\mu\) diperbarui ke \(\lambda_k\) pada setiap iterasi. Untuk \(A\)
+        simetris, RQI konvergen <i>kubik</i> (galat menjadi pangkat tiga
+        setiap iterasi) biasanya cukup 3–4 iterasi untuk presisi penuh,
+        dengan syarat dekomposisi \((A-\mu I)\) dilakukan ulang setiap
+        iterasi.</li>
+    <li><b>Peringatan numerik.</b> Shift-inverse membutuhkan penyelesaian
+        \((A-\mu I)y=x_k\) setiap iterasi. Jika \(A\) padat, ini \(O(n^{3})\)
+        per iterasi lebih mahal daripada LU, tapi tetap lebih murah
+        daripada dekomposisi eigen penuh \(O(n^{3})\) dengan konstanta besar.
+        Jika \(A\) jarang, gunakan faktorisasi sparse-LU satu kali dan
+        pakai ulang. Jika \(\mu\) <i>sangat dekat</i> dengan suatu nilai
+        eigen, \((A-\mu I)\) hampir singular → galat pembulatan besar;
+        praktisi sering memakai \(\mu\) agak "di luar" target dan
+        mengandalkan konvergensi cepat.</li>
+  </ul>
+</div>
+
 
   <!-- 9.3 -->
   <h2 class="sec">9.3 Perbandingan Metode SPL untuk Optimasi</h2>
@@ -11672,41 +13302,92 @@ display(html(r"""
   <!-- 9.4 -->
   <h2 class="sec">9.4 SVD – Dekomposisi Paling Umum dan Stabil</h2>
   <p align="justify">
-  LU dan QR hanya untuk persegi atau full rank. SVD: \(A_{m×n}=U_{m×m} Σ_{m×n} V^T_{n×n}\) berlaku untuk <b>semua matriks</b>, termasuk singular dan persegi panjang – persis seperti di RO (matriks transportasi \(m<n\)). Geometrinya: \(V^T\) rotasi, \(Σ\) regang sepanjang sumbu dengan faktor \(\sigma_i\), \(U\) rotasi lagi. Jadi \(A\) memetakan bola satuan menjadi elipsoid dengan setengah sumbu \(\sigma_i\).
-  <br>Nilai singular \(\sigma_i = \sqrt{\lambda_i(A^T A)}\). \(\sigma_1 = \|A\|_2\) (norma spektral), \(\|A\|_F = \sqrt{\sum \sigma_i^2}\). <b>Bilangan kondisi</b> \(\text{cond}(A)=\sigma_{max}/\sigma_{min}\) mengukur sensitivitas solusi \(Ax=b\) terhadap perubahan \(b\) – krusial untuk stabilitas optimasi. Jika cond besar (\(>10^6\)), solusi tidak dapat dipercaya.
-  <br><b>Pseudoinvers</b> \(A^+ = V Σ^+ U^T\) memberi solusi least squares minimal norm untuk sistem tidak konsisten atau underdetermined – solusi cadangan ketika simpleks gagal.
+  LU dan QR hanya untuk persegi atau full rank. SVD: \(A_{m×n}=U_{m×m} Σ_{m×n} V^T_{n×n}\) berlaku untuk <b>semua matriks</b>, termasuk singular dan persegi panjang persis seperti di RO (matriks transportasi \(m < n\)). Geometrinya: \(V^T\) rotasi, \(Σ\) regang sepanjang sumbu dengan faktor \(\sigma_i\), \(U\) rotasi lagi. Jadi \(A\) memetakan bola satuan menjadi elipsoid dengan setengah sumbu \(\sigma_i\).
+  <br>Nilai singular \(\sigma_i = \sqrt{\lambda_i(A^T A)}\). \(\sigma_1 = \|A\|_2\) (norma spektral), \(\|A\|_F = \sqrt{\sum \sigma_i^2}\). <b>Bilangan kondisi</b> \(\text{cond}(A)=\sigma_{max}/\sigma_{min}\) mengukur sensitivitas solusi \(Ax=b\) terhadap perubahan \(b\) krusial untuk stabilitas optimasi. Jika cond besar (\( > 10^6\)), solusi tidak dapat dipercaya.
+  <br><b>Pseudoinvers</b> \(A^+ = V Σ^+ U^T\) memberi solusi least squares minimal norm untuk sistem tidak konsisten atau underdetermined solusi cadangan ketika simpleks gagal.
   </p>
 
   <!-- 9.5 -->
   <h2 class="sec">9.5 Kompresi Data & Reduksi Dimensi untuk Optimasi Skala Besar</h2>
   <p align="justify">
-  Teorema Eckart-Young: Aproksimasi rank-k terbaik adalah dengan memotong SVD: \(A_k = \sum_{i=1}^k \sigma_i u_i v_i^T\). Error = \(\sqrt{\sum_{i>k} \sigma_i^2}\). Jika \(\sigma_i\) turun cepat (data berkorelasi, seperti gambar, data pelanggan, atau matriks biaya transportasi yang punya pola), maka \(k=20\) dari \(n=1000\) sudah memberi error <1%.
-  <br>Dalam RO, ini berarti: daripada menyimpan dan mengoptimasi matriks \(1000×1000\) penuh (1jt angka), cukup simpan \(U_k (1000×20) + Σ_k (20) + V_k (1000×20) = 40.020\) angka – kompresi 96%. Digunakan untuk:
+  Teorema Eckart-Young: Aproksimasi rank-k terbaik adalah dengan memotong SVD: \(A_k = \sum_{i=1}^k \sigma_i u_i v_i^T\). Error = \(\sqrt{\sum_{i > k} \sigma_i^2}\). Jika \(\sigma_i\) turun cepat (data berkorelasi, seperti gambar, data pelanggan, atau matriks biaya transportasi yang punya pola), maka \(k=20\) dari \(n=1000\) sudah memberi error < 1%.
+  <br>Dalam RO, ini berarti: daripada menyimpan dan mengoptimasi matriks \(1000×1000\) penuh (1jt angka), cukup simpan \(U_k (1000×20) + Σ_k (20) + V_k (1000×20) = 40.020\) angka kompresi 96%. Digunakan untuk:
   <br>1) <b>Reduksi skenario</b> dalam stochastic programming, 2) <b>PCA risiko portofolio</b> (faktor utama), 3) <b>Sistem rekomendasi</b> (Netflix) yang sebenarnya adalah optimasi low-rank.
   </p>
 
   <!-- 9.6 -->
   <h2 class="sec">9.6 Real Problem RO: Tiga Pilar dalam Aksi</h2>
   <p align="justify">
-  <b>Kasus 1 – LU untuk Multi-Skenario Produksi:</b> Pabrik dengan matriks teknologi \(A\) tetap, tapi permintaan \(b\) berubah setiap minggu. Dengan \(PA=LU\) sekali, tiap minggu hanya \(O(n^2)\).
-  <br><b>Kasus 2 – Power Method untuk Rantai Pasok Markov:</b> Gudang A,B,C dengan matriks transisi \(P\). Distribusi steady-state adalah eigen dominan \(\lambda=1\). Power method memberi pangsa jangka panjang tanpa menyelesaikan \((P-I)x=0\).
-  <br><b>Kasus 3 – SVD untuk Kompresi Matriks Biaya Transportasi:</b> Matriks biaya \(C_{100×100}\) besar. SVD rank-10 sering cukup untuk optimasi aproksimasi awal, lalu diperhalus.
+  <b>Kasus 1  LU untuk Multi-Skenario Produksi:</b> Pabrik dengan matriks teknologi \(A\) tetap, tapi permintaan \(b\) berubah setiap minggu. Dengan \(PA=LU\) sekali, tiap minggu hanya \(O(n^2)\).
+  <br><b>Kasus 2 Power Method untuk Rantai Pasok Markov:</b> Gudang A,B,C dengan matriks transisi \(P\). Distribusi steady-state adalah eigen dominan \(\lambda=1\). Power method memberi pangsa jangka panjang tanpa menyelesaikan \((P-I)x=0\).
+  <br><b>Kasus 3  SVD untuk Kompresi Matriks Biaya Transportasi:</b> Matriks biaya \(C_{100×100}\) besar. SVD rank-10 sering cukup untuk optimasi aproksimasi awal, lalu diperhalus.
   </p>
 
   <div class="sage">
     <div class="sage-header"><span>SageMath — Simulasi Kompresi SVD (Gunakan untuk Latihan)</span></div>
     <div class="compute"><script type="text/x-sage">
+# Fungsi bantuan untuk memformat angka menjadi maksimal 4 desimal
+def fmt(x):
+    v = round(float(x), 4)
+    if abs(v) < 1e-9:
+        v = 0.0
+    s = f"{v:.4f}"
+    s = s.rstrip('0').rstrip('.')
+    if '.' not in s:
+        s += '.0'
+    return s
+
+# Fungsi bantuan untuk matriks LaTeX (dibatasi ke n x n kiri atas agar tidak kepanjangan)
+def latex_matrix(M, nr=None, nc=None):
+    nr = nr if nr is not None else M.nrows()
+    nc = nc if nc is not None else M.ncols()
+    rows = []
+    for i in range(nr):
+        rows.append(" & ".join([fmt(M[i, j]) for j in range(nc)]))
+    return r"\begin{pmatrix} " + r" \\ ".join(rows) + r" \end{pmatrix}"
+
+# --- MATRIKS A 100 x 100 ---
 A = matrix(RDF, 100, 100)
 for i in range(100):
     for j in range(100):
-        A[i, j] = 128 + 50 * sin(i/10)*cos(j/10) + 10*RR.random_element()
+        A[i, j] = 128 + 50 * sin(i/10) * cos(j/10) + 10 * RR.random_element()
+
+# --- SVD ---
 U, S, VT = A.SVD()
 singular_values = S.diagonal()
-k=10
-Uk = U[:,:k]; Sk = diagonal_matrix([singular_values[i] for i in range(k)]); VTk = VT[:k,:]
-Ak = Uk*Sk*VTk
-print("Error Frobenius:", (A-Ak).norm('frob'))
-print("Kompresi:", k*(100+100+1), "dari", 10000)
+
+k   = 10
+Uk  = U[:, :k]
+Sk  = diagonal_matrix([singular_values[i] for i in range(k)])
+VTk = VT[:k, :]
+Ak  = Uk * Sk * VTk
+
+# --- TAMPILAN OUTPUT ---
+
+# 1. Dimensi matriks
+display(html(r"$A \in \mathbb{R}^{%d \times %d},\quad U \in \mathbb{R}^{%d \times %d},\quad S \in \mathbb{R}^{%d \times %d},\quad V^{T} \in \mathbb{R}^{%d \times %d}$"
+             % (A.nrows(), A.ncols(),
+                U.nrows(), U.ncols(),
+                S.nrows(), S.ncols(),
+                VT.nrows(), VT.ncols())))
+
+# 2. Top-k singular values
+sv_str = "[" + ", ".join([fmt(singular_values[i]) for i in range(k)]) + "]"
+display(html(r"$\text{top-}%d \text{ singular values} = %s$" % (k, sv_str)))
+
+# 3. Error Frobenius ||A - A_k||_F
+err = (A - Ak).norm('frob')
+display(html(r"$\text{Error Frobenius} = \|A - A_{k}\|_{F} = %s$" % fmt(err)))
+
+# 4. Ukuran kompresi
+storage = k * (100 + 100 + 1)   # U_k (100k) + V_k^T (100k) + sigma (k)
+orig    = 100 * 100             # A asli (100 x 100)
+display(html(r"$\text{Kompresi} = %d \text{ parameter dari } %d \quad (\text{rasio } %s)$"
+             % (storage, orig, fmt(storage / orig))))
+
+# 5. Preview pojok kiri-atas 3x3 matriks A dan hasil rekonstruksi A_k
+display(html(r"$A_{[1:3,\,1:3]} = %s \qquad A_{k\,[1:3,\,1:3]} = %s$"
+             % (latex_matrix(A, 3, 3), latex_matrix(Ak, 3, 3))))
     </script></div>
   </div>
 
