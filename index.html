@@ -11829,6 +11829,79 @@ display(html(r"$\text{Principal components} = %s$" % latex(Qpca.n(digits=4))))
   </div>
 
   <div class="card example"> <b>Contoh RO Sederhana:</b> Misalkan \(T:\mathbb{R}^3 \to \mathbb{R}^2\) didefinisikan oleh \(T(x,y,z)=(x+y,\ y+z)\). Di sini \(x,y,z\) menyatakan banyaknya produksi produk 1, 2, dan 3, sedangkan outputnya adalah beban pada dua mesin. Matriks transformasinya adalah \(A=\begin{bmatrix}1&1&0\\0&1&1\end{bmatrix}\), karena kolom-kolomnya adalah bayangan vektor basis: \(T(1,0,0)=(1,0)\), \(T(0,1,0)=(1,1)\), dan \(T(0,0,1)=(0,1)\). Jadi, ini model 3 produk dengan 2 mesin. <br><b>Mencari Kernel:</b> Kernel adalah himpunan semua \((x,y,z)\) sehingga \(T(x,y,z)=(0,0)\), yaitu \(Ax=0\). Dari baris matriks diperoleh \(x+y=0 \Rightarrow x=-y\) dan \(y+z=0 \Rightarrow z=-y\). Dengan memisalkan \(y=t\), solusi umumnya adalah \((x,y,z)=(-t,t,-t)=t(-1,1,-1)\). Jadi, basis Kernel adalah \(\{(-1,1,-1)\}\) dan \(\dim(\ker T)=1\). <br><b>Interpretasi:</b> Vektor \((-1,1,-1)\) berarti Anda dapat menambah 1 unit produk 2 sambil mengurangi 1 unit produk 1 dan 1 unit produk 3 tanpa mengubah beban mesin. Cek: mesin 1 berubah sebesar \(-1+1=0\), dan mesin 2 berubah sebesar \(1-1=0\). Inilah yang disebut siklus net-zero. <br><b>Rank:</b> Matriks \(A\) memiliki dua kolom pivot, sehingga \(\operatorname{rank}(A)=2\). Karena \(\dim(\mathbb{R}^2)=2\), maka \(\operatorname{Im}(T)=\mathbb{R}^2\), artinya semua kombinasi beban mesin dapat dicapai. Dengan demikian, \(T\) bersifat <i>onto</i> (surjektif), tetapi tidak <i>satu-satu</i> (injektif) karena kernelnya nontrivial. <br><b>Cek Rank–Nullity:</b> \(\dim(\ker T)+\operatorname{rank}(T)=1+2=3=\dim(\mathbb{R}^3)\). ✓ </div>
+  
+  
+   <div class="sage">
+    <div class="sage-header"><span>SageMath Cell: Contoh RO Sederhana</span></div>
+    <div class="compute">
+	<script type="text/x-sage">
+# =============================================================
+# CONTOH RO SEDERHANA: T: R^3 -> R^2
+# T(x,y,z) = (x+y, y+z)
+# =============================================================
+
+# 1. Matriks transformasi
+A = matrix(QQ, [[1, 1, 0],
+                [0, 1, 1]])
+display(html(r"Matriks $A = %s$" % latex(A)))
+
+# Verifikasi kolom = bayangan basis
+e1 = vector(QQ, [1, 0, 0])
+e2 = vector(QQ, [0, 1, 0])
+e3 = vector(QQ, [0, 0, 1])
+display(html(r"$T(e_1) = %s$" % latex(A*e1)))
+display(html(r"$T(e_2) = %s$" % latex(A*e2)))
+display(html(r"$T(e_3) = %s$" % latex(A*e3)))
+
+# 2. Kernel
+ker = A.right_kernel()
+display(html(r"Basis Kernel : $%s$" % latex(ker.basis())))
+display(html(r"$\dim(\ker T) : %s$" % latex(ker.dimension())))
+
+t = var('t')
+display(html(r"Solusi umum : $%s$" % latex(t*ker.basis()[0])))
+
+display(html(r"$\text{RREF}(A) = %s$" % latex(A.rref())))
+
+# 3. Rank & Image
+r = A.rank()
+display(html(r"$\operatorname{rank}(A) : %s$" % latex(r)))
+display(html(r"Onto? : $%s$" % latex(r == 2)))
+
+b = vector(QQ, [3, 5])
+x = A.solve_right(b)
+display(html(r"$b = %s$" % latex(b)))
+display(html(r"$x \, (Ax = b) = %s$" % latex(x)))
+display(html(r"Cek $Ax = b$ : $%s$" % latex(A*x == b)))
+
+# 4. Rank-Nullity
+display(html(r"$\dim(\ker) + \operatorname{rank} = %s$" % latex(ker.dimension() + A.rank())))
+display(html(r"Rank-Nullity : $%s$" % latex(ker.dimension() + A.rank() == A.ncols())))
+
+# 5. Bukan injektif
+v1 = vector(QQ, [0, 0, 0])
+v2 = vector(QQ, [-1, 1, -1])
+display(html(r"Cek $Av_1 == Av_2$ : $%s$" % latex(A*v1 == A*v2)))
+display(html(r"$v_1 \neq v_2$ : $%s$" % latex(v1 != v2)))
+
+# 6. Siklus net-zero
+siklus = vector(QQ, [-1, 1, -1])
+display(html(r"$A \times \text{siklus} = %s$" % latex(A*siklus)))
+
+# 7. Objek linear_transformation
+V = QQ^3
+W = QQ^2
+T = linear_transformation(V, W, A.transpose())
+
+display(html(r"T.domain() : $\mathbb{R}^3$"))
+display(html(r"T.codomain() : $\mathbb{R}^2$"))
+display(html(r"Kernel basis : $%s$" % latex(T.kernel().basis())))
+display(html(r"Image dim : %s" % latex(T.image().dimension())))
+display(html(r"Surjektif? : $%s$" % latex(T.is_surjective())))
+display(html(r"Injektif? : $%s$" % latex(T.is_injective())))	
+	</script>
+	</div>
+  </div>
 
   <!-- 8.2 -->
   <h2 class="sec">8.2 Komposisi dan Invers Rangkaian Proses Produksi</h2>
