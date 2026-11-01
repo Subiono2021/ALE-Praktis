@@ -15585,107 +15585,580 @@ matriks yang muncul dalam model optimasi berukuran besar.
 </p>
 
 
-  <!-- 9.2 -->
-  <h2 class="sec">9.2 Metode Pangkat Steady State Rantai Markov & PageRank</h2>
-  <p align="justify">
-  Di RO, banyak sistem adalah dinamik: \(x_{k+1}=A x_k\). Contoh: perpindahan pelanggan antar merek, perpindahan stok antar gudang, atau pertumbuhan populasi. Perilaku jangka panjang ditentukan oleh <b>nilai eigen dominan</b> \(\lambda_1\). Jika \(|\lambda_1| < 1\), sistem stabil menuju 0; jika \(=1\), menuju steady state; jika \( > 1\), meledak.
-  <br>Power Method menghindari perhitungan \(\det(A-\lambda I)=0\) yang mustahil untuk \(n=10.000\). Cukup iterasi \(x_{k+1}=A x_k / \|A x_k\|\). Vektor akan sejajar dengan \(v_1\). Rayleigh quotient memberi \(\lambda_1\). Kecepatan konvergensi = \(|\lambda_2|/|\lambda_1|\) jika ada gap besar, cepat.
-  <br><b>Varian Penting:</b> Inverse Power → eigen terkecil (untuk analisis sensitivitas terkecil), Shifted Inverse \((A-\mu I)^{-1}\) → eigen terdekat dengan \(\mu\) (untuk mencari near-optimal).
-  <br>Aplikasi terbesar: <b>PageRank Google</b> adalah power method pada matriks web \(10^{10}×10^{10}\) yang sparse, dan <b>rantai Markov</b> untuk prediksi pangsa pasar.
-  </p>
-  <div class="card def">
-    Iterasi: \(x_0\) acak, \(x_{k+1}=A x_k/\|A x_k\|\), \(\lambda_k = x_k^T A x_k / x_k^T x_k\). Jika \(|\lambda_1|>|\lambda_2|\), \(x_k \to v_1\), \(\lambda_k \to \lambda_1\).
-  </div>
+  
+<!-- 9.2 -->
+<h2 class="sec">9.2 Metode Pangkat Steady State Rantai Markov & PageRank</h2>
 
-
-<h3 class="subsec">9.2.1 Mengapa Metode Pangkat Bekerja: Penurunan Singkat</h3>
 <p align="justify">
-  Alasan metode pangkat berhasil sangat bersih dan hanya memakai aljabar linear
-  dasar. Misalkan \(A\) dapat didiagonalkan (cukup diasumsikan di sini; kasus
-  <i>defective</i> ditangani dengan bentuk Jordan dan kesimpulannya sama).
-  Maka ada basis eigen \(v_1,\dots,v_n\) dengan nilai eigen
-  \(|\lambda_1|\ge|\lambda_2|\ge\cdots\ge|\lambda_n|\). Tulis vektor awal
-  \(x_0\) dalam basis itu:
-  \[
-    x_0 = c_1 v_1 + c_2 v_2 + \cdots + c_n v_n .
-  \]
-  Terapkan \(A\) sebanyak \(k\) kali:
-  \[
-    A^{k} x_0
-    = c_1\lambda_1^{k} v_1 + c_2\lambda_2^{k} v_2 + \cdots + c_n\lambda_n^{k} v_n
-    = \lambda_1^{k}\!\left[c_1 v_1
-      + \sum_{i\ge 2} c_i \Bigl(\frac{\lambda_i}{\lambda_1}\Bigr)^{k} v_i\right]\!.
-  \]
-  Karena \(\bigl|\lambda_i/\lambda_1\bigr|<1\) untuk semua \(i\ge 2\), suku-suku
-  dalam tanda kurung <b>menyusut menuju nol</b> secepat \((\lambda_2/\lambda_1)^{k}\).
-  Jadi arah \(A^k x_0\) mendekati arah \(v_1\), <b>tanpa bergantung pada
-  \(c_1\) yang kecil</b> kehadiran \(c_1\ne 0\) (hampir pasti benar untuk
-  \(x_0\) acak) hanya memengaruhi faktor skala, bukan arah limit.
+Dalam <i>Operations Research</i> (RO), banyak persoalan dapat dimodelkan sebagai
+sistem dinamik, yaitu suatu sistem yang keadaannya berubah dari satu periode
+ke periode berikutnya. Perubahan tersebut dapat dinyatakan secara matematis
+melalui persamaan
+\[
+  x_{k+1}=Ax_k,
+\]
+dengan \(x_k\) menyatakan vektor keadaan sistem pada periode ke-\(k\),
+sedangkan \(A\) merupakan matriks yang menggambarkan aturan perubahan
+keadaan tersebut. Sebagai contoh, \(x_k\) dapat menyatakan persentase
+pelanggan yang menggunakan beberapa merek produk, jumlah persediaan barang
+di sejumlah gudang, atau distribusi populasi pada beberapa wilayah.
+Matriks \(A\) menentukan bagaimana keadaan pada periode sekarang
+memengaruhi keadaan pada periode berikutnya.
+</p>
+
+<p align="justify">
+Pertanyaan penting dalam analisis sistem dinamik bukan hanya bagaimana
+keadaan berubah pada periode berikutnya, tetapi juga bagaimana perilaku
+sistem setelah berlangsung dalam waktu yang panjang. Apakah sistem akan
+menuju keadaan stabil? Apakah jumlah suatu variabel akan semakin kecil
+hingga mendekati nol, atau justru meningkat tanpa batas? Untuk menjawab
+pertanyaan tersebut, kita perlu memahami <b>nilai eigen dominan</b> dari
+matriks \(A\), yaitu nilai eigen yang mempunyai modulus terbesar.
+Jika nilai eigen dominan tunggal dan memenuhi kondisi konvergensi yang
+sesuai, perilaku jangka panjang sistem sangat dipengaruhi oleh nilai eigen
+dan vektor eigennya.
+</p>
+
+<p align="justify">
+Secara sederhana, jika semua nilai eigen mempunyai modulus kurang dari
+satu, maka untuk matriks yang tidak mengalami persoalan khusus seperti
+pertumbuhan akibat struktur yang tidak stabil, berlaku
+\(A^k x_0\to 0\). Jika nilai eigen dominan bermodulus satu, sistem
+belum tentu menuju suatu keadaan tetap: sistem dapat berosilasi atau
+mempertahankan pola tertentu. Sementara itu, jika terdapat nilai eigen
+dengan modulus lebih besar dari satu, komponen keadaan yang terkait
+dengan nilai eigen tersebut dapat tumbuh semakin besar. Dengan demikian,
+nilai eigen memberikan informasi penting mengenai stabilitas dan
+perilaku jangka panjang suatu sistem.
+</p>
+
+<p align="justify">
+Salah satu pendekatan untuk memperoleh nilai eigen dominan adalah
+<b>Power Method</b> atau <b>Metode Pangkat</b>. Mengapa metode ini
+diperlukan? Untuk matriks berukuran kecil, nilai eigen dapat dicari
+dengan menyelesaikan persamaan karakteristik
+\[
+  \det(A-\lambda I)=0.
+\]
+Namun, untuk matriks berukuran sangat besar, misalnya berukuran
+\(10.000\times 10.000\), menghitung dan mencari akar polinomial
+karakteristik bukan pendekatan yang praktis. Metode pangkat menawarkan
+cara yang lebih sederhana: kita tidak perlu menghitung semua nilai eigen,
+tetapi cukup melakukan perkalian matriks dengan vektor secara berulang.
+</p>
+
+<p align="justify">
+Ide dasarnya adalah memilih suatu vektor awal \(x_0\), kemudian
+menghitung
+\[
+  x_{k+1}=\frac{Ax_k}{\|Ax_k\|}.
+\]
+Pembagian dengan norma bertujuan menjaga agar panjang vektor tidak
+membesar atau mengecil secara ekstrem selama iterasi. Yang ingin kita
+peroleh bukan terutama panjang vektornya, melainkan <b>arah vektor</b>.
+Apabila matriks mempunyai satu nilai eigen dominan yang modulusnya
+lebih besar daripada modulus nilai eigen lainnya, dan vektor awal
+mempunyai komponen pada arah vektor eigen dominan, arah \(x_k\)
+akan semakin mendekati arah vektor eigen tersebut.
+</p>
+
+<p align="justify">
+Setelah arah vektor eigen dominan diperoleh, nilai eigennya dapat
+diestimasi menggunakan <b>Rayleigh quotient</b>:
+\[
+  \lambda_k=
+  \frac{x_k^T A x_k}{x_k^T x_k}.
+\]
+Untuk matriks simetris, pendekatan ini mempunyai sifat konvergensi
+yang sangat baik. Perlu diperhatikan bahwa rumus Rayleigh quotient
+tersebut merupakan estimasi nilai eigen berdasarkan vektor pendekatan,
+bukan nilai eigen yang selalu tepat pada setiap iterasi.
+</p>
+
+<p align="justify">
+Kecepatan konvergensi metode pangkat dipengaruhi oleh perbandingan
+\[
+  \left|\frac{\lambda_2}{\lambda_1}\right|,
+\]
+dengan \(\lambda_1\) nilai eigen dominan dan \(\lambda_2\)
+nilai eigen dengan modulus terbesar kedua. Jika perbandingan ini
+jauh lebih kecil daripada satu, konvergensi biasanya cepat.
+Sebaliknya, jika nilainya mendekati satu, diperlukan lebih banyak
+iterasi. Hal ini dikenal sebagai pengaruh <i>spectral gap</i>.
+</p>
+
+<p align="justify">
+Terdapat pula beberapa variasi metode pangkat yang penting dalam
+analisis numerik. <b>Inverse Power Method</b> menggunakan invers
+matriks untuk mendekati nilai eigen dengan modulus terkecil,
+dengan asumsi matriks nonsingular dan kondisi konvergensi terpenuhi.
+Sementara itu, <b>Shifted Inverse Power Method</b> menggunakan
+\((A-\mu I)^{-1}\), sehingga dapat mencari nilai eigen yang
+paling dekat dengan suatu bilangan \(\mu\). Metode ini berguna,
+misalnya, ketika kita ingin mengetahui nilai eigen di sekitar
+suatu nilai tertentu dalam analisis stabilitas atau sensitivitas.
+</p>
+
+<p align="justify">
+Dua penerapan penting metode pangkat adalah <b>rantai Markov</b>
+dan <b>PageRank</b>. Pada rantai Markov, metode pangkat digunakan
+untuk mencari distribusi probabilitas jangka panjang, yang disebut
+<i>steady-state distribution</i>. Distribusi ini menjelaskan
+proporsi waktu jangka panjang suatu sistem berada pada masing-masing
+keadaan, misalnya pangsa pasar beberapa merek produk.
+Pada PageRank, gagasan yang sama digunakan untuk menentukan
+peringkat halaman web berdasarkan struktur tautan antarhalaman.
+Dengan demikian, metode pangkat menghubungkan teori nilai eigen
+dengan persoalan nyata yang melibatkan jaringan dan sistem dinamik
+berskala besar.
 </p>
 
 <div class="card def">
-  <b>Laju konvergensi dan Rayleigh quotient.</b>
-  <ul>
-    <li><b>Galat arah</b> menyusut seperti \((\lambda_2/\lambda_1)^{k}\).
-        Semakin kecil rasionya (semakin lebar <i>gap</i> \(\lambda_1\)–\(\lambda_2\)),
-        semakin cepat konvergensi. Jika \(|\lambda_2|/|\lambda_1|\approx 0.9\),
-        butuh puluhan iterasi; jika \(0.1\), hanya 5–6 iterasi untuk galat \(10^{-6}\).</li>
-    <li><b>Rayleigh quotient</b> \(\lambda_k = \dfrac{x_k^{T} A x_k}{x_k^{T}x_k}\)
-        memberi estimasi \(\lambda_1\). Untuk \(A\) simetris, galat \(\lambda_k\)
-        menyusut sebagai \((\lambda_2/\lambda_1)^{2k}\) <b>dua kali lebih
-        cepat</b> daripada galat arah \(x_k\).</li>
-    <li><b>Kegagalan</b> terjadi bila \(|\lambda_1|=|\lambda_2|\) (dua nilai
-        eigen dominan sama besarnya, bisa dengan tanda berbeda): arah \(x_k\)
-        berosilasi atau tidak konvergen. Ini akan disorot pada contoh
-        shift-inverse di §9.2.4.</li>
-  </ul>
+  <b>Ringkasan Metode Pangkat</b>
+  <p align="justify">
+    Diberikan matriks \(A\) dan vektor awal \(x_0\ne 0\).
+    Iterasi metode pangkat dinyatakan sebagai
+    \[
+      y_{k+1}=Ax_k,\qquad
+      x_{k+1}=\frac{y_{k+1}}{\|y_{k+1}\|}.
+    \]
+    Estimasi nilai eigen dominan dapat dihitung dengan
+    \[
+      \lambda_k=
+      \frac{x_k^T A x_k}{x_k^T x_k}.
+    \]
+    Jika nilai eigen dominan tunggal memenuhi
+    \[
+      |\lambda_1|>|\lambda_2|
+    \]
+    dan komponen vektor awal pada arah eigen dominan tidak nol,
+    maka arah \(x_k\) akan mendekati arah vektor eigen dominan
+    \(v_1\). Nilai \(\lambda_k\) selanjutnya dapat digunakan
+    sebagai pendekatan terhadap \(\lambda_1\).
+  </p>
 </div>
+
+
+<h3 class="subsec">9.2.1 Mengapa Metode Pangkat Bekerja: Penurunan Singkat</h3>
+
+<p align="justify">
+Untuk memahami mengapa metode pangkat dapat menemukan arah vektor
+eigen dominan, kita mulai dari sifat dasar aljabar linear.
+Misalkan matriks \(A\) dapat didiagonalkan, sehingga mempunyai
+basis vektor eigen \(v_1,v_2,\ldots,v_n\) yang saling bebas
+linear. Urutkan nilai eigennya berdasarkan modulus:
+\[
+  |\lambda_1|>|\lambda_2|\ge\cdots\ge|\lambda_n|.
+\]
+Asumsi ketaksamaan pertama sangat penting karena menunjukkan
+bahwa terdapat satu nilai eigen yang benar-benar dominan.
+</p>
+
+<p align="justify">
+Setiap vektor awal \(x_0\) dapat dituliskan sebagai kombinasi
+linear vektor-vektor eigen tersebut:
+\[
+  x_0=c_1v_1+c_2v_2+\cdots+c_nv_n.
+\]
+Koefisien \(c_i\) menunjukkan seberapa besar kontribusi masing-masing
+arah vektor eigen dalam membentuk vektor awal. Syarat pentingnya
+adalah \(c_1\ne 0\), artinya vektor awal mempunyai komponen
+pada arah vektor eigen dominan.
+</p>
+
+<p align="justify">
+Sekarang, kita kalikan vektor awal tersebut dengan matriks \(A\).
+Karena setiap \(v_i\) merupakan vektor eigen, berlaku
+\(Av_i=\lambda_i v_i\). Oleh karena itu,
+\[
+  Ax_0=c_1\lambda_1v_1+
+       c_2\lambda_2v_2+\cdots+
+       c_n\lambda_nv_n.
+\]
+Jika perkalian dilakukan sebanyak \(k\) kali, diperoleh
+\[
+  A^kx_0=
+  c_1\lambda_1^kv_1+
+  c_2\lambda_2^kv_2+\cdots+
+  c_n\lambda_n^kv_n.
+\]
+Dengan mengeluarkan faktor \(\lambda_1^k\), persamaan tersebut
+dapat ditulis kembali menjadi
+\[
+ A^kx_0=\lambda_1^k
+ \left[
+ c_1v_1+
+ \sum_{i=2}^{n}c_i
+ \left(\frac{\lambda_i}{\lambda_1}\right)^kv_i
+ \right].
+\]
+</p>
+
+<p align="justify">
+Perhatikan bagian di dalam tanda kurung. Karena
+\[
+  \left|\frac{\lambda_i}{\lambda_1}\right|<1,
+  \qquad i=2,\ldots,n,
+\]
+maka untuk \(k\) yang semakin besar, semua suku
+\[
+  c_i\left(\frac{\lambda_i}{\lambda_1}\right)^kv_i
+\]
+akan semakin kecil dan mendekati nol. Akibatnya,
+\[
+  A^kx_0\approx \lambda_1^k c_1v_1.
+\]
+Artinya, setelah cukup banyak iterasi, kontribusi arah
+\(v_2,\ldots,v_n\) menjadi sangat kecil dibandingkan kontribusi
+arah \(v_1\). Inilah alasan utama metode pangkat berhasil:
+<b>perkalian matriks secara berulang secara bertahap memperkuat
+komponen pada arah eigen dominan dibandingkan komponen lainnya.</b>
+</p>
+
+<p align="justify">
+Perhatikan bahwa yang semakin dominan adalah arah vektor \(v_1\),
+bukan berarti panjang vektor selalu semakin besar. Jika
+\(|\lambda_1|>1\), panjang vektor sebelum normalisasi dapat
+bertambah; jika \(|\lambda_1|<1\), panjangnya dapat mengecil;
+dan jika \(|\lambda_1|=1\), panjangnya dapat tetap pada skala
+tertentu. Normalisasi pada setiap iterasi menghilangkan pengaruh
+perubahan skala tersebut sehingga arah vektor dapat diamati
+dengan lebih baik.
+</p>
+
+<p align="justify">
+Mengapa vektor awal biasanya dipilih secara acak? Karena vektor
+acak hampir selalu mempunyai komponen tidak nol pada arah
+vektor eigen dominan. Namun, jika secara khusus \(c_1=0\),
+metode pangkat tidak akan menemukan \(v_1\), melainkan akan
+mengikuti arah eigen dominan berikutnya yang masih mempunyai
+koefisien tidak nol. Jadi, pemilihan vektor awal juga merupakan
+bagian penting dari metode ini.
+</p>
+
+<div class="card def">
+  <b>Intuisi utama metode pangkat</b>
+  <p align="justify">
+    Bayangkan sebuah vektor awal merupakan campuran beberapa
+    arah. Setiap kali matriks \(A\) mengalikan vektor tersebut,
+    setiap arah mengalami perubahan skala sesuai nilai eigennya.
+    Arah dengan nilai eigen bermodulus terbesar akan tumbuh
+    relatif lebih dominan daripada arah lainnya. Setelah
+    normalisasi berulang, arah yang tersisa semakin mendekati
+    arah vektor eigen dominan.
+  </p>
+</div>
+
+<div class="card def">
+  <b>Laju konvergensi dan Rayleigh quotient</b>
+  <p align="justify">
+    Ada tiga hal penting yang perlu diperhatikan ketika menggunakan
+    metode pangkat.
+  </p>
+  <ul>
+    <li>
+      <b>Galat arah vektor.</b>
+      Secara umum, untuk kasus yang memenuhi asumsi di atas,
+      galat arah vektor eigen dominan menyusut secara asimtotik
+      dengan faktor
+      \[
+        \left|\frac{\lambda_2}{\lambda_1}\right|^k.
+      \]
+      Semakin kecil rasio tersebut, semakin cepat arah vektor
+      mendekati arah eigen dominan. Sebagai ilustrasi, jika
+      rasionya \(0{,}1\), maka setelah enam iterasi faktor
+      penyusutannya sekitar \(10^{-6}\). Sebaliknya, jika
+      rasionya \(0{,}9\), setelah enam iterasi faktor tersebut
+      masih sekitar \(0{,}531\). Oleh karena itu, perbedaan
+      antara dua nilai eigen dominan sangat memengaruhi
+      kecepatan konvergensi.
+    </li>
+
+    <li>
+      <b>Rayleigh quotient.</b>
+      Estimasi nilai eigen dihitung menggunakan
+      \[
+        \lambda_k=
+        \frac{x_k^TAx_k}{x_k^Tx_k}.
+      \]
+      Untuk matriks simetris, Rayleigh quotient mempunyai
+      sifat khusus: jika \(x_k\) sudah mendekati vektor eigen
+      dominan, galat nilai eigen dapat menyusut dengan orde
+      kuadrat terhadap galat arah vektor. Dengan demikian,
+      galat nilai eigen secara asimtotik dapat menyusut seperti
+      \[
+        O\left(
+        \left|\frac{\lambda_2}{\lambda_1}\right|^{2k}
+        \right).
+      \]
+      Sifat ini menjadikan estimasi nilai eigen sering kali
+      lebih cepat akurat daripada pendekatan arah vektornya.
+      Perlu dicatat bahwa keunggulan orde kuadrat tersebut
+      tidak berlaku secara umum untuk semua matriks nonsimetris.
+    </li>
+
+    <li>
+      <b>Kegagalan atau ketidakstabilan konvergensi.</b>
+      Jika dua nilai eigen mempunyai modulus terbesar yang sama,
+      yaitu
+      \[
+        |\lambda_1|=|\lambda_2|,
+      \]
+      tidak ada satu arah yang secara konsisten lebih dominan.
+      Akibatnya, iterasi dapat berosilasi atau tidak mempunyai
+      arah limit. Sebagai contoh, untuk
+      \[
+        A=\begin{pmatrix}
+          1&0\\
+          0&-1
+        \end{pmatrix},
+        \qquad
+        x_0=\begin{pmatrix}1\\1\end{pmatrix},
+      \]
+      diperoleh
+      \[
+        A^kx_0=
+        \begin{pmatrix}
+          1\\(-1)^k
+        \end{pmatrix}.
+      \]
+      Arah vektor berubah-ubah antara dua arah yang berbeda
+      sehingga tidak konvergen ke satu arah eigen saja.
+      Persoalan seperti ini perlu diperhatikan ketika
+      menggunakan metode pangkat maupun variasinya.
+    </li>
+  </ul>
+  <p align="justify">
+    Catatan: apabila matriks tidak dapat didiagonalkan, analisis
+    dapat dilakukan menggunakan bentuk Jordan. Faktor polinomial
+    dalam \(k\) dapat muncul pada suku-suku terkait blok Jordan,
+    tetapi selama terdapat satu nilai eigen dominan yang terpisah
+    secara ketat dalam modulus, kesimpulan konvergensi arah
+    tetap berlaku dengan asumsi komponen awal pada arah eigen
+    dominan yang sesuai tidak nol.
+  </p>
+</div>
+
 
 <h3 class="subsec">9.2.2 Contoh Lengkap: Pangsa Pasar sebagai Rantai Markov</h3>
 <div class="card example">
-  <b>Situasi.</b> Dua merek, \(A\) dan \(B\), bersaing di pasar. Setiap kuartal:
+
+  <p align="justify">
+    <b>Situasi dan perumusan masalah.</b>
+    Misalkan terdapat dua perusahaan, yaitu merek \(A\) dan merek
+    \(B\), yang bersaing memperebutkan pelanggan. Setiap kuartal,
+    sebagian pelanggan tetap menggunakan merek yang sama, sedangkan
+    sebagian lainnya berpindah ke merek pesaing. Perpindahan pelanggan
+    tersebut dapat dipandang sebagai suatu proses stokastik karena
+    keputusan pelanggan pada periode berikutnya dinyatakan melalui
+    probabilitas perpindahan.
+  </p>
+
+  <p align="justify">
+    Berdasarkan survei pasar, diperoleh informasi sebagai berikut:
+  </p>
   <ul>
-    <li>80% pelanggan merek \(A\) tetap setia; 20% pindah ke \(B\).</li>
-    <li>40% pelanggan merek \(B\) pindah ke \(A\); 60% tetap setia.</li>
+    <li>80% pelanggan merek \(A\) tetap setia menggunakan merek \(A\),
+        sedangkan 20% berpindah ke merek \(B\).</li>
+    <li>40% pelanggan merek \(B\) berpindah ke merek \(A\),
+        sedangkan 60% tetap menggunakan merek \(B\).</li>
   </ul>
-  Jika \(x_k=(x_k^A, x_k^B)^{T}\) menyatakan pangsa pasar pada kuartal \(k\),
-  maka \(x_{k+1}=A x_k\) dengan
-  \[
-    A=\begin{bmatrix}0.8 & 0.4\\[2pt]0.2&0.6\end{bmatrix}.
-  \]
-  (Kolom menjumlah 1 karena setiap pelanggan pasti ke salah satu merek;
-  \(A\) adalah <b>matriks stokastik kolom</b>.)
 
-  <br><br>
-  <b>Eigen-teori singkat.</b> \(\operatorname{tr}A=1.4\),
-  \(\det A=0.8\cdot0.6-0.4\cdot0.2=0.40\), jadi persamaan karakteristik
-  \(\lambda^{2}-1.4\lambda+0.40=0\) memberi \(\lambda_{1}=1\),
-  \(\lambda_{2}=0.4\). <b>Nilai eigen dominan \(=1\)</b> ciri khas rantai
-  Markov: perilaku jangka panjang menuju steady state, bukan meledak atau
-  lenyap. Rasio \(\lambda_2/\lambda_1=0.4\), jadi galat konvergensi menyusut
-  sekitar 40% per iterasi.
+  <p align="justify">
+    Pertanyaan yang ingin dijawab adalah: jika pola perpindahan
+    pelanggan tersebut berlangsung terus-menerus, bagaimana komposisi
+    pangsa pasar kedua merek dalam jangka panjang? Apakah merek yang
+    saat ini mempunyai pelanggan lebih banyak akan selalu menjadi
+    pemimpin pasar? Untuk menjawabnya, kita menggunakan model
+    <b>rantai Markov</b>.
+  </p>
 
-  <br><br>
-  <b>Steady state (target).</b> Selesaikan \(Ax=x\):
-  \(0.8x_1+0.4x_2=x_1 \Rightarrow x_1=2x_2\). Normalisasi
-  \(x_1+x_2=1\) memberi \(x^\ast=(\tfrac{2}{3},\tfrac{1}{3})^{T}\approx(0.6667,0.3333)^{T}\).
-  Jadi dalam jangka panjang, merek \(A\) menguasai \(2/3\) pasar dan
-  \(B\) menguasai \(1/3\) <b>terlepas dari pangsa awal</b>.
+  <p align="justify">
+    Misalkan
+    \(x_k=(x_k^A,x_k^B)^T\) menyatakan distribusi pangsa pasar
+    pada kuartal ke-\(k\). Komponen \(x_k^A\) menyatakan proporsi
+    pelanggan merek \(A\), sedangkan \(x_k^B\) menyatakan proporsi
+    pelanggan merek \(B\). Karena setiap pelanggan harus menggunakan
+    salah satu dari kedua merek tersebut, berlaku
+    \[
+      x_k^A+x_k^B=1.
+    \]
+    Dengan demikian, matriks perpindahan pelanggan dapat dituliskan
+    sebagai
+    \[
+      x_{k+1}=Ax_k,
+      \qquad
+      A=\begin{bmatrix}
+        0.8 & 0.4\\[2pt]
+        0.2 & 0.6
+      \end{bmatrix}.
+    \]
+  </p>
 
-  <br><br>
-  <b>Iterasi metode pangkat.</b> Mulai dari \(x_0=(1,0)^{T}\) (pangsa awal
-  \(A\) mendominasi). Setiap langkah dinormalkan dengan jumlah, karena
-  pangsa pasar harus berjumlah 1:
-  \[
-    x_{k+1}=\frac{A x_k}{\|A x_k\|_{1}} .
-  \]
+  <p align="justify">
+    <b>Mengapa matriks tersebut disusun demikian?</b>
+    Kolom pertama menggambarkan perilaku pelanggan yang semula
+    menggunakan merek \(A\): sebanyak 80% tetap di \(A\) dan
+    20% berpindah ke \(B\). Kolom kedua menggambarkan pelanggan
+    yang semula menggunakan merek \(B\): sebanyak 40% berpindah
+    ke \(A\) dan 60% tetap di \(B\). Jadi, setiap kolom berjumlah
+    satu karena seluruh pelanggan dari suatu merek harus
+    terdistribusi ke salah satu merek pada periode berikutnya.
+    Matriks seperti ini disebut <b>matriks stokastik kolom</b>.
+  </p>
+
+  <p align="justify">
+    <b>Eigen-teori singkat.</b>
+    Sebelum menghitung perilaku jangka panjang, kita perlu mengetahui
+    nilai eigen matriks \(A\). Nilai eigen memberikan informasi
+    mengenai komponen perubahan sistem ketika matriks diterapkan
+    berulang kali. Untuk matriks berukuran \(2\times2\), kita dapat
+    menggunakan jejak matriks (<i>trace</i>) dan determinan:
+    \[
+      \operatorname{tr}(A)=0.8+0.6=1.4,
+    \]
+    \[
+      \det(A)=0.8(0.6)-0.4(0.2)=0.40.
+    \]
+    Persamaan karakteristiknya adalah
+    \[
+      \lambda^2-1.4\lambda+0.40=0.
+    \]
+    Dengan memfaktorkan persamaan tersebut, diperoleh
+    \[
+      (\lambda-1)(\lambda-0.4)=0.
+    \]
+    Jadi,
+    \[
+      \lambda_1=1,\qquad \lambda_2=0.4.
+    \]
+  </p>
+
+  <p align="justify">
+    Hasil ini mempunyai makna penting. Nilai eigen \(1\) merupakan
+    ciri khas matriks stokastik kolom. Nilai tersebut menunjukkan
+    adanya distribusi probabilitas yang tidak berubah ketika
+    matriks perpindahan diterapkan. Sementara itu, nilai eigen
+    \(0.4\) menggambarkan komponen penyimpangan dari distribusi
+    jangka panjang yang semakin mengecil.
+    Karena
+    \[
+      \left|\frac{\lambda_2}{\lambda_1}\right|=0.4<1,
+    \]
+    metode pangkat akan konvergen dengan laju geometrik untuk
+    contoh ini.
+  </p>
+
+  <p align="justify">
+    <b>Menentukan steady state (keadaan tunak).</b>
+    Keadaan tunak adalah distribusi pangsa pasar yang tidak berubah
+    lagi meskipun proses perpindahan pelanggan terus berlangsung.
+    Secara matematis, keadaan ini harus memenuhi
+    \[
+      Ax^\ast=x^\ast.
+    \]
+    Jika
+    \(x^\ast=(x_1,x_2)^T\), maka
+    \[
+      \begin{bmatrix}
+        0.8&0.4\\
+        0.2&0.6
+      \end{bmatrix}
+      \begin{bmatrix}x_1\\x_2\end{bmatrix}
+      =
+      \begin{bmatrix}x_1\\x_2\end{bmatrix}.
+    \]
+    Dari persamaan pertama diperoleh
+    \[
+      0.8x_1+0.4x_2=x_1
+      \quad\Longrightarrow\quad x_1=2x_2.
+    \]
+    Karena jumlah pangsa pasar harus satu,
+    \[
+      x_1+x_2=1.
+    \]
+    Dengan demikian,
+    \[
+      \boxed{
+      x^\ast=
+      \begin{pmatrix}
+        \frac23\\[2pt]\frac13
+      \end{pmatrix}
+      \approx
+      \begin{pmatrix}
+        0.6667\\0.3333
+      \end{pmatrix}.
+      }
+    \]
+  </p>
+
+  <p align="justify">
+    Hasil tersebut berarti bahwa dalam jangka panjang, sekitar
+    66,67% pelanggan akan menggunakan merek \(A\), sedangkan
+    33,33% menggunakan merek \(B\). Perhatikan bahwa hasil ini
+    bukan sekadar prediksi berdasarkan kondisi pasar saat ini,
+    melainkan distribusi kesetimbangan yang ditentukan oleh
+    probabilitas perpindahan pelanggan.
+  </p>
+
+  <p align="justify">
+    Mengapa distribusi ini dapat dicapai dari berbagai kondisi
+    awal? Karena semua elemen matriks \(A\) positif, setiap merek
+    mempunyai peluang untuk menerima pelanggan dari merek lainnya
+    dan terdapat peluang pelanggan tetap bertahan. Rantai Markov
+    ini bersifat irreducible dan aperiodic. Oleh karena itu,
+    distribusi steady state tunggal dapat dicapai dari setiap
+    distribusi awal yang valid.
+  </p>
+
+  <p align="justify">
+    <b>Iterasi metode pangkat.</b>
+    Kita juga dapat memperoleh distribusi jangka panjang tanpa
+    menyelesaikan persamaan karakteristik atau mencari vektor
+    eigen secara langsung. Caranya adalah melakukan perkalian
+    matriks dan vektor secara berulang.
+  </p>
+
+  <p align="justify">
+    Misalkan pada awal pengamatan seluruh pelanggan menggunakan
+    merek \(A\), sehingga
+    \[
+      x_0=\begin{pmatrix}1\\0\end{pmatrix}.
+    \]
+    Pangsa pasar periode berikutnya diperoleh dengan mengalikan
+    matriks transisi dengan vektor keadaan sebelumnya.
+    Karena jumlah probabilitas harus selalu satu, normalisasi
+    dilakukan menggunakan norma-1:
+    \[
+      x_{k+1}=\frac{Ax_k}{\|Ax_k\|_1}.
+    \]
+    Dalam contoh ini, karena \(A\) sudah merupakan matriks
+    stokastik kolom dan \(x_0\) merupakan distribusi probabilitas,
+    jumlah komponen \(Ax_k\) sebenarnya sudah satu. Jadi,
+    normalisasi tersebut tidak mengubah hasil.
+  </p>
+
+  <p align="justify">
+    Sebagai ilustrasi, iterasi pertama menghasilkan
+    \[
+      x_1=
+      \begin{bmatrix}0.8&0.4\\0.2&0.6\end{bmatrix}
+      \begin{bmatrix}1\\0\end{bmatrix}
+      =
+      \begin{bmatrix}0.8\\0.2\end{bmatrix}.
+    \]
+    Artinya, setelah satu kuartal, 80% pelanggan menggunakan
+    merek \(A\) dan 20% menggunakan merek \(B\). Pada kuartal
+    berikutnya, perpindahan pelanggan kembali dihitung
+    menggunakan matriks yang sama.
+  </p>
 
   <table style="border-collapse:collapse;margin-top:8px">
     <tr style="border-bottom:1px solid #999">
       <th style="padding:4px 12px">\(k\)</th>
-      <th style="padding:4px 12px">\(x_k^{A}\)</th>
-      <th style="padding:4px 12px">\(x_k^{B}\)</th>
-      <th style="padding:4px 12px">\(\|x_k - x^\ast\|_{\infty}\)</th>
+      <th style="padding:4px 12px">\(x_k^A\)</th>
+      <th style="padding:4px 12px">\(x_k^B\)</th>
+      <th style="padding:4px 12px">\(\|x_k-x^\ast\|_\infty\)</th>
     </tr>
     <tr><td style="padding:2px 12px">0</td><td style="padding:2px 12px">1.0000</td><td style="padding:2px 12px">0.0000</td><td style="padding:2px 12px">0.3333</td></tr>
     <tr><td style="padding:2px 12px">1</td><td style="padding:2px 12px">0.8000</td><td style="padding:2px 12px">0.2000</td><td style="padding:2px 12px">0.1333</td></tr>
@@ -15697,144 +16170,683 @@ matriks yang muncul dalam model optimasi berukuran besar.
     <tr><td style="padding:2px 12px">\(\to\infty\)</td><td style="padding:2px 12px">0.6667</td><td style="padding:2px 12px">0.3333</td><td style="padding:2px 12px">0</td></tr>
   </table>
 
-  <br>
-  Perhatikan galat turun hampir persis mengikuti \(0.4^{k}\): 0.3333 → 0.1333
-  (×0.4) → 0.0533 (×0.4) → 0.0213 (×0.4) sangat sesuai dengan prediksi
-  teoretis \(|\lambda_2/\lambda_1|=0.4\) dari §9.2.1.
+  <p align="justify">
+    <b>Bagaimana membaca tabel?</b>
+    Pada iterasi ke-0, seluruh pelanggan menggunakan merek \(A\).
+    Setelah satu iterasi, sebagian pelanggan berpindah ke \(B\).
+    Pada iterasi berikutnya, pangsa pasar \(A\) terus berkurang,
+    sedangkan pangsa pasar \(B\) meningkat. Namun, perubahan
+    tersebut semakin kecil dan kedua pangsa pasar mendekati
+    nilai kesetimbangannya.
+  </p>
 
-  <br><br>
-  <b>Interpretasi RO.</b> Prediksi pangsa jangka panjang \(x^\ast=(2/3,1/3)\)
-  adalah kesetimbangan strategis: berapa pun pangsa awal, kekuatan retensi
-  pelanggan (80% untuk \(A\) vs 60% untuk \(B\)) dan tingkat perpindahan
-  (20% vs 40%) menentukan kemenangan akhir \(A\). Metode pangkat <b>tidak
-  perlu menghitung \(\det(A-\lambda I)\)</b> cukup iterasi matriks–vektor
-  yang biayanya \(O(n^{2})\) per langkah, jauh lebih murah dan stabil,
-  terutama jika \(A\) jarang (<i>sparse</i>).
+  <p align="justify">
+    Kolom terakhir menunjukkan galat terhadap distribusi steady
+    state. Norma tak hingga didefinisikan sebagai
+    \[
+      \|x_k-x^\ast\|_\infty
+      =\max_i|x_k^{(i)}-x_i^\ast|.
+    \]
+    Artinya, galat tersebut mengukur penyimpangan terbesar
+    di antara kedua komponen pangsa pasar. Semakin kecil
+    nilainya, semakin dekat hasil iterasi terhadap keadaan tunak.
+  </p>
+
+  <p align="justify">
+    <b>Keterkaitan dengan teori konvergensi.</b>
+    Dari §9.2.1, kita mengetahui bahwa laju konvergensi metode
+    pangkat dipengaruhi oleh rasio nilai eigen kedua terhadap
+    nilai eigen dominan. Dalam contoh ini,
+    \[
+      \left|\frac{\lambda_2}{\lambda_1}\right|
+      =\frac{0.4}{1}=0.4.
+    \]
+    Oleh karena itu, galat arah vektor menyusut dengan faktor
+    \(0.4\) pada setiap iterasi. Hal ini dapat dilihat pada tabel:
+    \[
+      0.3333\longrightarrow0.1333
+      \longrightarrow0.0533\longrightarrow0.0213.
+    \]
+    Setiap galat kira-kira 40% dari galat sebelumnya.
+    Ini merupakan ilustrasi langsung bagaimana teori nilai
+    eigen menjelaskan perilaku numerik suatu algoritma.
+  </p>
+
+  <p align="justify">
+    <b>Interpretasi dalam Operations Research.</b>
+    Hasil steady state menunjukkan bahwa merek \(A\) mempunyai
+    posisi pasar jangka panjang yang lebih kuat. Hal tersebut
+    berkaitan dengan tingkat retensi pelanggan yang lebih tinggi,
+    yaitu 80%, dibandingkan 60% pada merek \(B\). Selain itu,
+    pelanggan \(B\) mempunyai peluang berpindah ke \(A\) sebesar
+    40%, sedangkan pelanggan \(A\) hanya mempunyai peluang
+    berpindah ke \(B\) sebesar 20%.
+  </p>
+
+  <p align="justify">
+    Bagi pengambil keputusan, informasi ini dapat digunakan
+    untuk menyusun strategi pemasaran, mempertahankan pelanggan,
+    menentukan program loyalitas, dan memperkirakan pangsa pasar
+    jangka panjang. Namun, perlu diingat bahwa prediksi tersebut
+    berlaku selama probabilitas perpindahan pelanggan relatif
+    tetap. Jika perusahaan mengubah harga, kualitas produk,
+    atau strategi pemasaran, matriks transisi juga dapat berubah.
+    Dengan demikian, model Markov dapat digunakan untuk
+    mengevaluasi dampak perubahan strategi.
+  </p>
+
+  <p align="justify">
+    Dari sisi komputasi, metode pangkat hanya memerlukan
+    perkalian matriks-vektor berulang. Untuk matriks umum yang
+    padat, satu iterasi memerlukan \(O(n^2)\) operasi.
+    Jika matriks jarang (<i>sparse</i>), biayanya dapat
+    dikurangi menjadi \(O(\operatorname{nnz}(A))\), dengan
+    \(\operatorname{nnz}(A)\) menyatakan jumlah elemen
+    tidak nol. Keuntungan ini menjadi sangat penting ketika
+    jumlah keadaan sistem sangat besar.
+  </p>
+
 </div>
+
 
 <h3 class="subsec">9.2.3 Contoh Lengkap: Mini-PageRank 3 Node</h3>
 <div class="card example">
-  <b>Situasi.</b> Tiga halaman web saling tertaut:
+
+  <p align="justify">
+    <b>Situasi dan motivasi.</b>
+    Bayangkan kita mempunyai tiga halaman web yang saling
+    terhubung melalui tautan atau <i>hyperlink</i>. Tidak semua
+    halaman mempunyai tingkat kepentingan yang sama. Salah satu
+    cara untuk mengukur kepentingan suatu halaman adalah melihat
+    berapa banyak halaman lain yang memberikan tautan kepadanya.
+    Namun, jumlah tautan saja belum cukup. Tautan dari halaman
+    yang juga penting seharusnya mempunyai kontribusi lebih besar.
+  </p>
+
+  <p align="justify">
+    Gagasan inilah yang mendasari algoritma <b>PageRank</b>.
+    Secara intuitif, sebuah halaman dianggap penting apabila
+    memperoleh tautan dari halaman-halaman yang penting.
+    Dengan demikian, penilaian kepentingan tidak hanya bergantung
+    pada jumlah tautan, tetapi juga pada kualitas atau bobot
+    halaman sumber tautan tersebut.
+  </p>
+
+  <p align="justify">
+    Untuk memahami gagasan tersebut, kita gunakan jaringan
+    sederhana yang terdiri atas tiga halaman web:
+  </p>
   <ul>
-    <li>Halaman 1 menaut ke 2 dan 3.</li>
-    <li>Halaman 2 menaut ke 1 dan 3.</li>
-    <li>Halaman 3 menaut ke 1 saja.</li>
+    <li>Halaman 1 menaut ke halaman 2 dan halaman 3.</li>
+    <li>Halaman 2 menaut ke halaman 1 dan halaman 3.</li>
+    <li>Halaman 3 menaut ke halaman 1 saja.</li>
   </ul>
-  Definisikan \(A_{ij}=1/\operatorname{outdeg}(j)\) jika \(j\to i\), nol jika
-  tidak. Maka \(A\) adalah <b>matriks stokastik kolom</b>, dan vektor pangkat
-  halaman \(x\) (skor penting tiap halaman, total = 1) memenuhi
-  \(Ax=x\) <i>persis</i> persamaan steady state rantai Markov.
 
-  <br>
-  Kolom-kolom \(A\):
-  \[
-    A=\begin{bmatrix}
-      0 & \tfrac12 & 1 \\[2pt]
-      \tfrac12 & 0 & 0 \\[2pt]
-      \tfrac12 & \tfrac12 & 0
-    \end{bmatrix}.
-  \]
+  <p align="justify">
+    Setiap halaman membagikan bobotnya secara merata kepada
+    halaman-halaman yang ditautkannya. Sebagai contoh, halaman 1
+    mempunyai dua tautan keluar, sehingga masing-masing halaman
+    yang dituju menerima setengah kontribusi dari halaman 1.
+    Halaman 3 hanya mempunyai satu tautan keluar, sehingga
+    seluruh kontribusinya diberikan kepada halaman 1.
+  </p>
 
-  <br><br>
-  <b>Eigenvalues.</b> Persamaan karakteristik:
-  \[
-    \det(A-\lambda I)
-    = -\lambda^{3}+\tfrac{3}{4}\lambda+\tfrac{1}{4}
-    = -(\lambda-1)\Bigl(\lambda+\tfrac12\Bigr)^{2}.
-  \]
-  Jadi \(\lambda_1=1\), \(\lambda_2=\lambda_3=-\tfrac12\). Rasio
-  \(|\lambda_2|/|\lambda_1|=0.5\) konvergensi cepat.
+  <p align="justify">
+    <b>Membangun matriks transisi.</b>
+    Definisikan
+    \[
+      A_{ij}=
+      \begin{cases}
+        \dfrac{1}{\operatorname{outdeg}(j)},
+        &\text{jika halaman }j\text{ menaut ke }i,\\[6pt]
+        0,&\text{jika tidak}.
+      \end{cases}
+    \]
+    Di sini, \(\operatorname{outdeg}(j)\) menyatakan jumlah
+    tautan keluar dari halaman \(j\). Perhatikan bahwa indeks
+    \(j\) menunjukkan halaman sumber, sedangkan indeks \(i\)
+    menunjukkan halaman tujuan.
+  </p>
 
-  <br>
-  <b>Steady state.</b> Selesaikan \(Ax=x\) dengan normalisasi \(x_1+x_2+x_3=1\):
-  \(x_1=2x_2,\ x_3=x_1/2+x_2/2=\tfrac{3}{4}x_1\). Normalisasi:
-  \(x_1(1+\tfrac12+\tfrac34)=x_1\cdot\tfrac94=1 \Rightarrow x_1=\tfrac{4}{9}\).
-  Maka \(x^{\ast}=(\tfrac49,\tfrac29,\tfrac13)^{T}\approx(0.4444,0.2222,0.3333)^{T}\).
+  <p align="justify">
+    Dengan aturan tersebut, matriks transisinya adalah
+    \[
+      A=\begin{bmatrix}
+        0 & \tfrac12 & 1\\[2pt]
+        \tfrac12 & 0 & 0\\[2pt]
+        \tfrac12 & \tfrac12 & 0
+      \end{bmatrix}.
+    \]
+    Sebagai contoh, elemen \(A_{12}=\frac12\) menunjukkan
+    bahwa halaman 2 memberikan setengah kontribusi bobotnya
+    kepada halaman 1. Sementara itu, \(A_{13}=1\) menunjukkan
+    bahwa seluruh kontribusi halaman 3 diberikan kepada
+    halaman 1.
+  </p>
 
-  <br><br>
-  <b>Iterasi (mulai dari seragam).</b> \(x_0=(1,1,1)^{T}/3\).
-  \[
-    \begin{aligned}
-      x_1 &= A x_0/\|Ax_0\|_1
-           = (0.5000,\ 0.1667,\ 0.3333)^{T}, \\
-      x_2 &= (0.4167,\ 0.2500,\ 0.3333)^{T}, \\
-      x_3 &= (0.4583,\ 0.2083,\ 0.3333)^{T}, \\
-      x_4 &= (0.4375,\ 0.2292,\ 0.3333)^{T}, \\
-      &\vdots \\
-      x^{\ast} &= (0.4444,\ 0.2222,\ 0.3333)^{T}.
-    \end{aligned}
-  \]
-  Galat (dihitung pada \(x_1,x_2\)): \(0.0833,\ 0.0417,\ 0.0208,\ 0.0104,\dots\)
-   menyusut persis setengah setiap iterasi, sesuai prediksi
-  \((\lambda_2/\lambda_1)^{k}=0.5^{k}\).
+  <p align="justify">
+    Setiap kolom matriks berjumlah satu. Artinya, seluruh bobot
+    dari satu halaman didistribusikan kepada halaman-halaman
+    yang ditautkannya. Matriks ini merupakan matriks stokastik
+    kolom. Jika \(x\) menyatakan vektor skor PageRank, maka
+    pembaruan skor dapat dituliskan sebagai
+    \[
+      x_{k+1}=Ax_k.
+    \]
+    Dalam keadaan tunak, skor tidak berubah lagi sehingga
+    \[
+      Ax=x.
+    \]
+    Jadi, secara matematis, persoalan PageRank pada jaringan
+    ini merupakan persoalan mencari vektor eigen untuk
+    nilai eigen \(1\), dengan normalisasi jumlah skor sama
+    dengan satu.
+  </p>
 
-  <br><br>
-  <b>Interpretasi.</b>
+  <p align="justify">
+    <b>Menentukan nilai eigen.</b>
+    Untuk menghubungkan contoh ini dengan teori pada §9.2.1,
+    kita dapat menghitung persamaan karakteristik:
+    \[
+      \begin{aligned}
+        \det(A-\lambda I)
+        &=-\lambda^3+\frac34\lambda+\frac14\\
+        &=-(\lambda-1)
+          \left(\lambda+\frac12\right)^2.
+      \end{aligned}
+    \]
+    Dengan demikian, nilai eigennya adalah
+    \[
+      \lambda_1=1,\qquad
+      \lambda_2=\lambda_3=-\frac12.
+    \]
+  </p>
+
+  <p align="justify">
+    Nilai eigen \(1\) memberikan distribusi stasioner.
+    Sementara itu, nilai eigen lainnya mempunyai modulus
+    \(0.5\). Dalam contoh ini, terdapat nilai eigen
+    \(-0.5\) dengan multiplisitas aljabar dua. Jadi,
+    kita perlu berhati-hati dalam menerapkan rumus laju
+    konvergensi umum hanya berdasarkan rasio nilai eigen.
+    Untuk vektor awal yang digunakan di bawah, komponen
+    galat berada pada arah eigen yang sesuai sehingga
+    galat memang menyusut tepat dengan faktor \(0.5\).
+  </p>
+
+  <p align="justify">
+    <b>Mencari steady state PageRank.</b>
+    Kita mencari vektor \(x^\ast\) yang memenuhi
+    \[
+      Ax^\ast=x^\ast,
+      \qquad x_1+x_2+x_3=1.
+    \]
+    Dari persamaan matriks diperoleh
+    \[
+      \begin{aligned}
+        x_1&=\frac12x_2+x_3,\\
+        x_2&=\frac12x_1,\\
+        x_3&=\frac12x_1+\frac12x_2.
+      \end{aligned}
+    \]
+    Persamaan kedua memberikan \(x_2=\frac12x_1\).
+    Selanjutnya,
+    \[
+      x_3=\frac12x_1+\frac12
+      \left(\frac12x_1\right)
+      =\frac34x_1.
+    \]
+    Gunakan syarat normalisasi:
+    \[
+      \begin{aligned}
+        x_1+x_2+x_3&=1,\\
+        x_1+\frac12x_1+\frac34x_1&=1,\\
+        \frac94x_1&=1.
+      \end{aligned}
+    \]
+    Jadi,
+    \[
+      \boxed{
+      x^\ast=
+      \begin{pmatrix}
+        \frac49\\[2pt]
+        \frac29\\[2pt]
+        \frac13
+      \end{pmatrix}
+      \approx
+      \begin{pmatrix}
+        0.4444\\0.2222\\0.3333
+      \end{pmatrix}.
+      }
+    \]
+  </p>
+
+  <p align="justify">
+    Hasil ini menunjukkan bahwa halaman 1 memperoleh skor
+    sekitar 44,44%, halaman 2 sebesar 22,22%, dan halaman 3
+    sebesar 33,33%. Halaman 1 mempunyai skor tertinggi,
+    meskipun halaman 3 juga memperoleh skor yang cukup besar
+    karena menerima kontribusi dari halaman 1 dan halaman 2.
+  </p>
+
+  <p align="justify">
+    <b>Iterasi metode pangkat.</b>
+    Sekarang kita gunakan metode pangkat untuk memperoleh
+    solusi yang sama secara iteratif. Sebagai kondisi awal,
+    anggap ketiga halaman mempunyai tingkat kepentingan yang
+    sama:
+    \[
+      x_0=\frac13
+      \begin{pmatrix}1\\1\\1\end{pmatrix}.
+    \]
+    Dengan demikian, pada awal pengamatan masing-masing
+    halaman mempunyai skor \(1/3\). Selanjutnya, skor
+    diperbarui dengan mengalikan matriks transisi dan
+    vektor sebelumnya:
+    \[
+      x_{k+1}=\frac{Ax_k}{\|Ax_k\|_1}.
+    \]
+    Karena \(A\) merupakan matriks stokastik kolom dan
+    \(x_0\) telah dinormalisasi, jumlah skor tetap satu.
+    Jadi, pembagian dengan norma-1 hanya menegaskan
+    normalisasi probabilitas.
+  </p>
+
+  <p align="justify">
+    Pada iterasi pertama diperoleh
+    \[
+      \begin{aligned}
+        Ax_0
+        &=
+        \begin{bmatrix}
+          0&\frac12&1\\
+          \frac12&0&0\\
+          \frac12&\frac12&0
+        \end{bmatrix}
+        \begin{pmatrix}\frac13\\\frac13\\\frac13\end{pmatrix}\\
+        &=
+        \begin{pmatrix}
+          0.5000\\0.1667\\0.3333
+        \end{pmatrix}.
+      \end{aligned}
+    \]
+    Hal ini berarti bahwa setelah satu pembaruan,
+    halaman 1 memperoleh skor lebih besar karena
+    menerima kontribusi dari halaman 2 dan halaman 3.
+  </p>
+
+  <p align="justify">
+    Dengan mengulangi proses yang sama, diperoleh:
+    \[
+      \begin{aligned}
+        x_1&=(0.5000,\ 0.1667,\ 0.3333)^T,\\
+        x_2&=(0.4167,\ 0.2500,\ 0.3333)^T,\\
+        x_3&=(0.4583,\ 0.2083,\ 0.3333)^T,\\
+        x_4&=(0.4375,\ 0.2292,\ 0.3333)^T,\\
+        &\vdots\\
+        x^\ast&=(0.4444,\ 0.2222,\ 0.3333)^T.
+      \end{aligned}
+    \]
+  </p>
+
+  <p align="justify">
+    <b>Bagaimana menginterpretasikan hasil iterasi?</b>
+    Skor halaman 1 dan halaman 2 terlihat bergantian
+    mendekati nilai akhirnya. Pada iterasi pertama,
+    skor halaman 1 sebesar 0.5000, lebih tinggi daripada
+    nilai steady state 0.4444. Pada iterasi berikutnya,
+    skornya turun menjadi 0.4167, kemudian naik kembali
+    menjadi 0.4583. Perubahan ini terjadi karena terdapat
+    nilai eigen negatif, yaitu \(-0.5\), yang menyebabkan
+    komponen galat dapat berganti tanda pada setiap iterasi.
+    Meskipun demikian, besar galatnya semakin kecil.
+  </p>
+
+  <p align="justify">
+    Galat norma tak hingga terhadap solusi steady state
+    berturut-turut adalah
+    \[
+      0.0556,\quad0.0278,\quad0.0139,\quad0.0069,\ldots
+    \]
+    Nilai tersebut menyusut dengan faktor \(0.5\) pada
+    setiap iterasi. Jadi, contoh ini memperlihatkan bahwa
+    nilai eigen negatif dapat menyebabkan perubahan
+    arah penyimpangan, tetapi tidak menghalangi konvergensi
+    apabila besar faktor penyusutannya lebih kecil dari satu.
+  </p>
+
+  <p align="justify">
+    <b>Interpretasi PageRank.</b>
+  </p>
   <ul>
-    <li>Halaman 1 memiliki skor tertinggi karena <b>banyak ditaut</b> (oleh 2
-        dan 3) sekaligus penting tidaknya sumber tautan itu sendiri inti
-        PageRank: <i>a page is important if important pages link to it</i>.</li>
-    <li>Halaman 2 memiliki skor terendah karena meskipun menaut ke 1 dan 3,
-        hanya 1 halaman (yaitu 1) yang menaut balik ke 2, dan itu hanya
-        memberi sebagian kecil dari "pentingnya" halaman 1.</li>
-    <li>Pada web sungguhan dengan \(10^{10}\) halaman, \(A\) <b>sangat jarang</b>
-        (rata-rata hanya \(O(\log n)\) tautan per halaman). Metode pangkat
-        mengambil keuntungan penuh: setiap iterasi hanya \(O(\text{nnz}(A))\)
-        = \(O(n\log n)\) operasi, bukan \(O(n^{2})\). Itulah mengapa Google
-        awalnya memakai metode pangkat, bukan dekomposisi eigen penuh.</li>
-    <li><b>Damping.</b> Pada web nyata, ada halaman "sink" (tidak menaut ke
-        mana pun) yang membuat \(A\) punya kolom nol sehingga iterasi
-        "bocor". Solusinya matriks Google \(G=\alpha A + (1-\alpha)\tfrac{1}{n}\mathbf{1}\mathbf{1}^{T}\)
-        dengan \(\alpha\approx 0.85\): setiap halaman, dengan peluang
-        \(1-\alpha\), "melompat acak" ke halaman sembarang. Matriks \(G\)
-        juga stokastik kolom, nilai eigen dominannya tetap 1, dan
-        steady state-nya adalah PageRank sesungguhnya.</li>
+    <li>
+      Halaman 1 memiliki skor tertinggi karena menerima
+      tautan dari halaman 2 dan halaman 3. Artinya,
+      kedua halaman memberikan kontribusi kepentingan
+      kepada halaman 1.
+    </li>
+    <li>
+      Halaman 2 memiliki skor terendah karena hanya
+      menerima tautan dari halaman 1. Selain itu,
+      halaman 1 membagikan bobotnya kepada dua halaman,
+      sehingga kontribusi yang diterima halaman 2
+      hanya sebagian dari skor halaman 1.
+    </li>
+    <li>
+      Halaman 3 memperoleh skor menengah karena menerima
+      tautan dari halaman 1 dan halaman 2. Dengan demikian,
+      skor suatu halaman tidak hanya ditentukan oleh
+      banyaknya tautan masuk, tetapi juga oleh bobot
+      halaman yang memberikan tautan tersebut.
+    </li>
   </ul>
+
+  <p align="justify">
+    <b>Mengapa PageRank dapat digunakan pada jaringan yang sangat besar?</b>
+    Pada jaringan web nyata, jumlah halaman dapat mencapai
+    miliaran. Matriks transisinya sangat besar, tetapi
+    sebagian besar elemennya bernilai nol karena setiap
+    halaman hanya menaut ke sebagian kecil halaman lainnya.
+    Matriks semacam ini disebut <i>sparse matrix</i>.
+    Karena itu, perkalian matriks-vektor dapat dilakukan
+    hanya dengan memproses elemen yang tidak nol.
+  </p>
+
+  <p align="justify">
+    Jika jumlah elemen tidak nol adalah
+    \(\operatorname{nnz}(A)\), biaya satu iterasi metode
+    pangkat dapat dinyatakan sebagai
+    \[
+      O(\operatorname{nnz}(A)).
+    \]
+    Jika setiap halaman rata-rata mempunyai \(d\) tautan
+    keluar, maka jumlah elemen tidak nol kira-kira
+    \(nd\), sehingga biaya satu iterasi sekitar \(O(nd)\).
+    Inilah keuntungan penting metode pangkat dibandingkan
+    perhitungan dekomposisi eigen penuh yang tidak praktis
+    untuk jaringan berukuran sangat besar.
+  </p>
+
+  <p align="justify">
+    <b>Persoalan dangling nodes dan damping factor.</b>
+    Pada jaringan web nyata, dapat ditemukan halaman yang
+    tidak mempunyai tautan keluar. Halaman seperti ini
+    disebut <i>dangling node</i>. Jika kolom matriks
+    untuk halaman tersebut dibiarkan bernilai nol,
+    maka jumlah probabilitas pada kolom itu tidak lagi
+    satu. Akibatnya, sebagian bobot PageRank dapat
+    menghilang pada proses iterasi.
+  </p>
+
+  <p align="justify">
+    Salah satu cara mengatasinya adalah mengganti kolom
+    nol tersebut dengan distribusi seragam, yaitu
+    setiap halaman dianggap mempunyai peluang yang sama
+    untuk menerima bobot dari halaman tersebut.
+    Setelah penanganan ini, matriks transisi kembali
+    menjadi stokastik kolom.
+  </p>
+
+  <p align="justify">
+    Selain itu, digunakan konsep <b>damping factor</b>.
+    Matriks Google dapat ditulis sebagai
+    \[
+      G=\alpha A+
+      (1-\alpha)\frac1n\mathbf{1}\mathbf{1}^T,
+    \]
+    dengan:
+    \[
+      0<\alpha<1,
+    \]
+    \(n\) menyatakan jumlah halaman web, dan
+    \(\mathbf{1}\) adalah vektor yang seluruh komponennya
+    bernilai satu. Dalam praktik PageRank, nilai
+    \(\alpha\) yang sering digunakan adalah sekitar
+    \(0.85\).
+  </p>
+
+  <p align="justify">
+    Secara intuitif, model tersebut menggambarkan perilaku
+    seorang pengguna internet. Dengan peluang \(\alpha\),
+    pengguna mengikuti salah satu tautan pada halaman
+    yang sedang dibuka. Dengan peluang \(1-\alpha\),
+    pengguna melakukan lompatan acak menuju halaman
+    mana pun dalam jaringan. Mekanisme ini disebut
+    <i>random teleportation</i>.
+  </p>
+
+  <p align="justify">
+    Matriks \(G\) tetap merupakan matriks stokastik kolom,
+    dan karena seluruh elemennya positif, terdapat distribusi
+    PageRank stasioner tunggal. Jadi, solusi steady state
+    dari matriks \(G\) memberikan skor PageRank yang
+    digunakan dalam model dengan damping.
+  </p>
+
+  <p align="justify">
+    Perlu dibedakan bahwa hasil mini-PageRank yang dihitung
+    sebelumnya berasal dari matriks \(A\) tanpa damping.
+    Jika damping factor diterapkan, matriks transisi berubah
+    menjadi \(G\), sehingga skor PageRank akhirnya juga
+    dapat berubah. Inilah alasan mengapa contoh kecil
+    tanpa damping berguna untuk memahami prinsip dasar,
+    sedangkan model dengan damping lebih sesuai untuk
+    menjelaskan persoalan jaringan web yang sesungguhnya.
+  </p>
+
 </div>
+
 
 <h3 class="subsec">9.2.4 Contoh Lengkap: Shifted Inverse Power (Mencari \(\lambda\) Terkecil)</h3>
 <div class="card example">
-  <b>Motivasi RO.</b> Untuk analisis sensitivitas, kita sering butuh
-  <b>nilai eigen terkecil</b> (bukan terbesar) misalnya pada matriks
-  kovarians, \(\lambda_{\min}\) mengukur arah risiko terendah; pada matriks
-  Hessian, \(\lambda_{\min}\) mengukur seberapa "datar" fungsi tujuan di
-  titik optimum. Metode pangkat biasa hanya memberi \(\lambda_1\) (terbesar).
 
-  <b>Trik shift-inverse.</b> Jika \(A\) punya nilai eigen
-  \(\lambda_1,\dots,\lambda_n\), maka \((A-\mu I)^{-1}\) punya nilai eigen
-  \((\lambda_i-\mu)^{-1}\). Nilai eigen <b>terbesar</b> dari
-  \((A-\mu I)^{-1}\) berpasangan dengan \(\lambda_i\) yang
-  <b>paling dekat ke \(\mu\)</b>. Jadi: pilih \(\mu\), jalankan metode
-  pangkat pada \((A-\mu I)^{-1}\), dan kita dapat eigenpair yang
-  diinginkan.
+  <p align="justify">
+    <b>Motivasi dalam Operations Research.</b>
+    Pada pembahasan sebelumnya, metode pangkat digunakan
+    untuk mencari nilai eigen dengan modulus terbesar.
+    Namun, dalam banyak persoalan optimasi dan analisis
+    numerik, nilai eigen yang justru diperlukan adalah
+    nilai eigen terkecil.
+  </p>
 
-  <br><br>
-  <b>Matriks.</b> Ambil
-  \[
-    A=\begin{bmatrix}4&2\\[2pt]2&4\end{bmatrix},
-    \quad \lambda_1=6,\ \lambda_2=2,\quad
-    v_1=\tfrac{1}{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix},\
-    v_2=\tfrac{1}{\sqrt2}\begin{bmatrix}1\\-1\end{bmatrix}.
-  \]
+  <p align="justify">
+    Mengapa nilai eigen terkecil penting? Misalkan kita
+    mempunyai matriks kovarians yang menggambarkan
+    hubungan variasi sejumlah variabel. Nilai eigen
+    terkecil dapat memberikan informasi mengenai arah
+    dengan variasi paling kecil. Pada matriks Hessian,
+    nilai eigen terkecil dapat digunakan untuk menilai
+    kelengkungan minimum fungsi tujuan di sekitar
+    suatu titik. Jika Hessian simetris definit positif,
+    nilai eigen terkecil yang positif juga memberikan
+    informasi tentang seberapa kuat fungsi tersebut
+    melengkung ke arah yang paling datar.
+  </p>
 
-  <b>Mencari \(\lambda_{\min}\) (target \(=2\)).</b> Pilih \(\mu=1\)
-  (dekat \(\lambda_2\)). Maka
-  \[
-    A-I=\begin{bmatrix}3&2\\[2pt]2&3\end{bmatrix},
-    \qquad
-    B:=(A-I)^{-1}=\frac{1}{5}\begin{bmatrix}3&-2\\[2pt]-2&3\end{bmatrix}.
-  \]
-  Nilai eigen \(B\): \(\bigl(\lambda_i-1\bigr)^{-1}\) = \(1/5\) dan \(1/1=1\).
-  Rasio \(0.2\) → konvergensi cepat. Vektor eigen \(B\) untuk \(\lambda_B=1\)
-  adalah \(v_2=(1,-1)^{T}/\sqrt2\) (berpasangan dengan \(\lambda_A=1+1=2\)). ✓
+  <p align="justify">
+    Dengan demikian, metode pangkat biasa tidak selalu
+    memberikan informasi yang kita perlukan. Jika
+    tujuan kita adalah mencari nilai eigen terkecil,
+    diperlukan suatu modifikasi algoritma.
+  </p>
 
-  <br>
-  <b>Iterasi.</b> \(x_0=(1,0)^{T}\), \(\lambda_B\) dari Rayleigh quotient:
+  <p align="justify">
+    <b>Trik shifted inverse.</b>
+    Misalkan matriks \(A\) mempunyai nilai eigen
+    \(\lambda_1,\lambda_2,\ldots,\lambda_n\), dengan
+    vektor eigen yang bersesuaian \(v_i\). Kita mempunyai
+    \[
+      Av_i=\lambda_i v_i.
+    \]
+    Sekarang, perhatikan matriks
+    \[
+      B=(A-\mu I)^{-1},
+    \]
+    dengan syarat \(A-\mu I\) nonsingular. Karena
+    \[
+      (A-\mu I)v_i=(\lambda_i-\mu)v_i,
+    \]
+    maka
+    \[
+      (A-\mu I)^{-1}v_i
+      =\frac{1}{\lambda_i-\mu}v_i.
+    \]
+    Jadi, nilai eigen matriks \(B\) adalah
+    \[
+      \lambda_i(B)=\frac{1}{\lambda_i(A)-\mu}.
+    \]
+  </p>
+
+  <p align="justify">
+    Perhatikan perubahan ini. Nilai eigen matriks \(A\)
+    yang paling dekat dengan \(\mu\) akan mempunyai
+    nilai \(\left|1/(\lambda_i-\mu)\right|\) paling besar.
+    Oleh karena itu, metode pangkat yang diterapkan pada
+    matriks \(B\) akan mendekati vektor eigen yang
+    berpasangan dengan nilai eigen \(A\) yang paling
+    dekat dengan \(\mu\).
+  </p>
+
+  <p align="justify">
+    Inilah ide dasar <b>Shifted Inverse Power Method</b>.
+    Kita tidak harus mencari nilai eigen terkecil secara
+    langsung. Kita cukup memilih suatu nilai shift
+    \(\mu\) yang dekat dengan nilai eigen yang ingin
+    dicari, kemudian menerapkan metode pangkat pada
+    transformasi invers tersebut.
+  </p>
+
+  <p align="justify">
+    <b>Matriks yang digunakan.</b>
+    Ambil matriks simetris
+    \[
+      A=\begin{bmatrix}
+        4&2\\[2pt]2&4
+      \end{bmatrix}.
+    \]
+    Nilai eigen dan vektor eigennya adalah
+    \[
+      \lambda_1=6,\qquad
+      \lambda_2=2,
+    \]
+    dengan
+    \[
+      v_1=\frac1{\sqrt2}
+      \begin{bmatrix}1\\1\end{bmatrix},
+      \qquad
+      v_2=\frac1{\sqrt2}
+      \begin{bmatrix}1\\-1\end{bmatrix}.
+    \]
+    Karena matriks ini simetris definit positif,
+    kedua nilai eigennya positif. Nilai eigen terkecil
+    yang ingin dicari adalah \(\lambda_{\min}=2\).
+  </p>
+
+  <p align="justify">
+    <b>Mencari nilai eigen terkecil dengan shift.</b>
+    Kita pilih \(\mu=1\), yaitu bilangan yang dekat
+    dengan nilai eigen target \(2\). Dengan demikian,
+    \[
+      A-I=
+      \begin{bmatrix}
+        3&2\\[2pt]2&3
+      \end{bmatrix}.
+    \]
+    Inversnya adalah
+    \[
+      B=(A-I)^{-1}
+      =\frac15
+      \begin{bmatrix}
+        3&-2\\[2pt]-2&3
+      \end{bmatrix}.
+    \]
+  </p>
+
+  <p align="justify">
+    Berdasarkan teori sebelumnya, nilai eigen matriks
+    \(B\) adalah
+    \[
+      \frac1{6-1}=\frac15=0.2,
+      \qquad
+      \frac1{2-1}=1.
+    \]
+    Jadi, nilai eigen dominan matriks \(B\) adalah
+    \(1\), yang berpasangan dengan vektor eigen
+    \(v_2=(1,-1)^T/\sqrt2\). Padahal, vektor tersebut
+    merupakan vektor eigen untuk nilai eigen terkecil
+    matriks \(A\), yaitu \(2\).
+  </p>
+
+  <p align="justify">
+    Perhatikan bahwa metode pangkat biasa pada matriks
+    \(A\) akan lebih mengutamakan nilai eigen \(6\).
+    Sebaliknya, metode pangkat pada \(B\) akan lebih
+    mengutamakan nilai eigen \(1\), yang berasal dari
+    nilai eigen \(2\) pada matriks awal. Dengan cara
+    inilah transformasi invers mengubah persoalan
+    pencarian nilai eigen terbesar menjadi pencarian
+    nilai eigen yang dekat dengan shift.
+  </p>
+
+  <p align="justify">
+    Rasio nilai eigen kedua terhadap nilai eigen dominan
+    untuk matriks \(B\) adalah
+    \[
+      \left|\frac{0.2}{1}\right|=0.2.
+    \]
+    Rasio yang relatif kecil ini menunjukkan bahwa
+    konvergensi arah vektor akan berlangsung cepat.
+  </p>
+
+  <p align="justify">
+    <b>Iterasi.</b>
+    Kita mulai dari
+    \[
+      x_0=\begin{pmatrix}1\\0\end{pmatrix}.
+    \]
+    Setiap iterasi dilakukan dengan mengalikan vektor
+    sebelumnya dengan \(B\), kemudian melakukan
+    normalisasi. Untuk mengestimasi nilai eigen matriks
+    \(B\), digunakan Rayleigh quotient:
+    \[
+      \lambda_{B,k}
+      =\frac{x_k^TBx_k}{x_k^Tx_k}.
+    \]
+    Setelah diperoleh pendekatan nilai eigen matriks
+    \(B\), kita dapat mengembalikan hasilnya ke nilai
+    eigen matriks \(A\) melalui hubungan
+    \[
+      \lambda_{A,k}
+      =\mu+\frac1{\lambda_{B,k}}.
+    \]
+    Dalam contoh ini, \(\mu=1\).
+  </p>
+
+  <p align="justify">
+    Sebagai ilustrasi, iterasi pertama dimulai dengan
+    \[
+      Bx_0=
+      \frac15
+      \begin{bmatrix}3&-2\\-2&3\end{bmatrix}
+      \begin{pmatrix}1\\0\end{pmatrix}
+      =
+      \begin{pmatrix}0.6\\-0.4\end{pmatrix}.
+    \]
+    Setelah dinormalisasi, diperoleh
+    \[
+      x_1\approx
+      \begin{pmatrix}0.832\\-0.555\end{pmatrix}.
+    \]
+    Tanda negatif pada komponen kedua menunjukkan bahwa
+    arah vektor mulai mendekati vektor eigen target
+    yang mempunyai komponen berlawanan tanda.
+  </p>
+
   <table style="border-collapse:collapse;margin-top:8px">
     <tr style="border-bottom:1px solid #999">
       <th style="padding:4px 12px">\(k\)</th>
       <th style="padding:4px 12px">\(x_k/\|x_k\|\)</th>
-      <th style="padding:4px 12px">\(\lambda_{B,k}=x_k^{T}Bx_k\)</th>
+      <th style="padding:4px 12px">\(\lambda_{B,k}\)</th>
       <th style="padding:4px 12px">\(\lambda_{A,k}=1+1/\lambda_{B,k}\)</th>
     </tr>
     <tr><td style="padding:2px 12px">0</td><td style="padding:2px 12px">\((1.000,\ 0.000)\)</td><td style="padding:2px 12px">0.600</td><td style="padding:2px 12px">2.667</td></tr>
@@ -15845,42 +16857,173 @@ matriks yang muncul dalam model optimasi berukuran besar.
     <tr><td style="padding:2px 12px">\(\to\infty\)</td><td style="padding:2px 12px">\((0.707,-0.707)\)</td><td style="padding:2px 12px">1.000</td><td style="padding:2px 12px">2.000</td></tr>
   </table>
 
-  <br>
-  Galat arah \(x_k\) menyusut sebesar \(0.2^{k}\) (rasio \((\lambda_B)_2/(\lambda_B)_1
-  = 0.2/1=0.2\)), dan \(\lambda_{A,k}\to 2=\lambda_{\min}\) setelah hanya
-  sekitar 4–5 iterasi. <b>Bandingkan</b> dengan metode pangkat biasa pada \(A\)
-  yang akan memberi \(\lambda_{\max}=6\) kebalikan dari yang kita inginkan.
+  <p align="justify">
+    <b>Bagaimana membaca tabel?</b>
+    Pada iterasi awal, pendekatan nilai eigen matriks \(A\)
+    masih sebesar 2.667, yang belum terlalu dekat dengan
+    nilai target 2. Setelah iterasi dilakukan berulang,
+    pendekatan tersebut menjadi 2.188, kemudian 2.050,
+    2.012, dan akhirnya mendekati 2.000.
+    Secara bersamaan, vektor pendekatan semakin mendekati
+    \[
+      v_2=\frac1{\sqrt2}
+      \begin{pmatrix}1\\-1\end{pmatrix}
+      \approx
+      \begin{pmatrix}0.707\\-0.707\end{pmatrix}.
+    \]
+    Jadi, baik nilai eigen maupun vektor eigennya
+    semakin mendekati solusi yang diinginkan.
+  </p>
+
+  <p align="justify">
+    <b>Keterkaitan dengan teori konvergensi.</b>
+    Karena rasio nilai eigen matriks transformasi \(B\)
+    adalah \(0.2\), galat arah secara asimtotik
+    menyusut dengan faktor tersebut pada setiap iterasi.
+    Hal ini menjelaskan mengapa hanya diperlukan beberapa
+    iterasi untuk mendapatkan pendekatan yang cukup baik.
+    Bandingkan dengan metode pangkat biasa pada matriks
+    \(A\), yang justru akan memberikan nilai eigen
+    dominan \(6\), bukan nilai eigen terkecil \(2\).
+  </p>
+
+  <p align="justify">
+    <b>Implementasi komputasi yang lebih efisien.</b>
+    Dalam praktik, kita tidak perlu membentuk invers
+    matriks \(B=(A-\mu I)^{-1}\) secara eksplisit.
+    Setiap iterasi cukup menyelesaikan sistem linear
+    \[
+      (A-\mu I)y_k=x_k,
+    \]
+    kemudian menormalisasi \(y_k\) untuk memperoleh
+    \(x_{k+1}\). Pendekatan ini lebih baik secara numerik
+    dan lebih sesuai untuk matriks berukuran besar.
+  </p>
+
+  <p align="justify">
+    Jika matriks \(A-\mu I\) tidak berubah selama iterasi,
+    faktorisasi matriks dapat dilakukan sekali dan
+    digunakan kembali untuk menyelesaikan sistem linear
+    pada iterasi berikutnya. Untuk matriks simetris,
+    faktorisasi yang sesuai dapat dimanfaatkan agar
+    perhitungan lebih efisien.
+  </p>
+
+  <p align="justify">
+    Perlu diperhatikan bahwa jika \(\mu\) terlalu dekat
+    dengan nilai eigen target, matriks \(A-\mu I\)
+    menjadi hampir singular. Kondisi ini dapat
+    meningkatkan sensitivitas terhadap galat pembulatan.
+    Jadi, pemilihan shift merupakan persoalan penting
+    dalam penerapan metode ini.
+  </p>
+
 </div>
 
+
 <div class="card def">
-  <b>Ringkasan pemakaian varian.</b>
+  <b>Ringkasan pemakaian metode pangkat dan variannya.</b>
+
+  <p align="justify">
+    Setelah mempelajari ketiga contoh di atas, kita dapat
+    melihat bahwa metode pangkat bukan hanya satu algoritma
+    untuk mencari nilai eigen terbesar. Terdapat beberapa
+    variasi yang dapat dipilih sesuai dengan persoalan
+    matematis dan kebutuhan aplikasi.
+  </p>
+
   <ul>
-    <li><b>Power method pada \(A\)</b> → \(\lambda_{\max}\), \(v_{\max}\).
-        Pakai untuk rantai Markov (steady state), PageRank, dan analisis
-        pertumbuhan jangka panjang.</li>
-    <li><b>Inverse power pada \(A^{-1}\)</b> (ambil \(\mu=0\)) → \(\lambda_{\min}\),
-        \(v_{\min}\). Pakai untuk analisis sensitivitas, risiko minimum,
-        dan <i>well-posedness</i> (SPD ⟺ \(\lambda_{\min}>0\)).</li>
-    <li><b>Shifted inverse pada \((A-\mu I)^{-1}\)</b> → \(\lambda_i\) yang
-        terdekat ke \(\mu\). Pakai untuk mencari nilai eigen di sekitar
-        target, mis. modus getaran (<i>eigenmode</i>) atau near-optimal
-        parameter.</li>
-    <li><b>Rayleigh Quotient Iteration</b> (RQI) varian paling canggih:
-        \(\mu\) diperbarui ke \(\lambda_k\) pada setiap iterasi. Untuk \(A\)
-        simetris, RQI konvergen <i>kubik</i> (galat menjadi pangkat tiga
-        setiap iterasi) biasanya cukup 3–4 iterasi untuk presisi penuh,
-        dengan syarat dekomposisi \((A-\mu I)\) dilakukan ulang setiap
-        iterasi.</li>
-    <li><b>Peringatan numerik.</b> Shift-inverse membutuhkan penyelesaian
-        \((A-\mu I)y=x_k\) setiap iterasi. Jika \(A\) padat, ini \(O(n^{3})\)
-        per iterasi lebih mahal daripada LU, tapi tetap lebih murah
-        daripada dekomposisi eigen penuh \(O(n^{3})\) dengan konstanta besar.
-        Jika \(A\) jarang, gunakan faktorisasi sparse-LU satu kali dan
-        pakai ulang. Jika \(\mu\) <i>sangat dekat</i> dengan suatu nilai
-        eigen, \((A-\mu I)\) hampir singular → galat pembulatan besar;
-        praktisi sering memakai \(\mu\) agak "di luar" target dan
-        mengandalkan konvergensi cepat.</li>
+    <li>
+      <b>Power Method pada \(A\).</b>
+      Digunakan untuk memperoleh nilai eigen dominan dan
+      vektor eigennya. Penerapannya antara lain pada
+      analisis pertumbuhan sistem dinamik, steady state
+      rantai Markov, dan PageRank.
+    </li>
+
+    <li>
+      <b>Inverse Power Method pada \(A^{-1}\).</b>
+      Jika \(A\) nonsingular, metode pangkat pada
+      \(A^{-1}\) akan mendekati nilai eigen \(A\)
+      yang mempunyai modulus terkecil. Metode ini
+      berguna dalam analisis sensitivitas, risiko minimum,
+      dan pemeriksaan definit positif matriks simetris.
+      Khusus untuk matriks simetris, berlaku
+      \[
+        A\text{ definit positif}
+        \iff \lambda_{\min}(A)>0.
+      \]
+    </li>
+
+    <li>
+      <b>Shifted Inverse Power Method pada
+      \((A-\mu I)^{-1}\).</b>
+      Digunakan untuk memperoleh nilai eigen yang
+      paling dekat dengan nilai shift \(\mu\).
+      Metode ini berguna ketika kita hanya tertarik
+      pada nilai eigen tertentu, misalnya dalam
+      analisis modus getaran atau analisis stabilitas.
+    </li>
+
+    <li>
+      <b>Rayleigh Quotient Iteration (RQI).</b>
+      Merupakan pengembangan yang memperbarui nilai
+      shift menggunakan estimasi Rayleigh quotient
+      pada setiap iterasi. Untuk matriks simetris,
+      jika iterasi telah cukup dekat dengan pasangan
+      eigen yang dituju dan memenuhi kondisi regularitas,
+      RQI mempunyai konvergensi lokal kubik. Artinya,
+      galat dapat menyusut dengan orde pangkat tiga
+      pada setiap iterasi. Namun, metode ini memerlukan
+      penyelesaian sistem linear baru karena shift
+      berubah pada setiap langkah.
+    </li>
+
+    <li>
+      <b>Peringatan numerik.</b>
+      Metode shifted inverse membutuhkan penyelesaian
+      sistem
+      \[
+        (A-\mu I)y_k=x_k
+      \]
+      pada setiap iterasi. Untuk matriks padat,
+      faktorisasi awal dapat memerlukan biaya
+      \(O(n^3)\), sedangkan setiap penyelesaian
+      berikutnya menggunakan faktor yang sudah
+      tersedia. Untuk matriks jarang, pendekatan
+      sparse-LU atau metode iteratif dapat lebih
+      sesuai. Jika \(\mu\) sangat dekat dengan nilai
+      eigen, matriks yang harus diselesaikan dapat
+      menjadi hampir singular sehingga diperlukan
+      perhatian terhadap stabilitas numerik.
+    </li>
   </ul>
+
+  <p align="justify">
+    <b>Kesimpulan konseptual.</b>
+    Pemilihan metode harus didasarkan pada nilai eigen
+    yang ingin dicari. Jika yang dibutuhkan adalah
+    nilai eigen dominan, gunakan metode pangkat biasa.
+    Jika yang dicari adalah nilai eigen terkecil,
+    gunakan inverse power. Jika yang dicari adalah
+    nilai eigen di sekitar suatu target tertentu,
+    gunakan shifted inverse. Dengan demikian,
+    pemahaman mengenai struktur spektrum matriks
+    menjadi dasar untuk memilih algoritma yang tepat.
+  </p>
+
+  <p align="justify">
+    Hal yang lebih penting adalah memahami bahwa
+    perhitungan nilai eigen bukan tujuan akhir.
+    Dalam <i>Operations Research</i>, hasil tersebut
+    digunakan untuk menjelaskan stabilitas sistem,
+    distribusi jangka panjang, sensitivitas,
+    dan karakteristik solusi optimasi. Hubungan
+    antara teori aljabar linear, algoritma numerik,
+    dan interpretasi masalah nyata inilah yang
+    menjadikan metode pangkat sebagai salah satu
+    perangkat penting dalam komputasi ilmiah.
+  </p>
 </div>
 
 
@@ -15928,6 +17071,775 @@ matriks yang muncul dalam model optimasi berukuran besar.
   <br><b>Kasus 2 Power Method untuk Rantai Pasok Markov:</b> Gudang A,B,C dengan matriks transisi \(P\). Distribusi steady-state adalah eigen dominan \(\lambda=1\). Power method memberi pangsa jangka panjang tanpa menyelesaikan \((P-I)x=0\).
   <br><b>Kasus 3  SVD untuk Kompresi Matriks Biaya Transportasi:</b> Matriks biaya \(C_{100×100}\) besar. SVD rank-10 sering cukup untuk optimasi aproksimasi awal, lalu diperhalus.
   </p>
+
+<!-- ====================================================== -->
+<!-- REAL PROBLEMS: APLIKASI DEKOMPOSISI LU, POWER METHOD,  -->
+<!-- DAN SINGULAR VALUE DECOMPOSITION (SVD)                 -->
+<!-- ====================================================== -->
+
+<h3 class="subsec">9.3 Real Problem: Aplikasi Dekomposisi LU dalam Perencanaan Produksi</h3>
+
+<p align="justify">
+  Salah satu penerapan sistem persamaan linear dalam kehidupan nyata adalah
+  perencanaan produksi suatu perusahaan. Sebuah pabrik memproduksi tiga jenis
+  produk, yaitu \(P_1\), \(P_2\), dan \(P_3\). Setiap produk membutuhkan
+  sumber daya yang berbeda, misalnya jam penggunaan mesin, tenaga kerja,
+  dan bahan baku.
+</p>
+
+<p align="justify">
+  Misalkan kebutuhan sumber daya untuk setiap unit produk diberikan dalam
+  tabel berikut.
+</p>
+
+<div class="table-responsive">
+<table>
+  <thead>
+    <tr>
+      <th>Sumber Daya</th>
+      <th>Produk \(P_1\)</th>
+      <th>Produk \(P_2\)</th>
+      <th>Produk \(P_3\)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Mesin</td><td>2</td><td>1</td><td>1</td></tr>
+    <tr><td>Tenaga kerja</td><td>4</td><td>3</td><td>3</td></tr>
+    <tr><td>Bahan baku</td><td>8</td><td>7</td><td>9</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p align="justify">
+  Persediaan sumber daya yang tersedia masing-masing adalah 110 satuan
+  penggunaan mesin, 290 satuan tenaga kerja, dan 730 satuan bahan baku.
+  Persoalannya adalah menentukan jumlah setiap produk yang harus dibuat
+  agar seluruh sumber daya digunakan sesuai dengan persediaan yang tersedia.
+</p>
+
+<p align="justify">
+  Jika \(x_1,x_2,x_3\) menyatakan jumlah produk \(P_1,P_2,P_3\) yang
+  diproduksi, maka model matematikanya adalah
+</p>
+
+\[
+\begin{aligned}
+2x_1+x_2+x_3 &=110,\\
+4x_1+3x_2+3x_3 &=290,\\
+8x_1+7x_2+9x_3 &=730.
+\end{aligned}
+\]
+
+<p align="justify">
+  Sistem tersebut dapat ditulis dalam bentuk matriks
+</p>
+
+\[
+Ax=b,
+\]
+
+<p align="justify">
+  dengan
+</p>
+
+\[
+A=
+\begin{pmatrix}
+2&1&1\\
+4&3&3\\
+8&7&9
+\end{pmatrix},
+\qquad
+x=
+\begin{pmatrix}
+x_1\\x_2\\x_3
+\end{pmatrix},
+\qquad
+b=
+\begin{pmatrix}
+110\\290\\730
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Untuk menyelesaikan sistem tersebut, kita dapat menggunakan dekomposisi
+  LU. Matriks koefisien difaktorkan menjadi matriks segitiga bawah \(L\)
+  dan matriks segitiga atas \(U\), dengan memperhatikan kemungkinan
+  pertukaran baris melalui matriks permutasi \(P\):
+</p>
+
+\[
+PA=LU.
+\]
+
+<p align="justify">
+  Setelah faktorisasi diperoleh, penyelesaian dilakukan melalui dua tahap,
+  yaitu substitusi maju dan substitusi mundur. Hasil penyelesaiannya adalah
+</p>
+
+\[
+\boxed{
+x=
+\begin{pmatrix}
+20\\30\\40
+\end{pmatrix}
+}
+\]
+
+<p align="justify">
+  Dengan demikian, rencana produksi yang memenuhi seluruh kebutuhan sumber
+  daya adalah 20 unit produk \(P_1\), 30 unit produk \(P_2\), dan 40 unit
+  produk \(P_3\).
+</p>
+
+<p align="justify">
+  <b>Makna komputasi:</b> Dekomposisi LU sangat berguna ketika suatu sistem
+  persamaan linear harus diselesaikan berulang kali dengan matriks koefisien
+  yang sama, tetapi vektor kebutuhan atau persediaan \(b\) berubah.
+  Faktorisasi matriks cukup dilakukan sekali, kemudian digunakan kembali
+  untuk menyelesaikan sistem dengan ruas kanan yang berbeda.
+</p>
+
+<h4 class="subsec">Eksperimen Interaktif: Perencanaan Produksi</h4>
+
+<p align="justify">
+  Melalui eksperimen berikut, mahasiswa dapat mengubah ketersediaan sumber
+  daya dan mengamati perubahan jumlah produksi. Perhatikan pula bahwa
+  solusi matematis belum tentu merupakan rencana produksi yang layak secara
+  fisik apabila terdapat jumlah produksi negatif atau kendala tambahan.
+</p>
+
+<div class="sage">
+    <div class="sage-header"><span>SageMath — Perencanaan Produksi</span></div>
+    <div class="compute">
+	<script type="text/x-sage">
+@interact
+def produksi(
+    mesin=slider(50, 200, 5, default=110, label="Persediaan mesin"),
+    tenaga=slider(100, 400, 5, default=290, label="Tenaga kerja"),
+    bahan=slider(200, 900, 10, default=730, label="Bahan baku")
+):
+    A = matrix(RDF, [
+        [2,1,1],
+        [4,3,3],
+        [8,7,9]
+    ])
+
+    b = vector(RDF, [mesin, tenaga, bahan])
+
+    pretty_print(html("<h4>Model Perencanaan Produksi</h4>"))
+    pretty_print(html(r"$$Ax=b$$"))
+
+    try:
+        x = A.solve_right(b)
+
+        hasil = [round(float(v),4) for v in x]
+
+        pretty_print(html(
+            r"$$x=%s$$" % latex(vector(RDF, hasil))
+        ))
+
+        for i, v in enumerate(hasil):
+            pretty_print(html(
+                "<p>Jumlah produk P<sub>%d</sub>: %.4f</p>"
+                % (i+1, v)
+            ))
+
+        if all(v >= 0 for v in x):
+            pretty_print(html(
+                "<p style='color:green'><b>"
+                "Solusi memenuhi syarat nonnegatif.</b></p>"
+            ))
+        else:
+            pretty_print(html(
+                "<p style='color:red'><b>"
+                "Solusi tidak layak untuk jumlah produksi "
+                "karena terdapat nilai negatif.</b></p>"
+            ))
+
+    except Exception as e:
+        pretty_print(html(
+            "<p style='color:red'>Sistem tidak dapat "
+            "diselesaikan: %s</p>" % str(e)
+        ))
+</script>
+</div>
+</div>
+
+<hr>
+
+<h3 class="subsec">9.4 Real Problem: Power Method untuk Menganalisis Perpindahan Pelanggan</h3>
+
+<p align="justify">
+  Power Method dapat diterapkan untuk menganalisis perilaku jangka panjang
+  suatu sistem yang mengalami perubahan secara berulang. Salah satu
+  contohnya adalah perpindahan pelanggan antara dua platform layanan digital.
+</p>
+
+<p align="justify">
+  Misalkan terdapat dua platform, yaitu Platform A dan Platform B.
+  Berdasarkan data historis, diperoleh probabilitas perpindahan pelanggan
+  sebagai berikut:
+</p>
+
+<ul>
+  <li>80% pelanggan Platform A tetap menggunakan Platform A.</li>
+  <li>20% pelanggan Platform A berpindah ke Platform B.</li>
+  <li>30% pelanggan Platform B berpindah ke Platform A.</li>
+  <li>70% pelanggan Platform B tetap menggunakan Platform B.</li>
+</ul>
+
+<p align="justify">
+  Misalkan \(a_k\) dan \(b_k\) masing-masing menyatakan proporsi pelanggan
+  Platform A dan Platform B pada periode ke-\(k\). Distribusi pelanggan
+  dinyatakan oleh vektor
+</p>
+
+\[
+x^{(k)}=
+\begin{pmatrix}
+a_k\\b_k
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Dengan menggunakan model rantai Markov, perubahan distribusi pelanggan
+  dapat dinyatakan sebagai
+</p>
+
+\[
+x^{(k+1)}=Ax^{(k)},
+\]
+
+<p align="justify">
+  dengan matriks transisi
+</p>
+
+\[
+A=
+\begin{pmatrix}
+0.8&0.3\\
+0.2&0.7
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Perhatikan bahwa setiap kolom matriks berjumlah satu. Hal ini sesuai
+  dengan konvensi penggunaan vektor distribusi kolom.
+</p>
+
+<p align="justify">
+  Misalkan pada awal pengamatan seluruh pelanggan menggunakan Platform A,
+  sehingga
+</p>
+
+\[
+x^{(0)}=
+\begin{pmatrix}
+1\\0
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Distribusi pelanggan pada periode berikutnya diperoleh dengan melakukan
+  perkalian matriks secara berulang:
+</p>
+
+\[
+x^{(1)}=Ax^{(0)}
+=
+\begin{pmatrix}
+0.8\\0.2
+\end{pmatrix}.
+\]
+
+\[
+x^{(2)}=Ax^{(1)}
+=
+\begin{pmatrix}
+0.7\\0.3
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Beberapa iterasi awal menghasilkan tabel berikut.
+</p>
+
+<div class="table-responsive">
+<table>
+  <thead>
+    <tr>
+      <th>Periode</th>
+      <th>Platform A</th>
+      <th>Platform B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>1.0000</td><td>0.0000</td></tr>
+    <tr><td>1</td><td>0.8000</td><td>0.2000</td></tr>
+    <tr><td>2</td><td>0.7000</td><td>0.3000</td></tr>
+    <tr><td>3</td><td>0.6500</td><td>0.3500</td></tr>
+    <tr><td>4</td><td>0.6250</td><td>0.3750</td></tr>
+    <tr><td>5</td><td>0.6125</td><td>0.3875</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p align="justify">
+  Distribusi tersebut semakin mendekati keadaan stabil atau distribusi
+  stasioner:
+</p>
+
+\[
+\boxed{
+x^*=
+\begin{pmatrix}
+0.6\\0.4
+\end{pmatrix}
+}
+\]
+
+<p align="justify">
+  Keadaan stasioner memenuhi persamaan
+</p>
+
+\[
+Ax^*=x^*.
+\]
+
+<p align="justify">
+  Artinya, berdasarkan model tersebut, dalam jangka panjang sekitar 60%
+  pelanggan menggunakan Platform A dan 40% menggunakan Platform B.
+</p>
+
+<p align="justify">
+  <b>Makna komputasi:</b> Power Method mencari eigenvektor dominan melalui
+  proses iterasi. Dalam kasus matriks transisi Markov yang memenuhi syarat
+  konvergensi, eigenvektor yang bersesuaian dengan eigenvalue 1 memberikan
+  distribusi stasioner.
+</p>
+
+<p align="justify">
+  Hasil tersebut bukan jaminan bahwa perilaku pelanggan di dunia nyata
+  akan selalu demikian. Prediksi bergantung pada ketepatan data historis
+  dan asumsi bahwa probabilitas perpindahan pelanggan relatif tetap.
+</p>
+
+<h4 class="subsec">Eksperimen Interaktif: Perpindahan Pelanggan</h4>
+
+<p align="justify">
+  Pada eksperimen ini, mahasiswa dapat mengubah probabilitas pelanggan
+  bertahan di Platform A dan Platform B, serta mengamati proses konvergensi
+  distribusi pelanggan.
+</p>
+
+<div class="sage">
+    <div class="sage-header"><span>SageMath — Perpindahan Pelanggan</span></div>
+    <div class="compute">
+	<script type="text/x-sage">
+@interact
+def perpindahan_pelanggan(
+    p=slider(0.1, 0.99, 0.01, default=0.8,
+             label="Peluang tetap di Platform A"),
+    q=slider(0.1, 0.99, 0.01, default=0.7,
+             label="Peluang tetap di Platform B"),
+    iterasi=slider(1, 30, 1, default=10,
+                   label="Jumlah iterasi")
+):
+    A = matrix(RDF, [
+        [p, 1-q],
+        [1-p, q]
+    ])
+
+    x = vector(RDF, [1,0])
+
+    rows = []
+
+    for k in range(iterasi+1):
+        rows.append(
+            "<tr><td>%d</td><td>%.4f</td><td>%.4f</td></tr>"
+            % (k, float(x[0]), float(x[1]))
+        )
+        x = A*x
+
+    pretty_print(html("<h4>Perkembangan Distribusi Pelanggan</h4>"))
+
+    pretty_print(html(
+        "<table border='1' cellpadding='6' "
+        "style='border-collapse:collapse;width:100%%'>"
+        "<tr><th>Periode</th><th>Platform A</th>"
+        "<th>Platform B</th></tr>"
+        + "".join(rows) + "</table>"
+    ))
+
+    if p + q != 1:
+        x_stabil = vector(RDF, [
+            (1-q)/(2-p-q),
+            (1-p)/(2-p-q)
+        ])
+
+        pretty_print(html("<h4>Distribusi Stasioner</h4>"))
+        pretty_print(html(
+            r"$$x^*=%s$$" %
+            latex(vector(RDF, [
+                round(float(v),4) for v in x_stabil
+            ]))
+        ))
+</script>
+</div>
+</div>
+
+<p align="justify">
+  <b>Pertanyaan untuk mahasiswa:</b>
+</p>
+
+<ol>
+  <li>
+    Bagaimana perubahan distribusi pelanggan apabila peluang bertahan
+    di Platform A meningkat?
+  </li>
+  <li>
+    Apakah distribusi stasioner bergantung pada distribusi pelanggan
+    pada periode awal?
+  </li>
+  <li>
+    Mengapa distribusi stasioner berkaitan dengan eigenvalue 1?
+  </li>
+  <li>
+    Apa yang terjadi apabila matriks transisi tidak memenuhi syarat
+    konvergensi menuju satu distribusi stasioner?
+  </li>
+</ol>
+
+<hr>
+
+<h3 class="subsec">9.5 Real Problem: Singular Value Decomposition untuk Analisis Data Penjualan</h3>
+
+<p align="justify">
+  Dalam dunia bisnis, perusahaan sering mengumpulkan data penjualan dari
+  berbagai cabang dan jenis produk. Data tersebut dapat mempunyai ukuran
+  yang cukup besar sehingga diperlukan metode untuk mengidentifikasi pola
+  utama dan mengurangi kompleksitas data.
+</p>
+
+<p align="justify">
+  Misalkan suatu perusahaan mempunyai lima cabang toko dan mencatat
+  penjualan empat jenis produk. Data penjualan dalam satu periode
+  dinyatakan dalam matriks berikut.
+</p>
+
+<div class="table-responsive">
+<table>
+  <thead>
+    <tr>
+      <th>Cabang</th>
+      <th>Produk 1</th>
+      <th>Produk 2</th>
+      <th>Produk 3</th>
+      <th>Produk 4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>A</td><td>120</td><td>80</td><td>40</td><td>20</td></tr>
+    <tr><td>B</td><td>100</td><td>70</td><td>35</td><td>18</td></tr>
+    <tr><td>C</td><td>150</td><td>95</td><td>50</td><td>25</td></tr>
+    <tr><td>D</td><td>80</td><td>55</td><td>28</td><td>14</td></tr>
+    <tr><td>E</td><td>130</td><td>85</td><td>45</td><td>22</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p align="justify">
+  Matriks data penjualan tersebut adalah
+</p>
+
+\[
+M=
+\begin{pmatrix}
+120&80&40&20\\
+100&70&35&18\\
+150&95&50&25\\
+80&55&28&14\\
+130&85&45&22
+\end{pmatrix}.
+\]
+
+<p align="justify">
+  Singular Value Decomposition (SVD) memfaktorkan matriks \(M\) menjadi
+</p>
+
+\[
+\boxed{M=U\Sigma V^T}
+\]
+
+<p align="justify">
+  dengan:
+</p>
+
+<ul>
+  <li>
+    \(U\) merupakan matriks yang memuat informasi pola hubungan
+    antarcabang toko.
+  </li>
+  <li>
+    \(\Sigma\) merupakan matriks diagonal yang memuat singular values.
+  </li>
+  <li>
+    \(V\) merupakan matriks yang memuat informasi pola hubungan
+    antarproduk.
+  </li>
+</ul>
+
+<p align="justify">
+  Singular values menunjukkan besarnya kontribusi setiap komponen
+  terhadap representasi matriks data. Jika beberapa singular values
+  pertama jauh lebih besar daripada yang lainnya, data dapat didekati
+  dengan matriks ber-rank lebih rendah.
+</p>
+
+<p align="justify">
+  Sebagai contoh, jika hanya singular value terbesar yang dipertahankan,
+  pendekatan matriks rank-1 diberikan oleh
+</p>
+
+\[
+M_1=\sigma_1u_1v_1^T.
+\]
+
+<p align="justify">
+  Untuk mengukur kualitas pendekatan tersebut, digunakan proporsi energi
+  Frobenius:
+</p>
+
+\[
+E_1=
+\frac{\sigma_1^2}
+{\displaystyle\sum_{i=1}^{r}\sigma_i^2}
+\times100\%.
+\]
+
+<p align="justify">
+  Semakin besar nilai \(E_1\), semakin besar bagian energi matriks yang
+  dapat direpresentasikan oleh komponen singular pertama.
+</p>
+
+<p align="justify">
+  <b>Makna komputasi:</b> SVD memungkinkan kita menemukan struktur utama
+  dalam data, melakukan kompresi, dan mengurangi dimensi representasi.
+  Metode ini juga menjadi dasar matematis bagi berbagai teknik analisis
+  data, termasuk Principal Component Analysis (PCA).
+</p>
+
+<p align="justify">
+  Perlu diperhatikan bahwa matriks penjualan di atas merupakan data
+  ilustratif. Dalam analisis nyata, perlu dipertimbangkan apakah data
+  harus dipusatkan (centering) atau dinormalisasi terlebih dahulu,
+  terutama apabila skala penjualan antarproduk berbeda.
+</p>
+
+<h4 class="subsec">Eksperimen Interaktif: Reduksi Dimensi dengan SVD</h4>
+
+<p align="justify">
+  Melalui eksperimen berikut, mahasiswa dapat mengubah jumlah komponen
+  singular yang dipertahankan dan mengamati pengaruhnya terhadap
+  representasi matriks data penjualan.
+</p>
+
+<div class="sage">
+    <div class="sage-header"><span>SageMath — Reduksi Dimensi dengan SVD</span></div>
+    <div class="compute">
+	<script type="text/x-sage">
+@interact
+def analisis_svd(
+    k=slider(1, 4, 1, default=1,
+             label="Jumlah komponen singular")
+):
+    M = matrix(RDF, [
+        [120,80,40,20],
+        [100,70,35,18],
+        [150,95,50,25],
+        [80,55,28,14],
+        [130,85,45,22]
+    ])
+
+    # --------------------------------------------------------
+    # Formatter 4 desimal -> STRING (jangan andalkan latex() Sage)
+    # --------------------------------------------------------
+    def f4(x):
+        s = f"{float(x):.4f}"
+        if s == "-0.0000":
+            s = "0.0000"
+        return s
+
+    def latex_matrix(Mx):
+        rows = [" & ".join(f4(v) for v in row) for row in Mx.rows()]
+        return r"\begin{pmatrix}" + r" \\ ".join(rows) + r"\end{pmatrix}"
+
+    # --------------------------------------------------------
+    # SVD: ambil S sebagai VEKTOR nilai singular
+    # --------------------------------------------------------
+    # Opsi A (paling aman): pakai .singular_values()
+    S = M.singular_values()          # vector RDF, panjang = min(5,4)=4
+    U, _, V = M.SVD()                # U: 5x5, V: 4x4 (S diabaikan)
+
+    # Pastikan S berupa vektor (jaga-jaga jika Sage mengembalikan lain)
+    if hasattr(S, "diagonal"):
+        S = vector(RDF, S.diagonal())
+    else:
+        S = vector(RDF, S)
+
+    # --------------------------------------------------------
+    # Aproksimasi rank-k:  M_k = U_k * diag(S_k) * V_k
+    # --------------------------------------------------------
+    Uk = U[:, 0:k]                       # 5 x k
+    Sk = diagonal_matrix(RDF, S[0:k])    # k x k  (S di sini VECTOR -> OK)
+    Vk = V[0:k, :]                       # k x 4
+
+    Mk = Uk * Sk * Vk                    # 5 x 4
+
+    # --------------------------------------------------------
+    # Energi & galat
+    # --------------------------------------------------------
+    energi_total = sum(float(s)**2 for s in S)
+    energi_k     = sum(float(S[i])**2 for i in range(k))
+    proporsi     = 100.0 * energi_k / energi_total
+    galat        = (M - Mk).norm()
+
+    # --------------------------------------------------------
+    # Tampilkan
+    # --------------------------------------------------------
+    pretty_print(html("<h4>Hasil Analisis SVD</h4>"))
+
+    pretty_print(html(
+        rf"$$\sigma = {latex_matrix(S.row())}$$"
+    ))
+
+    pretty_print(html(
+        f"<p>Jumlah komponen yang dipertahankan: <b>{k}</b></p>"
+    ))
+
+    pretty_print(html(
+        f"<p>Energi yang dipertahankan: <b>{f4(proporsi)}%</b></p>"
+    ))
+
+    pretty_print(html(
+        f"<p>Galat Frobenius: <b>{f4(galat)}</b></p>"
+    ))
+
+    pretty_print(html("<h4>Matriks Aproksimasi Rank-k</h4>"))
+    pretty_print(html(rf"$$M_{{{k}}} = {latex_matrix(Mk)}$$"))
+</script>
+</div>
+</div>
+
+<p align="justify">
+  <b>Pertanyaan untuk mahasiswa:</b>
+</p>
+
+<ol>
+  <li>
+    Apa perbedaan representasi data dengan rank-1, rank-2, dan rank-3?
+  </li>
+  <li>
+    Bagaimana perubahan galat Frobenius ketika jumlah komponen singular
+    yang dipertahankan bertambah?
+  </li>
+  <li>
+    Mengapa singular values yang besar mempunyai kontribusi lebih besar
+    terhadap representasi matriks?
+  </li>
+  <li>
+    Apakah mempertahankan satu komponen singular selalu cukup untuk
+    menggambarkan pola data secara akurat?
+  </li>
+</ol>
+
+<hr>
+
+<h3 class="subsec">9.6 Perbandingan Peran Ketiga Metode dalam Real Problem</h3>
+
+<p align="justify">
+  Ketiga metode yang telah dibahas mempunyai tujuan matematis yang
+  berbeda. Dekomposisi LU berhubungan dengan penyelesaian sistem
+  persamaan linear, Power Method berhubungan dengan pencarian
+  eigenvalue dan eigenvector dominan, sedangkan SVD berhubungan dengan
+  struktur dan pendekatan matriks.
+</p>
+
+<div class="table-responsive">
+<table>
+  <thead>
+    <tr>
+      <th>Metode</th>
+      <th>Persoalan utama</th>
+      <th>Hasil yang dicari</th>
+      <th>Aplikasi nyata</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Dekomposisi LU</td>
+      <td>Menyelesaikan sistem linear</td>
+      <td>Solusi \(Ax=b\)</td>
+      <td>Perencanaan produksi, rangkaian listrik, jaringan aliran</td>
+    </tr>
+    <tr>
+      <td>Power Method</td>
+      <td>Mencari eigenvektor dominan</td>
+      <td>Eigenvalue dan eigenvector dominan</td>
+      <td>Distribusi Markov, PageRank, analisis kestabilan</td>
+    </tr>
+    <tr>
+      <td>SVD</td>
+      <td>Menganalisis struktur matriks</td>
+      <td>Singular values dan pendekatan rank rendah</td>
+      <td>Kompresi data, reduksi dimensi, analisis pola</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 class="subsec">9.7 Refleksi: Matematika, Pemodelan, dan Komputasi</h3>
+
+<p align="justify">
+  Dari ketiga contoh tersebut, dapat dipahami bahwa metode numerik bukan
+  sekadar prosedur perhitungan yang dijalankan oleh komputer. Setiap metode
+  berangkat dari struktur matematis tertentu yang digunakan untuk
+  memahami persoalan nyata.
+</p>
+
+<p align="justify">
+  Dekomposisi LU membantu kita menemukan solusi dari sistem kendala.
+  Power Method membantu kita memahami perilaku jangka panjang suatu sistem
+  yang mengalami perubahan berulang. Sementara itu, SVD membantu kita
+  menemukan pola utama dan struktur tersembunyi dalam suatu kumpulan data.
+</p>
+
+<p align="justify">
+  Dengan demikian, proses penyelesaian masalah secara matematis dapat
+  dipandang sebagai rangkaian kegiatan:
+</p>
+
+\[
+\boxed{
+\text{Real Problem}
+\longrightarrow
+\text{Mathematical Model}
+\longrightarrow
+\text{Numerical Method}
+\longrightarrow
+\text{Interpretation}
+}
+\]
+
+<p align="justify">
+  Komputasi menghasilkan keluaran numerik, tetapi pemahaman terhadap
+  makna keluaran tersebut tetap memerlukan penalaran matematis. Oleh
+  karena itu, keberhasilan komputasi tidak hanya ditentukan oleh
+  ketepatan algoritma, tetapi juga oleh ketepatan model dan interpretasi
+  hasilnya.
+</p>
+
 
   <div class="sage">
     <div class="sage-header"><span>SageMath — Simulasi Kompresi SVD (Gunakan untuk Latihan)</span></div>
@@ -16048,41 +17960,400 @@ display(html(r"$A_{[1:3,\,1:3]} = %s \qquad A_{k\,[1:3,\,1:3]} = %s$"
   <div class="sage">
     <div class="sage-header"><span>SageMath Cell — Latihan LU, Power, SVD untuk RO</span></div>
     <div class="compute"><script type="text/x-sage">
-# Template untuk latihan RO
-# 1. Dekomposisi LU
-A = matrix(RDF, [[2,1,1],[4,3,3],[8,7,9]])
-P, L, U = A.LU()
+# ============================================================
+# BiMath - Operations Research
+# INTERACTIVE LINEAR ALGEBRA WITH SAGEMATH (4 DECIMAL PLACES)
+# 1. LU Decomposition
+# 2. Power Method
+# 3. Singular Value Decomposition (SVD)
+# ============================================================
 
-pretty_print(html("<h3>1. Dekomposisi LU Matriks A</h3>"))
-pretty_print(html(rf"$$P = {latex(P)}$$"))
-pretty_print(html(rf"$$L = {latex(L)}$$"))
-pretty_print(html(rf"$$U = {latex(U)}$$"))
+@interact
 
-# 2. Power Method (5 Iterasi)
-B = matrix(RDF, [[2,1],[1,2]])
-x = vector(RDF, [1,0])
+def latihan_RO(
+    # --------------------------------------------------------
+    # 1. LU DECOMPOSITION
+    # --------------------------------------------------------
+    LU_Mode=selector(
+        ['Matriks Preset', 'Input Manual'],
+        label='1a. Mode Matriks LU:',
+        default='Matriks Preset'
+    ),
 
-pretty_print(html("<h3>2. Power Method (5 Iterasi)</h3>"))
-for i in range(5):
-    y = B * x
-    x = y / y.norm()
-    lam = x * B * x
-    # Memformat vektor dan lambda secara terpisah menggunakan raw string (rf"...")
-    x_latex = latex(x)
-    pretty_print(html(rf"<b>Iterasi {i+1}:</b> &nbsp;&nbsp; $x^{{({i+1})}} = {x_latex}^T$ &nbsp;&nbsp; $|$ &nbsp;&nbsp; $\lambda_{{{i+1}}} \approx {lam:.6f}$"))
+    LU_Matrix=selector(
+        ['Matriks A', 'Matriks B', 'Matriks C'],
+        label='1b. Pilih Matriks LU (preset):',
+        default='Matriks A'
+    ),
 
-# 3. SVD Matriks Hilbert 5x5
-pretty_print(html("<h3>3. Singular Value Decomposition (SVD) Hilbert 5x5</h3>"))
+    LU_Input=input_box(
+        default='2,1,1; 4,3,3; 8,7,9',
+        label='1c. Input Matriks LU (baris dipisah ";" , elemen dipisah ","):',
+        type=str,
+        width=60
+    ),
 
-H = matrix.hilbert(5).change_ring(RDF)
+    # --------------------------------------------------------
+    # 2. POWER METHOD
+    # --------------------------------------------------------
+    PM_Mode=selector(
+        ['Matriks Preset', 'Input Manual'],
+        label='2a. Mode Matriks Power Method:',
+        default='Matriks Preset'
+    ),
 
-# Menggunakan singular_values() yang didukung langsung oleh matriks RDF di SageMath
-S = H.singular_values()
-top3_singular = S[:3]
+    PM_Input=input_box(
+        default='2,1; 1,2',
+        label='2b. Input Matriks Power Method:',
+        type=str,
+        width=60
+    ),
 
-pretty_print(html("<b>3 Nilai Singular Teratas:</b>"))
-for i, val in enumerate(top3_singular, start=1):
-    pretty_print(html(rf"$$\sigma_{{{i}}} \approx {val:.6f}$$"))
+    Iterasi=slider(
+        1, 30, 1, default=5,
+        label='2c. Jumlah Iterasi Power Method:'
+    ),
+
+    Vektor_Awal_Mode=selector(
+        ['Preset', 'Input Manual'],
+        label='2d. Mode Vektor Awal:',
+        default='Preset'
+    ),
+
+    Vektor_Awal=selector(
+        ['[1,0]', '[0,1]', '[1,1]', '[2,1]'],
+        label='2e. Vektor Awal (preset):',
+        default='[1,0]'
+    ),
+
+    Vektor_Awal_Input=input_box(
+        default='1,0',
+        label='2f. Input Vektor Awal (elemen dipisah ","):',
+        type=str,
+        width=40
+    ),
+
+    # --------------------------------------------------------
+    # 3. SVD HILBERT
+    # --------------------------------------------------------
+    Ukuran_Hilbert=slider(
+        2, 10, 1, default=5,
+        label='3a. Ukuran Matriks Hilbert:'
+    ),
+
+    Jumlah_Singular=slider(
+        1, 10, 1, default=3,
+        label='3b. Jumlah Nilai Singular Ditampilkan:'
+    )
+):
+
+    # ========================================================
+    # FORMATTER: hasilkan STRING 4 desimal (bukan objek Sage)
+    # ========================================================
+    def f4(x):
+        s = f"{float(x):.4f}"
+        if s == "-0.0000":
+            s = "0.0000"
+        return s
+
+    def latex_matrix(M):
+        rows = []
+        for row in M.rows():
+            rows.append(" & ".join(f4(v) for v in row))
+        body = r" \\ ".join(rows)
+        return r"\begin{pmatrix}" + body + r"\end{pmatrix}"
+
+    def latex_vector(v):
+        return r"\begin{pmatrix}" + " & ".join(f4(x) for x in v) + r"\end{pmatrix}"
+
+    # ========================================================
+    # PARSER: string -> matriks / vektor
+    # ========================================================
+    def parse_matrix(s):
+        """Parse '2,1,1; 4,3,3; 8,7,9' -> matrix(RDF, ...).
+        Mengembalikan (matrix, error_message). error_message=None jika OK."""
+        try:
+            s = s.strip().replace(" ", "")
+            if not s:
+                return None, "Input matriks kosong."
+            rows_str = s.split(";")
+            rows = []
+            for r in rows_str:
+                if not r:
+                    return None, "Ada baris kosong (periksa tanda ';')."
+                vals = [float(v) for v in r.split(",")]
+                rows.append(vals)
+            # cek konsistensi jumlah kolom
+            ncol = len(rows[0])
+            for i, r in enumerate(rows):
+                if len(r) != ncol:
+                    return None, (
+                        f"Baris {i+1} punya {len(r)} elemen, "
+                        f"sedangkan baris 1 punya {ncol} elemen."
+                    )
+            return matrix(RDF, rows), None
+        except ValueError:
+            return None, (
+                "Format salah. Gunakan angka, koma untuk elemen, "
+                "titik-koma untuk baris. Contoh: 2,1,1; 4,3,3; 8,7,9"
+            )
+        except Exception as e:
+            return None, f"Gagal mem-parse matriks: {e}"
+
+    def parse_vector(s):
+        """Parse '1,0' -> vector(RDF, ...). Mengembalikan (vector, error)."""
+        try:
+            s = s.strip().replace(" ", "")
+            if not s:
+                return None, "Input vektor kosong."
+            vals = [float(v) for v in s.split(",")]
+            return vector(RDF, vals), None
+        except ValueError:
+            return None, (
+                "Format vektor salah. Gunakan angka dipisah koma, "
+                "contoh: 1,0"
+            )
+        except Exception as e:
+            return None, f"Gagal mem-parse vektor: {e}"
+
+    # ========================================================
+    # 1. DEKOMPOSISI LU
+    # ========================================================
+    A_list = {
+        'Matriks A': [[2,1,1],
+                      [4,3,3],
+                      [8,7,9]],
+        'Matriks B': [[4,2,1],
+                      [2,5,2],
+                      [1,2,4]],
+        'Matriks C': [[1,2,3],
+                      [2,5,8],
+                      [3,8,14]]
+    }
+
+    pretty_print(html("<hr><h3>1. Dekomposisi LU</h3>"))
+
+    if LU_Mode == 'Matriks Preset':
+        A = matrix(RDF, A_list[LU_Matrix])
+        pretty_print(html(
+            rf"<b>Matriks yang dipilih (preset):</b> {LU_Matrix}"
+        ))
+    else:
+        A, err = parse_matrix(LU_Input)
+        if err is not None:
+            pretty_print(html(
+                rf"<b style='color:red'>Error input matriks LU:</b> {err}"
+            ))
+            A = None
+        else:
+            pretty_print(html(
+                "<b>Matriks yang dipilih (input manual):</b>"
+            ))
+
+    if A is not None:
+        # cek matriks persegi untuk LU
+        if A.nrows() != A.ncols():
+            pretty_print(html(
+                "<b style='color:red'>Error:</b> Dekomposisi LU "
+                "membutuhkan matriks persegi (baris = kolom)."
+            ))
+        else:
+            try:
+                P, L, U = A.LU()
+
+                pretty_print(html(rf"$$A={latex_matrix(A)}$$"))
+                pretty_print(html(rf"$$P={latex_matrix(P)}$$"))
+                pretty_print(html(rf"$$L={latex_matrix(L)}$$"))
+                pretty_print(html(rf"$$U={latex_matrix(U)}$$"))
+
+                pretty_print(html(
+                    "<b>Verifikasi:</b> Periksa apakah $PA=LU$."
+                ))
+
+                galat_LU = (P*A - L*U).norm()
+
+                pretty_print(html(
+                    rf"$$\|PA-LU\|_F = {f4(galat_LU)}$$"
+                ))
+            except Exception as e:
+                pretty_print(html(
+                    rf"<b style='color:red'>Gagal dekomposisi LU:</b> {e}"
+                ))
+
+    # ========================================================
+    # 2. POWER METHOD
+    # ========================================================
+    pretty_print(html("<hr><h3>2. Power Method</h3>"))
+
+    # --- Matriks B ---
+    if PM_Mode == 'Matriks Preset':
+        B = matrix(RDF, [[2,1],
+                         [1,2]])
+        pretty_print(html(
+            "<b>Matriks B (preset):</b>"
+        ))
+    else:
+        B, err = parse_matrix(PM_Input)
+        if err is not None:
+            pretty_print(html(
+                rf"<b style='color:red'>Error input matriks Power Method:</b> {err}"
+            ))
+            B = None
+        else:
+            pretty_print(html(
+                "<b>Matriks B (input manual):</b>"
+            ))
+
+    # --- Vektor awal ---
+    if Vektor_Awal_Mode == 'Preset':
+        x_dict = {
+            '[1,0]': [1,0],
+            '[0,1]': [0,1],
+            '[1,1]': [1,1],
+            '[2,1]': [2,1]
+        }
+        x = vector(RDF, x_dict[Vektor_Awal])
+    else:
+        x, err_x = parse_vector(Vektor_Awal_Input)
+        if err_x is not None:
+            pretty_print(html(
+                rf"<b style='color:red'>Error input vektor awal:</b> {err_x}"
+            ))
+            x = None
+        else:
+            pretty_print(html(
+                "<b>Vektor awal (input manual).</b>"
+            ))
+
+    # --- Validasi & jalankan Power Method ---
+    if B is not None and x is not None:
+        # validasi: B persegi & ukuran cocok dengan x
+        if B.nrows() != B.ncols():
+            pretty_print(html(
+                "<b style='color:red'>Error:</b> Matriks B harus persegi."
+            ))
+        elif B.nrows() != x.degree():
+            pretty_print(html(
+                rf"<b style='color:red'>Error:</b> Ukuran matriks B "
+                rf"({B.nrows()}x{B.ncols()}) tidak cocok dengan "
+                rf"panjang vektor awal ({x.degree()})."
+            ))
+        elif x.norm() == 0:
+            pretty_print(html(
+                "<b style='color:red'>Error:</b> Vektor awal tidak boleh nol."
+            ))
+        else:
+            x = x / x.norm()
+
+            pretty_print(html(rf"$$B={latex_matrix(B)}$$"))
+            pretty_print(html(
+                rf"<b>Vektor awal (setelah normalisasi):</b> "
+                rf"$x_0={latex_vector(x)}^T$"
+            ))
+            pretty_print(html(
+                rf"<b>Jumlah iterasi:</b> {Iterasi}"
+            ))
+            pretty_print(html(
+                r"<b>Rumus iterasi:</b>"
+                r"$$x_{k+1}=\frac{Bx_k}{\|Bx_k\|_2}$$"
+            ))
+            pretty_print(html(
+                r"<b>Rayleigh Quotient:</b>"
+                r"$$\lambda_k=\frac{x_k^TBx_k}{x_k^Tx_k}$$"
+            ))
+
+            pretty_print(html(
+                "<table style='border-collapse:collapse;width:100%'>"
+                "<tr style='border-bottom:1px solid #999'>"
+                "<th>Iterasi</th><th>Vektor x</th>"
+                "<th>Estimasi Eigenvalue</th></tr>"
+            ))
+
+            lam = None
+            for i in range(Iterasi):
+                y = B*x
+                x = y/y.norm()
+                lam = (x*B*x)/(x*x)
+
+                pretty_print(html(
+                    rf"<table style='border-collapse:collapse;width:100%'>"
+                    rf"<tr><td>{i+1}</td>"
+                    rf"<td>${latex_vector(x)}^T$</td>"
+                    rf"<td>{f4(lam)}</td></tr></table>"
+                ))
+
+            pretty_print(html("</table>"))
+
+            pretty_print(html(
+                "<b>Interpretasi:</b> Vektor hasil iterasi "
+                "mendekati vektor eigen dominan. "
+                "Estimasi nilai eigen dibandingkan dengan "
+                "nilai eigen eksak matriks B."
+            ))
+
+            try:
+                eigenvalues = B.eigenvalues()
+                lam_max = max(eigenvalues)
+
+                pretty_print(html(
+                    rf"$$\lambda_{{\max}}(B) = {f4(lam_max)}$$"
+                ))
+                pretty_print(html(
+                    rf"$$\text{{Galat eigenvalue}} = "
+                    rf"{f4(abs(lam - lam_max))}$$"
+                ))
+            except Exception as e:
+                pretty_print(html(
+                    rf"<b style='color:red'>Gagal menghitung eigenvalue:</b> {e}"
+                ))
+
+    # ========================================================
+    # 3. SINGULAR VALUE DECOMPOSITION
+    # ========================================================
+    pretty_print(html(
+        "<hr><h3>3. Singular Value Decomposition (SVD)</h3>"
+    ))
+
+    n = Ukuran_Hilbert
+    H = matrix.hilbert(n).change_ring(RDF)
+    S = H.singular_values()
+    k = min(Jumlah_Singular, n)
+
+    pretty_print(html(
+        rf"<b>Matriks Hilbert berukuran ${n}\times{n}$:</b>"
+    ))
+    pretty_print(html(rf"$$H={latex_matrix(H)}$$"))
+    pretty_print(html(
+        r"<b>Dekomposisi:</b>"
+        r"$$H=U\Sigma V^T$$"
+    ))
+
+    pretty_print(html(
+        "<b>Nilai singular terbesar:</b>"
+    ))
+
+    for i, val in enumerate(S[:k], start=1):
+        pretty_print(html(
+            rf"$$\sigma_{{{i}}} = {f4(val)}$$"
+        ))
+
+    cond = S[0] / S[-1]
+    pretty_print(html(
+        rf"<b>Condition Number:</b>"
+        rf"$$\kappa_2(H) = \frac{{\sigma_1}}{{\sigma_{n}}} = {f4(cond)}$$"
+    ))
+
+    pretty_print(html(
+        "<b>Interpretasi:</b> Semakin besar "
+        "condition number, semakin sensitif "
+        "penyelesaian sistem linear terhadap "
+        "gangguan data dan galat pembulatan."
+    ))
+
+    pretty_print(html("<hr>"))
+    pretty_print(html(
+        "<b>BiMath: Teori, Aplikasi, dan Komputasi</b>"
+    ))
     </script></div>
   </div>
 
