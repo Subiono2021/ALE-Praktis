@@ -15987,7 +15987,78 @@ display(html(r"$A_{[1:3,\,1:3]} = %s \qquad A_{k\,[1:3,\,1:3]} = %s$"
         <span style="color:#059669;"><b>Hint:</b> Energi total ≈ Σσ_i². Jika σ turun eksponensial, energi terkonsentrasi di awal. Misal Σ_{1..10} σ_i² ≈ 90% total → k=15 mungkin 95%. Storage asli 100k angka, kompresi rank-15: 15*(1000+100+1)=16515 → hemat 83%. Dalam LP, ganti \(A\) dengan \(A_k\) → reduced model untuk solusi awal, lalu refining. SVD juga untuk PCA risiko.</span>
       </li>
     </ol>
+	
   </div>
+  
+  <div class="card example">
+   <b>Latihan: 11 Soal</b>
+   <p>
+            Sebuah perusahaan distributor logistik di Surabaya mengelola suplai tiga jenis barang kebutuhan pokok, yaitu 
+            <b>Beras (\(x_1\))</b>, <b>Gula (\(x_2\))</b>, dan <b>Minyak Goreng (\(x_3\))</b> (semua dalam satuan ton).
+        </p>
+        <p>
+            Pengadaan barang dilakukan melalui tiga gudang cabang utama (\(G_1, G_2, G_3\)) dengan ketentuan alokasi kapasitas persediaan dan biaya operasional per ton sebagai berikut:
+        </p>
+        <ul>
+            <li><b>Gudang 1 (\(G_1\)):</b> Membutuhkan alokasi \(2\) unit kapasitas untuk Beras, \(1\) unit untuk Gula, dan \(1\) unit untuk Minyak Goreng, dengan total kuota pengiriman \(9\) ton.</li>
+            <li><b>Gudang 2 (\(G_2\)):</b> Membutuhkan alokasi \(4\) unit kapasitas untuk Beras, \(3\) unit untuk Gula, dan \(3\) unit untuk Minyak Goreng, dengan total kuota pengiriman \(23\) ton.</li>
+            <li><b>Gudang 3 (\(G_3\)):</b> Membutuhkan alokasi \(-2\) unit kapasitas net penyeimbang untuk Beras, \(1\) unit untuk Gula, dan \(4\) unit untuk Minyak Goreng, dengan total kuota pengiriman \(9\) ton.</li>
+        </ul>
+	<b>Permasalahan:</b>
+            <ol>
+                <li>Formulasikan masalah optimasi persediaan stok pergudangan di atas ke dalam sistem persamaan linier \(Ax = b\) dengan \(A \in \mathbb{R}^{3 \times 3}\).</li>
+                <li>Selesaikan sistem persamaan linier tersebut menggunakan <b>Dekomposisi \(LU\) (Without Pivoting)</b> dengan menentukan matriks segitiga bawah \(L\) dan matriks segitiga atas \(U\).</li>
+                <li>Tentukan jumlah stok Beras, Gula, dan Minyak Goreng yang harus disediakan.</li>
+            </ol>	
+  </div>
+
+<div class="card example">
+   <b>Latihan: 12 Soal</b>
+<p>
+            Badan Penanggulangan Bencana Daerah (BPBD) mengoordinasikan distribusi tiga jenis perbekalan darurat pascabencana, yaitu:
+            <b>Obat-obatan dan Fasilitas Medis (\(x_1\))</b>, <b>Makanan Siap Saji dan Ransum (\(x_2\))</b>, dan <b>Air Bersih (\(x_3\))</b> (semua dalam satuan ton).
+        </p>
+        <p>
+            Bantuan disalurkan melalui tiga jalur posko distribusi (\(P_1, P_2, P_3\)) dengan bobot prioritas alokasi ruang/bobot per ton barang dan total kuota distribusi sebagai berikut:
+        </p>
+        <ul>
+            <li><b>Posko Utama 1 (\(P_1\) - Jalur Udara/Helikopter):</b> Membutuhkan alokasi \(2\) unit ruang untuk Obat-obatan, \(4\) unit untuk Makanan, dan \(5\) unit untuk Air Bersih dengan kapasitas total \(34\) ton per hari.</li>
+            <li><b>Posko Utama 2 (\(P_2\) - Jalur Darat/Truk):</b> Membutuhkan alokasi \(2\) unit ruang untuk Obat-obatan, \(1\) unit untuk Makanan, dan \(5\) unit untuk Air Bersih dengan kapasitas total \(28\) ton per hari.</li>
+            <li><b>Posko Utama 3 (\(P_3\) - Jalur Perairan/Perahu Karet):</b> Membutuhkan penyesuaian alokasi net \(-1\) unit ruang untuk Obat-obatan (efisiensi beban), \(1\) unit untuk Makanan, dan \(2\) unit untuk Air Bersih dengan kapasitas total \(7\) ton per hari.</li>
+        </ul>
+
+            <b>Permasalahan:</b>
+            <ol>
+                <li>Formulasikan masalah optimasi logistik di atas ke dalam bentuk Sistem Persamaan Linier \(Ax = b\) dengan matriks \(A \in \mathbb{R}^{3 \times 3}\).</li>
+                <li>Selesaikan sistem persamaan linier tersebut menggunakan <b>Dekomposisi \(A = QR\) (Proses Ortogonalisasi Gram-Schmidt)</b>, di mana \(Q\) adalah matriks ortogonal (\(Q^T Q = I\)) dan \(R\) adalah matriks segitiga atas (<i>upper triangular</i>).</li>
+                <li>Tentukan jumlah ton perbekalan \(x_1, x_2,\) dan \(x_3\) yang harus didistribusikan.</li>
+            </ol>
+</div>
+
+<div class="card example">
+   <b>Latihan: 13 Soal</b>
+<p>
+            Dinas Kehutanan dan Penanggulangan Bencana memantau dinamika perubahan kondisi lahan di kawasan hutan lindung selama musim kemarau ekstrem. Kawasan hutan dibagi menjadi dua keadaan utama:
+        </p>
+        <ul>
+            <li><b>Keadaan 1 (\(x_{1,k}\)):</b> Proporsi area berisiko tinggi / rawan terbakar pada hari ke-\(k\).</li>
+            <li><b>Keadaan 2 (\(x_{2,k}\)):</b> Proporsi area aman / terkendali (basah/sekat bakar) pada hari ke-\(k\).</li>
+        </ul>
+        <p>
+            Berdasarkan data historis dan laju mitigasi harian, dinamika transisi kondisi lahan dari hari ke-\(k\) menuju hari ke-\(k+1\) memenuhi aturan probabilitas transisi berikut:
+        </p>
+        <ul>
+            <li>Setiap hari, <b>\(80\%\)</b> area berisiko tinggi tetap berada dalam kondisi rawan terbakar, sedangkan <b>\(20\%\)</b> berhasil dimitigasi menjadi area aman.</li>
+            <li>Setiap hari, <b>\(30\%\)</b> area aman berubah menjadi rawan terbakar akibat cuaca panas dan angin kencang, sedangkan <b>\(70\%\)</b> tetap berada dalam kondisi aman.</li>
+        </ul>
+
+            <b>Permasalahan:</b>
+            <ol>
+                <li>Formulasikan dinamika perubahan kondisi lahan ke dalam model matriks pangkat \(x_{k+1} = A x_k\) dengan \(A \in \mathbb{R}^{2 \times 2}\) yang merupakan matriks stokastik kolom.</li>
+                <li>Tunjukkan konvergensi sistem untuk jangka panjang (\(k \to \infty\)) menggunakan <b>Diagonalisasi Matriks (\(A = P D P^{-1}\))</b> dan tentukan matriks limit \(\lim_{k \to \infty} A^k\).</li>
+                <li>Jika pada kondisi awal (\(k = 0\)) seluruh kawasan (\(100\%\)) berada dalam kondisi berisiko tinggi (\(x_0 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\)), tentukan distribusi kondisi lahan pada keadaan setimbang (<i>steady-state</i>).</li>
+            </ol>
+</div>
 
   <h3>Komputasi SageMath — Untuk Latihan RO</h3>
   <div class="sage">
